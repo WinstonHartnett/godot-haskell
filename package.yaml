@@ -62,8 +62,8 @@ executables:
 
 library:
   source-dirs: src
-  build-tools:
-  - c2hs
+  # build-tools:
+  # - c2hs
   include-dirs:
   - godot_headers
   - cbits
