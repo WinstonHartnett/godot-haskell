@@ -7,6 +7,7 @@ module Godot.Core.DynamicFont
         Godot.Core.DynamicFont._SPACING_CHAR,
         Godot.Core.DynamicFont._SPACING_BOTTOM,
         Godot.Core.DynamicFont.add_fallback,
+        Godot.Core.DynamicFont.get_available_chars,
         Godot.Core.DynamicFont.get_fallback,
         Godot.Core.DynamicFont.get_fallback_count,
         Godot.Core.DynamicFont.get_font_data,
@@ -129,6 +130,37 @@ instance NodeMethod DynamicFont "add_fallback" '[DynamicFontData]
            (IO ())
          where
         nodeMethod = Godot.Core.DynamicFont.add_fallback
+
+{-# NOINLINE bindDynamicFont_get_available_chars #-}
+
+-- | Returns a string containing all the characters available in the main and all the fallback fonts.
+--   				If a given character is included in more than one font, it appears only once in the returned string.
+bindDynamicFont_get_available_chars :: MethodBind
+bindDynamicFont_get_available_chars
+  = unsafePerformIO $
+      withCString "DynamicFont" $
+        \ clsNamePtr ->
+          withCString "get_available_chars" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Returns a string containing all the characters available in the main and all the fallback fonts.
+--   				If a given character is included in more than one font, it appears only once in the returned string.
+get_available_chars ::
+                      (DynamicFont :< cls, Object :< cls) => cls -> IO GodotString
+get_available_chars cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindDynamicFont_get_available_chars
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod DynamicFont "get_available_chars" '[]
+           (IO GodotString)
+         where
+        nodeMethod = Godot.Core.DynamicFont.get_available_chars
 
 {-# NOINLINE bindDynamicFont_get_fallback #-}
 

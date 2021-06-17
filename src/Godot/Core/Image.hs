@@ -59,16 +59,18 @@ module Godot.Core.Image
         Godot.Core.Image.get_width, Godot.Core.Image.has_mipmaps,
         Godot.Core.Image.is_compressed, Godot.Core.Image.is_empty,
         Godot.Core.Image.is_invisible, Godot.Core.Image.load,
+        Godot.Core.Image.load_bmp_from_buffer,
         Godot.Core.Image.load_jpg_from_buffer,
         Godot.Core.Image.load_png_from_buffer,
+        Godot.Core.Image.load_tga_from_buffer,
         Godot.Core.Image.load_webp_from_buffer, Godot.Core.Image.lock,
         Godot.Core.Image.normalmap_to_xy,
         Godot.Core.Image.premultiply_alpha, Godot.Core.Image.resize,
         Godot.Core.Image.resize_to_po2, Godot.Core.Image.rgbe_to_srgb,
         Godot.Core.Image.save_exr, Godot.Core.Image.save_png,
-        Godot.Core.Image.set_pixel, Godot.Core.Image.set_pixelv,
-        Godot.Core.Image.shrink_x2, Godot.Core.Image.srgb_to_linear,
-        Godot.Core.Image.unlock)
+        Godot.Core.Image.save_png_to_buffer, Godot.Core.Image.set_pixel,
+        Godot.Core.Image.set_pixelv, Godot.Core.Image.shrink_x2,
+        Godot.Core.Image.srgb_to_linear, Godot.Core.Image.unlock)
        where
 import Data.Coerce
 import Foreign.C
@@ -255,7 +257,7 @@ instance NodeProperty Image "data" Dictionary 'False where
 
 {-# NOINLINE bindImage__get_data #-}
 
--- | Holds all of the image's color data in a given format. See @enum Format@ constants.
+-- | Holds all the image's color data in a given format. See @enum Format@ constants.
 bindImage__get_data :: MethodBind
 bindImage__get_data
   = unsafePerformIO $
@@ -265,7 +267,7 @@ bindImage__get_data
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Holds all of the image's color data in a given format. See @enum Format@ constants.
+-- | Holds all the image's color data in a given format. See @enum Format@ constants.
 _get_data :: (Image :< cls, Object :< cls) => cls -> IO Dictionary
 _get_data cls
   = withVariantArray []
@@ -278,7 +280,7 @@ instance NodeMethod Image "_get_data" '[] (IO Dictionary) where
 
 {-# NOINLINE bindImage__set_data #-}
 
--- | Holds all of the image's color data in a given format. See @enum Format@ constants.
+-- | Holds all the image's color data in a given format. See @enum Format@ constants.
 bindImage__set_data :: MethodBind
 bindImage__set_data
   = unsafePerformIO $
@@ -288,7 +290,7 @@ bindImage__set_data
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Holds all of the image's color data in a given format. See @enum Format@ constants.
+-- | Holds all the image's color data in a given format. See @enum Format@ constants.
 _set_data ::
             (Image :< cls, Object :< cls) => cls -> Dictionary -> IO ()
 _set_data cls arg1
@@ -788,7 +790,7 @@ instance NodeMethod Image "flip_y" '[] (IO ()) where
 
 {-# NOINLINE bindImage_generate_mipmaps #-}
 
--- | Generates mipmaps for the image. Mipmaps are pre-calculated and lower resolution copies of the image. Mipmaps are automatically used if the image needs to be scaled down when rendered. This improves image quality and the performance of the rendering. Returns an error if the image is compressed, in a custom format or if the image's width/height is 0.
+-- | Generates mipmaps for the image. Mipmaps are precalculated and lower resolution copies of the image. Mipmaps are automatically used if the image needs to be scaled down when rendered. This improves image quality and the performance of the rendering. Returns an error if the image is compressed, in a custom format or if the image's width/height is 0.
 bindImage_generate_mipmaps :: MethodBind
 bindImage_generate_mipmaps
   = unsafePerformIO $
@@ -798,7 +800,7 @@ bindImage_generate_mipmaps
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Generates mipmaps for the image. Mipmaps are pre-calculated and lower resolution copies of the image. Mipmaps are automatically used if the image needs to be scaled down when rendered. This improves image quality and the performance of the rendering. Returns an error if the image is compressed, in a custom format or if the image's width/height is 0.
+-- | Generates mipmaps for the image. Mipmaps are precalculated and lower resolution copies of the image. Mipmaps are automatically used if the image needs to be scaled down when rendered. This improves image quality and the performance of the rendering. Returns an error if the image is compressed, in a custom format or if the image's width/height is 0.
 generate_mipmaps ::
                    (Image :< cls, Object :< cls) => cls -> Maybe Bool -> IO Int
 generate_mipmaps cls arg1
@@ -1148,7 +1150,9 @@ instance NodeMethod Image "is_invisible" '[] (IO Bool) where
 
 {-# NOINLINE bindImage_load #-}
 
--- | Loads an image from file @path@. See @url=https://docs.godotengine.org/en/latest/getting_started/workflow/assets/importing_images.html#supported-image-formats@Supported image formats@/url@ for a list of supported image formats and limitations.
+-- | Loads an image from file @path@. See @url=https://docs.godotengine.org/en/3.3/getting_started/workflow/assets/importing_images.html#supported-image-formats@Supported image formats@/url@ for a list of supported image formats and limitations.
+--   				__Warning:__ This method should only be used in the editor or in cases when you need to load external images at run-time, such as images located at the @user://@ directory, and may not work in exported projects.
+--   				See also @ImageTexture@ description for usage examples.
 bindImage_load :: MethodBind
 bindImage_load
   = unsafePerformIO $
@@ -1158,7 +1162,9 @@ bindImage_load
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Loads an image from file @path@. See @url=https://docs.godotengine.org/en/latest/getting_started/workflow/assets/importing_images.html#supported-image-formats@Supported image formats@/url@ for a list of supported image formats and limitations.
+-- | Loads an image from file @path@. See @url=https://docs.godotengine.org/en/3.3/getting_started/workflow/assets/importing_images.html#supported-image-formats@Supported image formats@/url@ for a list of supported image formats and limitations.
+--   				__Warning:__ This method should only be used in the editor or in cases when you need to load external images at run-time, such as images located at the @user://@ directory, and may not work in exported projects.
+--   				See also @ImageTexture@ description for usage examples.
 load ::
        (Image :< cls, Object :< cls) => cls -> GodotString -> IO Int
 load cls arg1
@@ -1169,6 +1175,36 @@ load cls arg1
 
 instance NodeMethod Image "load" '[GodotString] (IO Int) where
         nodeMethod = Godot.Core.Image.load
+
+{-# NOINLINE bindImage_load_bmp_from_buffer #-}
+
+-- | Loads an image from the binary contents of a BMP file.
+--   				__Note:__ Godot's BMP module doesn't support 16-bit per pixel images. Only 1-bit, 4-bit, 8-bit, 24-bit, and 32-bit per pixel images are supported.
+bindImage_load_bmp_from_buffer :: MethodBind
+bindImage_load_bmp_from_buffer
+  = unsafePerformIO $
+      withCString "Image" $
+        \ clsNamePtr ->
+          withCString "load_bmp_from_buffer" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Loads an image from the binary contents of a BMP file.
+--   				__Note:__ Godot's BMP module doesn't support 16-bit per pixel images. Only 1-bit, 4-bit, 8-bit, 24-bit, and 32-bit per pixel images are supported.
+load_bmp_from_buffer ::
+                       (Image :< cls, Object :< cls) => cls -> PoolByteArray -> IO Int
+load_bmp_from_buffer cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindImage_load_bmp_from_buffer (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod Image "load_bmp_from_buffer" '[PoolByteArray]
+           (IO Int)
+         where
+        nodeMethod = Godot.Core.Image.load_bmp_from_buffer
 
 {-# NOINLINE bindImage_load_jpg_from_buffer #-}
 
@@ -1225,6 +1261,34 @@ instance NodeMethod Image "load_png_from_buffer" '[PoolByteArray]
            (IO Int)
          where
         nodeMethod = Godot.Core.Image.load_png_from_buffer
+
+{-# NOINLINE bindImage_load_tga_from_buffer #-}
+
+-- | Loads an image from the binary contents of a TGA file.
+bindImage_load_tga_from_buffer :: MethodBind
+bindImage_load_tga_from_buffer
+  = unsafePerformIO $
+      withCString "Image" $
+        \ clsNamePtr ->
+          withCString "load_tga_from_buffer" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Loads an image from the binary contents of a TGA file.
+load_tga_from_buffer ::
+                       (Image :< cls, Object :< cls) => cls -> PoolByteArray -> IO Int
+load_tga_from_buffer cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindImage_load_tga_from_buffer (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod Image "load_tga_from_buffer" '[PoolByteArray]
+           (IO Int)
+         where
+        nodeMethod = Godot.Core.Image.load_tga_from_buffer
 
 {-# NOINLINE bindImage_load_webp_from_buffer #-}
 
@@ -1329,7 +1393,7 @@ instance NodeMethod Image "premultiply_alpha" '[] (IO ()) where
 
 {-# NOINLINE bindImage_resize #-}
 
--- | Resizes the image to the given @width@ and @height@. New pixels are calculated using @interpolation@. See @interpolation@ constants.
+-- | Resizes the image to the given @width@ and @height@. New pixels are calculated using the @interpolation@ mode defined via @enum Interpolation@ constants.
 bindImage_resize :: MethodBind
 bindImage_resize
   = unsafePerformIO $
@@ -1339,7 +1403,7 @@ bindImage_resize
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Resizes the image to the given @width@ and @height@. New pixels are calculated using @interpolation@. See @interpolation@ constants.
+-- | Resizes the image to the given @width@ and @height@. New pixels are calculated using the @interpolation@ mode defined via @enum Interpolation@ constants.
 resize ::
          (Image :< cls, Object :< cls) =>
          cls -> Int -> Int -> Maybe Int -> IO ()
@@ -1357,7 +1421,7 @@ instance NodeMethod Image "resize" '[Int, Int, Maybe Int] (IO ())
 
 {-# NOINLINE bindImage_resize_to_po2 #-}
 
--- | Resizes the image to the nearest power of 2 for the width and height. If @square@ is @true@ then set width and height to be the same.
+-- | Resizes the image to the nearest power of 2 for the width and height. If @square@ is @true@ then set width and height to be the same. New pixels are calculated using the @interpolation@ mode defined via @enum Interpolation@ constants.
 bindImage_resize_to_po2 :: MethodBind
 bindImage_resize_to_po2
   = unsafePerformIO $
@@ -1367,17 +1431,21 @@ bindImage_resize_to_po2
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Resizes the image to the nearest power of 2 for the width and height. If @square@ is @true@ then set width and height to be the same.
+-- | Resizes the image to the nearest power of 2 for the width and height. If @square@ is @true@ then set width and height to be the same. New pixels are calculated using the @interpolation@ mode defined via @enum Interpolation@ constants.
 resize_to_po2 ::
-                (Image :< cls, Object :< cls) => cls -> Maybe Bool -> IO ()
-resize_to_po2 cls arg1
-  = withVariantArray [maybe (VariantBool False) toVariant arg1]
+                (Image :< cls, Object :< cls) =>
+                cls -> Maybe Bool -> Maybe Int -> IO ()
+resize_to_po2 cls arg1 arg2
+  = withVariantArray
+      [maybe (VariantBool False) toVariant arg1,
+       maybe (VariantInt (1)) toVariant arg2]
       (\ (arrPtr, len) ->
          godot_method_bind_call bindImage_resize_to_po2 (upcast cls) arrPtr
            len
            >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
 
-instance NodeMethod Image "resize_to_po2" '[Maybe Bool] (IO ())
+instance NodeMethod Image "resize_to_po2" '[Maybe Bool, Maybe Int]
+           (IO ())
          where
         nodeMethod = Godot.Core.Image.resize_to_po2
 
@@ -1456,6 +1524,32 @@ save_png cls arg1
 
 instance NodeMethod Image "save_png" '[GodotString] (IO Int) where
         nodeMethod = Godot.Core.Image.save_png
+
+{-# NOINLINE bindImage_save_png_to_buffer #-}
+
+bindImage_save_png_to_buffer :: MethodBind
+bindImage_save_png_to_buffer
+  = unsafePerformIO $
+      withCString "Image" $
+        \ clsNamePtr ->
+          withCString "save_png_to_buffer" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+save_png_to_buffer ::
+                     (Image :< cls, Object :< cls) => cls -> IO PoolByteArray
+save_png_to_buffer cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindImage_save_png_to_buffer (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod Image "save_png_to_buffer" '[]
+           (IO PoolByteArray)
+         where
+        nodeMethod = Godot.Core.Image.save_png_to_buffer
 
 {-# NOINLINE bindImage_set_pixel #-}
 

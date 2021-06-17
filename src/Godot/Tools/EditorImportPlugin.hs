@@ -352,7 +352,7 @@ instance NodeMethod EditorImportPlugin "get_save_extension" '[]
 
 {-# NOINLINE bindEditorImportPlugin_get_visible_name #-}
 
--- | Gets the name to display in the import window.
+-- | Gets the name to display in the import window. You should choose this name as a continuation to "Import as", e.g. "Import as Special Mesh".
 bindEditorImportPlugin_get_visible_name :: MethodBind
 bindEditorImportPlugin_get_visible_name
   = unsafePerformIO $
@@ -362,7 +362,7 @@ bindEditorImportPlugin_get_visible_name
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Gets the name to display in the import window.
+-- | Gets the name to display in the import window. You should choose this name as a continuation to "Import as", e.g. "Import as Special Mesh".
 get_visible_name ::
                    (EditorImportPlugin :< cls, Object :< cls) => cls -> IO GodotString
 get_visible_name cls

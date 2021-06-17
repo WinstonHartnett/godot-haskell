@@ -138,7 +138,10 @@ instance NodeMethod KinematicBody "get_floor_velocity" '[]
 
 {-# NOINLINE bindKinematicBody_get_safe_margin #-}
 
--- | If the body is at least this close to another body, this body will consider them to be colliding.
+-- | Extra margin used for collision recovery in motion functions (see @method move_and_collide@, @method move_and_slide@, @method move_and_slide_with_snap@).
+--   			If the body is at least this close to another body, it will consider them to be colliding and will be pushed away before performing the actual motion.
+--   			A higher value means it's more flexible for detecting collision, which helps with consistently detecting walls and floors.
+--   			A lower value forces the collision algorithm to use more exact detection, so it can be used in cases that specifically require precision, e.g at very low scale to avoid visible jittering, or for stability with a stack of kinematic bodies.
 bindKinematicBody_get_safe_margin :: MethodBind
 bindKinematicBody_get_safe_margin
   = unsafePerformIO $
@@ -148,7 +151,10 @@ bindKinematicBody_get_safe_margin
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | If the body is at least this close to another body, this body will consider them to be colliding.
+-- | Extra margin used for collision recovery in motion functions (see @method move_and_collide@, @method move_and_slide@, @method move_and_slide_with_snap@).
+--   			If the body is at least this close to another body, it will consider them to be colliding and will be pushed away before performing the actual motion.
+--   			A higher value means it's more flexible for detecting collision, which helps with consistently detecting walls and floors.
+--   			A lower value forces the collision algorithm to use more exact detection, so it can be used in cases that specifically require precision, e.g at very low scale to avoid visible jittering, or for stability with a stack of kinematic bodies.
 get_safe_margin ::
                   (KinematicBody :< cls, Object :< cls) => cls -> IO Float
 get_safe_margin cls
@@ -166,7 +172,7 @@ instance NodeMethod KinematicBody "get_safe_margin" '[] (IO Float)
 
 {-# NOINLINE bindKinematicBody_get_slide_collision #-}
 
--- | Returns a @KinematicCollision@, which contains information about a collision that occurred during the last @method move_and_slide@ call. Since the body can collide several times in a single call to @method move_and_slide@, you must specify the index of the collision in the range 0 to (@method get_slide_count@ - 1).
+-- | Returns a @KinematicCollision@, which contains information about a collision that occurred during the last call to @method move_and_slide@ or @method move_and_slide_with_snap@. Since the body can collide several times in a single call to @method move_and_slide@, you must specify the index of the collision in the range 0 to (@method get_slide_count@ - 1).
 bindKinematicBody_get_slide_collision :: MethodBind
 bindKinematicBody_get_slide_collision
   = unsafePerformIO $
@@ -176,7 +182,7 @@ bindKinematicBody_get_slide_collision
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Returns a @KinematicCollision@, which contains information about a collision that occurred during the last @method move_and_slide@ call. Since the body can collide several times in a single call to @method move_and_slide@, you must specify the index of the collision in the range 0 to (@method get_slide_count@ - 1).
+-- | Returns a @KinematicCollision@, which contains information about a collision that occurred during the last call to @method move_and_slide@ or @method move_and_slide_with_snap@. Since the body can collide several times in a single call to @method move_and_slide@, you must specify the index of the collision in the range 0 to (@method get_slide_count@ - 1).
 get_slide_collision ::
                       (KinematicBody :< cls, Object :< cls) =>
                       cls -> Int -> IO KinematicCollision
@@ -196,7 +202,7 @@ instance NodeMethod KinematicBody "get_slide_collision" '[Int]
 
 {-# NOINLINE bindKinematicBody_get_slide_count #-}
 
--- | Returns the number of times the body collided and changed direction during the last call to @method move_and_slide@.
+-- | Returns the number of times the body collided and changed direction during the last call to @method move_and_slide@ or @method move_and_slide_with_snap@.
 bindKinematicBody_get_slide_count :: MethodBind
 bindKinematicBody_get_slide_count
   = unsafePerformIO $
@@ -206,7 +212,7 @@ bindKinematicBody_get_slide_count
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Returns the number of times the body collided and changed direction during the last call to @method move_and_slide@.
+-- | Returns the number of times the body collided and changed direction during the last call to @method move_and_slide@ or @method move_and_slide_with_snap@.
 get_slide_count ::
                   (KinematicBody :< cls, Object :< cls) => cls -> IO Int
 get_slide_count cls
@@ -224,7 +230,7 @@ instance NodeMethod KinematicBody "get_slide_count" '[] (IO Int)
 
 {-# NOINLINE bindKinematicBody_is_on_ceiling #-}
 
--- | Returns @true@ if the body is on the ceiling. Only updates when calling @method move_and_slide@.
+-- | Returns @true@ if the body collided with the ceiling on the last call of @method move_and_slide@ or @method move_and_slide_with_snap@. Otherwise, returns @false@.
 bindKinematicBody_is_on_ceiling :: MethodBind
 bindKinematicBody_is_on_ceiling
   = unsafePerformIO $
@@ -234,7 +240,7 @@ bindKinematicBody_is_on_ceiling
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Returns @true@ if the body is on the ceiling. Only updates when calling @method move_and_slide@.
+-- | Returns @true@ if the body collided with the ceiling on the last call of @method move_and_slide@ or @method move_and_slide_with_snap@. Otherwise, returns @false@.
 is_on_ceiling ::
                 (KinematicBody :< cls, Object :< cls) => cls -> IO Bool
 is_on_ceiling cls
@@ -251,7 +257,7 @@ instance NodeMethod KinematicBody "is_on_ceiling" '[] (IO Bool)
 
 {-# NOINLINE bindKinematicBody_is_on_floor #-}
 
--- | Returns @true@ if the body is on the floor. Only updates when calling @method move_and_slide@.
+-- | Returns @true@ if the body collided with the floor on the last call of @method move_and_slide@ or @method move_and_slide_with_snap@. Otherwise, returns @false@.
 bindKinematicBody_is_on_floor :: MethodBind
 bindKinematicBody_is_on_floor
   = unsafePerformIO $
@@ -261,7 +267,7 @@ bindKinematicBody_is_on_floor
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Returns @true@ if the body is on the floor. Only updates when calling @method move_and_slide@.
+-- | Returns @true@ if the body collided with the floor on the last call of @method move_and_slide@ or @method move_and_slide_with_snap@. Otherwise, returns @false@.
 is_on_floor ::
               (KinematicBody :< cls, Object :< cls) => cls -> IO Bool
 is_on_floor cls
@@ -277,7 +283,7 @@ instance NodeMethod KinematicBody "is_on_floor" '[] (IO Bool) where
 
 {-# NOINLINE bindKinematicBody_is_on_wall #-}
 
--- | Returns @true@ if the body is on a wall. Only updates when calling @method move_and_slide@.
+-- | Returns @true@ if the body collided with a wall on the last call of @method move_and_slide@ or @method move_and_slide_with_snap@. Otherwise, returns @false@.
 bindKinematicBody_is_on_wall :: MethodBind
 bindKinematicBody_is_on_wall
   = unsafePerformIO $
@@ -287,7 +293,7 @@ bindKinematicBody_is_on_wall
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Returns @true@ if the body is on a wall. Only updates when calling @method move_and_slide@.
+-- | Returns @true@ if the body collided with a wall on the last call of @method move_and_slide@ or @method move_and_slide_with_snap@. Otherwise, returns @false@.
 is_on_wall ::
              (KinematicBody :< cls, Object :< cls) => cls -> IO Bool
 is_on_wall cls
@@ -341,7 +347,7 @@ instance NodeMethod KinematicBody "move_and_collide"
 
 {-# NOINLINE bindKinematicBody_move_and_slide #-}
 
--- | Moves the body along a vector. If the body collides with another, it will slide along the other body rather than stop immediately. If the other body is a @KinematicBody@ or @RigidBody@, it will also be affected by the motion of the other body. You can use this to make moving or rotating platforms, or to make nodes push other nodes.
+-- | Moves the body along a vector. If the body collides with another, it will slide along the other body rather than stop immediately. If the other body is a @KinematicBody@ or @RigidBody@, it will also be affected by the motion of the other body. You can use this to make moving and rotating platforms, or to make nodes push other nodes.
 --   				This method should be used in @method Node._physics_process@ (or in a method called by @method Node._physics_process@), as it uses the physics step's @delta@ value automatically in calculations. Otherwise, the simulation will run at an incorrect speed.
 --   				@linear_velocity@ is the velocity vector (typically meters per second). Unlike in @method move_and_collide@, you should @i@not@/i@ multiply it by @delta@ — the physics engine handles applying the velocity.
 --   				@up_direction@ is the up direction, used to determine what is a wall and what is a floor or a ceiling. If set to the default value of @Vector3(0, 0, 0)@, everything is considered a wall.
@@ -359,7 +365,7 @@ bindKinematicBody_move_and_slide
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Moves the body along a vector. If the body collides with another, it will slide along the other body rather than stop immediately. If the other body is a @KinematicBody@ or @RigidBody@, it will also be affected by the motion of the other body. You can use this to make moving or rotating platforms, or to make nodes push other nodes.
+-- | Moves the body along a vector. If the body collides with another, it will slide along the other body rather than stop immediately. If the other body is a @KinematicBody@ or @RigidBody@, it will also be affected by the motion of the other body. You can use this to make moving and rotating platforms, or to make nodes push other nodes.
 --   				This method should be used in @method Node._physics_process@ (or in a method called by @method Node._physics_process@), as it uses the physics step's @delta@ value automatically in calculations. Otherwise, the simulation will run at an incorrect speed.
 --   				@linear_velocity@ is the velocity vector (typically meters per second). Unlike in @method move_and_collide@, you should @i@not@/i@ multiply it by @delta@ — the physics engine handles applying the velocity.
 --   				@up_direction@ is the up direction, used to determine what is a wall and what is a floor or a ceiling. If set to the default value of @Vector3(0, 0, 0)@, everything is considered a wall.
@@ -471,7 +477,10 @@ instance NodeMethod KinematicBody "set_axis_lock" '[Int, Bool]
 
 {-# NOINLINE bindKinematicBody_set_safe_margin #-}
 
--- | If the body is at least this close to another body, this body will consider them to be colliding.
+-- | Extra margin used for collision recovery in motion functions (see @method move_and_collide@, @method move_and_slide@, @method move_and_slide_with_snap@).
+--   			If the body is at least this close to another body, it will consider them to be colliding and will be pushed away before performing the actual motion.
+--   			A higher value means it's more flexible for detecting collision, which helps with consistently detecting walls and floors.
+--   			A lower value forces the collision algorithm to use more exact detection, so it can be used in cases that specifically require precision, e.g at very low scale to avoid visible jittering, or for stability with a stack of kinematic bodies.
 bindKinematicBody_set_safe_margin :: MethodBind
 bindKinematicBody_set_safe_margin
   = unsafePerformIO $
@@ -481,7 +490,10 @@ bindKinematicBody_set_safe_margin
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | If the body is at least this close to another body, this body will consider them to be colliding.
+-- | Extra margin used for collision recovery in motion functions (see @method move_and_collide@, @method move_and_slide@, @method move_and_slide_with_snap@).
+--   			If the body is at least this close to another body, it will consider them to be colliding and will be pushed away before performing the actual motion.
+--   			A higher value means it's more flexible for detecting collision, which helps with consistently detecting walls and floors.
+--   			A lower value forces the collision algorithm to use more exact detection, so it can be used in cases that specifically require precision, e.g at very low scale to avoid visible jittering, or for stability with a stack of kinematic bodies.
 set_safe_margin ::
                   (KinematicBody :< cls, Object :< cls) => cls -> Float -> IO ()
 set_safe_margin cls arg1

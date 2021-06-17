@@ -27,6 +27,7 @@ module Godot.Core.CPUParticles2D
         Godot.Core.CPUParticles2D._PARAM_HUE_VARIATION,
         Godot.Core.CPUParticles2D._PARAM_ANIM_OFFSET,
         Godot.Core.CPUParticles2D._PARAM_ANGLE,
+        Godot.Core.CPUParticles2D._texture_changed,
         Godot.Core.CPUParticles2D._update_render_thread,
         Godot.Core.CPUParticles2D.convert_from_particles,
         Godot.Core.CPUParticles2D.get_amount,
@@ -556,6 +557,32 @@ instance NodeProperty CPUParticles2D "texture" Texture 'False where
         nodeProperty
           = (get_texture, wrapDroppingSetter set_texture, Nothing)
 
+{-# NOINLINE bindCPUParticles2D__texture_changed #-}
+
+bindCPUParticles2D__texture_changed :: MethodBind
+bindCPUParticles2D__texture_changed
+  = unsafePerformIO $
+      withCString "CPUParticles2D" $
+        \ clsNamePtr ->
+          withCString "_texture_changed" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+_texture_changed ::
+                   (CPUParticles2D :< cls, Object :< cls) => cls -> IO ()
+_texture_changed cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindCPUParticles2D__texture_changed
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod CPUParticles2D "_texture_changed" '[] (IO ())
+         where
+        nodeMethod = Godot.Core.CPUParticles2D._texture_changed
+
 {-# NOINLINE bindCPUParticles2D__update_render_thread #-}
 
 bindCPUParticles2D__update_render_thread :: MethodBind
@@ -614,7 +641,8 @@ instance NodeMethod CPUParticles2D "convert_from_particles" '[Node]
 
 {-# NOINLINE bindCPUParticles2D_get_amount #-}
 
--- | Number of particles emitted in one emission cycle.
+-- | The number of particles emitted in one emission cycle (corresponding to the @lifetime@).
+--   			__Note:__ Changing @amount@ will reset the particle emission, therefore removing all particles that were already emitted before changing @amount@.
 bindCPUParticles2D_get_amount :: MethodBind
 bindCPUParticles2D_get_amount
   = unsafePerformIO $
@@ -624,7 +652,8 @@ bindCPUParticles2D_get_amount
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Number of particles emitted in one emission cycle.
+-- | The number of particles emitted in one emission cycle (corresponding to the @lifetime@).
+--   			__Note:__ Changing @amount@ will reset the particle emission, therefore removing all particles that were already emitted before changing @amount@.
 get_amount ::
              (CPUParticles2D :< cls, Object :< cls) => cls -> IO Int
 get_amount cls
@@ -1041,7 +1070,7 @@ instance NodeMethod CPUParticles2D "get_gravity" '[] (IO Vector2)
 
 {-# NOINLINE bindCPUParticles2D_get_lifetime #-}
 
--- | Amount of time each particle will exist.
+-- | The amount of time each particle will exist (in seconds).
 bindCPUParticles2D_get_lifetime :: MethodBind
 bindCPUParticles2D_get_lifetime
   = unsafePerformIO $
@@ -1051,7 +1080,7 @@ bindCPUParticles2D_get_lifetime
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Amount of time each particle will exist.
+-- | The amount of time each particle will exist (in seconds).
 get_lifetime ::
                (CPUParticles2D :< cls, Object :< cls) => cls -> IO Float
 get_lifetime cls
@@ -1489,7 +1518,8 @@ instance NodeMethod CPUParticles2D "restart" '[] (IO ()) where
 
 {-# NOINLINE bindCPUParticles2D_set_amount #-}
 
--- | Number of particles emitted in one emission cycle.
+-- | The number of particles emitted in one emission cycle (corresponding to the @lifetime@).
+--   			__Note:__ Changing @amount@ will reset the particle emission, therefore removing all particles that were already emitted before changing @amount@.
 bindCPUParticles2D_set_amount :: MethodBind
 bindCPUParticles2D_set_amount
   = unsafePerformIO $
@@ -1499,7 +1529,8 @@ bindCPUParticles2D_set_amount
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Number of particles emitted in one emission cycle.
+-- | The number of particles emitted in one emission cycle (corresponding to the @lifetime@).
+--   			__Note:__ Changing @amount@ will reset the particle emission, therefore removing all particles that were already emitted before changing @amount@.
 set_amount ::
              (CPUParticles2D :< cls, Object :< cls) => cls -> Int -> IO ()
 set_amount cls arg1
@@ -1953,7 +1984,7 @@ instance NodeMethod CPUParticles2D "set_gravity" '[Vector2] (IO ())
 
 {-# NOINLINE bindCPUParticles2D_set_lifetime #-}
 
--- | Amount of time each particle will exist.
+-- | The amount of time each particle will exist (in seconds).
 bindCPUParticles2D_set_lifetime :: MethodBind
 bindCPUParticles2D_set_lifetime
   = unsafePerformIO $
@@ -1963,7 +1994,7 @@ bindCPUParticles2D_set_lifetime
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Amount of time each particle will exist.
+-- | The amount of time each particle will exist (in seconds).
 set_lifetime ::
                (CPUParticles2D :< cls, Object :< cls) => cls -> Float -> IO ()
 set_lifetime cls arg1

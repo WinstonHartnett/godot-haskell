@@ -229,9 +229,9 @@ instance NodeMethod Input "add_joy_mapping"
 
 {-# NOINLINE bindInput_get_accelerometer #-}
 
--- | Returns the acceleration of the device's accelerometer, if the device has one. Otherwise, the method returns @Vector3.ZERO@.
+-- | Returns the acceleration of the device's accelerometer sensor, if the device has one. Otherwise, the method returns @Vector3.ZERO@.
 --   				Note this method returns an empty @Vector3@ when running from the editor even when your device has an accelerometer. You must export your project to a supported device to read values from the accelerometer.
---   				__Note:__ This method only works on iOS, Android, and UWP. On other platforms, it always returns @Vector3.ZERO@.
+--   				__Note:__ This method only works on iOS, Android, and UWP. On other platforms, it always returns @Vector3.ZERO@. On Android the unit of measurement for each axis is m/s² while on iOS and UWP it's a multiple of the Earth's gravitational acceleration @g@ (~9.81 m/s²).
 bindInput_get_accelerometer :: MethodBind
 bindInput_get_accelerometer
   = unsafePerformIO $
@@ -241,9 +241,9 @@ bindInput_get_accelerometer
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Returns the acceleration of the device's accelerometer, if the device has one. Otherwise, the method returns @Vector3.ZERO@.
+-- | Returns the acceleration of the device's accelerometer sensor, if the device has one. Otherwise, the method returns @Vector3.ZERO@.
 --   				Note this method returns an empty @Vector3@ when running from the editor even when your device has an accelerometer. You must export your project to a supported device to read values from the accelerometer.
---   				__Note:__ This method only works on iOS, Android, and UWP. On other platforms, it always returns @Vector3.ZERO@.
+--   				__Note:__ This method only works on iOS, Android, and UWP. On other platforms, it always returns @Vector3.ZERO@. On Android the unit of measurement for each axis is m/s² while on iOS and UWP it's a multiple of the Earth's gravitational acceleration @g@ (~9.81 m/s²).
 get_accelerometer ::
                     (Input :< cls, Object :< cls) => cls -> IO Vector3
 get_accelerometer cls
@@ -343,8 +343,8 @@ instance NodeMethod Input "get_current_cursor_shape" '[] (IO Int)
 
 {-# NOINLINE bindInput_get_gravity #-}
 
--- | Returns the gravity of the device's accelerometer, if the device has one. Otherwise, the method returns @Vector3.ZERO@.
---   				__Note:__ This method only works on Android and iOS. On other platforms, it always returns @Vector3.ZERO@.
+-- | Returns the gravity of the device's accelerometer sensor, if the device has one. Otherwise, the method returns @Vector3.ZERO@.
+--   				__Note:__ This method only works on Android and iOS. On other platforms, it always returns @Vector3.ZERO@. On Android the unit of measurement for each axis is m/s² while on iOS it's a multiple of the Earth's gravitational acceleration @g@ (~9.81 m/s²).
 bindInput_get_gravity :: MethodBind
 bindInput_get_gravity
   = unsafePerformIO $
@@ -354,8 +354,8 @@ bindInput_get_gravity
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Returns the gravity of the device's accelerometer, if the device has one. Otherwise, the method returns @Vector3.ZERO@.
---   				__Note:__ This method only works on Android and iOS. On other platforms, it always returns @Vector3.ZERO@.
+-- | Returns the gravity of the device's accelerometer sensor, if the device has one. Otherwise, the method returns @Vector3.ZERO@.
+--   				__Note:__ This method only works on Android and iOS. On other platforms, it always returns @Vector3.ZERO@. On Android the unit of measurement for each axis is m/s² while on iOS it's a multiple of the Earth's gravitational acceleration @g@ (~9.81 m/s²).
 get_gravity :: (Input :< cls, Object :< cls) => cls -> IO Vector3
 get_gravity cls
   = withVariantArray []
@@ -369,8 +369,8 @@ instance NodeMethod Input "get_gravity" '[] (IO Vector3) where
 
 {-# NOINLINE bindInput_get_gyroscope #-}
 
--- | Returns the rotation rate in rad/s around a device's X, Y, and Z axes of the gyroscope, if the device has one. Otherwise, the method returns @Vector3.ZERO@.
---   				__Note:__ This method only works on Android. On other platforms, it always returns @Vector3.ZERO@.
+-- | Returns the rotation rate in rad/s around a device's X, Y, and Z axes of the gyroscope sensor, if the device has one. Otherwise, the method returns @Vector3.ZERO@.
+--   				__Note:__ This method only works on Android and iOS. On other platforms, it always returns @Vector3.ZERO@.
 bindInput_get_gyroscope :: MethodBind
 bindInput_get_gyroscope
   = unsafePerformIO $
@@ -380,8 +380,8 @@ bindInput_get_gyroscope
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Returns the rotation rate in rad/s around a device's X, Y, and Z axes of the gyroscope, if the device has one. Otherwise, the method returns @Vector3.ZERO@.
---   				__Note:__ This method only works on Android. On other platforms, it always returns @Vector3.ZERO@.
+-- | Returns the rotation rate in rad/s around a device's X, Y, and Z axes of the gyroscope sensor, if the device has one. Otherwise, the method returns @Vector3.ZERO@.
+--   				__Note:__ This method only works on Android and iOS. On other platforms, it always returns @Vector3.ZERO@.
 get_gyroscope :: (Input :< cls, Object :< cls) => cls -> IO Vector3
 get_gyroscope cls
   = withVariantArray []
@@ -674,8 +674,8 @@ instance NodeMethod Input "get_last_mouse_speed" '[] (IO Vector2)
 
 {-# NOINLINE bindInput_get_magnetometer #-}
 
--- | Returns the the magnetic field strength in micro-Tesla for all axes of the device's magnetometer, if the device has one. Otherwise, the method returns @Vector3.ZERO@.
---   				__Note:__ This method only works on Android and UWP. On other platforms, it always returns @Vector3.ZERO@.
+-- | Returns the magnetic field strength in micro-Tesla for all axes of the device's magnetometer sensor, if the device has one. Otherwise, the method returns @Vector3.ZERO@.
+--   				__Note:__ This method only works on Android, iOS and UWP. On other platforms, it always returns @Vector3.ZERO@.
 bindInput_get_magnetometer :: MethodBind
 bindInput_get_magnetometer
   = unsafePerformIO $
@@ -685,8 +685,8 @@ bindInput_get_magnetometer
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Returns the the magnetic field strength in micro-Tesla for all axes of the device's magnetometer, if the device has one. Otherwise, the method returns @Vector3.ZERO@.
---   				__Note:__ This method only works on Android and UWP. On other platforms, it always returns @Vector3.ZERO@.
+-- | Returns the magnetic field strength in micro-Tesla for all axes of the device's magnetometer sensor, if the device has one. Otherwise, the method returns @Vector3.ZERO@.
+--   				__Note:__ This method only works on Android, iOS and UWP. On other platforms, it always returns @Vector3.ZERO@.
 get_magnetometer ::
                    (Input :< cls, Object :< cls) => cls -> IO Vector3
 get_magnetometer cls
@@ -1248,7 +1248,7 @@ instance NodeMethod Input "stop_joy_vibration" '[Int] (IO ()) where
 {-# NOINLINE bindInput_vibrate_handheld #-}
 
 -- | Vibrate Android and iOS devices.
---   				__Note:__ It needs VIBRATE permission for Android at export settings. iOS does not support duration.
+--   				__Note:__ It needs @VIBRATE@ permission for Android at export settings. iOS does not support duration.
 bindInput_vibrate_handheld :: MethodBind
 bindInput_vibrate_handheld
   = unsafePerformIO $
@@ -1259,7 +1259,7 @@ bindInput_vibrate_handheld
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
 -- | Vibrate Android and iOS devices.
---   				__Note:__ It needs VIBRATE permission for Android at export settings. iOS does not support duration.
+--   				__Note:__ It needs @VIBRATE@ permission for Android at export settings. iOS does not support duration.
 vibrate_handheld ::
                    (Input :< cls, Object :< cls) => cls -> Maybe Int -> IO ()
 vibrate_handheld cls arg1

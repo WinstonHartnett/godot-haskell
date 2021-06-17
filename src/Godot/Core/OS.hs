@@ -6,17 +6,18 @@ module Godot.Core.OS
         Godot.Core.OS._SCREEN_ORIENTATION_SENSOR_PORTRAIT,
         Godot.Core.OS._SCREEN_ORIENTATION_SENSOR,
         Godot.Core.OS._DAY_THURSDAY, Godot.Core.OS._POWERSTATE_UNKNOWN,
-        Godot.Core.OS._MONTH_MARCH, Godot.Core.OS._DAY_FRIDAY,
-        Godot.Core.OS._SYSTEM_DIR_DOWNLOADS, Godot.Core.OS._MONTH_NOVEMBER,
-        Godot.Core.OS._MONTH_JULY, Godot.Core.OS._SYSTEM_DIR_PICTURES,
-        Godot.Core.OS._MONTH_DECEMBER, Godot.Core.OS._DAY_TUESDAY,
-        Godot.Core.OS._SYSTEM_DIR_DESKTOP, Godot.Core.OS._DAY_MONDAY,
-        Godot.Core.OS._SYSTEM_DIR_MUSIC,
+        Godot.Core.OS._OPENGL_CONTEXT, Godot.Core.OS._MONTH_MARCH,
+        Godot.Core.OS._DAY_FRIDAY, Godot.Core.OS._SYSTEM_DIR_DOWNLOADS,
+        Godot.Core.OS._MONTH_NOVEMBER, Godot.Core.OS._MONTH_JULY,
+        Godot.Core.OS._SYSTEM_DIR_PICTURES, Godot.Core.OS._MONTH_DECEMBER,
+        Godot.Core.OS._DAY_TUESDAY, Godot.Core.OS._SYSTEM_DIR_DESKTOP,
+        Godot.Core.OS._DAY_MONDAY, Godot.Core.OS._SYSTEM_DIR_MUSIC,
         Godot.Core.OS._SYSTEM_DIR_RINGTONES, Godot.Core.OS._MONTH_AUGUST,
         Godot.Core.OS._SYSTEM_DIR_DOCUMENTS,
         Godot.Core.OS._SYSTEM_DIR_MOVIES, Godot.Core.OS._SYSTEM_DIR_DCIM,
         Godot.Core.OS._POWERSTATE_CHARGED, Godot.Core.OS._MONTH_APRIL,
         Godot.Core.OS._POWERSTATE_ON_BATTERY, Godot.Core.OS._DAY_SUNDAY,
+        Godot.Core.OS._DISPLAY_HANDLE, Godot.Core.OS._APPLICATION_HANDLE,
         Godot.Core.OS._MONTH_MAY,
         Godot.Core.OS._SCREEN_ORIENTATION_REVERSE_PORTRAIT,
         Godot.Core.OS._MONTH_JANUARY, Godot.Core.OS._MONTH_OCTOBER,
@@ -26,7 +27,8 @@ module Godot.Core.OS
         Godot.Core.OS._POWERSTATE_CHARGING, Godot.Core.OS._MONTH_FEBRUARY,
         Godot.Core.OS._MONTH_JUNE,
         Godot.Core.OS._SCREEN_ORIENTATION_REVERSE_LANDSCAPE,
-        Godot.Core.OS._DAY_SATURDAY,
+        Godot.Core.OS._DAY_SATURDAY, Godot.Core.OS._WINDOW_VIEW,
+        Godot.Core.OS._WINDOW_HANDLE,
         Godot.Core.OS._SCREEN_ORIENTATION_LANDSCAPE,
         Godot.Core.OS._DAY_WEDNESDAY, Godot.Core.OS._VIDEO_DRIVER_GLES3,
         Godot.Core.OS.get_clipboard, Godot.Core.OS.set_clipboard,
@@ -43,6 +45,8 @@ module Godot.Core.OS
         Godot.Core.OS.set_min_window_size,
         Godot.Core.OS.get_screen_orientation,
         Godot.Core.OS.set_screen_orientation,
+        Godot.Core.OS.get_current_tablet_driver,
+        Godot.Core.OS.set_current_tablet_driver,
         Godot.Core.OS.is_vsync_enabled, Godot.Core.OS.set_use_vsync,
         Godot.Core.OS.is_vsync_via_compositor_enabled,
         Godot.Core.OS.set_vsync_via_compositor,
@@ -80,18 +84,23 @@ module Godot.Core.OS
         Godot.Core.OS.get_ime_selection, Godot.Core.OS.get_ime_text,
         Godot.Core.OS.get_latin_keyboard_variant, Godot.Core.OS.get_locale,
         Godot.Core.OS.get_model_name, Godot.Core.OS.get_name,
+        Godot.Core.OS.get_native_handle,
         Godot.Core.OS.get_power_percent_left,
         Godot.Core.OS.get_power_seconds_left,
         Godot.Core.OS.get_power_state, Godot.Core.OS.get_process_id,
         Godot.Core.OS.get_processor_count,
         Godot.Core.OS.get_real_window_size,
         Godot.Core.OS.get_scancode_string, Godot.Core.OS.get_screen_count,
-        Godot.Core.OS.get_screen_dpi, Godot.Core.OS.get_screen_position,
+        Godot.Core.OS.get_screen_dpi, Godot.Core.OS.get_screen_max_scale,
+        Godot.Core.OS.get_screen_position, Godot.Core.OS.get_screen_scale,
         Godot.Core.OS.get_screen_size, Godot.Core.OS.get_splash_tick_msec,
         Godot.Core.OS.get_static_memory_peak_usage,
         Godot.Core.OS.get_static_memory_usage,
         Godot.Core.OS.get_system_dir, Godot.Core.OS.get_system_time_msecs,
-        Godot.Core.OS.get_system_time_secs, Godot.Core.OS.get_ticks_msec,
+        Godot.Core.OS.get_system_time_secs,
+        Godot.Core.OS.get_tablet_driver_count,
+        Godot.Core.OS.get_tablet_driver_name,
+        Godot.Core.OS.get_thread_caller_id, Godot.Core.OS.get_ticks_msec,
         Godot.Core.OS.get_ticks_usec, Godot.Core.OS.get_time,
         Godot.Core.OS.get_time_zone_info, Godot.Core.OS.get_unique_id,
         Godot.Core.OS.get_unix_time,
@@ -113,7 +122,12 @@ module Godot.Core.OS
         Godot.Core.OS.is_scancode_unicode, Godot.Core.OS.is_stdout_verbose,
         Godot.Core.OS.is_userfs_persistent,
         Godot.Core.OS.is_window_always_on_top,
-        Godot.Core.OS.is_window_focused, Godot.Core.OS.kill,
+        Godot.Core.OS.is_window_focused,
+        Godot.Core.OS.keyboard_get_current_layout,
+        Godot.Core.OS.keyboard_get_layout_count,
+        Godot.Core.OS.keyboard_get_layout_language,
+        Godot.Core.OS.keyboard_get_layout_name,
+        Godot.Core.OS.keyboard_set_current_layout, Godot.Core.OS.kill,
         Godot.Core.OS.move_window_to_foreground,
         Godot.Core.OS.native_video_is_playing,
         Godot.Core.OS.native_video_pause, Godot.Core.OS.native_video_play,
@@ -124,11 +138,13 @@ module Godot.Core.OS
         Godot.Core.OS.print_resources_by_type,
         Godot.Core.OS.print_resources_in_use,
         Godot.Core.OS.request_attention, Godot.Core.OS.request_permission,
-        Godot.Core.OS.request_permissions, Godot.Core.OS.set_icon,
-        Godot.Core.OS.set_ime_active, Godot.Core.OS.set_ime_position,
-        Godot.Core.OS.set_native_icon, Godot.Core.OS.set_thread_name,
+        Godot.Core.OS.request_permissions, Godot.Core.OS.set_environment,
+        Godot.Core.OS.set_icon, Godot.Core.OS.set_ime_active,
+        Godot.Core.OS.set_ime_position, Godot.Core.OS.set_native_icon,
+        Godot.Core.OS.set_thread_name,
         Godot.Core.OS.set_use_file_access_save_and_swap,
         Godot.Core.OS.set_window_always_on_top,
+        Godot.Core.OS.set_window_mouse_passthrough,
         Godot.Core.OS.set_window_title, Godot.Core.OS.shell_open,
         Godot.Core.OS.show_virtual_keyboard)
        where
@@ -158,6 +174,9 @@ _DAY_THURSDAY = 4
 
 _POWERSTATE_UNKNOWN :: Int
 _POWERSTATE_UNKNOWN = 0
+
+_OPENGL_CONTEXT :: Int
+_OPENGL_CONTEXT = 4
 
 _MONTH_MARCH :: Int
 _MONTH_MARCH = 3
@@ -219,6 +238,12 @@ _POWERSTATE_ON_BATTERY = 1
 _DAY_SUNDAY :: Int
 _DAY_SUNDAY = 0
 
+_DISPLAY_HANDLE :: Int
+_DISPLAY_HANDLE = 1
+
+_APPLICATION_HANDLE :: Int
+_APPLICATION_HANDLE = 0
+
 _MONTH_MAY :: Int
 _MONTH_MAY = 5
 
@@ -257,6 +282,12 @@ _SCREEN_ORIENTATION_REVERSE_LANDSCAPE = 2
 
 _DAY_SATURDAY :: Int
 _DAY_SATURDAY = 6
+
+_WINDOW_VIEW :: Int
+_WINDOW_VIEW = 3
+
+_WINDOW_HANDLE :: Int
+_WINDOW_HANDLE = 2
 
 _SCREEN_ORIENTATION_LANDSCAPE :: Int
 _SCREEN_ORIENTATION_LANDSCAPE = 0
@@ -791,6 +822,69 @@ instance NodeProperty OS "screen_orientation" Int 'False where
         nodeProperty
           = (get_screen_orientation,
              wrapDroppingSetter set_screen_orientation, Nothing)
+
+{-# NOINLINE bindOS_get_current_tablet_driver #-}
+
+-- | The current tablet driver in use.
+bindOS_get_current_tablet_driver :: MethodBind
+bindOS_get_current_tablet_driver
+  = unsafePerformIO $
+      withCString "_OS" $
+        \ clsNamePtr ->
+          withCString "get_current_tablet_driver" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | The current tablet driver in use.
+get_current_tablet_driver ::
+                            (OS :< cls, Object :< cls) => cls -> IO GodotString
+get_current_tablet_driver cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindOS_get_current_tablet_driver
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod OS "get_current_tablet_driver" '[]
+           (IO GodotString)
+         where
+        nodeMethod = Godot.Core.OS.get_current_tablet_driver
+
+{-# NOINLINE bindOS_set_current_tablet_driver #-}
+
+-- | The current tablet driver in use.
+bindOS_set_current_tablet_driver :: MethodBind
+bindOS_set_current_tablet_driver
+  = unsafePerformIO $
+      withCString "_OS" $
+        \ clsNamePtr ->
+          withCString "set_current_tablet_driver" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | The current tablet driver in use.
+set_current_tablet_driver ::
+                            (OS :< cls, Object :< cls) => cls -> GodotString -> IO ()
+set_current_tablet_driver cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindOS_set_current_tablet_driver
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod OS "set_current_tablet_driver" '[GodotString]
+           (IO ())
+         where
+        nodeMethod = Godot.Core.OS.set_current_tablet_driver
+
+instance NodeProperty OS "tablet_driver" GodotString 'False where
+        nodeProperty
+          = (get_current_tablet_driver,
+             wrapDroppingSetter set_current_tablet_driver, Nothing)
 
 {-# NOINLINE bindOS_is_vsync_enabled #-}
 
@@ -1522,7 +1616,7 @@ instance NodeMethod OS "close_midi_inputs" '[] (IO ()) where
 
 {-# NOINLINE bindOS_delay_msec #-}
 
--- | Delay execution of the current thread by @msec@ milliseconds.
+-- | Delay execution of the current thread by @msec@ milliseconds. @usec@ must be greater than or equal to @0@. Otherwise, @method delay_msec@ will do nothing and will print an error message.
 bindOS_delay_msec :: MethodBind
 bindOS_delay_msec
   = unsafePerformIO $
@@ -1532,7 +1626,7 @@ bindOS_delay_msec
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Delay execution of the current thread by @msec@ milliseconds.
+-- | Delay execution of the current thread by @msec@ milliseconds. @usec@ must be greater than or equal to @0@. Otherwise, @method delay_msec@ will do nothing and will print an error message.
 delay_msec :: (OS :< cls, Object :< cls) => cls -> Int -> IO ()
 delay_msec cls arg1
   = withVariantArray [toVariant arg1]
@@ -1545,7 +1639,7 @@ instance NodeMethod OS "delay_msec" '[Int] (IO ()) where
 
 {-# NOINLINE bindOS_delay_usec #-}
 
--- | Delay execution of the current thread by @usec@ microseconds.
+-- | Delay execution of the current thread by @usec@ microseconds. @usec@ must be greater than or equal to @0@. Otherwise, @method delay_usec@ will do nothing and will print an error message.
 bindOS_delay_usec :: MethodBind
 bindOS_delay_usec
   = unsafePerformIO $
@@ -1555,7 +1649,7 @@ bindOS_delay_usec
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Delay execution of the current thread by @usec@ microseconds.
+-- | Delay execution of the current thread by @usec@ microseconds. @usec@ must be greater than or equal to @0@. Otherwise, @method delay_usec@ will do nothing and will print an error message.
 delay_usec :: (OS :< cls, Object :< cls) => cls -> Int -> IO ()
 delay_usec cls arg1
   = withVariantArray [toVariant arg1]
@@ -2032,7 +2126,8 @@ instance NodeMethod OS "get_dynamic_memory_usage" '[] (IO Int)
 
 {-# NOINLINE bindOS_get_environment #-}
 
--- | Returns an environment variable.
+-- | Returns the value of an environment variable. Returns an empty string if the environment variable doesn't exist.
+--   				__Note:__ Double-check the casing of @variable@. Environment variable names are case-sensitive on all platforms except Windows.
 bindOS_get_environment :: MethodBind
 bindOS_get_environment
   = unsafePerformIO $
@@ -2042,7 +2137,8 @@ bindOS_get_environment
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Returns an environment variable.
+-- | Returns the value of an environment variable. Returns an empty string if the environment variable doesn't exist.
+--   				__Note:__ Double-check the casing of @variable@. Environment variable names are case-sensitive on all platforms except Windows.
 get_environment ::
                   (OS :< cls, Object :< cls) => cls -> GodotString -> IO GodotString
 get_environment cls arg1
@@ -2276,6 +2372,33 @@ get_name cls
 instance NodeMethod OS "get_name" '[] (IO GodotString) where
         nodeMethod = Godot.Core.OS.get_name
 
+{-# NOINLINE bindOS_get_native_handle #-}
+
+-- | Returns internal structure pointers for use in GDNative plugins.
+--   				__Note:__ This method is implemented on Linux and Windows (other OSs will soon be supported).
+bindOS_get_native_handle :: MethodBind
+bindOS_get_native_handle
+  = unsafePerformIO $
+      withCString "_OS" $
+        \ clsNamePtr ->
+          withCString "get_native_handle" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Returns internal structure pointers for use in GDNative plugins.
+--   				__Note:__ This method is implemented on Linux and Windows (other OSs will soon be supported).
+get_native_handle ::
+                    (OS :< cls, Object :< cls) => cls -> Int -> IO Int
+get_native_handle cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindOS_get_native_handle (upcast cls) arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod OS "get_native_handle" '[Int] (IO Int) where
+        nodeMethod = Godot.Core.OS.get_native_handle
+
 {-# NOINLINE bindOS_get_power_percent_left #-}
 
 -- | Returns the amount of battery left in the device as a percentage. Returns @-1@ if power state is unknown.
@@ -2493,7 +2616,8 @@ instance NodeMethod OS "get_screen_count" '[] (IO Int) where
 {-# NOINLINE bindOS_get_screen_dpi #-}
 
 -- | Returns the dots per inch density of the specified screen. If @screen@ is @-1@ (the default value), the current screen will be used.
---   				On Android devices, the actual screen densities are grouped into six generalized densities:
+--   				__Note:__ On macOS, returned value is inaccurate if fractional display scaling mode is used.
+--   				__Note:__ On Android devices, the actual screen densities are grouped into six generalized densities:
 --   				
 --   @
 --   
@@ -2517,7 +2641,8 @@ bindOS_get_screen_dpi
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
 -- | Returns the dots per inch density of the specified screen. If @screen@ is @-1@ (the default value), the current screen will be used.
---   				On Android devices, the actual screen densities are grouped into six generalized densities:
+--   				__Note:__ On macOS, returned value is inaccurate if fractional display scaling mode is used.
+--   				__Note:__ On Android devices, the actual screen densities are grouped into six generalized densities:
 --   				
 --   @
 --   
@@ -2542,6 +2667,36 @@ get_screen_dpi cls arg1
 
 instance NodeMethod OS "get_screen_dpi" '[Maybe Int] (IO Int) where
         nodeMethod = Godot.Core.OS.get_screen_dpi
+
+{-# NOINLINE bindOS_get_screen_max_scale #-}
+
+-- | Return the greatest scale factor of all screens.
+--   				__Note:__ On macOS returned value is @2.0@ if there is at least one hiDPI (Retina) screen in the system, and @1.0@ in all other cases.
+--   				__Note:__ This method is implemented on macOS.
+bindOS_get_screen_max_scale :: MethodBind
+bindOS_get_screen_max_scale
+  = unsafePerformIO $
+      withCString "_OS" $
+        \ clsNamePtr ->
+          withCString "get_screen_max_scale" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Return the greatest scale factor of all screens.
+--   				__Note:__ On macOS returned value is @2.0@ if there is at least one hiDPI (Retina) screen in the system, and @1.0@ in all other cases.
+--   				__Note:__ This method is implemented on macOS.
+get_screen_max_scale ::
+                       (OS :< cls, Object :< cls) => cls -> IO Float
+get_screen_max_scale cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindOS_get_screen_max_scale (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod OS "get_screen_max_scale" '[] (IO Float) where
+        nodeMethod = Godot.Core.OS.get_screen_max_scale
 
 {-# NOINLINE bindOS_get_screen_position #-}
 
@@ -2570,6 +2725,36 @@ instance NodeMethod OS "get_screen_position" '[Maybe Int]
            (IO Vector2)
          where
         nodeMethod = Godot.Core.OS.get_screen_position
+
+{-# NOINLINE bindOS_get_screen_scale #-}
+
+-- | Return the scale factor of the specified screen by index. If @screen@ is @-1@ (the default value), the current screen will be used.
+--   				__Note:__ On macOS returned value is @2.0@ for hiDPI (Retina) screen, and @1.0@ for all other cases.
+--   				__Note:__ This method is implemented on macOS.
+bindOS_get_screen_scale :: MethodBind
+bindOS_get_screen_scale
+  = unsafePerformIO $
+      withCString "_OS" $
+        \ clsNamePtr ->
+          withCString "get_screen_scale" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Return the scale factor of the specified screen by index. If @screen@ is @-1@ (the default value), the current screen will be used.
+--   				__Note:__ On macOS returned value is @2.0@ for hiDPI (Retina) screen, and @1.0@ for all other cases.
+--   				__Note:__ This method is implemented on macOS.
+get_screen_scale ::
+                   (OS :< cls, Object :< cls) => cls -> Maybe Int -> IO Float
+get_screen_scale cls arg1
+  = withVariantArray [maybe (VariantInt (-1)) toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindOS_get_screen_scale (upcast cls) arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod OS "get_screen_scale" '[Maybe Int] (IO Float)
+         where
+        nodeMethod = Godot.Core.OS.get_screen_scale
 
 {-# NOINLINE bindOS_get_screen_size #-}
 
@@ -2755,6 +2940,91 @@ get_system_time_secs cls
 instance NodeMethod OS "get_system_time_secs" '[] (IO Int) where
         nodeMethod = Godot.Core.OS.get_system_time_secs
 
+{-# NOINLINE bindOS_get_tablet_driver_count #-}
+
+-- | Returns the total number of available tablet drivers.
+--   				__Note:__ This method is implemented on Windows.
+bindOS_get_tablet_driver_count :: MethodBind
+bindOS_get_tablet_driver_count
+  = unsafePerformIO $
+      withCString "_OS" $
+        \ clsNamePtr ->
+          withCString "get_tablet_driver_count" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Returns the total number of available tablet drivers.
+--   				__Note:__ This method is implemented on Windows.
+get_tablet_driver_count ::
+                          (OS :< cls, Object :< cls) => cls -> IO Int
+get_tablet_driver_count cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindOS_get_tablet_driver_count (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod OS "get_tablet_driver_count" '[] (IO Int) where
+        nodeMethod = Godot.Core.OS.get_tablet_driver_count
+
+{-# NOINLINE bindOS_get_tablet_driver_name #-}
+
+-- | Returns the tablet driver name for the given index.
+--   				__Note:__ This method is implemented on Windows.
+bindOS_get_tablet_driver_name :: MethodBind
+bindOS_get_tablet_driver_name
+  = unsafePerformIO $
+      withCString "_OS" $
+        \ clsNamePtr ->
+          withCString "get_tablet_driver_name" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Returns the tablet driver name for the given index.
+--   				__Note:__ This method is implemented on Windows.
+get_tablet_driver_name ::
+                         (OS :< cls, Object :< cls) => cls -> Int -> IO GodotString
+get_tablet_driver_name cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindOS_get_tablet_driver_name (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod OS "get_tablet_driver_name" '[Int]
+           (IO GodotString)
+         where
+        nodeMethod = Godot.Core.OS.get_tablet_driver_name
+
+{-# NOINLINE bindOS_get_thread_caller_id #-}
+
+-- | Returns the ID of the current thread. This can be used in logs to ease debugging of multi-threaded applications.
+--   				__Note:__ Thread IDs are not deterministic and may be reused across application restarts.
+bindOS_get_thread_caller_id :: MethodBind
+bindOS_get_thread_caller_id
+  = unsafePerformIO $
+      withCString "_OS" $
+        \ clsNamePtr ->
+          withCString "get_thread_caller_id" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Returns the ID of the current thread. This can be used in logs to ease debugging of multi-threaded applications.
+--   				__Note:__ Thread IDs are not deterministic and may be reused across application restarts.
+get_thread_caller_id :: (OS :< cls, Object :< cls) => cls -> IO Int
+get_thread_caller_id cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindOS_get_thread_caller_id (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod OS "get_thread_caller_id" '[] (IO Int) where
+        nodeMethod = Godot.Core.OS.get_thread_caller_id
+
 {-# NOINLINE bindOS_get_ticks_msec #-}
 
 -- | Returns the amount of time passed in milliseconds since the engine started.
@@ -2858,6 +3128,7 @@ instance NodeMethod OS "get_time_zone_info" '[] (IO Dictionary)
 {-# NOINLINE bindOS_get_unique_id #-}
 
 -- | Returns a string that is unique to the device.
+--   				__Note:__ This string may change without notice if the user reinstalls/upgrades their operating system or changes their hardware. This means it should generally not be used to encrypt persistent data as the data saved prior to an unexpected ID change would become inaccessible. The returned string may also be falsified using external programs, so do not rely on the string returned by @method get_unique_id@ for security purposes.
 --   				__Note:__ Returns an empty string on HTML5 and UWP, as this method isn't implemented on those platforms yet.
 bindOS_get_unique_id :: MethodBind
 bindOS_get_unique_id
@@ -2869,6 +3140,7 @@ bindOS_get_unique_id
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
 -- | Returns a string that is unique to the device.
+--   				__Note:__ This string may change without notice if the user reinstalls/upgrades their operating system or changes their hardware. This means it should generally not be used to encrypt persistent data as the data saved prior to an unexpected ID change would become inaccessible. The returned string may also be falsified using external programs, so do not rely on the string returned by @method get_unique_id@ for security purposes.
 --   				__Note:__ Returns an empty string on HTML5 and UWP, as this method isn't implemented on those platforms yet.
 get_unique_id ::
                 (OS :< cls, Object :< cls) => cls -> IO GodotString
@@ -2883,7 +3155,8 @@ instance NodeMethod OS "get_unique_id" '[] (IO GodotString) where
 
 {-# NOINLINE bindOS_get_unix_time #-}
 
--- | Returns the current UNIX epoch timestamp.
+-- | Returns the current UNIX epoch timestamp in seconds.
+--   				__Important:__ This is the system clock that the user can manually set. __Never use__ this method for precise time calculation since its results are also subject to automatic adjustments by the operating system. __Always use__ @method get_ticks_usec@ or @method get_ticks_msec@ for precise time calculation instead, since they are guaranteed to be monotonic (i.e. never decrease).
 bindOS_get_unix_time :: MethodBind
 bindOS_get_unix_time
   = unsafePerformIO $
@@ -2893,7 +3166,8 @@ bindOS_get_unix_time
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Returns the current UNIX epoch timestamp.
+-- | Returns the current UNIX epoch timestamp in seconds.
+--   				__Important:__ This is the system clock that the user can manually set. __Never use__ this method for precise time calculation since its results are also subject to automatic adjustments by the operating system. __Always use__ @method get_ticks_usec@ or @method get_ticks_msec@ for precise time calculation instead, since they are guaranteed to be monotonic (i.e. never decrease).
 get_unix_time :: (OS :< cls, Object :< cls) => cls -> IO Int
 get_unix_time cls
   = withVariantArray []
@@ -2908,6 +3182,7 @@ instance NodeMethod OS "get_unix_time" '[] (IO Int) where
 
 -- | Gets an epoch time value from a dictionary of time values.
 --   				@datetime@ must be populated with the following keys: @year@, @month@, @day@, @hour@, @minute@, @second@.
+--   				If the dictionary is empty @0@ is returned. If some keys are omitted, they default to the equivalent values for the UNIX epoch timestamp 0 (1970-01-01 at 00:00:00 UTC).
 --   				You can pass the output from @method get_datetime_from_unix_time@ directly into this function. Daylight Savings Time (@dst@), if present, is ignored.
 bindOS_get_unix_time_from_datetime :: MethodBind
 bindOS_get_unix_time_from_datetime
@@ -2920,6 +3195,7 @@ bindOS_get_unix_time_from_datetime
 
 -- | Gets an epoch time value from a dictionary of time values.
 --   				@datetime@ must be populated with the following keys: @year@, @month@, @day@, @hour@, @minute@, @second@.
+--   				If the dictionary is empty @0@ is returned. If some keys are omitted, they default to the equivalent values for the UNIX epoch timestamp 0 (1970-01-01 at 00:00:00 UTC).
 --   				You can pass the output from @method get_datetime_from_unix_time@ directly into this function. Daylight Savings Time (@dst@), if present, is ignored.
 get_unix_time_from_datetime ::
                               (OS :< cls, Object :< cls) => cls -> Dictionary -> IO Int
@@ -3205,7 +3481,8 @@ instance NodeMethod OS "global_menu_remove_item"
 
 {-# NOINLINE bindOS_has_environment #-}
 
--- | Returns @true@ if an environment variable exists.
+-- | Returns @true@ if the environment variable with the name @variable@ exists.
+--   				__Note:__ Double-check the casing of @variable@. Environment variable names are case-sensitive on all platforms except Windows.
 bindOS_has_environment :: MethodBind
 bindOS_has_environment
   = unsafePerformIO $
@@ -3215,7 +3492,8 @@ bindOS_has_environment
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Returns @true@ if an environment variable exists.
+-- | Returns @true@ if the environment variable with the name @variable@ exists.
+--   				__Note:__ Double-check the casing of @variable@. Environment variable names are case-sensitive on all platforms except Windows.
 has_environment ::
                   (OS :< cls, Object :< cls) => cls -> GodotString -> IO Bool
 has_environment cls arg1
@@ -3231,7 +3509,7 @@ instance NodeMethod OS "has_environment" '[GodotString] (IO Bool)
 
 {-# NOINLINE bindOS_has_feature #-}
 
--- | Returns @true@ if the feature for the given feature tag is supported in the currently running instance, depending on platform, build etc. Can be used to check whether you're currently running a debug build, on a certain platform or arch, etc. Refer to the @url=https://docs.godotengine.org/en/latest/getting_started/workflow/export/feature_tags.html@Feature Tags@/url@ documentation for more details.
+-- | Returns @true@ if the feature for the given feature tag is supported in the currently running instance, depending on platform, build etc. Can be used to check whether you're currently running a debug build, on a certain platform or arch, etc. Refer to the @url=https://docs.godotengine.org/en/3.3/getting_started/workflow/export/feature_tags.html@Feature Tags@/url@ documentation for more details.
 --   				__Note:__ Tag names are case-sensitive.
 bindOS_has_feature :: MethodBind
 bindOS_has_feature
@@ -3242,7 +3520,7 @@ bindOS_has_feature
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Returns @true@ if the feature for the given feature tag is supported in the currently running instance, depending on platform, build etc. Can be used to check whether you're currently running a debug build, on a certain platform or arch, etc. Refer to the @url=https://docs.godotengine.org/en/latest/getting_started/workflow/export/feature_tags.html@Feature Tags@/url@ documentation for more details.
+-- | Returns @true@ if the feature for the given feature tag is supported in the currently running instance, depending on platform, build etc. Can be used to check whether you're currently running a debug build, on a certain platform or arch, etc. Refer to the @url=https://docs.godotengine.org/en/3.3/getting_started/workflow/export/feature_tags.html@Feature Tags@/url@ documentation for more details.
 --   				__Note:__ Tag names are case-sensitive.
 has_feature ::
               (OS :< cls, Object :< cls) => cls -> GodotString -> IO Bool
@@ -3517,6 +3795,157 @@ is_window_focused cls
 
 instance NodeMethod OS "is_window_focused" '[] (IO Bool) where
         nodeMethod = Godot.Core.OS.is_window_focused
+
+{-# NOINLINE bindOS_keyboard_get_current_layout #-}
+
+-- | Returns active keyboard layout index.
+--   				__Note:__ This method is implemented on Linux, macOS and Windows.
+bindOS_keyboard_get_current_layout :: MethodBind
+bindOS_keyboard_get_current_layout
+  = unsafePerformIO $
+      withCString "_OS" $
+        \ clsNamePtr ->
+          withCString "keyboard_get_current_layout" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Returns active keyboard layout index.
+--   				__Note:__ This method is implemented on Linux, macOS and Windows.
+keyboard_get_current_layout ::
+                              (OS :< cls, Object :< cls) => cls -> IO Int
+keyboard_get_current_layout cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindOS_keyboard_get_current_layout
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod OS "keyboard_get_current_layout" '[] (IO Int)
+         where
+        nodeMethod = Godot.Core.OS.keyboard_get_current_layout
+
+{-# NOINLINE bindOS_keyboard_get_layout_count #-}
+
+-- | Returns the number of keyboard layouts.
+--   				__Note:__ This method is implemented on Linux, macOS and Windows.
+bindOS_keyboard_get_layout_count :: MethodBind
+bindOS_keyboard_get_layout_count
+  = unsafePerformIO $
+      withCString "_OS" $
+        \ clsNamePtr ->
+          withCString "keyboard_get_layout_count" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Returns the number of keyboard layouts.
+--   				__Note:__ This method is implemented on Linux, macOS and Windows.
+keyboard_get_layout_count ::
+                            (OS :< cls, Object :< cls) => cls -> IO Int
+keyboard_get_layout_count cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindOS_keyboard_get_layout_count
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod OS "keyboard_get_layout_count" '[] (IO Int)
+         where
+        nodeMethod = Godot.Core.OS.keyboard_get_layout_count
+
+{-# NOINLINE bindOS_keyboard_get_layout_language #-}
+
+-- | Returns the ISO-639/BCP-47 language code of the keyboard layout at position @index@.
+--   				__Note:__ This method is implemented on Linux, macOS and Windows.
+bindOS_keyboard_get_layout_language :: MethodBind
+bindOS_keyboard_get_layout_language
+  = unsafePerformIO $
+      withCString "_OS" $
+        \ clsNamePtr ->
+          withCString "keyboard_get_layout_language" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Returns the ISO-639/BCP-47 language code of the keyboard layout at position @index@.
+--   				__Note:__ This method is implemented on Linux, macOS and Windows.
+keyboard_get_layout_language ::
+                               (OS :< cls, Object :< cls) => cls -> Int -> IO GodotString
+keyboard_get_layout_language cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindOS_keyboard_get_layout_language
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod OS "keyboard_get_layout_language" '[Int]
+           (IO GodotString)
+         where
+        nodeMethod = Godot.Core.OS.keyboard_get_layout_language
+
+{-# NOINLINE bindOS_keyboard_get_layout_name #-}
+
+-- | Returns the localized name of the keyboard layout at position @index@.
+--   				__Note:__ This method is implemented on Linux, macOS and Windows.
+bindOS_keyboard_get_layout_name :: MethodBind
+bindOS_keyboard_get_layout_name
+  = unsafePerformIO $
+      withCString "_OS" $
+        \ clsNamePtr ->
+          withCString "keyboard_get_layout_name" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Returns the localized name of the keyboard layout at position @index@.
+--   				__Note:__ This method is implemented on Linux, macOS and Windows.
+keyboard_get_layout_name ::
+                           (OS :< cls, Object :< cls) => cls -> Int -> IO GodotString
+keyboard_get_layout_name cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindOS_keyboard_get_layout_name (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod OS "keyboard_get_layout_name" '[Int]
+           (IO GodotString)
+         where
+        nodeMethod = Godot.Core.OS.keyboard_get_layout_name
+
+{-# NOINLINE bindOS_keyboard_set_current_layout #-}
+
+-- | Sets active keyboard layout.
+--   				__Note:__ This method is implemented on Linux, macOS and Windows.
+bindOS_keyboard_set_current_layout :: MethodBind
+bindOS_keyboard_set_current_layout
+  = unsafePerformIO $
+      withCString "_OS" $
+        \ clsNamePtr ->
+          withCString "keyboard_set_current_layout" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Sets active keyboard layout.
+--   				__Note:__ This method is implemented on Linux, macOS and Windows.
+keyboard_set_current_layout ::
+                              (OS :< cls, Object :< cls) => cls -> Int -> IO ()
+keyboard_set_current_layout cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindOS_keyboard_set_current_layout
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod OS "keyboard_set_current_layout" '[Int] (IO ())
+         where
+        nodeMethod = Godot.Core.OS.keyboard_set_current_layout
 
 {-# NOINLINE bindOS_kill #-}
 
@@ -3935,6 +4364,37 @@ request_permissions cls
 instance NodeMethod OS "request_permissions" '[] (IO Bool) where
         nodeMethod = Godot.Core.OS.request_permissions
 
+{-# NOINLINE bindOS_set_environment #-}
+
+-- | Sets the value of the environment variable @variable@ to @value@. The environment variable will be set for the Godot process and any process executed with @method execute@ after running @method set_environment@. The environment variable will @i@not@/i@ persist to processes run after the Godot process was terminated.
+--   				__Note:__ Double-check the casing of @variable@. Environment variable names are case-sensitive on all platforms except Windows.
+bindOS_set_environment :: MethodBind
+bindOS_set_environment
+  = unsafePerformIO $
+      withCString "_OS" $
+        \ clsNamePtr ->
+          withCString "set_environment" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Sets the value of the environment variable @variable@ to @value@. The environment variable will be set for the Godot process and any process executed with @method execute@ after running @method set_environment@. The environment variable will @i@not@/i@ persist to processes run after the Godot process was terminated.
+--   				__Note:__ Double-check the casing of @variable@. Environment variable names are case-sensitive on all platforms except Windows.
+set_environment ::
+                  (OS :< cls, Object :< cls) =>
+                  cls -> GodotString -> GodotString -> IO Bool
+set_environment cls arg1 arg2
+  = withVariantArray [toVariant arg1, toVariant arg2]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindOS_set_environment (upcast cls) arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod OS "set_environment"
+           '[GodotString, GodotString]
+           (IO Bool)
+         where
+        nodeMethod = Godot.Core.OS.set_environment
+
 {-# NOINLINE bindOS_set_icon #-}
 
 -- | Sets the game's icon using an @Image@ resource.
@@ -4136,6 +4596,70 @@ instance NodeMethod OS "set_window_always_on_top" '[Bool] (IO ())
          where
         nodeMethod = Godot.Core.OS.set_window_always_on_top
 
+{-# NOINLINE bindOS_set_window_mouse_passthrough #-}
+
+-- | Sets a polygonal region of the window which accepts mouse events. Mouse events outside the region will be passed through.
+--   				Passing an empty array will disable passthrough support (all mouse events will be intercepted by the window, which is the default behavior).
+--   				
+--   @
+--   
+--   				# Set region, using Path2D node.
+--   				OS.set_window_mouse_passthrough($Path2D.curve.get_baked_points())
+--   
+--   				# Set region, using Polygon2D node.
+--   				OS.set_window_mouse_passthrough($Polygon2D.polygon)
+--   
+--   				# Reset region to default.
+--   				OS.set_window_mouse_passthrough(@@)
+--   				
+--   @
+--   
+--   				__Note:__ On Windows, the portion of a window that lies outside the region is not drawn, while on Linux and macOS it is.
+--   				__Note:__ This method is implemented on Linux, macOS and Windows.
+bindOS_set_window_mouse_passthrough :: MethodBind
+bindOS_set_window_mouse_passthrough
+  = unsafePerformIO $
+      withCString "_OS" $
+        \ clsNamePtr ->
+          withCString "set_window_mouse_passthrough" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Sets a polygonal region of the window which accepts mouse events. Mouse events outside the region will be passed through.
+--   				Passing an empty array will disable passthrough support (all mouse events will be intercepted by the window, which is the default behavior).
+--   				
+--   @
+--   
+--   				# Set region, using Path2D node.
+--   				OS.set_window_mouse_passthrough($Path2D.curve.get_baked_points())
+--   
+--   				# Set region, using Polygon2D node.
+--   				OS.set_window_mouse_passthrough($Polygon2D.polygon)
+--   
+--   				# Reset region to default.
+--   				OS.set_window_mouse_passthrough(@@)
+--   				
+--   @
+--   
+--   				__Note:__ On Windows, the portion of a window that lies outside the region is not drawn, while on Linux and macOS it is.
+--   				__Note:__ This method is implemented on Linux, macOS and Windows.
+set_window_mouse_passthrough ::
+                               (OS :< cls, Object :< cls) => cls -> PoolVector2Array -> IO ()
+set_window_mouse_passthrough cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindOS_set_window_mouse_passthrough
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod OS "set_window_mouse_passthrough"
+           '[PoolVector2Array]
+           (IO ())
+         where
+        nodeMethod = Godot.Core.OS.set_window_mouse_passthrough
+
 {-# NOINLINE bindOS_set_window_title #-}
 
 -- | Sets the window title to the specified string.
@@ -4220,16 +4744,20 @@ bindOS_show_virtual_keyboard
 --   				The @multiline@ parameter needs to be set to @true@ to be able to enter multiple lines of text, as in @TextEdit@.
 --   				__Note:__ This method is implemented on Android, iOS and UWP.
 show_virtual_keyboard ::
-                        (OS :< cls, Object :< cls) => cls -> Maybe GodotString -> IO ()
-show_virtual_keyboard cls arg1
-  = withVariantArray [defaultedVariant VariantString "" arg1]
+                        (OS :< cls, Object :< cls) =>
+                        cls -> Maybe GodotString -> Maybe Bool -> IO ()
+show_virtual_keyboard cls arg1 arg2
+  = withVariantArray
+      [defaultedVariant VariantString "" arg1,
+       maybe (VariantBool False) toVariant arg2]
       (\ (arrPtr, len) ->
          godot_method_bind_call bindOS_show_virtual_keyboard (upcast cls)
            arrPtr
            len
            >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
 
-instance NodeMethod OS "show_virtual_keyboard" '[Maybe GodotString]
+instance NodeMethod OS "show_virtual_keyboard"
+           '[Maybe GodotString, Maybe Bool]
            (IO ())
          where
         nodeMethod = Godot.Core.OS.show_virtual_keyboard

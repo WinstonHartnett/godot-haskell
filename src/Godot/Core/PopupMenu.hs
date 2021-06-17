@@ -24,6 +24,7 @@ module Godot.Core.PopupMenu
         Godot.Core.PopupMenu.add_shortcut,
         Godot.Core.PopupMenu.add_submenu_item, Godot.Core.PopupMenu.clear,
         Godot.Core.PopupMenu.get_allow_search,
+        Godot.Core.PopupMenu.get_current_index,
         Godot.Core.PopupMenu.get_item_accelerator,
         Godot.Core.PopupMenu.get_item_count,
         Godot.Core.PopupMenu.get_item_icon,
@@ -664,7 +665,8 @@ instance NodeMethod PopupMenu "add_radio_check_shortcut"
 
 {-# NOINLINE bindPopupMenu_add_separator #-}
 
--- | Adds a separator between items. Separators also occupy an index.
+-- | Adds a separator between items. Separators also occupy an index, which you can set by using the @id@ parameter.
+--   				A @label@ can optionally be provided, which will appear at the center of the separator.
 bindPopupMenu_add_separator :: MethodBind
 bindPopupMenu_add_separator
   = unsafePerformIO $
@@ -674,19 +676,23 @@ bindPopupMenu_add_separator
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Adds a separator between items. Separators also occupy an index.
+-- | Adds a separator between items. Separators also occupy an index, which you can set by using the @id@ parameter.
+--   				A @label@ can optionally be provided, which will appear at the center of the separator.
 add_separator ::
                 (PopupMenu :< cls, Object :< cls) =>
-                cls -> Maybe GodotString -> IO ()
-add_separator cls arg1
-  = withVariantArray [defaultedVariant VariantString "" arg1]
+                cls -> Maybe GodotString -> Maybe Int -> IO ()
+add_separator cls arg1 arg2
+  = withVariantArray
+      [defaultedVariant VariantString "" arg1,
+       maybe (VariantInt (-1)) toVariant arg2]
       (\ (arrPtr, len) ->
          godot_method_bind_call bindPopupMenu_add_separator (upcast cls)
            arrPtr
            len
            >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
 
-instance NodeMethod PopupMenu "add_separator" '[Maybe GodotString]
+instance NodeMethod PopupMenu "add_separator"
+           '[Maybe GodotString, Maybe Int]
            (IO ())
          where
         nodeMethod = Godot.Core.PopupMenu.add_separator
@@ -784,7 +790,7 @@ instance NodeMethod PopupMenu "clear" '[] (IO ()) where
 
 {-# NOINLINE bindPopupMenu_get_allow_search #-}
 
--- | If @true@, allows to navigate @PopupMenu@ with letter keys.
+-- | If @true@, allows navigating @PopupMenu@ with letter keys.
 bindPopupMenu_get_allow_search :: MethodBind
 bindPopupMenu_get_allow_search
   = unsafePerformIO $
@@ -794,7 +800,7 @@ bindPopupMenu_get_allow_search
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | If @true@, allows to navigate @PopupMenu@ with letter keys.
+-- | If @true@, allows navigating @PopupMenu@ with letter keys.
 get_allow_search ::
                    (PopupMenu :< cls, Object :< cls) => cls -> IO Bool
 get_allow_search cls
@@ -808,6 +814,31 @@ get_allow_search cls
 instance NodeMethod PopupMenu "get_allow_search" '[] (IO Bool)
          where
         nodeMethod = Godot.Core.PopupMenu.get_allow_search
+
+{-# NOINLINE bindPopupMenu_get_current_index #-}
+
+bindPopupMenu_get_current_index :: MethodBind
+bindPopupMenu_get_current_index
+  = unsafePerformIO $
+      withCString "PopupMenu" $
+        \ clsNamePtr ->
+          withCString "get_current_index" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+get_current_index ::
+                    (PopupMenu :< cls, Object :< cls) => cls -> IO Int
+get_current_index cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindPopupMenu_get_current_index (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod PopupMenu "get_current_index" '[] (IO Int)
+         where
+        nodeMethod = Godot.Core.PopupMenu.get_current_index
 
 {-# NOINLINE bindPopupMenu_get_item_accelerator #-}
 
@@ -1435,7 +1466,7 @@ instance NodeMethod PopupMenu "remove_item" '[Int] (IO ()) where
 
 {-# NOINLINE bindPopupMenu_set_allow_search #-}
 
--- | If @true@, allows to navigate @PopupMenu@ with letter keys.
+-- | If @true@, allows navigating @PopupMenu@ with letter keys.
 bindPopupMenu_set_allow_search :: MethodBind
 bindPopupMenu_set_allow_search
   = unsafePerformIO $
@@ -1445,7 +1476,7 @@ bindPopupMenu_set_allow_search
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | If @true@, allows to navigate @PopupMenu@ with letter keys.
+-- | If @true@, allows navigating @PopupMenu@ with letter keys.
 set_allow_search ::
                    (PopupMenu :< cls, Object :< cls) => cls -> Bool -> IO ()
 set_allow_search cls arg1
@@ -1845,7 +1876,7 @@ instance NodeMethod PopupMenu "set_item_metadata"
 
 {-# NOINLINE bindPopupMenu_set_item_multistate #-}
 
--- | Sets the state of an multistate item. See @method add_multistate_item@ for details.
+-- | Sets the state of a multistate item. See @method add_multistate_item@ for details.
 bindPopupMenu_set_item_multistate :: MethodBind
 bindPopupMenu_set_item_multistate
   = unsafePerformIO $
@@ -1855,7 +1886,7 @@ bindPopupMenu_set_item_multistate
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Sets the state of an multistate item. See @method add_multistate_item@ for details.
+-- | Sets the state of a multistate item. See @method add_multistate_item@ for details.
 set_item_multistate ::
                       (PopupMenu :< cls, Object :< cls) => cls -> Int -> Int -> IO ()
 set_item_multistate cls arg1 arg2
@@ -2082,7 +2113,7 @@ instance NodeMethod PopupMenu "toggle_item_checked" '[Int] (IO ())
 
 {-# NOINLINE bindPopupMenu_toggle_item_multistate #-}
 
--- | Cycle to the next state of an multistate item. See @method add_multistate_item@ for details.
+-- | Cycle to the next state of a multistate item. See @method add_multistate_item@ for details.
 bindPopupMenu_toggle_item_multistate :: MethodBind
 bindPopupMenu_toggle_item_multistate
   = unsafePerformIO $
@@ -2092,7 +2123,7 @@ bindPopupMenu_toggle_item_multistate
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Cycle to the next state of an multistate item. See @method add_multistate_item@ for details.
+-- | Cycle to the next state of a multistate item. See @method add_multistate_item@ for details.
 toggle_item_multistate ::
                          (PopupMenu :< cls, Object :< cls) => cls -> Int -> IO ()
 toggle_item_multistate cls arg1

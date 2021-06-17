@@ -1102,7 +1102,7 @@ instance NodeMethod Spatial "set_notify_local_transform" '[Bool]
 
 {-# NOINLINE bindSpatial_set_notify_transform #-}
 
--- | Sets whether the node notifies about its global and local transformation changes. @Spatial@ will not propagate this by default.
+-- | Sets whether the node notifies about its global and local transformation changes. @Spatial@ will not propagate this by default, unless it is in the editor context and it has a valid gizmo.
 bindSpatial_set_notify_transform :: MethodBind
 bindSpatial_set_notify_transform
   = unsafePerformIO $
@@ -1112,7 +1112,7 @@ bindSpatial_set_notify_transform
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Sets whether the node notifies about its global and local transformation changes. @Spatial@ will not propagate this by default.
+-- | Sets whether the node notifies about its global and local transformation changes. @Spatial@ will not propagate this by default, unless it is in the editor context and it has a valid gizmo.
 set_notify_transform ::
                        (Spatial :< cls, Object :< cls) => cls -> Bool -> IO ()
 set_notify_transform cls arg1

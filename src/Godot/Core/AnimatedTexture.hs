@@ -4,14 +4,20 @@
 module Godot.Core.AnimatedTexture
        (Godot.Core.AnimatedTexture._MAX_FRAMES,
         Godot.Core.AnimatedTexture._update_proxy,
+        Godot.Core.AnimatedTexture.get_current_frame,
         Godot.Core.AnimatedTexture.get_fps,
         Godot.Core.AnimatedTexture.get_frame_delay,
         Godot.Core.AnimatedTexture.get_frame_texture,
         Godot.Core.AnimatedTexture.get_frames,
+        Godot.Core.AnimatedTexture.get_oneshot,
+        Godot.Core.AnimatedTexture.get_pause,
+        Godot.Core.AnimatedTexture.set_current_frame,
         Godot.Core.AnimatedTexture.set_fps,
         Godot.Core.AnimatedTexture.set_frame_delay,
         Godot.Core.AnimatedTexture.set_frame_texture,
-        Godot.Core.AnimatedTexture.set_frames)
+        Godot.Core.AnimatedTexture.set_frames,
+        Godot.Core.AnimatedTexture.set_oneshot,
+        Godot.Core.AnimatedTexture.set_pause)
        where
 import Data.Coerce
 import Foreign.C
@@ -27,6 +33,12 @@ import Godot.Core.Texture()
 
 _MAX_FRAMES :: Int
 _MAX_FRAMES = 256
+
+instance NodeProperty AnimatedTexture "current_frame" Int 'False
+         where
+        nodeProperty
+          = (get_current_frame, wrapDroppingSetter set_current_frame,
+             Nothing)
 
 instance NodeProperty AnimatedTexture "fps" Float 'False where
         nodeProperty = (get_fps, wrapDroppingSetter set_fps, Nothing)
@@ -3618,6 +3630,13 @@ instance NodeProperty AnimatedTexture "frame_99/texture" Texture
 instance NodeProperty AnimatedTexture "frames" Int 'False where
         nodeProperty = (get_frames, wrapDroppingSetter set_frames, Nothing)
 
+instance NodeProperty AnimatedTexture "oneshot" Bool 'False where
+        nodeProperty
+          = (get_oneshot, wrapDroppingSetter set_oneshot, Nothing)
+
+instance NodeProperty AnimatedTexture "pause" Bool 'False where
+        nodeProperty = (get_pause, wrapDroppingSetter set_pause, Nothing)
+
 {-# NOINLINE bindAnimatedTexture__update_proxy #-}
 
 bindAnimatedTexture__update_proxy :: MethodBind
@@ -3643,6 +3662,35 @@ _update_proxy cls
 instance NodeMethod AnimatedTexture "_update_proxy" '[] (IO ())
          where
         nodeMethod = Godot.Core.AnimatedTexture._update_proxy
+
+{-# NOINLINE bindAnimatedTexture_get_current_frame #-}
+
+-- | Sets the currently visible frame of the texture.
+bindAnimatedTexture_get_current_frame :: MethodBind
+bindAnimatedTexture_get_current_frame
+  = unsafePerformIO $
+      withCString "AnimatedTexture" $
+        \ clsNamePtr ->
+          withCString "get_current_frame" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Sets the currently visible frame of the texture.
+get_current_frame ::
+                    (AnimatedTexture :< cls, Object :< cls) => cls -> IO Int
+get_current_frame cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindAnimatedTexture_get_current_frame
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod AnimatedTexture "get_current_frame" '[]
+           (IO Int)
+         where
+        nodeMethod = Godot.Core.AnimatedTexture.get_current_frame
 
 {-# NOINLINE bindAnimatedTexture_get_fps #-}
 
@@ -3755,6 +3803,88 @@ get_frames cls
 
 instance NodeMethod AnimatedTexture "get_frames" '[] (IO Int) where
         nodeMethod = Godot.Core.AnimatedTexture.get_frames
+
+{-# NOINLINE bindAnimatedTexture_get_oneshot #-}
+
+-- | If @true@, the animation will only play once and will not loop back to the first frame after reaching the end. Note that reaching the end will not set @pause@ to @true@.
+bindAnimatedTexture_get_oneshot :: MethodBind
+bindAnimatedTexture_get_oneshot
+  = unsafePerformIO $
+      withCString "AnimatedTexture" $
+        \ clsNamePtr ->
+          withCString "get_oneshot" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | If @true@, the animation will only play once and will not loop back to the first frame after reaching the end. Note that reaching the end will not set @pause@ to @true@.
+get_oneshot ::
+              (AnimatedTexture :< cls, Object :< cls) => cls -> IO Bool
+get_oneshot cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindAnimatedTexture_get_oneshot (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod AnimatedTexture "get_oneshot" '[] (IO Bool)
+         where
+        nodeMethod = Godot.Core.AnimatedTexture.get_oneshot
+
+{-# NOINLINE bindAnimatedTexture_get_pause #-}
+
+-- | If @true@, the animation will pause where it currently is (i.e. at @current_frame@). The animation will continue from where it was paused when changing this property to @false@.
+bindAnimatedTexture_get_pause :: MethodBind
+bindAnimatedTexture_get_pause
+  = unsafePerformIO $
+      withCString "AnimatedTexture" $
+        \ clsNamePtr ->
+          withCString "get_pause" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | If @true@, the animation will pause where it currently is (i.e. at @current_frame@). The animation will continue from where it was paused when changing this property to @false@.
+get_pause ::
+            (AnimatedTexture :< cls, Object :< cls) => cls -> IO Bool
+get_pause cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindAnimatedTexture_get_pause (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod AnimatedTexture "get_pause" '[] (IO Bool) where
+        nodeMethod = Godot.Core.AnimatedTexture.get_pause
+
+{-# NOINLINE bindAnimatedTexture_set_current_frame #-}
+
+-- | Sets the currently visible frame of the texture.
+bindAnimatedTexture_set_current_frame :: MethodBind
+bindAnimatedTexture_set_current_frame
+  = unsafePerformIO $
+      withCString "AnimatedTexture" $
+        \ clsNamePtr ->
+          withCString "set_current_frame" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Sets the currently visible frame of the texture.
+set_current_frame ::
+                    (AnimatedTexture :< cls, Object :< cls) => cls -> Int -> IO ()
+set_current_frame cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindAnimatedTexture_set_current_frame
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod AnimatedTexture "set_current_frame" '[Int]
+           (IO ())
+         where
+        nodeMethod = Godot.Core.AnimatedTexture.set_current_frame
 
 {-# NOINLINE bindAnimatedTexture_set_fps #-}
 
@@ -3894,3 +4024,57 @@ set_frames cls arg1
 instance NodeMethod AnimatedTexture "set_frames" '[Int] (IO ())
          where
         nodeMethod = Godot.Core.AnimatedTexture.set_frames
+
+{-# NOINLINE bindAnimatedTexture_set_oneshot #-}
+
+-- | If @true@, the animation will only play once and will not loop back to the first frame after reaching the end. Note that reaching the end will not set @pause@ to @true@.
+bindAnimatedTexture_set_oneshot :: MethodBind
+bindAnimatedTexture_set_oneshot
+  = unsafePerformIO $
+      withCString "AnimatedTexture" $
+        \ clsNamePtr ->
+          withCString "set_oneshot" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | If @true@, the animation will only play once and will not loop back to the first frame after reaching the end. Note that reaching the end will not set @pause@ to @true@.
+set_oneshot ::
+              (AnimatedTexture :< cls, Object :< cls) => cls -> Bool -> IO ()
+set_oneshot cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindAnimatedTexture_set_oneshot (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod AnimatedTexture "set_oneshot" '[Bool] (IO ())
+         where
+        nodeMethod = Godot.Core.AnimatedTexture.set_oneshot
+
+{-# NOINLINE bindAnimatedTexture_set_pause #-}
+
+-- | If @true@, the animation will pause where it currently is (i.e. at @current_frame@). The animation will continue from where it was paused when changing this property to @false@.
+bindAnimatedTexture_set_pause :: MethodBind
+bindAnimatedTexture_set_pause
+  = unsafePerformIO $
+      withCString "AnimatedTexture" $
+        \ clsNamePtr ->
+          withCString "set_pause" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | If @true@, the animation will pause where it currently is (i.e. at @current_frame@). The animation will continue from where it was paused when changing this property to @false@.
+set_pause ::
+            (AnimatedTexture :< cls, Object :< cls) => cls -> Bool -> IO ()
+set_pause cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindAnimatedTexture_set_pause (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod AnimatedTexture "set_pause" '[Bool] (IO ())
+         where
+        nodeMethod = Godot.Core.AnimatedTexture.set_pause

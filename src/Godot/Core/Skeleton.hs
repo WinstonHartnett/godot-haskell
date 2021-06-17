@@ -3,12 +3,15 @@
   MultiParamTypeClasses #-}
 module Godot.Core.Skeleton
        (Godot.Core.Skeleton._NOTIFICATION_UPDATE_SKELETON,
+        Godot.Core.Skeleton.sig_skeleton_updated,
         Godot.Core.Skeleton.add_bone,
         Godot.Core.Skeleton.bind_child_node_to_bone,
-        Godot.Core.Skeleton.clear_bones, Godot.Core.Skeleton.find_bone,
-        Godot.Core.Skeleton.get_bone_count,
+        Godot.Core.Skeleton.clear_bones,
+        Godot.Core.Skeleton.clear_bones_global_pose_override,
+        Godot.Core.Skeleton.find_bone, Godot.Core.Skeleton.get_bone_count,
         Godot.Core.Skeleton.get_bone_custom_pose,
         Godot.Core.Skeleton.get_bone_global_pose,
+        Godot.Core.Skeleton.get_bone_global_pose_no_override,
         Godot.Core.Skeleton.get_bone_name,
         Godot.Core.Skeleton.get_bone_parent,
         Godot.Core.Skeleton.get_bone_pose,
@@ -44,6 +47,12 @@ import Godot.Core.Spatial()
 
 _NOTIFICATION_UPDATE_SKELETON :: Int
 _NOTIFICATION_UPDATE_SKELETON = 50
+
+sig_skeleton_updated :: Godot.Internal.Dispatch.Signal Skeleton
+sig_skeleton_updated
+  = Godot.Internal.Dispatch.Signal "skeleton_updated"
+
+instance NodeSignal Skeleton "skeleton_updated" '[]
 
 {-# NOINLINE bindSkeleton_add_bone #-}
 
@@ -123,6 +132,34 @@ clear_bones cls
 
 instance NodeMethod Skeleton "clear_bones" '[] (IO ()) where
         nodeMethod = Godot.Core.Skeleton.clear_bones
+
+{-# NOINLINE bindSkeleton_clear_bones_global_pose_override #-}
+
+bindSkeleton_clear_bones_global_pose_override :: MethodBind
+bindSkeleton_clear_bones_global_pose_override
+  = unsafePerformIO $
+      withCString "Skeleton" $
+        \ clsNamePtr ->
+          withCString "clear_bones_global_pose_override" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+clear_bones_global_pose_override ::
+                                   (Skeleton :< cls, Object :< cls) => cls -> IO ()
+clear_bones_global_pose_override cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call
+           bindSkeleton_clear_bones_global_pose_override
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod Skeleton "clear_bones_global_pose_override" '[]
+           (IO ())
+         where
+        nodeMethod = Godot.Core.Skeleton.clear_bones_global_pose_override
 
 {-# NOINLINE bindSkeleton_find_bone #-}
 
@@ -232,6 +269,37 @@ instance NodeMethod Skeleton "get_bone_global_pose" '[Int]
            (IO Transform)
          where
         nodeMethod = Godot.Core.Skeleton.get_bone_global_pose
+
+{-# NOINLINE bindSkeleton_get_bone_global_pose_no_override #-}
+
+-- | Returns the overall transform of the specified bone, with respect to the skeleton, but without any global pose overrides. Being relative to the skeleton frame, this is not the actual "global" transform of the bone.
+bindSkeleton_get_bone_global_pose_no_override :: MethodBind
+bindSkeleton_get_bone_global_pose_no_override
+  = unsafePerformIO $
+      withCString "Skeleton" $
+        \ clsNamePtr ->
+          withCString "get_bone_global_pose_no_override" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Returns the overall transform of the specified bone, with respect to the skeleton, but without any global pose overrides. Being relative to the skeleton frame, this is not the actual "global" transform of the bone.
+get_bone_global_pose_no_override ::
+                                   (Skeleton :< cls, Object :< cls) => cls -> Int -> IO Transform
+get_bone_global_pose_no_override cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call
+           bindSkeleton_get_bone_global_pose_no_override
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod Skeleton "get_bone_global_pose_no_override"
+           '[Int]
+           (IO Transform)
+         where
+        nodeMethod = Godot.Core.Skeleton.get_bone_global_pose_no_override
 
 {-# NOINLINE bindSkeleton_get_bone_name #-}
 

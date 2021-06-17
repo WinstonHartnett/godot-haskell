@@ -156,7 +156,8 @@ sig_global_menu_action :: Godot.Internal.Dispatch.Signal SceneTree
 sig_global_menu_action
   = Godot.Internal.Dispatch.Signal "global_menu_action"
 
-instance NodeSignal SceneTree "global_menu_action" '[(), ()]
+instance NodeSignal SceneTree "global_menu_action"
+           '[GodotVariant, GodotVariant]
 
 -- | Emitted immediately before @method Node._process@ is called on every node in the @SceneTree@.
 sig_idle_frame :: Godot.Internal.Dispatch.Signal SceneTree
@@ -453,7 +454,9 @@ instance NodeMethod SceneTree "_server_disconnected" '[] (IO ())
 
 {-# NOINLINE bindSceneTree_call_group #-}
 
--- | Calls @method@ on each member of the given group.
+-- | Calls @method@ on each member of the given group. You can pass arguments to @method@ by specifying them at the end of the method call.
+--   				__Note:__ @method@ may only have 5 arguments at most (7 arguments passed to this method in total).
+--   				__Note:__ @method call_group@ will always call methods with an one-frame delay, in a way similar to @method Object.call_deferred@. To call methods immediately, use @method call_group_flags@ with the @GROUP_CALL_REALTIME@ flag.
 bindSceneTree_call_group :: MethodBind
 bindSceneTree_call_group
   = unsafePerformIO $
@@ -463,7 +466,9 @@ bindSceneTree_call_group
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Calls @method@ on each member of the given group.
+-- | Calls @method@ on each member of the given group. You can pass arguments to @method@ by specifying them at the end of the method call.
+--   				__Note:__ @method@ may only have 5 arguments at most (7 arguments passed to this method in total).
+--   				__Note:__ @method call_group@ will always call methods with an one-frame delay, in a way similar to @method Object.call_deferred@. To call methods immediately, use @method call_group_flags@ with the @GROUP_CALL_REALTIME@ flag.
 call_group ::
              (SceneTree :< cls, Object :< cls) =>
              cls ->
@@ -483,7 +488,9 @@ instance NodeMethod SceneTree "call_group"
 
 {-# NOINLINE bindSceneTree_call_group_flags #-}
 
--- | Calls @method@ on each member of the given group, respecting the given @enum GroupCallFlags@.
+-- | Calls @method@ on each member of the given group, respecting the given @enum GroupCallFlags@. You can pass arguments to @method@ by specifying them at the end of the method call.
+--   				__Note:__ @method@ may only have 5 arguments at most (8 arguments passed to this method in total).
+--   				__Note:__ Group call flags are used to control the method calling behavior. If the @GROUP_CALL_REALTIME@ flag is present in the @flags@ argument, methods will be called immediately. If this flag isn't present in @flags@, methods will be called with a one-frame delay in a way similar to @method call_group@.
 bindSceneTree_call_group_flags :: MethodBind
 bindSceneTree_call_group_flags
   = unsafePerformIO $
@@ -493,7 +500,9 @@ bindSceneTree_call_group_flags
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Calls @method@ on each member of the given group, respecting the given @enum GroupCallFlags@.
+-- | Calls @method@ on each member of the given group, respecting the given @enum GroupCallFlags@. You can pass arguments to @method@ by specifying them at the end of the method call.
+--   				__Note:__ @method@ may only have 5 arguments at most (8 arguments passed to this method in total).
+--   				__Note:__ Group call flags are used to control the method calling behavior. If the @GROUP_CALL_REALTIME@ flag is present in the @flags@ argument, methods will be called immediately. If this flag isn't present in @flags@, methods will be called with a one-frame delay in a way similar to @method call_group@.
 call_group_flags ::
                    (SceneTree :< cls, Object :< cls) =>
                    cls ->
@@ -518,6 +527,7 @@ instance NodeMethod SceneTree "call_group_flags"
 
 -- | Changes the running scene to the one at the given @path@, after loading it into a @PackedScene@ and creating a new instance.
 --   				Returns @OK@ on success, @ERR_CANT_OPEN@ if the @path@ cannot be loaded into a @PackedScene@, or @ERR_CANT_CREATE@ if that scene cannot be instantiated.
+--   				__Note:__ The scene change is deferred, which means that the new scene node is added on the next idle frame. You won't be able to access it immediately after the @method change_scene@ call.
 bindSceneTree_change_scene :: MethodBind
 bindSceneTree_change_scene
   = unsafePerformIO $
@@ -529,6 +539,7 @@ bindSceneTree_change_scene
 
 -- | Changes the running scene to the one at the given @path@, after loading it into a @PackedScene@ and creating a new instance.
 --   				Returns @OK@ on success, @ERR_CANT_OPEN@ if the @path@ cannot be loaded into a @PackedScene@, or @ERR_CANT_CREATE@ if that scene cannot be instantiated.
+--   				__Note:__ The scene change is deferred, which means that the new scene node is added on the next idle frame. You won't be able to access it immediately after the @method change_scene@ call.
 change_scene ::
                (SceneTree :< cls, Object :< cls) => cls -> GodotString -> IO Int
 change_scene cls arg1
@@ -548,6 +559,7 @@ instance NodeMethod SceneTree "change_scene" '[GodotString]
 
 -- | Changes the running scene to a new instance of the given @PackedScene@.
 --   				Returns @OK@ on success or @ERR_CANT_CREATE@ if the scene cannot be instantiated.
+--   				__Note:__ The scene change is deferred, which means that the new scene node is added on the next idle frame. You won't be able to access it immediately after the @method change_scene_to@ call.
 bindSceneTree_change_scene_to :: MethodBind
 bindSceneTree_change_scene_to
   = unsafePerformIO $
@@ -559,6 +571,7 @@ bindSceneTree_change_scene_to
 
 -- | Changes the running scene to a new instance of the given @PackedScene@.
 --   				Returns @OK@ on success or @ERR_CANT_CREATE@ if the scene cannot be instantiated.
+--   				__Note:__ The scene change is deferred, which means that the new scene node is added on the next idle frame. You won't be able to access it immediately after the @method change_scene_to@ call.
 change_scene_to ::
                   (SceneTree :< cls, Object :< cls) => cls -> PackedScene -> IO Int
 change_scene_to cls arg1
@@ -587,6 +600,8 @@ instance NodeMethod SceneTree "change_scene_to" '[PackedScene]
 --   				    print("end")
 --   				
 --   @
+--   
+--   				The timer will be automatically freed after its time elapses.
 bindSceneTree_create_timer :: MethodBind
 bindSceneTree_create_timer
   = unsafePerformIO $
@@ -607,6 +622,8 @@ bindSceneTree_create_timer
 --   				    print("end")
 --   				
 --   @
+--   
+--   				The timer will be automatically freed after its time elapses.
 create_timer ::
                (SceneTree :< cls, Object :< cls) =>
                cls -> Float -> Maybe Bool -> IO SceneTreeTimer
@@ -1297,7 +1314,8 @@ instance NodeMethod SceneTree "queue_delete" '[Object] (IO ())
 
 {-# NOINLINE bindSceneTree_quit #-}
 
--- | Quits the application. A process @exit_code@ can optionally be passed as an argument. If this argument is @0@ or greater, it will override the @OS.exit_code@ defined before quitting the application.
+-- | Quits the application at the end of the current iteration. A process @exit_code@ can optionally be passed as an argument. If this argument is @0@ or greater, it will override the @OS.exit_code@ defined before quitting the application.
+--   				__Note:__ On iOS this method doesn't work. Instead, as recommended by the iOS Human Interface Guidelines, the user is expected to close apps via the Home button.
 bindSceneTree_quit :: MethodBind
 bindSceneTree_quit
   = unsafePerformIO $
@@ -1307,7 +1325,8 @@ bindSceneTree_quit
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Quits the application. A process @exit_code@ can optionally be passed as an argument. If this argument is @0@ or greater, it will override the @OS.exit_code@ defined before quitting the application.
+-- | Quits the application at the end of the current iteration. A process @exit_code@ can optionally be passed as an argument. If this argument is @0@ or greater, it will override the @OS.exit_code@ defined before quitting the application.
+--   				__Note:__ On iOS this method doesn't work. Instead, as recommended by the iOS Human Interface Guidelines, the user is expected to close apps via the Home button.
 quit ::
        (SceneTree :< cls, Object :< cls) => cls -> Maybe Int -> IO ()
 quit cls arg1

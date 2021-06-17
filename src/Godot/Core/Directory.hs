@@ -221,7 +221,7 @@ instance NodeMethod Directory "get_current_drive" '[] (IO Int)
 
 {-# NOINLINE bindDirectory_get_drive #-}
 
--- | On Windows, returns the name of the drive (partition) passed as an argument (e.g. @C:@). On other platforms, or if the requested drive does not existed, the method returns an empty String.
+-- | On Windows, returns the name of the drive (partition) passed as an argument (e.g. @C:@). On other platforms, or if the requested drive does not exist, the method returns an empty String.
 bindDirectory_get_drive :: MethodBind
 bindDirectory_get_drive
   = unsafePerformIO $
@@ -231,7 +231,7 @@ bindDirectory_get_drive
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | On Windows, returns the name of the drive (partition) passed as an argument (e.g. @C:@). On other platforms, or if the requested drive does not existed, the method returns an empty String.
+-- | On Windows, returns the name of the drive (partition) passed as an argument (e.g. @C:@). On other platforms, or if the requested drive does not exist, the method returns an empty String.
 get_drive ::
             (Directory :< cls, Object :< cls) => cls -> Int -> IO GodotString
 get_drive cls arg1
@@ -362,7 +362,7 @@ instance NodeMethod Directory "list_dir_begin"
 
 {-# NOINLINE bindDirectory_list_dir_end #-}
 
--- | Closes the current stream opened with @method list_dir_begin@ (whether it has been fully processed with @method get_next@ or not does not matter).
+-- | Closes the current stream opened with @method list_dir_begin@ (whether it has been fully processed with @method get_next@ does not matter).
 bindDirectory_list_dir_end :: MethodBind
 bindDirectory_list_dir_end
   = unsafePerformIO $
@@ -372,7 +372,7 @@ bindDirectory_list_dir_end
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Closes the current stream opened with @method list_dir_begin@ (whether it has been fully processed with @method get_next@ or not does not matter).
+-- | Closes the current stream opened with @method list_dir_begin@ (whether it has been fully processed with @method get_next@ does not matter).
 list_dir_end :: (Directory :< cls, Object :< cls) => cls -> IO ()
 list_dir_end cls
   = withVariantArray []

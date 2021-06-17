@@ -21,6 +21,7 @@ module Godot.Core.AnimationNodeStateMachine
         Godot.Core.AnimationNodeStateMachine.remove_transition,
         Godot.Core.AnimationNodeStateMachine.remove_transition_by_index,
         Godot.Core.AnimationNodeStateMachine.rename_node,
+        Godot.Core.AnimationNodeStateMachine.replace_node,
         Godot.Core.AnimationNodeStateMachine.set_end_node,
         Godot.Core.AnimationNodeStateMachine.set_graph_offset,
         Godot.Core.AnimationNodeStateMachine.set_node_position,
@@ -637,6 +638,37 @@ instance NodeMethod AnimationNodeStateMachine "rename_node"
            (IO ())
          where
         nodeMethod = Godot.Core.AnimationNodeStateMachine.rename_node
+
+{-# NOINLINE bindAnimationNodeStateMachine_replace_node #-}
+
+-- | Replaces the node and keeps its transitions unchanged.
+bindAnimationNodeStateMachine_replace_node :: MethodBind
+bindAnimationNodeStateMachine_replace_node
+  = unsafePerformIO $
+      withCString "AnimationNodeStateMachine" $
+        \ clsNamePtr ->
+          withCString "replace_node" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Replaces the node and keeps its transitions unchanged.
+replace_node ::
+               (AnimationNodeStateMachine :< cls, Object :< cls) =>
+               cls -> GodotString -> AnimationNode -> IO ()
+replace_node cls arg1 arg2
+  = withVariantArray [toVariant arg1, toVariant arg2]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindAnimationNodeStateMachine_replace_node
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod AnimationNodeStateMachine "replace_node"
+           '[GodotString, AnimationNode]
+           (IO ())
+         where
+        nodeMethod = Godot.Core.AnimationNodeStateMachine.replace_node
 
 {-# NOINLINE bindAnimationNodeStateMachine_set_end_node #-}
 

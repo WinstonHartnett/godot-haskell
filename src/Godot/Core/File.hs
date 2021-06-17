@@ -9,13 +9,14 @@ module Godot.Core.File
         Godot.Core.File._COMPRESSION_ZSTD, Godot.Core.File.get_endian_swap,
         Godot.Core.File.set_endian_swap, Godot.Core.File.close,
         Godot.Core.File.eof_reached, Godot.Core.File.file_exists,
-        Godot.Core.File.get_16, Godot.Core.File.get_32,
-        Godot.Core.File.get_64, Godot.Core.File.get_8,
-        Godot.Core.File.get_as_text, Godot.Core.File.get_buffer,
-        Godot.Core.File.get_csv_line, Godot.Core.File.get_double,
-        Godot.Core.File.get_error, Godot.Core.File.get_float,
-        Godot.Core.File.get_len, Godot.Core.File.get_line,
-        Godot.Core.File.get_md5, Godot.Core.File.get_modified_time,
+        Godot.Core.File.flush, Godot.Core.File.get_16,
+        Godot.Core.File.get_32, Godot.Core.File.get_64,
+        Godot.Core.File.get_8, Godot.Core.File.get_as_text,
+        Godot.Core.File.get_buffer, Godot.Core.File.get_csv_line,
+        Godot.Core.File.get_double, Godot.Core.File.get_error,
+        Godot.Core.File.get_float, Godot.Core.File.get_len,
+        Godot.Core.File.get_line, Godot.Core.File.get_md5,
+        Godot.Core.File.get_modified_time,
         Godot.Core.File.get_pascal_string, Godot.Core.File.get_path,
         Godot.Core.File.get_path_absolute, Godot.Core.File.get_position,
         Godot.Core.File.get_real, Godot.Core.File.get_sha256,
@@ -69,8 +70,9 @@ _COMPRESSION_ZSTD = 2
 
 {-# NOINLINE bindFile_get_endian_swap #-}
 
--- | If @true@, the file's endianness is swapped. Use this if you're dealing with files written on big-endian machines.
---   			__Note:__ This is about the file format, not CPU type. This is always reset to @false@ whenever you open the file.
+-- | If @true@, the file is read with big-endian @url=https://en.wikipedia.org/wiki/Endianness@endianness@/url@. If @false@, the file is read with little-endian endianness. If in doubt, leave this to @false@ as most files are written with little-endian endianness.
+--   			__Note:__ @endian_swap@ is only about the file format, not the CPU type. The CPU endianness doesn't affect the default endianness for files written.
+--   			__Note:__ This is always reset to @false@ whenever you open the file. Therefore, you must set @endian_swap@ @i@after@/i@ opening the file, not before.
 bindFile_get_endian_swap :: MethodBind
 bindFile_get_endian_swap
   = unsafePerformIO $
@@ -80,8 +82,9 @@ bindFile_get_endian_swap
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | If @true@, the file's endianness is swapped. Use this if you're dealing with files written on big-endian machines.
---   			__Note:__ This is about the file format, not CPU type. This is always reset to @false@ whenever you open the file.
+-- | If @true@, the file is read with big-endian @url=https://en.wikipedia.org/wiki/Endianness@endianness@/url@. If @false@, the file is read with little-endian endianness. If in doubt, leave this to @false@ as most files are written with little-endian endianness.
+--   			__Note:__ @endian_swap@ is only about the file format, not the CPU type. The CPU endianness doesn't affect the default endianness for files written.
+--   			__Note:__ This is always reset to @false@ whenever you open the file. Therefore, you must set @endian_swap@ @i@after@/i@ opening the file, not before.
 get_endian_swap :: (File :< cls, Object :< cls) => cls -> IO Bool
 get_endian_swap cls
   = withVariantArray []
@@ -95,8 +98,9 @@ instance NodeMethod File "get_endian_swap" '[] (IO Bool) where
 
 {-# NOINLINE bindFile_set_endian_swap #-}
 
--- | If @true@, the file's endianness is swapped. Use this if you're dealing with files written on big-endian machines.
---   			__Note:__ This is about the file format, not CPU type. This is always reset to @false@ whenever you open the file.
+-- | If @true@, the file is read with big-endian @url=https://en.wikipedia.org/wiki/Endianness@endianness@/url@. If @false@, the file is read with little-endian endianness. If in doubt, leave this to @false@ as most files are written with little-endian endianness.
+--   			__Note:__ @endian_swap@ is only about the file format, not the CPU type. The CPU endianness doesn't affect the default endianness for files written.
+--   			__Note:__ This is always reset to @false@ whenever you open the file. Therefore, you must set @endian_swap@ @i@after@/i@ opening the file, not before.
 bindFile_set_endian_swap :: MethodBind
 bindFile_set_endian_swap
   = unsafePerformIO $
@@ -106,8 +110,9 @@ bindFile_set_endian_swap
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | If @true@, the file's endianness is swapped. Use this if you're dealing with files written on big-endian machines.
---   			__Note:__ This is about the file format, not CPU type. This is always reset to @false@ whenever you open the file.
+-- | If @true@, the file is read with big-endian @url=https://en.wikipedia.org/wiki/Endianness@endianness@/url@. If @false@, the file is read with little-endian endianness. If in doubt, leave this to @false@ as most files are written with little-endian endianness.
+--   			__Note:__ @endian_swap@ is only about the file format, not the CPU type. The CPU endianness doesn't affect the default endianness for files written.
+--   			__Note:__ This is always reset to @false@ whenever you open the file. Therefore, you must set @endian_swap@ @i@after@/i@ opening the file, not before.
 set_endian_swap ::
                   (File :< cls, Object :< cls) => cls -> Bool -> IO ()
 set_endian_swap cls arg1
@@ -126,7 +131,7 @@ instance NodeProperty File "endian_swap" Bool 'False where
 
 {-# NOINLINE bindFile_close #-}
 
--- | Closes the currently opened file.
+-- | Closes the currently opened file and prevents subsequent read/write operations. Use @method flush@ to persist the data to disk without closing the file.
 bindFile_close :: MethodBind
 bindFile_close
   = unsafePerformIO $
@@ -136,7 +141,7 @@ bindFile_close
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Closes the currently opened file.
+-- | Closes the currently opened file and prevents subsequent read/write operations. Use @method flush@ to persist the data to disk without closing the file.
 close :: (File :< cls, Object :< cls) => cls -> IO ()
 close cls
   = withVariantArray []
@@ -175,7 +180,7 @@ instance NodeMethod File "eof_reached" '[] (IO Bool) where
 {-# NOINLINE bindFile_file_exists #-}
 
 -- | Returns @true@ if the file exists in the given path.
---   				__Note:__ Many resources types are imported (e.g. textures or sound files), and that their source asset will not be included in the exported game, as only the imported version is used (in the @res://.import@ folder). To check for the existence of such resources while taking into account the remapping to their imported location, use @method ResourceLoader.exists@. Typically, using @File.file_exists@ on an imported resource would work while you are developing in the editor (the source asset is present in @res://@, but fail when exported).
+--   				__Note:__ Many resources types are imported (e.g. textures or sound files), and their source asset will not be included in the exported game, as only the imported version is used. See @method ResourceLoader.exists@ for an alternative approach that takes resource remapping into account.
 bindFile_file_exists :: MethodBind
 bindFile_file_exists
   = unsafePerformIO $
@@ -186,7 +191,7 @@ bindFile_file_exists
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
 -- | Returns @true@ if the file exists in the given path.
---   				__Note:__ Many resources types are imported (e.g. textures or sound files), and that their source asset will not be included in the exported game, as only the imported version is used (in the @res://.import@ folder). To check for the existence of such resources while taking into account the remapping to their imported location, use @method ResourceLoader.exists@. Typically, using @File.file_exists@ on an imported resource would work while you are developing in the editor (the source asset is present in @res://@, but fail when exported).
+--   				__Note:__ Many resources types are imported (e.g. textures or sound files), and their source asset will not be included in the exported game, as only the imported version is used. See @method ResourceLoader.exists@ for an alternative approach that takes resource remapping into account.
 file_exists ::
               (File :< cls, Object :< cls) => cls -> GodotString -> IO Bool
 file_exists cls arg1
@@ -198,6 +203,31 @@ file_exists cls arg1
 instance NodeMethod File "file_exists" '[GodotString] (IO Bool)
          where
         nodeMethod = Godot.Core.File.file_exists
+
+{-# NOINLINE bindFile_flush #-}
+
+-- | Writes the file's buffer to disk. Flushing is automatically performed when the file is closed. This means you don't need to call @method flush@ manually before closing a file using @method close@. Still, calling @method flush@ can be used to ensure the data is safe even if the project crashes instead of being closed gracefully.
+--   				__Note:__ Only call @method flush@ when you actually need it. Otherwise, it will decrease performance due to constant disk writes.
+bindFile_flush :: MethodBind
+bindFile_flush
+  = unsafePerformIO $
+      withCString "_File" $
+        \ clsNamePtr ->
+          withCString "flush" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Writes the file's buffer to disk. Flushing is automatically performed when the file is closed. This means you don't need to call @method flush@ manually before closing a file using @method close@. Still, calling @method flush@ can be used to ensure the data is safe even if the project crashes instead of being closed gracefully.
+--   				__Note:__ Only call @method flush@ when you actually need it. Otherwise, it will decrease performance due to constant disk writes.
+flush :: (File :< cls, Object :< cls) => cls -> IO ()
+flush cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindFile_flush (upcast cls) arrPtr len >>=
+           \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod File "flush" '[] (IO ()) where
+        nodeMethod = Godot.Core.File.flush
 
 {-# NOINLINE bindFile_get_16 #-}
 
@@ -774,6 +804,7 @@ instance NodeMethod File "open" '[GodotString, Int] (IO Int) where
 {-# NOINLINE bindFile_open_compressed #-}
 
 -- | Opens a compressed file for reading or writing.
+--   				__Note:__ @method open_compressed@ can only read files that were saved by Godot, not third-party compression formats. See @url=https://github.com/godotengine/godot/issues/28999@GitHub issue #28999@/url@ for a workaround.
 bindFile_open_compressed :: MethodBind
 bindFile_open_compressed
   = unsafePerformIO $
@@ -784,6 +815,7 @@ bindFile_open_compressed
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
 -- | Opens a compressed file for reading or writing.
+--   				__Note:__ @method open_compressed@ can only read files that were saved by Godot, not third-party compression formats. See @url=https://github.com/godotengine/godot/issues/28999@GitHub issue #28999@/url@ for a workaround.
 open_compressed ::
                   (File :< cls, Object :< cls) =>
                   cls -> GodotString -> Int -> Maybe Int -> IO Int
@@ -1170,8 +1202,7 @@ instance NodeMethod File "store_float" '[Float] (IO ()) where
 
 {-# NOINLINE bindFile_store_line #-}
 
--- | Stores the given @String@ as a line in the file.
---   				Text will be encoded as UTF-8.
+-- | Appends @line@ to the file followed by a line return character (@\n@), encoding the text as UTF-8.
 bindFile_store_line :: MethodBind
 bindFile_store_line
   = unsafePerformIO $
@@ -1181,8 +1212,7 @@ bindFile_store_line
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Stores the given @String@ as a line in the file.
---   				Text will be encoded as UTF-8.
+-- | Appends @line@ to the file followed by a line return character (@\n@), encoding the text as UTF-8.
 store_line ::
              (File :< cls, Object :< cls) => cls -> GodotString -> IO ()
 store_line cls arg1
@@ -1249,8 +1279,7 @@ instance NodeMethod File "store_real" '[Float] (IO ()) where
 
 {-# NOINLINE bindFile_store_string #-}
 
--- | Stores the given @String@ in the file.
---   				Text will be encoded as UTF-8.
+-- | Appends @string@ to the file without a line return, encoding the text as UTF-8.
 bindFile_store_string :: MethodBind
 bindFile_store_string
   = unsafePerformIO $
@@ -1260,8 +1289,7 @@ bindFile_store_string
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Stores the given @String@ in the file.
---   				Text will be encoded as UTF-8.
+-- | Appends @string@ to the file without a line return, encoding the text as UTF-8.
 store_string ::
                (File :< cls, Object :< cls) => cls -> GodotString -> IO ()
 store_string cls arg1

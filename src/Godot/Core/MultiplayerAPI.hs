@@ -26,6 +26,7 @@ module Godot.Core.MultiplayerAPI
         Godot.Core.MultiplayerAPI.get_network_connected_peers,
         Godot.Core.MultiplayerAPI.get_network_peer,
         Godot.Core.MultiplayerAPI.get_network_unique_id,
+        Godot.Core.MultiplayerAPI.get_root_node,
         Godot.Core.MultiplayerAPI.get_rpc_sender_id,
         Godot.Core.MultiplayerAPI.has_network_peer,
         Godot.Core.MultiplayerAPI.is_network_server,
@@ -149,6 +150,10 @@ instance NodeProperty MultiplayerAPI
         nodeProperty
           = (is_refusing_new_network_connections,
              wrapDroppingSetter set_refuse_new_network_connections, Nothing)
+
+instance NodeProperty MultiplayerAPI "root_node" Node 'False where
+        nodeProperty
+          = (get_root_node, wrapDroppingSetter set_root_node, Nothing)
 
 {-# NOINLINE bindMultiplayerAPI__add_peer #-}
 
@@ -391,6 +396,36 @@ instance NodeMethod MultiplayerAPI "get_network_unique_id" '[]
            (IO Int)
          where
         nodeMethod = Godot.Core.MultiplayerAPI.get_network_unique_id
+
+{-# NOINLINE bindMultiplayerAPI_get_root_node #-}
+
+-- | The root node to use for RPCs. Instead of an absolute path, a relative path will be used to find the node upon which the RPC should be executed.
+--   			This effectively allows to have different branches of the scene tree to be managed by different MultiplayerAPI, allowing for example to run both client and server in the same scene.
+bindMultiplayerAPI_get_root_node :: MethodBind
+bindMultiplayerAPI_get_root_node
+  = unsafePerformIO $
+      withCString "MultiplayerAPI" $
+        \ clsNamePtr ->
+          withCString "get_root_node" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | The root node to use for RPCs. Instead of an absolute path, a relative path will be used to find the node upon which the RPC should be executed.
+--   			This effectively allows to have different branches of the scene tree to be managed by different MultiplayerAPI, allowing for example to run both client and server in the same scene.
+get_root_node ::
+                (MultiplayerAPI :< cls, Object :< cls) => cls -> IO Node
+get_root_node cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindMultiplayerAPI_get_root_node
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod MultiplayerAPI "get_root_node" '[] (IO Node)
+         where
+        nodeMethod = Godot.Core.MultiplayerAPI.get_root_node
 
 {-# NOINLINE bindMultiplayerAPI_get_rpc_sender_id #-}
 
@@ -703,8 +738,8 @@ instance NodeMethod MultiplayerAPI
 
 {-# NOINLINE bindMultiplayerAPI_set_root_node #-}
 
--- | Sets the base root node to use for RPCs. Instead of an absolute path, a relative path will be used to find the node upon which the RPC should be executed.
---   				This effectively allows to have different branches of the scene tree to be managed by different MultiplayerAPI, allowing for example to run both client and server in the same scene.
+-- | The root node to use for RPCs. Instead of an absolute path, a relative path will be used to find the node upon which the RPC should be executed.
+--   			This effectively allows to have different branches of the scene tree to be managed by different MultiplayerAPI, allowing for example to run both client and server in the same scene.
 bindMultiplayerAPI_set_root_node :: MethodBind
 bindMultiplayerAPI_set_root_node
   = unsafePerformIO $
@@ -714,8 +749,8 @@ bindMultiplayerAPI_set_root_node
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Sets the base root node to use for RPCs. Instead of an absolute path, a relative path will be used to find the node upon which the RPC should be executed.
---   				This effectively allows to have different branches of the scene tree to be managed by different MultiplayerAPI, allowing for example to run both client and server in the same scene.
+-- | The root node to use for RPCs. Instead of an absolute path, a relative path will be used to find the node upon which the RPC should be executed.
+--   			This effectively allows to have different branches of the scene tree to be managed by different MultiplayerAPI, allowing for example to run both client and server in the same scene.
 set_root_node ::
                 (MultiplayerAPI :< cls, Object :< cls) => cls -> Node -> IO ()
 set_root_node cls arg1

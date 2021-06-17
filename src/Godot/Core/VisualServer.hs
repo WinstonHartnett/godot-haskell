@@ -4,6 +4,7 @@
 module Godot.Core.VisualServer
        (Godot.Core.VisualServer._ARRAY_COMPRESS_WEIGHTS,
         Godot.Core.VisualServer._ARRAY_FLAG_USE_16_BIT_BONES,
+        Godot.Core.VisualServer._INFO_2D_DRAW_CALLS_IN_FRAME,
         Godot.Core.VisualServer._VIEWPORT_UPDATE_ALWAYS,
         Godot.Core.VisualServer._ARRAY_FORMAT_INDEX,
         Godot.Core.VisualServer._INFO_SURFACE_CHANGES_IN_FRAME,
@@ -36,9 +37,11 @@ module Godot.Core.VisualServer
         Godot.Core.VisualServer._VIEWPORT_DEBUG_DRAW_DISABLED,
         Godot.Core.VisualServer._CANVAS_ITEM_Z_MIN,
         Godot.Core.VisualServer._VIEWPORT_MSAA_8X,
+        Godot.Core.VisualServer._LIGHT_BAKE_ALL,
         Godot.Core.VisualServer._INFO_MATERIAL_CHANGES_IN_FRAME,
         Godot.Core.VisualServer._MAX_GLOW_LEVELS,
         Godot.Core.VisualServer._LIGHT_OMNI_SHADOW_DETAIL_HORIZONTAL,
+        Godot.Core.VisualServer._VIEWPORT_RENDER_INFO_2D_DRAW_CALLS_IN_FRAME,
         Godot.Core.VisualServer._TEXTURE_TYPE_CUBEMAP,
         Godot.Core.VisualServer._VIEWPORT_RENDER_INFO_SURFACE_CHANGES_IN_FRAME,
         Godot.Core.VisualServer._ARRAY_COMPRESS_TEX_UV,
@@ -117,6 +120,7 @@ module Godot.Core.VisualServer
         Godot.Core.VisualServer._VIEWPORT_RENDER_INFO_VERTICES_IN_FRAME,
         Godot.Core.VisualServer._MULTIMESH_CUSTOM_DATA_NONE,
         Godot.Core.VisualServer._LIGHT_OMNI,
+        Godot.Core.VisualServer._INFO_2D_ITEMS_IN_FRAME,
         Godot.Core.VisualServer._ENV_BG_MAX,
         Godot.Core.VisualServer._INSTANCE_REFLECTION_PROBE,
         Godot.Core.VisualServer._INFO_TEXTURE_MEM_USED,
@@ -141,6 +145,7 @@ module Godot.Core.VisualServer
         Godot.Core.VisualServer._PRIMITIVE_MAX,
         Godot.Core.VisualServer._LIGHT_PARAM_CONTACT_SHADOW_SIZE,
         Godot.Core.VisualServer._INSTANCE_MAX,
+        Godot.Core.VisualServer._VIEWPORT_RENDER_INFO_2D_ITEMS_IN_FRAME,
         Godot.Core.VisualServer._ENV_SSAO_BLUR_3x3,
         Godot.Core.VisualServer._ARRAY_WEIGHTS,
         Godot.Core.VisualServer._LIGHT_PARAM_MAX,
@@ -191,6 +196,7 @@ module Godot.Core.VisualServer
         Godot.Core.VisualServer._VIEWPORT_RENDER_INFO_DRAW_CALLS_IN_FRAME,
         Godot.Core.VisualServer._ARRAY_BONES,
         Godot.Core.VisualServer._LIGHT_PARAM_ATTENUATION,
+        Godot.Core.VisualServer._LIGHT_BAKE_DISABLED,
         Godot.Core.VisualServer._VIEWPORT_DEBUG_DRAW_WIREFRAME,
         Godot.Core.VisualServer._CANVAS_LIGHT_MODE_MIX,
         Godot.Core.VisualServer._NINE_PATCH_TILE,
@@ -207,6 +213,7 @@ module Godot.Core.VisualServer
         Godot.Core.VisualServer._NO_INDEX_ARRAY,
         Godot.Core.VisualServer._ARRAY_VERTEX,
         Godot.Core.VisualServer._ARRAY_FLAG_USE_2D_VERTICES,
+        Godot.Core.VisualServer._LIGHT_BAKE_INDIRECT,
         Godot.Core.VisualServer._CANVAS_LIGHT_FILTER_PCF5,
         Godot.Core.VisualServer._LIGHT_DIRECTIONAL,
         Godot.Core.VisualServer._ARRAY_COMPRESS_INDEX,
@@ -390,11 +397,13 @@ module Godot.Core.VisualServer
         Godot.Core.VisualServer.instances_cull_aabb,
         Godot.Core.VisualServer.instances_cull_convex,
         Godot.Core.VisualServer.instances_cull_ray,
+        Godot.Core.VisualServer.is_render_loop_enabled,
         Godot.Core.VisualServer.light_directional_set_blend_splits,
         Godot.Core.VisualServer.light_directional_set_shadow_depth_range_mode,
         Godot.Core.VisualServer.light_directional_set_shadow_mode,
         Godot.Core.VisualServer.light_omni_set_shadow_detail,
         Godot.Core.VisualServer.light_omni_set_shadow_mode,
+        Godot.Core.VisualServer.light_set_bake_mode,
         Godot.Core.VisualServer.light_set_color,
         Godot.Core.VisualServer.light_set_cull_mask,
         Godot.Core.VisualServer.light_set_negative,
@@ -410,8 +419,10 @@ module Godot.Core.VisualServer
         Godot.Core.VisualServer.lightmap_capture_get_octree,
         Godot.Core.VisualServer.lightmap_capture_get_octree_cell_subdiv,
         Godot.Core.VisualServer.lightmap_capture_get_octree_cell_transform,
+        Godot.Core.VisualServer.lightmap_capture_is_interior,
         Godot.Core.VisualServer.lightmap_capture_set_bounds,
         Godot.Core.VisualServer.lightmap_capture_set_energy,
+        Godot.Core.VisualServer.lightmap_capture_set_interior,
         Godot.Core.VisualServer.lightmap_capture_set_octree,
         Godot.Core.VisualServer.lightmap_capture_set_octree_cell_subdiv,
         Godot.Core.VisualServer.lightmap_capture_set_octree_cell_transform,
@@ -514,6 +525,8 @@ module Godot.Core.VisualServer
         Godot.Core.VisualServer.set_boot_image,
         Godot.Core.VisualServer.set_debug_generate_wireframes,
         Godot.Core.VisualServer.set_default_clear_color,
+        Godot.Core.VisualServer.set_render_loop_enabled,
+        Godot.Core.VisualServer.set_shader_time_scale,
         Godot.Core.VisualServer.shader_create,
         Godot.Core.VisualServer.shader_get_code,
         Godot.Core.VisualServer.shader_get_default_texture_param,
@@ -582,6 +595,8 @@ module Godot.Core.VisualServer
         Godot.Core.VisualServer.viewport_set_update_mode,
         Godot.Core.VisualServer.viewport_set_usage,
         Godot.Core.VisualServer.viewport_set_use_arvr,
+        Godot.Core.VisualServer.viewport_set_use_debanding,
+        Godot.Core.VisualServer.viewport_set_use_fxaa,
         Godot.Core.VisualServer.viewport_set_vflip)
        where
 import Data.Coerce
@@ -601,6 +616,9 @@ _ARRAY_COMPRESS_WEIGHTS = 65536
 
 _ARRAY_FLAG_USE_16_BIT_BONES :: Int
 _ARRAY_FLAG_USE_16_BIT_BONES = 524288
+
+_INFO_2D_DRAW_CALLS_IN_FRAME :: Int
+_INFO_2D_DRAW_CALLS_IN_FRAME = 7
 
 _VIEWPORT_UPDATE_ALWAYS :: Int
 _VIEWPORT_UPDATE_ALWAYS = 3
@@ -642,7 +660,7 @@ _VIEWPORT_CLEAR_NEVER :: Int
 _VIEWPORT_CLEAR_NEVER = 1
 
 _TEXTURE_TYPE_2D_ARRAY :: Int
-_TEXTURE_TYPE_2D_ARRAY = 2
+_TEXTURE_TYPE_2D_ARRAY = 3
 
 _INSTANCE_GEOMETRY_MASK :: Int
 _INSTANCE_GEOMETRY_MASK = 30
@@ -698,6 +716,9 @@ _CANVAS_ITEM_Z_MIN = -4096
 _VIEWPORT_MSAA_8X :: Int
 _VIEWPORT_MSAA_8X = 3
 
+_LIGHT_BAKE_ALL :: Int
+_LIGHT_BAKE_ALL = 2
+
 _INFO_MATERIAL_CHANGES_IN_FRAME :: Int
 _INFO_MATERIAL_CHANGES_IN_FRAME = 2
 
@@ -707,8 +728,11 @@ _MAX_GLOW_LEVELS = 7
 _LIGHT_OMNI_SHADOW_DETAIL_HORIZONTAL :: Int
 _LIGHT_OMNI_SHADOW_DETAIL_HORIZONTAL = 1
 
+_VIEWPORT_RENDER_INFO_2D_DRAW_CALLS_IN_FRAME :: Int
+_VIEWPORT_RENDER_INFO_2D_DRAW_CALLS_IN_FRAME = 7
+
 _TEXTURE_TYPE_CUBEMAP :: Int
-_TEXTURE_TYPE_CUBEMAP = 1
+_TEXTURE_TYPE_CUBEMAP = 2
 
 _VIEWPORT_RENDER_INFO_SURFACE_CHANGES_IN_FRAME :: Int
 _VIEWPORT_RENDER_INFO_SURFACE_CHANGES_IN_FRAME = 4
@@ -744,7 +768,7 @@ _NINE_PATCH_STRETCH :: Int
 _NINE_PATCH_STRETCH = 0
 
 _INFO_USAGE_VIDEO_MEM_TOTAL :: Int
-_INFO_USAGE_VIDEO_MEM_TOTAL = 6
+_INFO_USAGE_VIDEO_MEM_TOTAL = 8
 
 _ARRAY_NORMAL :: Int
 _ARRAY_NORMAL = 1
@@ -804,7 +828,7 @@ _PRIMITIVE_TRIANGLE_STRIP :: Int
 _PRIMITIVE_TRIANGLE_STRIP = 5
 
 _VIEWPORT_RENDER_INFO_MAX :: Int
-_VIEWPORT_RENDER_INFO_MAX = 6
+_VIEWPORT_RENDER_INFO_MAX = 8
 
 _PRIMITIVE_TRIANGLES :: Int
 _PRIMITIVE_TRIANGLES = 4
@@ -941,6 +965,9 @@ _MULTIMESH_CUSTOM_DATA_NONE = 0
 _LIGHT_OMNI :: Int
 _LIGHT_OMNI = 1
 
+_INFO_2D_ITEMS_IN_FRAME :: Int
+_INFO_2D_ITEMS_IN_FRAME = 6
+
 _ENV_BG_MAX :: Int
 _ENV_BG_MAX = 7
 
@@ -948,7 +975,7 @@ _INSTANCE_REFLECTION_PROBE :: Int
 _INSTANCE_REFLECTION_PROBE = 6
 
 _INFO_TEXTURE_MEM_USED :: Int
-_INFO_TEXTURE_MEM_USED = 8
+_INFO_TEXTURE_MEM_USED = 10
 
 _INSTANCE_NONE :: Int
 _INSTANCE_NONE = 0
@@ -981,7 +1008,7 @@ _INFO_VERTICES_IN_FRAME :: Int
 _INFO_VERTICES_IN_FRAME = 1
 
 _INFO_VIDEO_MEM_USED :: Int
-_INFO_VIDEO_MEM_USED = 7
+_INFO_VIDEO_MEM_USED = 9
 
 _GLOW_BLEND_MODE_REPLACE :: Int
 _GLOW_BLEND_MODE_REPLACE = 3
@@ -1012,6 +1039,9 @@ _LIGHT_PARAM_CONTACT_SHADOW_SIZE = 7
 
 _INSTANCE_MAX :: Int
 _INSTANCE_MAX = 9
+
+_VIEWPORT_RENDER_INFO_2D_ITEMS_IN_FRAME :: Int
+_VIEWPORT_RENDER_INFO_2D_ITEMS_IN_FRAME = 6
 
 _ENV_SSAO_BLUR_3x3 :: Int
 _ENV_SSAO_BLUR_3x3 = 3
@@ -1104,7 +1134,7 @@ _INSTANCE_LIGHT :: Int
 _INSTANCE_LIGHT = 5
 
 _TEXTURE_TYPE_3D :: Int
-_TEXTURE_TYPE_3D = 3
+_TEXTURE_TYPE_3D = 4
 
 _TEXTURE_FLAG_MIPMAPS :: Int
 _TEXTURE_FLAG_MIPMAPS = 1
@@ -1128,7 +1158,7 @@ _TEXTURE_FLAG_USED_FOR_STREAMING :: Int
 _TEXTURE_FLAG_USED_FOR_STREAMING = 2048
 
 _INFO_VERTEX_MEM_USED :: Int
-_INFO_VERTEX_MEM_USED = 9
+_INFO_VERTEX_MEM_USED = 11
 
 _TEXTURE_FLAG_MIRRORED_REPEAT :: Int
 _TEXTURE_FLAG_MIRRORED_REPEAT = 32
@@ -1162,6 +1192,9 @@ _ARRAY_BONES = 6
 
 _LIGHT_PARAM_ATTENUATION :: Int
 _LIGHT_PARAM_ATTENUATION = 4
+
+_LIGHT_BAKE_DISABLED :: Int
+_LIGHT_BAKE_DISABLED = 0
 
 _VIEWPORT_DEBUG_DRAW_WIREFRAME :: Int
 _VIEWPORT_DEBUG_DRAW_WIREFRAME = 3
@@ -1211,6 +1244,9 @@ _ARRAY_VERTEX = 0
 _ARRAY_FLAG_USE_2D_VERTICES :: Int
 _ARRAY_FLAG_USE_2D_VERTICES = 262144
 
+_LIGHT_BAKE_INDIRECT :: Int
+_LIGHT_BAKE_INDIRECT = 1
+
 _CANVAS_LIGHT_FILTER_PCF5 :: Int
 _CANVAS_LIGHT_FILTER_PCF5 = 2
 
@@ -1254,6 +1290,13 @@ sig_frame_pre_draw
   = Godot.Internal.Dispatch.Signal "frame_pre_draw"
 
 instance NodeSignal VisualServer "frame_pre_draw" '[]
+
+instance NodeProperty VisualServer "render_loop_enabled" Bool
+           'False
+         where
+        nodeProperty
+          = (is_render_loop_enabled,
+             wrapDroppingSetter set_render_loop_enabled, Nothing)
 
 {-# NOINLINE bindVisualServer_black_bars_set_images #-}
 
@@ -5583,7 +5626,8 @@ instance NodeMethod VisualServer "has_feature" '[Int] (IO Bool)
 
 {-# NOINLINE bindVisualServer_has_os_feature #-}
 
--- | Returns @true@ if the OS supports a certain feature. Features might be @s3tc@, @etc@, @etc2@ and @pvrtc@.
+-- | Returns @true@ if the OS supports a certain feature. Features might be @s3tc@, @etc@, @etc2@, @pvrtc@ and @skinning_fallback@.
+--   				When rendering with GLES2, returns @true@ with @skinning_fallback@ in case the hardware doesn't support the default GPU skinning process.
 bindVisualServer_has_os_feature :: MethodBind
 bindVisualServer_has_os_feature
   = unsafePerformIO $
@@ -5593,7 +5637,8 @@ bindVisualServer_has_os_feature
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Returns @true@ if the OS supports a certain feature. Features might be @s3tc@, @etc@, @etc2@ and @pvrtc@.
+-- | Returns @true@ if the OS supports a certain feature. Features might be @s3tc@, @etc@, @etc2@, @pvrtc@ and @skinning_fallback@.
+--   				When rendering with GLES2, returns @true@ with @skinning_fallback@ in case the hardware doesn't support the default GPU skinning process.
 has_os_feature ::
                  (VisualServer :< cls, Object :< cls) =>
                  cls -> GodotString -> IO Bool
@@ -6448,7 +6493,7 @@ instance NodeMethod VisualServer "instance_set_exterior"
 {-# NOINLINE bindVisualServer_instance_set_extra_visibility_margin
              #-}
 
--- | Sets a margin to increase the size of the AABB when culling objects from the view frustum. This allows you avoid culling objects that fall outside the view frustum. Equivalent to @GeometryInstance.extra_cull_margin@.
+-- | Sets a margin to increase the size of the AABB when culling objects from the view frustum. This allows you to avoid culling objects that fall outside the view frustum. Equivalent to @GeometryInstance.extra_cull_margin@.
 bindVisualServer_instance_set_extra_visibility_margin :: MethodBind
 bindVisualServer_instance_set_extra_visibility_margin
   = unsafePerformIO $
@@ -6458,7 +6503,7 @@ bindVisualServer_instance_set_extra_visibility_margin
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Sets a margin to increase the size of the AABB when culling objects from the view frustum. This allows you avoid culling objects that fall outside the view frustum. Equivalent to @GeometryInstance.extra_cull_margin@.
+-- | Sets a margin to increase the size of the AABB when culling objects from the view frustum. This allows you to avoid culling objects that fall outside the view frustum. Equivalent to @GeometryInstance.extra_cull_margin@.
 instance_set_extra_visibility_margin ::
                                        (VisualServer :< cls, Object :< cls) =>
                                        cls -> Rid -> Float -> IO ()
@@ -6618,9 +6663,12 @@ bindVisualServer_instance_set_use_lightmap
 -- | Sets the lightmap to use with this instance.
 instance_set_use_lightmap ::
                             (VisualServer :< cls, Object :< cls) =>
-                            cls -> Rid -> Rid -> Rid -> IO ()
-instance_set_use_lightmap cls arg1 arg2 arg3
-  = withVariantArray [toVariant arg1, toVariant arg2, toVariant arg3]
+                            cls -> Rid -> Rid -> Rid -> Maybe Int -> Maybe Rect2 -> IO ()
+instance_set_use_lightmap cls arg1 arg2 arg3 arg4 arg5
+  = withVariantArray
+      [toVariant arg1, toVariant arg2, toVariant arg3,
+       maybe (VariantInt (-1)) toVariant arg4,
+       defaultedVariant VariantRect2 (V2 (V2 0 0) (V2 1 1)) arg5]
       (\ (arrPtr, len) ->
          godot_method_bind_call bindVisualServer_instance_set_use_lightmap
            (upcast cls)
@@ -6629,7 +6677,7 @@ instance_set_use_lightmap cls arg1 arg2 arg3
            >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
 
 instance NodeMethod VisualServer "instance_set_use_lightmap"
-           '[Rid, Rid, Rid]
+           '[Rid, Rid, Rid, Maybe Int, Maybe Rect2]
            (IO ())
          where
         nodeMethod = Godot.Core.VisualServer.instance_set_use_lightmap
@@ -6765,6 +6813,35 @@ instance NodeMethod VisualServer "instances_cull_ray"
            (IO Array)
          where
         nodeMethod = Godot.Core.VisualServer.instances_cull_ray
+
+{-# NOINLINE bindVisualServer_is_render_loop_enabled #-}
+
+-- | If @false@, disables rendering completely, but the engine logic is still being processed. You can call @method force_draw@ to draw a frame even with rendering disabled.
+bindVisualServer_is_render_loop_enabled :: MethodBind
+bindVisualServer_is_render_loop_enabled
+  = unsafePerformIO $
+      withCString "VisualServer" $
+        \ clsNamePtr ->
+          withCString "is_render_loop_enabled" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | If @false@, disables rendering completely, but the engine logic is still being processed. You can call @method force_draw@ to draw a frame even with rendering disabled.
+is_render_loop_enabled ::
+                         (VisualServer :< cls, Object :< cls) => cls -> IO Bool
+is_render_loop_enabled cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindVisualServer_is_render_loop_enabled
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod VisualServer "is_render_loop_enabled" '[]
+           (IO Bool)
+         where
+        nodeMethod = Godot.Core.VisualServer.is_render_loop_enabled
 
 {-# NOINLINE bindVisualServer_light_directional_set_blend_splits
              #-}
@@ -6931,6 +7008,35 @@ instance NodeMethod VisualServer "light_omni_set_shadow_mode"
            (IO ())
          where
         nodeMethod = Godot.Core.VisualServer.light_omni_set_shadow_mode
+
+{-# NOINLINE bindVisualServer_light_set_bake_mode #-}
+
+-- | Sets the bake mode for this light, see @enum LightBakeMode@ for options. The bake mode affects how the light will be baked in @BakedLightmap@s and @GIProbe@s.
+bindVisualServer_light_set_bake_mode :: MethodBind
+bindVisualServer_light_set_bake_mode
+  = unsafePerformIO $
+      withCString "VisualServer" $
+        \ clsNamePtr ->
+          withCString "light_set_bake_mode" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Sets the bake mode for this light, see @enum LightBakeMode@ for options. The bake mode affects how the light will be baked in @BakedLightmap@s and @GIProbe@s.
+light_set_bake_mode ::
+                      (VisualServer :< cls, Object :< cls) => cls -> Rid -> Int -> IO ()
+light_set_bake_mode cls arg1 arg2
+  = withVariantArray [toVariant arg1, toVariant arg2]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindVisualServer_light_set_bake_mode
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod VisualServer "light_set_bake_mode" '[Rid, Int]
+           (IO ())
+         where
+        nodeMethod = Godot.Core.VisualServer.light_set_bake_mode
 
 {-# NOINLINE bindVisualServer_light_set_color #-}
 
@@ -7175,7 +7281,7 @@ instance NodeMethod VisualServer "light_set_shadow_color"
 
 {-# NOINLINE bindVisualServer_light_set_use_gi #-}
 
--- | Sets whether GI probes capture light information from this light.
+-- | Sets whether GI probes capture light information from this light. @i@Deprecated method.@/i@ Use @method light_set_bake_mode@ instead. This method is only kept for compatibility reasons and calls @method light_set_bake_mode@ internally, setting the bake mode to @LIGHT_BAKE_DISABLED@ or @LIGHT_BAKE_INDIRECT@ depending on the given parameter.
 bindVisualServer_light_set_use_gi :: MethodBind
 bindVisualServer_light_set_use_gi
   = unsafePerformIO $
@@ -7185,7 +7291,7 @@ bindVisualServer_light_set_use_gi
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Sets whether GI probes capture light information from this light.
+-- | Sets whether GI probes capture light information from this light. @i@Deprecated method.@/i@ Use @method light_set_bake_mode@ instead. This method is only kept for compatibility reasons and calls @method light_set_bake_mode@ internally, setting the bake mode to @LIGHT_BAKE_DISABLED@ or @LIGHT_BAKE_INDIRECT@ depending on the given parameter.
 light_set_use_gi ::
                    (VisualServer :< cls, Object :< cls) => cls -> Rid -> Bool -> IO ()
 light_set_use_gi cls arg1 arg2
@@ -7398,6 +7504,37 @@ instance NodeMethod VisualServer
         nodeMethod
           = Godot.Core.VisualServer.lightmap_capture_get_octree_cell_transform
 
+{-# NOINLINE bindVisualServer_lightmap_capture_is_interior #-}
+
+-- | Returns @true@ if capture is in "interior" mode.
+bindVisualServer_lightmap_capture_is_interior :: MethodBind
+bindVisualServer_lightmap_capture_is_interior
+  = unsafePerformIO $
+      withCString "VisualServer" $
+        \ clsNamePtr ->
+          withCString "lightmap_capture_is_interior" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Returns @true@ if capture is in "interior" mode.
+lightmap_capture_is_interior ::
+                               (VisualServer :< cls, Object :< cls) => cls -> Rid -> IO Bool
+lightmap_capture_is_interior cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call
+           bindVisualServer_lightmap_capture_is_interior
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod VisualServer "lightmap_capture_is_interior"
+           '[Rid]
+           (IO Bool)
+         where
+        nodeMethod = Godot.Core.VisualServer.lightmap_capture_is_interior
+
 {-# NOINLINE bindVisualServer_lightmap_capture_set_bounds #-}
 
 -- | Sets the size of the area covered by the lightmap capture. Equivalent to @BakedLightmapData.bounds@.
@@ -7458,6 +7595,37 @@ instance NodeMethod VisualServer "lightmap_capture_set_energy"
            (IO ())
          where
         nodeMethod = Godot.Core.VisualServer.lightmap_capture_set_energy
+
+{-# NOINLINE bindVisualServer_lightmap_capture_set_interior #-}
+
+-- | Sets the "interior" mode for this lightmap capture. Equivalent to @BakedLightmapData.interior@.
+bindVisualServer_lightmap_capture_set_interior :: MethodBind
+bindVisualServer_lightmap_capture_set_interior
+  = unsafePerformIO $
+      withCString "VisualServer" $
+        \ clsNamePtr ->
+          withCString "lightmap_capture_set_interior" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Sets the "interior" mode for this lightmap capture. Equivalent to @BakedLightmapData.interior@.
+lightmap_capture_set_interior ::
+                                (VisualServer :< cls, Object :< cls) => cls -> Rid -> Bool -> IO ()
+lightmap_capture_set_interior cls arg1 arg2
+  = withVariantArray [toVariant arg1, toVariant arg2]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call
+           bindVisualServer_lightmap_capture_set_interior
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod VisualServer "lightmap_capture_set_interior"
+           '[Rid, Bool]
+           (IO ())
+         where
+        nodeMethod = Godot.Core.VisualServer.lightmap_capture_set_interior
 
 {-# NOINLINE bindVisualServer_lightmap_capture_set_octree #-}
 
@@ -9806,7 +9974,7 @@ instance NodeMethod VisualServer "particles_set_one_shot"
 
 {-# NOINLINE bindVisualServer_particles_set_pre_process_time #-}
 
--- | Sets the preprocess time for the particles animation. This lets you delay starting an animation until after the particles have begun emitting. Equivalent to @Particles.preprocess@.
+-- | Sets the preprocess time for the particles' animation. This lets you delay starting an animation until after the particles have begun emitting. Equivalent to @Particles.preprocess@.
 bindVisualServer_particles_set_pre_process_time :: MethodBind
 bindVisualServer_particles_set_pre_process_time
   = unsafePerformIO $
@@ -9816,7 +9984,7 @@ bindVisualServer_particles_set_pre_process_time
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Sets the preprocess time for the particles animation. This lets you delay starting an animation until after the particles have begun emitting. Equivalent to @Particles.preprocess@.
+-- | Sets the preprocess time for the particles' animation. This lets you delay starting an animation until after the particles have begun emitting. Equivalent to @Particles.preprocess@.
 particles_set_pre_process_time ::
                                  (VisualServer :< cls, Object :< cls) =>
                                  cls -> Rid -> Float -> IO ()
@@ -10695,6 +10863,66 @@ instance NodeMethod VisualServer "set_default_clear_color" '[Color]
            (IO ())
          where
         nodeMethod = Godot.Core.VisualServer.set_default_clear_color
+
+{-# NOINLINE bindVisualServer_set_render_loop_enabled #-}
+
+-- | If @false@, disables rendering completely, but the engine logic is still being processed. You can call @method force_draw@ to draw a frame even with rendering disabled.
+bindVisualServer_set_render_loop_enabled :: MethodBind
+bindVisualServer_set_render_loop_enabled
+  = unsafePerformIO $
+      withCString "VisualServer" $
+        \ clsNamePtr ->
+          withCString "set_render_loop_enabled" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | If @false@, disables rendering completely, but the engine logic is still being processed. You can call @method force_draw@ to draw a frame even with rendering disabled.
+set_render_loop_enabled ::
+                          (VisualServer :< cls, Object :< cls) => cls -> Bool -> IO ()
+set_render_loop_enabled cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindVisualServer_set_render_loop_enabled
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod VisualServer "set_render_loop_enabled" '[Bool]
+           (IO ())
+         where
+        nodeMethod = Godot.Core.VisualServer.set_render_loop_enabled
+
+{-# NOINLINE bindVisualServer_set_shader_time_scale #-}
+
+-- | Sets the scale to apply to the passage of time for the shaders' @TIME@ builtin.
+--   				The default value is @1.0@, which means @TIME@ will count the real time as it goes by, without narrowing or stretching it.
+bindVisualServer_set_shader_time_scale :: MethodBind
+bindVisualServer_set_shader_time_scale
+  = unsafePerformIO $
+      withCString "VisualServer" $
+        \ clsNamePtr ->
+          withCString "set_shader_time_scale" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Sets the scale to apply to the passage of time for the shaders' @TIME@ builtin.
+--   				The default value is @1.0@, which means @TIME@ will count the real time as it goes by, without narrowing or stretching it.
+set_shader_time_scale ::
+                        (VisualServer :< cls, Object :< cls) => cls -> Float -> IO ()
+set_shader_time_scale cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindVisualServer_set_shader_time_scale
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod VisualServer "set_shader_time_scale" '[Float]
+           (IO ())
+         where
+        nodeMethod = Godot.Core.VisualServer.set_shader_time_scale
 
 {-# NOINLINE bindVisualServer_shader_create #-}
 
@@ -12807,6 +13035,68 @@ instance NodeMethod VisualServer "viewport_set_use_arvr"
            (IO ())
          where
         nodeMethod = Godot.Core.VisualServer.viewport_set_use_arvr
+
+{-# NOINLINE bindVisualServer_viewport_set_use_debanding #-}
+
+-- | If @true@, uses a fast post-processing filter to make banding significantly less visible. In some cases, debanding may introduce a slightly noticeable dithering pattern. It's recommended to enable debanding only when actually needed since the dithering pattern will make lossless-compressed screenshots larger.
+--   				__Note:__ Only available on the GLES3 backend. @Viewport.hdr@ must also be @true@ for debanding to be effective.
+bindVisualServer_viewport_set_use_debanding :: MethodBind
+bindVisualServer_viewport_set_use_debanding
+  = unsafePerformIO $
+      withCString "VisualServer" $
+        \ clsNamePtr ->
+          withCString "viewport_set_use_debanding" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | If @true@, uses a fast post-processing filter to make banding significantly less visible. In some cases, debanding may introduce a slightly noticeable dithering pattern. It's recommended to enable debanding only when actually needed since the dithering pattern will make lossless-compressed screenshots larger.
+--   				__Note:__ Only available on the GLES3 backend. @Viewport.hdr@ must also be @true@ for debanding to be effective.
+viewport_set_use_debanding ::
+                             (VisualServer :< cls, Object :< cls) => cls -> Rid -> Bool -> IO ()
+viewport_set_use_debanding cls arg1 arg2
+  = withVariantArray [toVariant arg1, toVariant arg2]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindVisualServer_viewport_set_use_debanding
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod VisualServer "viewport_set_use_debanding"
+           '[Rid, Bool]
+           (IO ())
+         where
+        nodeMethod = Godot.Core.VisualServer.viewport_set_use_debanding
+
+{-# NOINLINE bindVisualServer_viewport_set_use_fxaa #-}
+
+-- | Enables fast approximate antialiasing for this viewport. FXAA is a popular screen-space antialiasing method, which is fast but will make the image look blurry, especially at lower resolutions. It can still work relatively well at large resolutions such as 1440p and 4K.
+bindVisualServer_viewport_set_use_fxaa :: MethodBind
+bindVisualServer_viewport_set_use_fxaa
+  = unsafePerformIO $
+      withCString "VisualServer" $
+        \ clsNamePtr ->
+          withCString "viewport_set_use_fxaa" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Enables fast approximate antialiasing for this viewport. FXAA is a popular screen-space antialiasing method, which is fast but will make the image look blurry, especially at lower resolutions. It can still work relatively well at large resolutions such as 1440p and 4K.
+viewport_set_use_fxaa ::
+                        (VisualServer :< cls, Object :< cls) => cls -> Rid -> Bool -> IO ()
+viewport_set_use_fxaa cls arg1 arg2
+  = withVariantArray [toVariant arg1, toVariant arg2]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindVisualServer_viewport_set_use_fxaa
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod VisualServer "viewport_set_use_fxaa"
+           '[Rid, Bool]
+           (IO ())
+         where
+        nodeMethod = Godot.Core.VisualServer.viewport_set_use_fxaa
 
 {-# NOINLINE bindVisualServer_viewport_set_vflip #-}
 

@@ -353,7 +353,7 @@ instance NodeMethod BaseButton "get_draw_mode" '[] (IO Int) where
 
 {-# NOINLINE bindBaseButton_get_enabled_focus_mode #-}
 
--- | Focus access mode to use when switching between enabled/disabled (see @Control.focus_mode@ and @disabled@).
+-- | @i@Deprecated.@/i@ This property has been deprecated due to redundancy and no longer has any effect when set. Please use @Control.focus_mode@ instead.
 bindBaseButton_get_enabled_focus_mode :: MethodBind
 bindBaseButton_get_enabled_focus_mode
   = unsafePerformIO $
@@ -363,7 +363,7 @@ bindBaseButton_get_enabled_focus_mode
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Focus access mode to use when switching between enabled/disabled (see @Control.focus_mode@ and @disabled@).
+-- | @i@Deprecated.@/i@ This property has been deprecated due to redundancy and no longer has any effect when set. Please use @Control.focus_mode@ instead.
 get_enabled_focus_mode ::
                          (BaseButton :< cls, Object :< cls) => cls -> IO Int
 get_enabled_focus_mode cls
@@ -681,7 +681,7 @@ instance NodeMethod BaseButton "set_disabled" '[Bool] (IO ()) where
 
 {-# NOINLINE bindBaseButton_set_enabled_focus_mode #-}
 
--- | Focus access mode to use when switching between enabled/disabled (see @Control.focus_mode@ and @disabled@).
+-- | @i@Deprecated.@/i@ This property has been deprecated due to redundancy and no longer has any effect when set. Please use @Control.focus_mode@ instead.
 bindBaseButton_set_enabled_focus_mode :: MethodBind
 bindBaseButton_set_enabled_focus_mode
   = unsafePerformIO $
@@ -691,7 +691,7 @@ bindBaseButton_set_enabled_focus_mode
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Focus access mode to use when switching between enabled/disabled (see @Control.focus_mode@ and @disabled@).
+-- | @i@Deprecated.@/i@ This property has been deprecated due to redundancy and no longer has any effect when set. Please use @Control.focus_mode@ instead.
 set_enabled_focus_mode ::
                          (BaseButton :< cls, Object :< cls) => cls -> Int -> IO ()
 set_enabled_focus_mode cls arg1

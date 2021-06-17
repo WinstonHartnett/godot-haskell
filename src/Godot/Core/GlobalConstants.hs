@@ -5,6 +5,7 @@ module Godot.Core.GlobalConstants
        (Godot.Core.GlobalConstants._KEY_BACKTAB,
         Godot.Core.GlobalConstants._KEY_BRACELEFT,
         Godot.Core.GlobalConstants._OP_MULTIPLY,
+        Godot.Core.GlobalConstants._JOY_BUTTON_17,
         Godot.Core.GlobalConstants._KEY_LAUNCH1,
         Godot.Core.GlobalConstants._KEY_F2,
         Godot.Core.GlobalConstants._TYPE_NIL,
@@ -89,6 +90,7 @@ module Godot.Core.GlobalConstants
         Godot.Core.GlobalConstants._METHOD_FLAG_EDITOR,
         Godot.Core.GlobalConstants._BUTTON_MASK_RIGHT,
         Godot.Core.GlobalConstants._TYPE_STRING,
+        Godot.Core.GlobalConstants._JOY_PADDLE1,
         Godot.Core.GlobalConstants._ERR_BUG,
         Godot.Core.GlobalConstants._KEY_ASCIICIRCUM,
         Godot.Core.GlobalConstants._JOY_DS_A,
@@ -109,6 +111,7 @@ module Godot.Core.GlobalConstants
         Godot.Core.GlobalConstants._KEY_MASK_KPAD,
         Godot.Core.GlobalConstants._OP_XOR,
         Godot.Core.GlobalConstants._KEY_META,
+        Godot.Core.GlobalConstants._JOY_BUTTON_16,
         Godot.Core.GlobalConstants._ERR_INVALID_PARAMETER,
         Godot.Core.GlobalConstants._KEY_LAUNCH0,
         Godot.Core.GlobalConstants._KEY_F3,
@@ -124,6 +127,7 @@ module Godot.Core.GlobalConstants
         Godot.Core.GlobalConstants._KEY_STOP,
         Godot.Core.GlobalConstants._ERR_UNAVAILABLE,
         Godot.Core.GlobalConstants._ERR_ALREADY_IN_USE,
+        Godot.Core.GlobalConstants._JOY_BUTTON_20,
         Godot.Core.GlobalConstants._JOY_DPAD_UP,
         Godot.Core.GlobalConstants._KEY_X,
         Godot.Core.GlobalConstants._KEY_QUOTEDBL,
@@ -169,6 +173,7 @@ module Godot.Core.GlobalConstants
         Godot.Core.GlobalConstants._KEY_HYPER_R,
         Godot.Core.GlobalConstants._KEY_C,
         Godot.Core.GlobalConstants._ERR_CONNECTION_ERROR,
+        Godot.Core.GlobalConstants._JOY_TOUCHPAD,
         Godot.Core.GlobalConstants._OP_BIT_AND,
         Godot.Core.GlobalConstants._JOY_R2,
         Godot.Core.GlobalConstants._KEY_MEDIANEXT,
@@ -208,6 +213,7 @@ module Godot.Core.GlobalConstants
         Godot.Core.GlobalConstants._KEY_NTILDE,
         Godot.Core.GlobalConstants._ERR_METHOD_NOT_FOUND,
         Godot.Core.GlobalConstants._KEY_IGRAVE,
+        Godot.Core.GlobalConstants._JOY_INVALID_OPTION,
         Godot.Core.GlobalConstants._KEY_QUESTION,
         Godot.Core.GlobalConstants._KEY_6,
         Godot.Core.GlobalConstants._KEY_EXCLAM,
@@ -238,6 +244,7 @@ module Godot.Core.GlobalConstants
         Godot.Core.GlobalConstants._KEY_SECTION,
         Godot.Core.GlobalConstants._ERR_TIMEOUT,
         Godot.Core.GlobalConstants._BUTTON_RIGHT,
+        Godot.Core.GlobalConstants._JOY_BUTTON_21,
         Godot.Core.GlobalConstants._KEY_Y,
         Godot.Core.GlobalConstants._ERR_SCRIPT_FAILED,
         Godot.Core.GlobalConstants._KEY_ETH,
@@ -280,6 +287,7 @@ module Godot.Core.GlobalConstants
         Godot.Core.GlobalConstants._KEY_SPACE,
         Godot.Core.GlobalConstants._CORNER_TOP_LEFT,
         Godot.Core.GlobalConstants._KEY_HOME,
+        Godot.Core.GlobalConstants._JOY_PADDLE4,
         Godot.Core.GlobalConstants._KEY_MASCULINE,
         Godot.Core.GlobalConstants._ERR_COMPILATION_FAILED,
         Godot.Core.GlobalConstants._KEY_W,
@@ -310,6 +318,7 @@ module Godot.Core.GlobalConstants
         Godot.Core.GlobalConstants._KEY_AACUTE,
         Godot.Core.GlobalConstants._KEY_SYSREQ,
         Godot.Core.GlobalConstants._KEY_LAUNCHB,
+        Godot.Core.GlobalConstants._JOY_BUTTON_19,
         Godot.Core.GlobalConstants._PROPERTY_USAGE_CATEGORY,
         Godot.Core.GlobalConstants._PROPERTY_USAGE_INTERNATIONALIZED,
         Godot.Core.GlobalConstants._TYPE_OBJECT,
@@ -392,6 +401,7 @@ module Godot.Core.GlobalConstants
         Godot.Core.GlobalConstants._ERR_FILE_CANT_OPEN,
         Godot.Core.GlobalConstants._KEY_LAUNCHE,
         Godot.Core.GlobalConstants._KEY_NUMBERSIGN,
+        Godot.Core.GlobalConstants._JOY_PADDLE3,
         Godot.Core.GlobalConstants._JOY_XBOX_A,
         Godot.Core.GlobalConstants._KEY_KP_SUBTRACT,
         Godot.Core.GlobalConstants._KEY_SHIFT,
@@ -424,6 +434,7 @@ module Godot.Core.GlobalConstants
         Godot.Core.GlobalConstants._KEY_F14,
         Godot.Core.GlobalConstants._METHOD_FLAGS_DEFAULT,
         Godot.Core.GlobalConstants._JOY_AXIS_MAX,
+        Godot.Core.GlobalConstants._JOY_BUTTON_18,
         Godot.Core.GlobalConstants._METHOD_FLAG_REVERSE,
         Godot.Core.GlobalConstants._KEY_GUILLEMOTLEFT,
         Godot.Core.GlobalConstants._TYPE_TRANSFORM,
@@ -457,6 +468,7 @@ module Godot.Core.GlobalConstants
         Godot.Core.GlobalConstants._KEY_F11,
         Godot.Core.GlobalConstants._OP_NOT_EQUAL,
         Godot.Core.GlobalConstants._KEY_OOBLIQUE,
+        Godot.Core.GlobalConstants._JOY_MISC1,
         Godot.Core.GlobalConstants._MIDI_MESSAGE_PITCH_BEND,
         Godot.Core.GlobalConstants._HORIZONTAL,
         Godot.Core.GlobalConstants._KEY_ACUTE,
@@ -472,6 +484,7 @@ module Godot.Core.GlobalConstants
         Godot.Core.GlobalConstants._KEY_ONESUPERIOR,
         Godot.Core.GlobalConstants._KEY_BASSDOWN,
         Godot.Core.GlobalConstants._KEY_ATILDE,
+        Godot.Core.GlobalConstants._JOY_PADDLE2,
         Godot.Core.GlobalConstants._PROPERTY_HINT_MULTILINE_TEXT,
         Godot.Core.GlobalConstants._KEY_LAUNCHMEDIA,
         Godot.Core.GlobalConstants._JOY_DS_B,
@@ -528,6 +541,9 @@ _KEY_BRACELEFT = 123
 
 _OP_MULTIPLY :: Int
 _OP_MULTIPLY = 8
+
+_JOY_BUTTON_17 :: Int
+_JOY_BUTTON_17 = 17
 
 _KEY_LAUNCH1 :: Int
 _KEY_LAUNCH1 = 16777305
@@ -781,6 +797,9 @@ _BUTTON_MASK_RIGHT = 2
 _TYPE_STRING :: Int
 _TYPE_STRING = 4
 
+_JOY_PADDLE1 :: Int
+_JOY_PADDLE1 = 17
+
 _ERR_BUG :: Int
 _ERR_BUG = 47
 
@@ -841,6 +860,9 @@ _OP_XOR = 22
 _KEY_META :: Int
 _KEY_META = 16777239
 
+_JOY_BUTTON_16 :: Int
+_JOY_BUTTON_16 = 16
+
 _ERR_INVALID_PARAMETER :: Int
 _ERR_INVALID_PARAMETER = 31
 
@@ -885,6 +907,9 @@ _ERR_UNAVAILABLE = 2
 
 _ERR_ALREADY_IN_USE :: Int
 _ERR_ALREADY_IN_USE = 22
+
+_JOY_BUTTON_20 :: Int
+_JOY_BUTTON_20 = 20
 
 _JOY_DPAD_UP :: Int
 _JOY_DPAD_UP = 12
@@ -1021,6 +1046,9 @@ _KEY_C = 67
 _ERR_CONNECTION_ERROR :: Int
 _ERR_CONNECTION_ERROR = 27
 
+_JOY_TOUCHPAD :: Int
+_JOY_TOUCHPAD = 21
+
 _OP_BIT_AND :: Int
 _OP_BIT_AND = 16
 
@@ -1073,7 +1101,7 @@ _KEY_LAUNCH3 :: Int
 _KEY_LAUNCH3 = 16777307
 
 _JOY_BUTTON_MAX :: Int
-_JOY_BUTTON_MAX = 16
+_JOY_BUTTON_MAX = 22
 
 _PROPERTY_USAGE_CHECKABLE :: Int
 _PROPERTY_USAGE_CHECKABLE = 16
@@ -1137,6 +1165,9 @@ _ERR_METHOD_NOT_FOUND = 37
 
 _KEY_IGRAVE :: Int
 _KEY_IGRAVE = 204
+
+_JOY_INVALID_OPTION :: Int
+_JOY_INVALID_OPTION = -1
 
 _KEY_QUESTION :: Int
 _KEY_QUESTION = 63
@@ -1227,6 +1258,9 @@ _ERR_TIMEOUT = 24
 
 _BUTTON_RIGHT :: Int
 _BUTTON_RIGHT = 2
+
+_JOY_BUTTON_21 :: Int
+_JOY_BUTTON_21 = 21
 
 _KEY_Y :: Int
 _KEY_Y = 89
@@ -1354,6 +1388,9 @@ _CORNER_TOP_LEFT = 0
 _KEY_HOME :: Int
 _KEY_HOME = 16777229
 
+_JOY_PADDLE4 :: Int
+_JOY_PADDLE4 = 20
+
 _KEY_MASCULINE :: Int
 _KEY_MASCULINE = 186
 
@@ -1443,6 +1480,9 @@ _KEY_SYSREQ = 16777227
 
 _KEY_LAUNCHB :: Int
 _KEY_LAUNCHB = 16777315
+
+_JOY_BUTTON_19 :: Int
+_JOY_BUTTON_19 = 19
 
 _PROPERTY_USAGE_CATEGORY :: Int
 _PROPERTY_USAGE_CATEGORY = 256
@@ -1690,6 +1730,9 @@ _KEY_LAUNCHE = 16777318
 _KEY_NUMBERSIGN :: Int
 _KEY_NUMBERSIGN = 35
 
+_JOY_PADDLE3 :: Int
+_JOY_PADDLE3 = 19
+
 _JOY_XBOX_A :: Int
 _JOY_XBOX_A = 0
 
@@ -1785,6 +1828,9 @@ _METHOD_FLAGS_DEFAULT = 1
 
 _JOY_AXIS_MAX :: Int
 _JOY_AXIS_MAX = 10
+
+_JOY_BUTTON_18 :: Int
+_JOY_BUTTON_18 = 18
 
 _METHOD_FLAG_REVERSE :: Int
 _METHOD_FLAG_REVERSE = 16
@@ -1885,6 +1931,9 @@ _OP_NOT_EQUAL = 1
 _KEY_OOBLIQUE :: Int
 _KEY_OOBLIQUE = 216
 
+_JOY_MISC1 :: Int
+_JOY_MISC1 = 16
+
 _MIDI_MESSAGE_PITCH_BEND :: Int
 _MIDI_MESSAGE_PITCH_BEND = 14
 
@@ -1929,6 +1978,9 @@ _KEY_BASSDOWN = 16777289
 
 _KEY_ATILDE :: Int
 _KEY_ATILDE = 195
+
+_JOY_PADDLE2 :: Int
+_JOY_PADDLE2 = 18
 
 _PROPERTY_HINT_MULTILINE_TEXT :: Int
 _PROPERTY_HINT_MULTILINE_TEXT = 18

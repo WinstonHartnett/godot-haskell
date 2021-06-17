@@ -47,6 +47,7 @@ module Godot.Core.TileMap
         Godot.Core.TileMap.is_cell_y_flipped,
         Godot.Core.TileMap.is_centered_textures_enabled,
         Godot.Core.TileMap.is_compatibility_mode_enabled,
+        Godot.Core.TileMap.is_show_collision_enabled,
         Godot.Core.TileMap.is_y_sort_mode_enabled,
         Godot.Core.TileMap.map_to_world, Godot.Core.TileMap.set_cell,
         Godot.Core.TileMap.set_cell_size, Godot.Core.TileMap.set_cellv,
@@ -65,6 +66,7 @@ module Godot.Core.TileMap
         Godot.Core.TileMap.set_half_offset, Godot.Core.TileMap.set_mode,
         Godot.Core.TileMap.set_occluder_light_mask,
         Godot.Core.TileMap.set_quadrant_size,
+        Godot.Core.TileMap.set_show_collision,
         Godot.Core.TileMap.set_tile_origin, Godot.Core.TileMap.set_tileset,
         Godot.Core.TileMap.set_y_sort_mode,
         Godot.Core.TileMap.update_bitmask_area,
@@ -212,6 +214,11 @@ instance NodeProperty TileMap "occluder_light_mask" Int 'False
         nodeProperty
           = (get_occluder_light_mask,
              wrapDroppingSetter set_occluder_light_mask, Nothing)
+
+instance NodeProperty TileMap "show_collision" Bool 'False where
+        nodeProperty
+          = (is_show_collision_enabled,
+             wrapDroppingSetter set_show_collision, Nothing)
 
 instance NodeProperty TileMap "tile_set" TileSet 'False where
         nodeProperty
@@ -625,7 +632,7 @@ instance NodeMethod TileMap "get_collision_friction" '[] (IO Float)
 
 {-# NOINLINE bindTileMap_get_collision_layer #-}
 
--- | The collision layer(s) for all colliders in the TileMap. See @url=https://docs.godotengine.org/en/latest/tutorials/physics/physics_introduction.html#collision-layers-and-masks@Collision layers and masks@/url@ in the documentation for more information.
+-- | The collision layer(s) for all colliders in the TileMap. See @url=https://docs.godotengine.org/en/3.3/tutorials/physics/physics_introduction.html#collision-layers-and-masks@Collision layers and masks@/url@ in the documentation for more information.
 bindTileMap_get_collision_layer :: MethodBind
 bindTileMap_get_collision_layer
   = unsafePerformIO $
@@ -635,7 +642,7 @@ bindTileMap_get_collision_layer
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | The collision layer(s) for all colliders in the TileMap. See @url=https://docs.godotengine.org/en/latest/tutorials/physics/physics_introduction.html#collision-layers-and-masks@Collision layers and masks@/url@ in the documentation for more information.
+-- | The collision layer(s) for all colliders in the TileMap. See @url=https://docs.godotengine.org/en/3.3/tutorials/physics/physics_introduction.html#collision-layers-and-masks@Collision layers and masks@/url@ in the documentation for more information.
 get_collision_layer ::
                       (TileMap :< cls, Object :< cls) => cls -> IO Int
 get_collision_layer cls
@@ -681,7 +688,7 @@ instance NodeMethod TileMap "get_collision_layer_bit" '[Int]
 
 {-# NOINLINE bindTileMap_get_collision_mask #-}
 
--- | The collision mask(s) for all colliders in the TileMap. See @url=https://docs.godotengine.org/en/latest/tutorials/physics/physics_introduction.html#collision-layers-and-masks@Collision layers and masks@/url@ in the documentation for more information.
+-- | The collision mask(s) for all colliders in the TileMap. See @url=https://docs.godotengine.org/en/3.3/tutorials/physics/physics_introduction.html#collision-layers-and-masks@Collision layers and masks@/url@ in the documentation for more information.
 bindTileMap_get_collision_mask :: MethodBind
 bindTileMap_get_collision_mask
   = unsafePerformIO $
@@ -691,7 +698,7 @@ bindTileMap_get_collision_mask
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | The collision mask(s) for all colliders in the TileMap. See @url=https://docs.godotengine.org/en/latest/tutorials/physics/physics_introduction.html#collision-layers-and-masks@Collision layers and masks@/url@ in the documentation for more information.
+-- | The collision mask(s) for all colliders in the TileMap. See @url=https://docs.godotengine.org/en/3.3/tutorials/physics/physics_introduction.html#collision-layers-and-masks@Collision layers and masks@/url@ in the documentation for more information.
 get_collision_mask ::
                      (TileMap :< cls, Object :< cls) => cls -> IO Int
 get_collision_mask cls
@@ -1200,9 +1207,38 @@ instance NodeMethod TileMap "is_compatibility_mode_enabled" '[]
          where
         nodeMethod = Godot.Core.TileMap.is_compatibility_mode_enabled
 
+{-# NOINLINE bindTileMap_is_show_collision_enabled #-}
+
+-- | If @true@, collision shapes are visible in the editor. Doesn't affect collision shapes visibility at runtime. To show collision shapes at runtime, enable __Visible Collision Shapes__ in the __Debug__ menu instead.
+bindTileMap_is_show_collision_enabled :: MethodBind
+bindTileMap_is_show_collision_enabled
+  = unsafePerformIO $
+      withCString "TileMap" $
+        \ clsNamePtr ->
+          withCString "is_show_collision_enabled" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | If @true@, collision shapes are visible in the editor. Doesn't affect collision shapes visibility at runtime. To show collision shapes at runtime, enable __Visible Collision Shapes__ in the __Debug__ menu instead.
+is_show_collision_enabled ::
+                            (TileMap :< cls, Object :< cls) => cls -> IO Bool
+is_show_collision_enabled cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindTileMap_is_show_collision_enabled
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod TileMap "is_show_collision_enabled" '[]
+           (IO Bool)
+         where
+        nodeMethod = Godot.Core.TileMap.is_show_collision_enabled
+
 {-# NOINLINE bindTileMap_is_y_sort_mode_enabled #-}
 
--- | If @true@, the TileMap's children will be drawn in order of their Y coordinate.
+-- | If @true@, the TileMap's direct children will be drawn in order of their Y coordinate.
 bindTileMap_is_y_sort_mode_enabled :: MethodBind
 bindTileMap_is_y_sort_mode_enabled
   = unsafePerformIO $
@@ -1212,7 +1248,7 @@ bindTileMap_is_y_sort_mode_enabled
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | If @true@, the TileMap's children will be drawn in order of their Y coordinate.
+-- | If @true@, the TileMap's direct children will be drawn in order of their Y coordinate.
 is_y_sort_mode_enabled ::
                          (TileMap :< cls, Object :< cls) => cls -> IO Bool
 is_y_sort_mode_enabled cls
@@ -1230,7 +1266,16 @@ instance NodeMethod TileMap "is_y_sort_mode_enabled" '[] (IO Bool)
 
 {-# NOINLINE bindTileMap_map_to_world #-}
 
--- | Returns the global position corresponding to the given tilemap (grid-based) coordinates.
+-- | Returns the local position of the top left corner of the cell corresponding to the given tilemap (grid-based) coordinates.
+--   				To get the global position, use @method Node2D.to_global@:
+--   				
+--   @
+--   
+--   				var local_position = my_tilemap.map_to_world(map_position)
+--   				var global_position = my_tilemap.to_global(local_position)
+--   				
+--   @
+--   
 --   				Optionally, the tilemap's half offset can be ignored.
 bindTileMap_map_to_world :: MethodBind
 bindTileMap_map_to_world
@@ -1241,7 +1286,16 @@ bindTileMap_map_to_world
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Returns the global position corresponding to the given tilemap (grid-based) coordinates.
+-- | Returns the local position of the top left corner of the cell corresponding to the given tilemap (grid-based) coordinates.
+--   				To get the global position, use @method Node2D.to_global@:
+--   				
+--   @
+--   
+--   				var local_position = my_tilemap.map_to_world(map_position)
+--   				var global_position = my_tilemap.to_global(local_position)
+--   				
+--   @
+--   
 --   				Optionally, the tilemap's half offset can be ignored.
 map_to_world ::
                (TileMap :< cls, Object :< cls) =>
@@ -1270,7 +1324,7 @@ instance NodeMethod TileMap "map_to_world" '[Vector2, Maybe Bool]
 --   				
 --   @
 --   
---   				func set_cell(x, y, tile, flip_x=false, flip_y=false, transpose=false, autotile_coord=Vector2())
+--   				func set_cell(x, y, tile, flip_x=false, flip_y=false, transpose=false, autotile_coord=Vector2()):
 --   				    # Write your custom logic here.
 --   				    # To call the default method:
 --   				    .set_cell(x, y, tile, flip_x, flip_y, transpose, autotile_coord)
@@ -1294,7 +1348,7 @@ bindTileMap_set_cell
 --   				
 --   @
 --   
---   				func set_cell(x, y, tile, flip_x=false, flip_y=false, transpose=false, autotile_coord=Vector2())
+--   				func set_cell(x, y, tile, flip_x=false, flip_y=false, transpose=false, autotile_coord=Vector2()):
 --   				    # Write your custom logic here.
 --   				    # To call the default method:
 --   				    .set_cell(x, y, tile, flip_x, flip_y, transpose, autotile_coord)
@@ -1507,7 +1561,7 @@ instance NodeMethod TileMap "set_collision_friction" '[Float]
 
 {-# NOINLINE bindTileMap_set_collision_layer #-}
 
--- | The collision layer(s) for all colliders in the TileMap. See @url=https://docs.godotengine.org/en/latest/tutorials/physics/physics_introduction.html#collision-layers-and-masks@Collision layers and masks@/url@ in the documentation for more information.
+-- | The collision layer(s) for all colliders in the TileMap. See @url=https://docs.godotengine.org/en/3.3/tutorials/physics/physics_introduction.html#collision-layers-and-masks@Collision layers and masks@/url@ in the documentation for more information.
 bindTileMap_set_collision_layer :: MethodBind
 bindTileMap_set_collision_layer
   = unsafePerformIO $
@@ -1517,7 +1571,7 @@ bindTileMap_set_collision_layer
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | The collision layer(s) for all colliders in the TileMap. See @url=https://docs.godotengine.org/en/latest/tutorials/physics/physics_introduction.html#collision-layers-and-masks@Collision layers and masks@/url@ in the documentation for more information.
+-- | The collision layer(s) for all colliders in the TileMap. See @url=https://docs.godotengine.org/en/3.3/tutorials/physics/physics_introduction.html#collision-layers-and-masks@Collision layers and masks@/url@ in the documentation for more information.
 set_collision_layer ::
                       (TileMap :< cls, Object :< cls) => cls -> Int -> IO ()
 set_collision_layer cls arg1
@@ -1563,7 +1617,7 @@ instance NodeMethod TileMap "set_collision_layer_bit" '[Int, Bool]
 
 {-# NOINLINE bindTileMap_set_collision_mask #-}
 
--- | The collision mask(s) for all colliders in the TileMap. See @url=https://docs.godotengine.org/en/latest/tutorials/physics/physics_introduction.html#collision-layers-and-masks@Collision layers and masks@/url@ in the documentation for more information.
+-- | The collision mask(s) for all colliders in the TileMap. See @url=https://docs.godotengine.org/en/3.3/tutorials/physics/physics_introduction.html#collision-layers-and-masks@Collision layers and masks@/url@ in the documentation for more information.
 bindTileMap_set_collision_mask :: MethodBind
 bindTileMap_set_collision_mask
   = unsafePerformIO $
@@ -1573,7 +1627,7 @@ bindTileMap_set_collision_mask
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | The collision mask(s) for all colliders in the TileMap. See @url=https://docs.godotengine.org/en/latest/tutorials/physics/physics_introduction.html#collision-layers-and-masks@Collision layers and masks@/url@ in the documentation for more information.
+-- | The collision mask(s) for all colliders in the TileMap. See @url=https://docs.godotengine.org/en/3.3/tutorials/physics/physics_introduction.html#collision-layers-and-masks@Collision layers and masks@/url@ in the documentation for more information.
 set_collision_mask ::
                      (TileMap :< cls, Object :< cls) => cls -> Int -> IO ()
 set_collision_mask cls arg1
@@ -1842,6 +1896,33 @@ instance NodeMethod TileMap "set_quadrant_size" '[Int] (IO ())
          where
         nodeMethod = Godot.Core.TileMap.set_quadrant_size
 
+{-# NOINLINE bindTileMap_set_show_collision #-}
+
+-- | If @true@, collision shapes are visible in the editor. Doesn't affect collision shapes visibility at runtime. To show collision shapes at runtime, enable __Visible Collision Shapes__ in the __Debug__ menu instead.
+bindTileMap_set_show_collision :: MethodBind
+bindTileMap_set_show_collision
+  = unsafePerformIO $
+      withCString "TileMap" $
+        \ clsNamePtr ->
+          withCString "set_show_collision" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | If @true@, collision shapes are visible in the editor. Doesn't affect collision shapes visibility at runtime. To show collision shapes at runtime, enable __Visible Collision Shapes__ in the __Debug__ menu instead.
+set_show_collision ::
+                     (TileMap :< cls, Object :< cls) => cls -> Bool -> IO ()
+set_show_collision cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindTileMap_set_show_collision (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod TileMap "set_show_collision" '[Bool] (IO ())
+         where
+        nodeMethod = Godot.Core.TileMap.set_show_collision
+
 {-# NOINLINE bindTileMap_set_tile_origin #-}
 
 -- | Position for tile origin. See @enum TileOrigin@ for possible values.
@@ -1895,7 +1976,7 @@ instance NodeMethod TileMap "set_tileset" '[TileSet] (IO ()) where
 
 {-# NOINLINE bindTileMap_set_y_sort_mode #-}
 
--- | If @true@, the TileMap's children will be drawn in order of their Y coordinate.
+-- | If @true@, the TileMap's direct children will be drawn in order of their Y coordinate.
 bindTileMap_set_y_sort_mode :: MethodBind
 bindTileMap_set_y_sort_mode
   = unsafePerformIO $
@@ -1905,7 +1986,7 @@ bindTileMap_set_y_sort_mode
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | If @true@, the TileMap's children will be drawn in order of their Y coordinate.
+-- | If @true@, the TileMap's direct children will be drawn in order of their Y coordinate.
 set_y_sort_mode ::
                   (TileMap :< cls, Object :< cls) => cls -> Bool -> IO ()
 set_y_sort_mode cls arg1
@@ -2013,6 +2094,14 @@ instance NodeMethod TileMap "update_dirty_quadrants" '[] (IO ())
 {-# NOINLINE bindTileMap_world_to_map #-}
 
 -- | Returns the tilemap (grid-based) coordinates corresponding to the given local position.
+--   				To use this with a global position, first determine the local position with @method Node2D.to_local@:
+--   				
+--   @
+--   
+--   				var local_position = my_tilemap.to_local(global_position)
+--   				var map_position = my_tilemap.world_to_map(local_position)
+--   				
+--   @
 bindTileMap_world_to_map :: MethodBind
 bindTileMap_world_to_map
   = unsafePerformIO $
@@ -2023,6 +2112,14 @@ bindTileMap_world_to_map
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
 -- | Returns the tilemap (grid-based) coordinates corresponding to the given local position.
+--   				To use this with a global position, first determine the local position with @method Node2D.to_local@:
+--   				
+--   @
+--   
+--   				var local_position = my_tilemap.to_local(global_position)
+--   				var map_position = my_tilemap.world_to_map(local_position)
+--   				
+--   @
 world_to_map ::
                (TileMap :< cls, Object :< cls) => cls -> Vector2 -> IO Vector2
 world_to_map cls arg1

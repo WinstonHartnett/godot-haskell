@@ -149,7 +149,7 @@ sig_hide = Godot.Internal.Dispatch.Signal "hide"
 
 instance NodeSignal CanvasItem "hide" '[]
 
--- | Emitted when the item rect has changed.
+-- | Emitted when the item's @Rect2@ boundaries (position or size) have changed, or when an action is taking place that may have impacted these boundaries (e.g. changing @Sprite.texture@).
 sig_item_rect_changed :: Godot.Internal.Dispatch.Signal CanvasItem
 sig_item_rect_changed
   = Godot.Internal.Dispatch.Signal "item_rect_changed"
@@ -1298,7 +1298,7 @@ instance NodeMethod CanvasItem "draw_set_transform_matrix"
 
 {-# NOINLINE bindCanvasItem_draw_string #-}
 
--- | Draws @text@ using the specified @font@ at the @position@ (top-left corner). The text will have its color multiplied by @modulate@. If @clip_w@ is greater than or equal to 0, the text will be clipped if it exceeds the specified width.
+-- | Draws @text@ using the specified @font@ at the @position@ (bottom-left corner using the baseline of the font). The text will have its color multiplied by @modulate@. If @clip_w@ is greater than or equal to 0, the text will be clipped if it exceeds the specified width.
 --   				__Example using the default project font:__
 --   				
 --   @
@@ -1321,7 +1321,7 @@ bindCanvasItem_draw_string
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Draws @text@ using the specified @font@ at the @position@ (top-left corner). The text will have its color multiplied by @modulate@. If @clip_w@ is greater than or equal to 0, the text will be clipped if it exceeds the specified width.
+-- | Draws @text@ using the specified @font@ at the @position@ (bottom-left corner using the baseline of the font). The text will have its color multiplied by @modulate@. If @clip_w@ is greater than or equal to 0, the text will be clipped if it exceeds the specified width.
 --   				__Example using the default project font:__
 --   				
 --   @

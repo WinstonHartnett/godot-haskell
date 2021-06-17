@@ -27,7 +27,7 @@ module Godot.Core.Tree
         Godot.Core.Tree._text_editor_modal_close,
         Godot.Core.Tree._value_editor_changed,
         Godot.Core.Tree.are_column_titles_visible, Godot.Core.Tree.clear,
-        Godot.Core.Tree.create_item,
+        Godot.Core.Tree.create_item, Godot.Core.Tree.edit_selected,
         Godot.Core.Tree.ensure_cursor_is_visible,
         Godot.Core.Tree.get_allow_reselect,
         Godot.Core.Tree.get_allow_rmb_select,
@@ -44,7 +44,7 @@ module Godot.Core.Tree
         Godot.Core.Tree.get_scroll, Godot.Core.Tree.get_select_mode,
         Godot.Core.Tree.get_selected, Godot.Core.Tree.get_selected_column,
         Godot.Core.Tree.is_folding_hidden, Godot.Core.Tree.is_root_hidden,
-        Godot.Core.Tree.set_allow_reselect,
+        Godot.Core.Tree.scroll_to_item, Godot.Core.Tree.set_allow_reselect,
         Godot.Core.Tree.set_allow_rmb_select,
         Godot.Core.Tree.set_column_expand,
         Godot.Core.Tree.set_column_min_width,
@@ -477,6 +477,30 @@ instance NodeMethod Tree "create_item" '[Maybe Object, Maybe Int]
          where
         nodeMethod = Godot.Core.Tree.create_item
 
+{-# NOINLINE bindTree_edit_selected #-}
+
+-- | Edits the selected tree item as if it was clicked. The item must be set editable with @method TreeItem.set_editable@. Returns @true@ if the item could be edited. Fails if no item is selected.
+bindTree_edit_selected :: MethodBind
+bindTree_edit_selected
+  = unsafePerformIO $
+      withCString "Tree" $
+        \ clsNamePtr ->
+          withCString "edit_selected" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Edits the selected tree item as if it was clicked. The item must be set editable with @method TreeItem.set_editable@. Returns @true@ if the item could be edited. Fails if no item is selected.
+edit_selected :: (Tree :< cls, Object :< cls) => cls -> IO Bool
+edit_selected cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindTree_edit_selected (upcast cls) arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod Tree "edit_selected" '[] (IO Bool) where
+        nodeMethod = Godot.Core.Tree.edit_selected
+
 {-# NOINLINE bindTree_ensure_cursor_is_visible #-}
 
 -- | Makes the currently focused cell visible.
@@ -755,7 +779,17 @@ instance NodeMethod Tree "get_drop_section_at_position" '[Vector2]
 
 {-# NOINLINE bindTree_get_edited #-}
 
--- | Returns the currently edited item. This is only available for custom cell mode.
+-- | Returns the currently edited item. Can be used with @signal item_edited@ to get the item that was modified.
+--   				
+--   @
+--   
+--   				func _ready():
+--   				    $Tree.item_edited.connect(on_Tree_item_edited)
+--   
+--   				func on_Tree_item_edited():
+--   				    print($Tree.get_edited()) # This item just got edited (e.g. checked).
+--   				
+--   @
 bindTree_get_edited :: MethodBind
 bindTree_get_edited
   = unsafePerformIO $
@@ -765,7 +799,17 @@ bindTree_get_edited
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Returns the currently edited item. This is only available for custom cell mode.
+-- | Returns the currently edited item. Can be used with @signal item_edited@ to get the item that was modified.
+--   				
+--   @
+--   
+--   				func _ready():
+--   				    $Tree.item_edited.connect(on_Tree_item_edited)
+--   
+--   				func on_Tree_item_edited():
+--   				    print($Tree.get_edited()) # This item just got edited (e.g. checked).
+--   				
+--   @
 get_edited :: (Tree :< cls, Object :< cls) => cls -> IO TreeItem
 get_edited cls
   = withVariantArray []
@@ -778,7 +822,7 @@ instance NodeMethod Tree "get_edited" '[] (IO TreeItem) where
 
 {-# NOINLINE bindTree_get_edited_column #-}
 
--- | Returns the column for the currently edited item. This is only available for custom cell mode.
+-- | Returns the column for the currently edited item.
 bindTree_get_edited_column :: MethodBind
 bindTree_get_edited_column
   = unsafePerformIO $
@@ -788,7 +832,7 @@ bindTree_get_edited_column
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Returns the column for the currently edited item. This is only available for custom cell mode.
+-- | Returns the column for the currently edited item.
 get_edited_column :: (Tree :< cls, Object :< cls) => cls -> IO Int
 get_edited_column cls
   = withVariantArray []
@@ -1090,6 +1134,29 @@ is_root_hidden cls
 
 instance NodeMethod Tree "is_root_hidden" '[] (IO Bool) where
         nodeMethod = Godot.Core.Tree.is_root_hidden
+
+{-# NOINLINE bindTree_scroll_to_item #-}
+
+bindTree_scroll_to_item :: MethodBind
+bindTree_scroll_to_item
+  = unsafePerformIO $
+      withCString "Tree" $
+        \ clsNamePtr ->
+          withCString "scroll_to_item" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+scroll_to_item ::
+                 (Tree :< cls, Object :< cls) => cls -> Object -> IO ()
+scroll_to_item cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindTree_scroll_to_item (upcast cls) arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod Tree "scroll_to_item" '[Object] (IO ()) where
+        nodeMethod = Godot.Core.Tree.scroll_to_item
 
 {-# NOINLINE bindTree_set_allow_reselect #-}
 

@@ -1,7 +1,7 @@
 {-# LANGUAGE DerivingStrategies, GeneralizedNewtypeDeriving,
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
-module Godot.Core.ResourceFormatLoaderCrypto () where
+module Godot.Tools.EditorSceneImporterFBX () where
 import Data.Coerce
 import Foreign.C
 import Godot.Internal.Dispatch
@@ -12,4 +12,4 @@ import Data.Colour.SRGB(sRGB)
 import System.IO.Unsafe
 import Godot.Gdnative.Internal
 import Godot.Api.Types
-import Godot.Core.ResourceFormatLoader()
+import Godot.Tools.EditorSceneImporter()

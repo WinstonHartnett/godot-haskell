@@ -80,19 +80,25 @@ _SPACE_OVERRIDE_REPLACE_COMBINE = 4
 _SPACE_OVERRIDE_COMBINE :: Int
 _SPACE_OVERRIDE_COMBINE = 1
 
--- | Emitted when another area enters.
+-- | Emitted when another Area2D enters this Area2D. Requires @monitoring@ to be set to @true@.
+--   				@area@ the other Area2D.
 sig_area_entered :: Godot.Internal.Dispatch.Signal Area2D
 sig_area_entered = Godot.Internal.Dispatch.Signal "area_entered"
 
 instance NodeSignal Area2D "area_entered" '[Area2D]
 
--- | Emitted when another area exits.
+-- | Emitted when another Area2D exits this Area2D. Requires @monitoring@ to be set to @true@.
+--   				@area@ the other Area2D.
 sig_area_exited :: Godot.Internal.Dispatch.Signal Area2D
 sig_area_exited = Godot.Internal.Dispatch.Signal "area_exited"
 
 instance NodeSignal Area2D "area_exited" '[Area2D]
 
--- | Emitted when another area enters, reporting which shapes overlapped. @shape_owner_get_owner(shape_find_owner(shape))@ returns the parent object of the owner of the @shape@.
+-- | Emitted when one of another Area2D's @Shape2D@s enters one of this Area2D's @Shape2D@s. Requires @monitoring@ to be set to @true@.
+--   				@area_id@ the @RID@ of the other Area2D's @CollisionObject2D@ used by the @Physics2DServer@.
+--   				@area@ the other Area2D.
+--   				@area_shape@ the index of the @Shape2D@ of the other Area2D used by the @Physics2DServer@.
+--   				@local_shape@ the index of the @Shape2D@ of this Area2D used by the @Physics2DServer@.
 sig_area_shape_entered :: Godot.Internal.Dispatch.Signal Area2D
 sig_area_shape_entered
   = Godot.Internal.Dispatch.Signal "area_shape_entered"
@@ -100,7 +106,11 @@ sig_area_shape_entered
 instance NodeSignal Area2D "area_shape_entered"
            '[Int, Area2D, Int, Int]
 
--- | Emitted when another area exits, reporting which shapes were overlapping.
+-- | Emitted when one of another Area2D's @Shape2D@s exits one of this Area2D's @Shape2D@s. Requires @monitoring@ to be set to @true@.
+--   				@area_id@ the @RID@ of the other Area2D's @CollisionObject2D@ used by the @Physics2DServer@.
+--   				@area@ the other Area2D.
+--   				@area_shape@ the index of the @Shape2D@ of the other Area2D used by the @Physics2DServer@.
+--   				@local_shape@ the index of the @Shape2D@ of this Area2D used by the @Physics2DServer@.
 sig_area_shape_exited :: Godot.Internal.Dispatch.Signal Area2D
 sig_area_shape_exited
   = Godot.Internal.Dispatch.Signal "area_shape_exited"
@@ -108,22 +118,25 @@ sig_area_shape_exited
 instance NodeSignal Area2D "area_shape_exited"
            '[Int, Area2D, Int, Int]
 
--- | Emitted when a physics body enters.
---   				The @body@ argument can either be a @PhysicsBody2D@ or a @TileMap@ instance (while TileMaps are not physics body themselves, they register their tiles with collision shapes as a virtual physics body).
+-- | Emitted when a @PhysicsBody2D@ or @TileMap@ enters this Area2D. Requires @monitoring@ to be set to @true@. @TileMap@s are detected if the @TileSet@ has Collision @Shape2D@s.
+--   				@body@ the @Node@, if it exists in the tree, of the other @PhysicsBody2D@ or @TileMap@.
 sig_body_entered :: Godot.Internal.Dispatch.Signal Area2D
 sig_body_entered = Godot.Internal.Dispatch.Signal "body_entered"
 
 instance NodeSignal Area2D "body_entered" '[Node]
 
--- | Emitted when a physics body exits.
---   				The @body@ argument can either be a @PhysicsBody2D@ or a @TileMap@ instance (while TileMaps are not physics body themselves, they register their tiles with collision shapes as a virtual physics body).
+-- | Emitted when a @PhysicsBody2D@ or @TileMap@ exits this Area2D. Requires @monitoring@ to be set to @true@. @TileMap@s are detected if the @TileSet@ has Collision @Shape2D@s.
+--   				@body@ the @Node@, if it exists in the tree, of the other @PhysicsBody2D@ or @TileMap@.
 sig_body_exited :: Godot.Internal.Dispatch.Signal Area2D
 sig_body_exited = Godot.Internal.Dispatch.Signal "body_exited"
 
 instance NodeSignal Area2D "body_exited" '[Node]
 
--- | Emitted when a physics body enters, reporting which shapes overlapped.
---   				The @body@ argument can either be a @PhysicsBody2D@ or a @TileMap@ instance (while TileMaps are not physics body themselves, they register their tiles with collision shapes as a virtual physics body).
+-- | Emitted when one of a @PhysicsBody2D@ or @TileMap@'s @Shape2D@s enters one of this Area2D's @Shape2D@s. Requires @monitoring@ to be set to @true@. @TileMap@s are detected if the @TileSet@ has Collision @Shape2D@s.
+--   				@body_id@ the @RID@ of the @PhysicsBody2D@ or @TileSet@'s @CollisionObject2D@ used by the @Physics2DServer@.
+--   				@body@ the @Node@, if it exists in the tree, of the @PhysicsBody2D@ or @TileMap@.
+--   				@body_shape@ the index of the @Shape2D@ of the @PhysicsBody2D@ or @TileMap@ used by the @Physics2DServer@.
+--   				@local_shape@ the index of the @Shape2D@ of this Area2D used by the @Physics2DServer@.
 sig_body_shape_entered :: Godot.Internal.Dispatch.Signal Area2D
 sig_body_shape_entered
   = Godot.Internal.Dispatch.Signal "body_shape_entered"
@@ -131,8 +144,11 @@ sig_body_shape_entered
 instance NodeSignal Area2D "body_shape_entered"
            '[Int, Node, Int, Int]
 
--- | Emitted when a physics body exits, reporting which shapes were overlapping.
---   				The @body@ argument can either be a @PhysicsBody2D@ or a @TileMap@ instance (while TileMaps are not physics body themselves, they register their tiles with collision shapes as a virtual physics body).
+-- | Emitted when one of a @PhysicsBody2D@ or @TileMap@'s @Shape2D@s exits one of this Area2D's @Shape2D@s. Requires @monitoring@ to be set to @true@. @TileMap@s are detected if the @TileSet@ has Collision @Shape2D@s.
+--   				@body_id@ the @RID@ of the @PhysicsBody2D@ or @TileSet@'s @CollisionObject2D@ used by the @Physics2DServer@.
+--   				@body@ the @Node@, if it exists in the tree, of the @PhysicsBody2D@ or @TileMap@.
+--   				@body_shape@ the index of the @Shape2D@ of the @PhysicsBody2D@ or @TileMap@ used by the @Physics2DServer@.
+--   				@local_shape@ the index of the @Shape2D@ of this Area2D used by the @Physics2DServer@.
 sig_body_shape_exited :: Godot.Internal.Dispatch.Signal Area2D
 sig_body_shape_exited
   = Godot.Internal.Dispatch.Signal "body_shape_exited"
@@ -360,7 +376,8 @@ instance NodeMethod Area2D "_body_inout" '[Int, Rid, Int, Int, Int]
 
 {-# NOINLINE bindArea2D_get_angular_damp #-}
 
--- | The rate at which objects stop spinning in this area. Represents the angular velocity lost per second. Values range from @0@ (no damping) to @1@ (full damping).
+-- | The rate at which objects stop spinning in this area. Represents the angular velocity lost per second.
+--   			See @ProjectSettings.physics/2d/default_angular_damp@ for more details about damping.
 bindArea2D_get_angular_damp :: MethodBind
 bindArea2D_get_angular_damp
   = unsafePerformIO $
@@ -370,7 +387,8 @@ bindArea2D_get_angular_damp
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | The rate at which objects stop spinning in this area. Represents the angular velocity lost per second. Values range from @0@ (no damping) to @1@ (full damping).
+-- | The rate at which objects stop spinning in this area. Represents the angular velocity lost per second.
+--   			See @ProjectSettings.physics/2d/default_angular_damp@ for more details about damping.
 get_angular_damp ::
                    (Area2D :< cls, Object :< cls) => cls -> IO Float
 get_angular_damp cls
@@ -414,7 +432,7 @@ instance NodeMethod Area2D "get_audio_bus_name" '[]
 
 {-# NOINLINE bindArea2D_get_collision_layer #-}
 
--- | The area's physics layer(s). Collidable objects can exist in any of 32 different layers. A contact is detected if object A is in any of the layers that object B scans, or object B is in any layers that object A scans. See also @collision_mask@. See @url=https://docs.godotengine.org/en/latest/tutorials/physics/physics_introduction.html#collision-layers-and-masks@Collision layers and masks@/url@ in the documentation for more information.
+-- | The area's physics layer(s). Collidable objects can exist in any of 32 different layers. A contact is detected if object A is in any of the layers that object B scans, or object B is in any layers that object A scans. See also @collision_mask@. See @url=https://docs.godotengine.org/en/3.3/tutorials/physics/physics_introduction.html#collision-layers-and-masks@Collision layers and masks@/url@ in the documentation for more information.
 bindArea2D_get_collision_layer :: MethodBind
 bindArea2D_get_collision_layer
   = unsafePerformIO $
@@ -424,7 +442,7 @@ bindArea2D_get_collision_layer
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | The area's physics layer(s). Collidable objects can exist in any of 32 different layers. A contact is detected if object A is in any of the layers that object B scans, or object B is in any layers that object A scans. See also @collision_mask@. See @url=https://docs.godotengine.org/en/latest/tutorials/physics/physics_introduction.html#collision-layers-and-masks@Collision layers and masks@/url@ in the documentation for more information.
+-- | The area's physics layer(s). Collidable objects can exist in any of 32 different layers. A contact is detected if object A is in any of the layers that object B scans, or object B is in any layers that object A scans. See also @collision_mask@. See @url=https://docs.godotengine.org/en/3.3/tutorials/physics/physics_introduction.html#collision-layers-and-masks@Collision layers and masks@/url@ in the documentation for more information.
 get_collision_layer ::
                       (Area2D :< cls, Object :< cls) => cls -> IO Int
 get_collision_layer cls
@@ -469,7 +487,7 @@ instance NodeMethod Area2D "get_collision_layer_bit" '[Int]
 
 {-# NOINLINE bindArea2D_get_collision_mask #-}
 
--- | The physics layers this area scans to determine collision detection. See @url=https://docs.godotengine.org/en/latest/tutorials/physics/physics_introduction.html#collision-layers-and-masks@Collision layers and masks@/url@ in the documentation for more information.
+-- | The physics layers this area scans to determine collision detection. See @url=https://docs.godotengine.org/en/3.3/tutorials/physics/physics_introduction.html#collision-layers-and-masks@Collision layers and masks@/url@ in the documentation for more information.
 bindArea2D_get_collision_mask :: MethodBind
 bindArea2D_get_collision_mask
   = unsafePerformIO $
@@ -479,7 +497,7 @@ bindArea2D_get_collision_mask
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | The physics layers this area scans to determine collision detection. See @url=https://docs.godotengine.org/en/latest/tutorials/physics/physics_introduction.html#collision-layers-and-masks@Collision layers and masks@/url@ in the documentation for more information.
+-- | The physics layers this area scans to determine collision detection. See @url=https://docs.godotengine.org/en/3.3/tutorials/physics/physics_introduction.html#collision-layers-and-masks@Collision layers and masks@/url@ in the documentation for more information.
 get_collision_mask ::
                      (Area2D :< cls, Object :< cls) => cls -> IO Int
 get_collision_mask cls
@@ -524,7 +542,7 @@ instance NodeMethod Area2D "get_collision_mask_bit" '[Int]
 
 {-# NOINLINE bindArea2D_get_gravity #-}
 
--- | The area's gravity intensity (ranges from -1024 to 1024). This value multiplies the gravity vector. This is useful to alter the force of gravity without altering its direction.
+-- | The area's gravity intensity (in pixels per second squared). This value multiplies the gravity vector. This is useful to alter the force of gravity without altering its direction.
 bindArea2D_get_gravity :: MethodBind
 bindArea2D_get_gravity
   = unsafePerformIO $
@@ -534,7 +552,7 @@ bindArea2D_get_gravity
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | The area's gravity intensity (ranges from -1024 to 1024). This value multiplies the gravity vector. This is useful to alter the force of gravity without altering its direction.
+-- | The area's gravity intensity (in pixels per second squared). This value multiplies the gravity vector. This is useful to alter the force of gravity without altering its direction.
 get_gravity :: (Area2D :< cls, Object :< cls) => cls -> IO Float
 get_gravity cls
   = withVariantArray []
@@ -604,7 +622,8 @@ instance NodeMethod Area2D "get_gravity_vector" '[] (IO Vector2)
 
 {-# NOINLINE bindArea2D_get_linear_damp #-}
 
--- | The rate at which objects stop moving in this area. Represents the linear velocity lost per second. Values range from @0@ (no damping) to @1@ (full damping).
+-- | The rate at which objects stop moving in this area. Represents the linear velocity lost per second.
+--   			See @ProjectSettings.physics/2d/default_linear_damp@ for more details about damping.
 bindArea2D_get_linear_damp :: MethodBind
 bindArea2D_get_linear_damp
   = unsafePerformIO $
@@ -614,7 +633,8 @@ bindArea2D_get_linear_damp
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | The rate at which objects stop moving in this area. Represents the linear velocity lost per second. Values range from @0@ (no damping) to @1@ (full damping).
+-- | The rate at which objects stop moving in this area. Represents the linear velocity lost per second.
+--   			See @ProjectSettings.physics/2d/default_linear_damp@ for more details about damping.
 get_linear_damp ::
                   (Area2D :< cls, Object :< cls) => cls -> IO Float
 get_linear_damp cls
@@ -897,7 +917,8 @@ instance NodeMethod Area2D "overlaps_body" '[Node] (IO Bool) where
 
 {-# NOINLINE bindArea2D_set_angular_damp #-}
 
--- | The rate at which objects stop spinning in this area. Represents the angular velocity lost per second. Values range from @0@ (no damping) to @1@ (full damping).
+-- | The rate at which objects stop spinning in this area. Represents the angular velocity lost per second.
+--   			See @ProjectSettings.physics/2d/default_angular_damp@ for more details about damping.
 bindArea2D_set_angular_damp :: MethodBind
 bindArea2D_set_angular_damp
   = unsafePerformIO $
@@ -907,7 +928,8 @@ bindArea2D_set_angular_damp
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | The rate at which objects stop spinning in this area. Represents the angular velocity lost per second. Values range from @0@ (no damping) to @1@ (full damping).
+-- | The rate at which objects stop spinning in this area. Represents the angular velocity lost per second.
+--   			See @ProjectSettings.physics/2d/default_angular_damp@ for more details about damping.
 set_angular_damp ::
                    (Area2D :< cls, Object :< cls) => cls -> Float -> IO ()
 set_angular_damp cls arg1
@@ -980,7 +1002,7 @@ instance NodeMethod Area2D "set_audio_bus_override" '[Bool] (IO ())
 
 {-# NOINLINE bindArea2D_set_collision_layer #-}
 
--- | The area's physics layer(s). Collidable objects can exist in any of 32 different layers. A contact is detected if object A is in any of the layers that object B scans, or object B is in any layers that object A scans. See also @collision_mask@. See @url=https://docs.godotengine.org/en/latest/tutorials/physics/physics_introduction.html#collision-layers-and-masks@Collision layers and masks@/url@ in the documentation for more information.
+-- | The area's physics layer(s). Collidable objects can exist in any of 32 different layers. A contact is detected if object A is in any of the layers that object B scans, or object B is in any layers that object A scans. See also @collision_mask@. See @url=https://docs.godotengine.org/en/3.3/tutorials/physics/physics_introduction.html#collision-layers-and-masks@Collision layers and masks@/url@ in the documentation for more information.
 bindArea2D_set_collision_layer :: MethodBind
 bindArea2D_set_collision_layer
   = unsafePerformIO $
@@ -990,7 +1012,7 @@ bindArea2D_set_collision_layer
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | The area's physics layer(s). Collidable objects can exist in any of 32 different layers. A contact is detected if object A is in any of the layers that object B scans, or object B is in any layers that object A scans. See also @collision_mask@. See @url=https://docs.godotengine.org/en/latest/tutorials/physics/physics_introduction.html#collision-layers-and-masks@Collision layers and masks@/url@ in the documentation for more information.
+-- | The area's physics layer(s). Collidable objects can exist in any of 32 different layers. A contact is detected if object A is in any of the layers that object B scans, or object B is in any layers that object A scans. See also @collision_mask@. See @url=https://docs.godotengine.org/en/3.3/tutorials/physics/physics_introduction.html#collision-layers-and-masks@Collision layers and masks@/url@ in the documentation for more information.
 set_collision_layer ::
                       (Area2D :< cls, Object :< cls) => cls -> Int -> IO ()
 set_collision_layer cls arg1
@@ -1036,7 +1058,7 @@ instance NodeMethod Area2D "set_collision_layer_bit" '[Int, Bool]
 
 {-# NOINLINE bindArea2D_set_collision_mask #-}
 
--- | The physics layers this area scans to determine collision detection. See @url=https://docs.godotengine.org/en/latest/tutorials/physics/physics_introduction.html#collision-layers-and-masks@Collision layers and masks@/url@ in the documentation for more information.
+-- | The physics layers this area scans to determine collision detection. See @url=https://docs.godotengine.org/en/3.3/tutorials/physics/physics_introduction.html#collision-layers-and-masks@Collision layers and masks@/url@ in the documentation for more information.
 bindArea2D_set_collision_mask :: MethodBind
 bindArea2D_set_collision_mask
   = unsafePerformIO $
@@ -1046,7 +1068,7 @@ bindArea2D_set_collision_mask
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | The physics layers this area scans to determine collision detection. See @url=https://docs.godotengine.org/en/latest/tutorials/physics/physics_introduction.html#collision-layers-and-masks@Collision layers and masks@/url@ in the documentation for more information.
+-- | The physics layers this area scans to determine collision detection. See @url=https://docs.godotengine.org/en/3.3/tutorials/physics/physics_introduction.html#collision-layers-and-masks@Collision layers and masks@/url@ in the documentation for more information.
 set_collision_mask ::
                      (Area2D :< cls, Object :< cls) => cls -> Int -> IO ()
 set_collision_mask cls arg1
@@ -1092,7 +1114,7 @@ instance NodeMethod Area2D "set_collision_mask_bit" '[Int, Bool]
 
 {-# NOINLINE bindArea2D_set_gravity #-}
 
--- | The area's gravity intensity (ranges from -1024 to 1024). This value multiplies the gravity vector. This is useful to alter the force of gravity without altering its direction.
+-- | The area's gravity intensity (in pixels per second squared). This value multiplies the gravity vector. This is useful to alter the force of gravity without altering its direction.
 bindArea2D_set_gravity :: MethodBind
 bindArea2D_set_gravity
   = unsafePerformIO $
@@ -1102,7 +1124,7 @@ bindArea2D_set_gravity
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | The area's gravity intensity (ranges from -1024 to 1024). This value multiplies the gravity vector. This is useful to alter the force of gravity without altering its direction.
+-- | The area's gravity intensity (in pixels per second squared). This value multiplies the gravity vector. This is useful to alter the force of gravity without altering its direction.
 set_gravity ::
               (Area2D :< cls, Object :< cls) => cls -> Float -> IO ()
 set_gravity cls arg1
@@ -1200,7 +1222,8 @@ instance NodeMethod Area2D "set_gravity_vector" '[Vector2] (IO ())
 
 {-# NOINLINE bindArea2D_set_linear_damp #-}
 
--- | The rate at which objects stop moving in this area. Represents the linear velocity lost per second. Values range from @0@ (no damping) to @1@ (full damping).
+-- | The rate at which objects stop moving in this area. Represents the linear velocity lost per second.
+--   			See @ProjectSettings.physics/2d/default_linear_damp@ for more details about damping.
 bindArea2D_set_linear_damp :: MethodBind
 bindArea2D_set_linear_damp
   = unsafePerformIO $
@@ -1210,7 +1233,8 @@ bindArea2D_set_linear_damp
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | The rate at which objects stop moving in this area. Represents the linear velocity lost per second. Values range from @0@ (no damping) to @1@ (full damping).
+-- | The rate at which objects stop moving in this area. Represents the linear velocity lost per second.
+--   			See @ProjectSettings.physics/2d/default_linear_damp@ for more details about damping.
 set_linear_damp ::
                   (Area2D :< cls, Object :< cls) => cls -> Float -> IO ()
 set_linear_damp cls arg1

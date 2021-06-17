@@ -625,7 +625,7 @@ instance NodeMethod AnimationPlayer "get_blend_time"
 {-# NOINLINE bindAnimationPlayer_get_current_animation #-}
 
 -- | The name of the currently playing animation. If no animation is playing, the property's value is an empty string. Changing this value does not restart the animation. See @method play@ for more information on playing animations.
---   			__Note__: while this property appears in the inspector, it's not meant to be edited and it's not saved in the scene. This property is mainly used to get the currently playing animation, and internally for animation playback tracks. For more information, see @Animation@.
+--   			__Note__: while this property appears in the inspector, it's not meant to be edited, and it's not saved in the scene. This property is mainly used to get the currently playing animation, and internally for animation playback tracks. For more information, see @Animation@.
 bindAnimationPlayer_get_current_animation :: MethodBind
 bindAnimationPlayer_get_current_animation
   = unsafePerformIO $
@@ -636,7 +636,7 @@ bindAnimationPlayer_get_current_animation
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
 -- | The name of the currently playing animation. If no animation is playing, the property's value is an empty string. Changing this value does not restart the animation. See @method play@ for more information on playing animations.
---   			__Note__: while this property appears in the inspector, it's not meant to be edited and it's not saved in the scene. This property is mainly used to get the currently playing animation, and internally for animation playback tracks. For more information, see @Animation@.
+--   			__Note__: while this property appears in the inspector, it's not meant to be edited, and it's not saved in the scene. This property is mainly used to get the currently playing animation, and internally for animation playback tracks. For more information, see @Animation@.
 get_current_animation ::
                         (AnimationPlayer :< cls, Object :< cls) => cls -> IO GodotString
 get_current_animation cls
@@ -1321,7 +1321,7 @@ instance NodeMethod AnimationPlayer "set_blend_time"
 {-# NOINLINE bindAnimationPlayer_set_current_animation #-}
 
 -- | The name of the currently playing animation. If no animation is playing, the property's value is an empty string. Changing this value does not restart the animation. See @method play@ for more information on playing animations.
---   			__Note__: while this property appears in the inspector, it's not meant to be edited and it's not saved in the scene. This property is mainly used to get the currently playing animation, and internally for animation playback tracks. For more information, see @Animation@.
+--   			__Note__: while this property appears in the inspector, it's not meant to be edited, and it's not saved in the scene. This property is mainly used to get the currently playing animation, and internally for animation playback tracks. For more information, see @Animation@.
 bindAnimationPlayer_set_current_animation :: MethodBind
 bindAnimationPlayer_set_current_animation
   = unsafePerformIO $
@@ -1332,7 +1332,7 @@ bindAnimationPlayer_set_current_animation
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
 -- | The name of the currently playing animation. If no animation is playing, the property's value is an empty string. Changing this value does not restart the animation. See @method play@ for more information on playing animations.
---   			__Note__: while this property appears in the inspector, it's not meant to be edited and it's not saved in the scene. This property is mainly used to get the currently playing animation, and internally for animation playback tracks. For more information, see @Animation@.
+--   			__Note__: while this property appears in the inspector, it's not meant to be edited, and it's not saved in the scene. This property is mainly used to get the currently playing animation, and internally for animation playback tracks. For more information, see @Animation@.
 set_current_animation ::
                         (AnimationPlayer :< cls, Object :< cls) =>
                         cls -> GodotString -> IO ()

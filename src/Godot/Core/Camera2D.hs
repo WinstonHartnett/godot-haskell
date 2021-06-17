@@ -8,7 +8,6 @@ module Godot.Core.Camera2D
         Godot.Core.Camera2D._ANCHOR_MODE_DRAG_CENTER,
         Godot.Core.Camera2D._make_current,
         Godot.Core.Camera2D._set_current,
-        Godot.Core.Camera2D._set_old_smoothing,
         Godot.Core.Camera2D._update_scroll, Godot.Core.Camera2D.align,
         Godot.Core.Camera2D.clear_current,
         Godot.Core.Camera2D.force_update_scroll,
@@ -249,31 +248,6 @@ _set_current cls arg1
 
 instance NodeMethod Camera2D "_set_current" '[Bool] (IO ()) where
         nodeMethod = Godot.Core.Camera2D._set_current
-
-{-# NOINLINE bindCamera2D__set_old_smoothing #-}
-
-bindCamera2D__set_old_smoothing :: MethodBind
-bindCamera2D__set_old_smoothing
-  = unsafePerformIO $
-      withCString "Camera2D" $
-        \ clsNamePtr ->
-          withCString "_set_old_smoothing" $
-            \ methodNamePtr ->
-              godot_method_bind_get_method clsNamePtr methodNamePtr
-
-_set_old_smoothing ::
-                     (Camera2D :< cls, Object :< cls) => cls -> Float -> IO ()
-_set_old_smoothing cls arg1
-  = withVariantArray [toVariant arg1]
-      (\ (arrPtr, len) ->
-         godot_method_bind_call bindCamera2D__set_old_smoothing (upcast cls)
-           arrPtr
-           len
-           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
-
-instance NodeMethod Camera2D "_set_old_smoothing" '[Float] (IO ())
-         where
-        nodeMethod = Godot.Core.Camera2D._set_old_smoothing
 
 {-# NOINLINE bindCamera2D__update_scroll #-}
 

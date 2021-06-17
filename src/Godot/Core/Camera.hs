@@ -317,6 +317,11 @@ instance NodeMethod Camera "get_environment" '[] (IO Environment)
 {-# NOINLINE bindCamera_get_fov #-}
 
 -- | The camera's field of view angle (in degrees). Only applicable in perspective mode. Since @keep_aspect@ locks one axis, @fov@ sets the other axis' field of view angle.
+--   			For reference, the default vertical field of view value (@70.0@) is equivalent to a horizontal FOV of:
+--   			- ~86.07 degrees in a 4:3 viewport
+--   			- ~96.50 degrees in a 16:10 viewport
+--   			- ~102.45 degrees in a 16:9 viewport
+--   			- ~117.06 degrees in a 21:9 viewport
 bindCamera_get_fov :: MethodBind
 bindCamera_get_fov
   = unsafePerformIO $
@@ -327,6 +332,11 @@ bindCamera_get_fov
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
 -- | The camera's field of view angle (in degrees). Only applicable in perspective mode. Since @keep_aspect@ locks one axis, @fov@ sets the other axis' field of view angle.
+--   			For reference, the default vertical field of view value (@70.0@) is equivalent to a horizontal FOV of:
+--   			- ~86.07 degrees in a 4:3 viewport
+--   			- ~96.50 degrees in a 16:10 viewport
+--   			- ~102.45 degrees in a 16:9 viewport
+--   			- ~117.06 degrees in a 21:9 viewport
 get_fov :: (Camera :< cls, Object :< cls) => cls -> IO Float
 get_fov cls
   = withVariantArray []
@@ -883,6 +893,11 @@ instance NodeMethod Camera "set_environment" '[Environment] (IO ())
 {-# NOINLINE bindCamera_set_fov #-}
 
 -- | The camera's field of view angle (in degrees). Only applicable in perspective mode. Since @keep_aspect@ locks one axis, @fov@ sets the other axis' field of view angle.
+--   			For reference, the default vertical field of view value (@70.0@) is equivalent to a horizontal FOV of:
+--   			- ~86.07 degrees in a 4:3 viewport
+--   			- ~96.50 degrees in a 16:10 viewport
+--   			- ~102.45 degrees in a 16:9 viewport
+--   			- ~117.06 degrees in a 21:9 viewport
 bindCamera_set_fov :: MethodBind
 bindCamera_set_fov
   = unsafePerformIO $
@@ -893,6 +908,11 @@ bindCamera_set_fov
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
 -- | The camera's field of view angle (in degrees). Only applicable in perspective mode. Since @keep_aspect@ locks one axis, @fov@ sets the other axis' field of view angle.
+--   			For reference, the default vertical field of view value (@70.0@) is equivalent to a horizontal FOV of:
+--   			- ~86.07 degrees in a 4:3 viewport
+--   			- ~96.50 degrees in a 16:10 viewport
+--   			- ~102.45 degrees in a 16:9 viewport
+--   			- ~117.06 degrees in a 21:9 viewport
 set_fov :: (Camera :< cls, Object :< cls) => cls -> Float -> IO ()
 set_fov cls arg1
   = withVariantArray [toVariant arg1]
@@ -1194,6 +1214,16 @@ instance NodeMethod Camera "set_znear" '[Float] (IO ()) where
 {-# NOINLINE bindCamera_unproject_position #-}
 
 -- | Returns the 2D coordinate in the @Viewport@ rectangle that maps to the given 3D point in worldspace.
+--   				__Note:__ When using this to position GUI elements over a 3D viewport, use @method is_position_behind@ to prevent them from appearing if the 3D point is behind the camera:
+--   				
+--   @
+--   
+--   				# This code block is part of a script that inherits from Spatial.
+--   				# `control` is a reference to a node inheriting from Control.
+--   				control.visible = not get_viewport().get_camera().is_position_behind(global_transform.origin)
+--   				control.rect_position = get_viewport().get_camera().unproject_position(global_transform.origin)
+--   				
+--   @
 bindCamera_unproject_position :: MethodBind
 bindCamera_unproject_position
   = unsafePerformIO $
@@ -1204,6 +1234,16 @@ bindCamera_unproject_position
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
 -- | Returns the 2D coordinate in the @Viewport@ rectangle that maps to the given 3D point in worldspace.
+--   				__Note:__ When using this to position GUI elements over a 3D viewport, use @method is_position_behind@ to prevent them from appearing if the 3D point is behind the camera:
+--   				
+--   @
+--   
+--   				# This code block is part of a script that inherits from Spatial.
+--   				# `control` is a reference to a node inheriting from Control.
+--   				control.visible = not get_viewport().get_camera().is_position_behind(global_transform.origin)
+--   				control.rect_position = get_viewport().get_camera().unproject_position(global_transform.origin)
+--   				
+--   @
 unproject_position ::
                      (Camera :< cls, Object :< cls) => cls -> Vector3 -> IO Vector2
 unproject_position cls arg1

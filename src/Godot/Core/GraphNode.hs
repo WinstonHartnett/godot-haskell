@@ -10,6 +10,7 @@ module Godot.Core.GraphNode
         Godot.Core.GraphNode.sig_offset_changed,
         Godot.Core.GraphNode.sig_raise_request,
         Godot.Core.GraphNode.sig_resize_request,
+        Godot.Core.GraphNode.sig_slot_updated,
         Godot.Core.GraphNode._gui_input,
         Godot.Core.GraphNode.clear_all_slots,
         Godot.Core.GraphNode.clear_slot,
@@ -91,6 +92,12 @@ sig_resize_request
   = Godot.Internal.Dispatch.Signal "resize_request"
 
 instance NodeSignal GraphNode "resize_request" '[Vector2]
+
+-- | Emitted when any GraphNode's slot is updated.
+sig_slot_updated :: Godot.Internal.Dispatch.Signal GraphNode
+sig_slot_updated = Godot.Internal.Dispatch.Signal "slot_updated"
+
+instance NodeSignal GraphNode "slot_updated" '[Int]
 
 instance NodeProperty GraphNode "comment" Bool 'False where
         nodeProperty

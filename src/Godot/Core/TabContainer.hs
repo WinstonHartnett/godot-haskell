@@ -27,6 +27,8 @@ module Godot.Core.TabContainer
         Godot.Core.TabContainer.get_tab_title,
         Godot.Core.TabContainer.get_tabs_rearrange_group,
         Godot.Core.TabContainer.get_use_hidden_tabs_for_min_size,
+        Godot.Core.TabContainer.is_all_tabs_in_front,
+        Godot.Core.TabContainer.set_all_tabs_in_front,
         Godot.Core.TabContainer.set_current_tab,
         Godot.Core.TabContainer.set_drag_to_rearrange_enabled,
         Godot.Core.TabContainer.set_popup,
@@ -78,6 +80,12 @@ sig_tab_selected :: Godot.Internal.Dispatch.Signal TabContainer
 sig_tab_selected = Godot.Internal.Dispatch.Signal "tab_selected"
 
 instance NodeSignal TabContainer "tab_selected" '[Int]
+
+instance NodeProperty TabContainer "all_tabs_in_front" Bool 'False
+         where
+        nodeProperty
+          = (is_all_tabs_in_front, wrapDroppingSetter set_all_tabs_in_front,
+             Nothing)
 
 instance NodeProperty TabContainer "current_tab" Int 'False where
         nodeProperty
@@ -632,6 +640,64 @@ instance NodeMethod TabContainer "get_use_hidden_tabs_for_min_size"
          where
         nodeMethod
           = Godot.Core.TabContainer.get_use_hidden_tabs_for_min_size
+
+{-# NOINLINE bindTabContainer_is_all_tabs_in_front #-}
+
+-- | If @true@, all tabs are drawn in front of the panel. If @false@, inactive tabs are drawn behind the panel.
+bindTabContainer_is_all_tabs_in_front :: MethodBind
+bindTabContainer_is_all_tabs_in_front
+  = unsafePerformIO $
+      withCString "TabContainer" $
+        \ clsNamePtr ->
+          withCString "is_all_tabs_in_front" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | If @true@, all tabs are drawn in front of the panel. If @false@, inactive tabs are drawn behind the panel.
+is_all_tabs_in_front ::
+                       (TabContainer :< cls, Object :< cls) => cls -> IO Bool
+is_all_tabs_in_front cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindTabContainer_is_all_tabs_in_front
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod TabContainer "is_all_tabs_in_front" '[]
+           (IO Bool)
+         where
+        nodeMethod = Godot.Core.TabContainer.is_all_tabs_in_front
+
+{-# NOINLINE bindTabContainer_set_all_tabs_in_front #-}
+
+-- | If @true@, all tabs are drawn in front of the panel. If @false@, inactive tabs are drawn behind the panel.
+bindTabContainer_set_all_tabs_in_front :: MethodBind
+bindTabContainer_set_all_tabs_in_front
+  = unsafePerformIO $
+      withCString "TabContainer" $
+        \ clsNamePtr ->
+          withCString "set_all_tabs_in_front" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | If @true@, all tabs are drawn in front of the panel. If @false@, inactive tabs are drawn behind the panel.
+set_all_tabs_in_front ::
+                        (TabContainer :< cls, Object :< cls) => cls -> Bool -> IO ()
+set_all_tabs_in_front cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindTabContainer_set_all_tabs_in_front
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod TabContainer "set_all_tabs_in_front" '[Bool]
+           (IO ())
+         where
+        nodeMethod = Godot.Core.TabContainer.set_all_tabs_in_front
 
 {-# NOINLINE bindTabContainer_set_current_tab #-}
 

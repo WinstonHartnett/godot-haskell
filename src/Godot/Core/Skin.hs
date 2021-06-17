@@ -4,8 +4,9 @@
 module Godot.Core.Skin
        (Godot.Core.Skin.add_bind, Godot.Core.Skin.clear_binds,
         Godot.Core.Skin.get_bind_bone, Godot.Core.Skin.get_bind_count,
-        Godot.Core.Skin.get_bind_pose, Godot.Core.Skin.set_bind_bone,
-        Godot.Core.Skin.set_bind_count, Godot.Core.Skin.set_bind_pose)
+        Godot.Core.Skin.get_bind_name, Godot.Core.Skin.get_bind_pose,
+        Godot.Core.Skin.set_bind_bone, Godot.Core.Skin.set_bind_count,
+        Godot.Core.Skin.set_bind_name, Godot.Core.Skin.set_bind_pose)
        where
 import Data.Coerce
 import Foreign.C
@@ -107,6 +108,30 @@ get_bind_count cls
 instance NodeMethod Skin "get_bind_count" '[] (IO Int) where
         nodeMethod = Godot.Core.Skin.get_bind_count
 
+{-# NOINLINE bindSkin_get_bind_name #-}
+
+bindSkin_get_bind_name :: MethodBind
+bindSkin_get_bind_name
+  = unsafePerformIO $
+      withCString "Skin" $
+        \ clsNamePtr ->
+          withCString "get_bind_name" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+get_bind_name ::
+                (Skin :< cls, Object :< cls) => cls -> Int -> IO GodotString
+get_bind_name cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindSkin_get_bind_name (upcast cls) arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod Skin "get_bind_name" '[Int] (IO GodotString)
+         where
+        nodeMethod = Godot.Core.Skin.get_bind_name
+
 {-# NOINLINE bindSkin_get_bind_pose #-}
 
 bindSkin_get_bind_pose :: MethodBind
@@ -176,6 +201,31 @@ set_bind_count cls arg1
 
 instance NodeMethod Skin "set_bind_count" '[Int] (IO ()) where
         nodeMethod = Godot.Core.Skin.set_bind_count
+
+{-# NOINLINE bindSkin_set_bind_name #-}
+
+bindSkin_set_bind_name :: MethodBind
+bindSkin_set_bind_name
+  = unsafePerformIO $
+      withCString "Skin" $
+        \ clsNamePtr ->
+          withCString "set_bind_name" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+set_bind_name ::
+                (Skin :< cls, Object :< cls) => cls -> Int -> GodotString -> IO ()
+set_bind_name cls arg1 arg2
+  = withVariantArray [toVariant arg1, toVariant arg2]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindSkin_set_bind_name (upcast cls) arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod Skin "set_bind_name" '[Int, GodotString]
+           (IO ())
+         where
+        nodeMethod = Godot.Core.Skin.set_bind_name
 
 {-# NOINLINE bindSkin_set_bind_pose #-}
 

@@ -3,13 +3,15 @@
   MultiParamTypeClasses #-}
 module Godot.Core.RandomNumberGenerator
        (Godot.Core.RandomNumberGenerator.get_seed,
+        Godot.Core.RandomNumberGenerator.get_state,
         Godot.Core.RandomNumberGenerator.randf,
         Godot.Core.RandomNumberGenerator.randf_range,
         Godot.Core.RandomNumberGenerator.randfn,
         Godot.Core.RandomNumberGenerator.randi,
         Godot.Core.RandomNumberGenerator.randi_range,
         Godot.Core.RandomNumberGenerator.randomize,
-        Godot.Core.RandomNumberGenerator.set_seed)
+        Godot.Core.RandomNumberGenerator.set_seed,
+        Godot.Core.RandomNumberGenerator.set_state)
        where
 import Data.Coerce
 import Foreign.C
@@ -26,10 +28,25 @@ import Godot.Core.Reference()
 instance NodeProperty RandomNumberGenerator "seed" Int 'False where
         nodeProperty = (get_seed, wrapDroppingSetter set_seed, Nothing)
 
+instance NodeProperty RandomNumberGenerator "state" Int 'False
+         where
+        nodeProperty = (get_state, wrapDroppingSetter set_state, Nothing)
+
 {-# NOINLINE bindRandomNumberGenerator_get_seed #-}
 
--- | The seed used by the random number generator. A given seed will give a reproducible sequence of pseudo-random numbers.
+-- | Initializes the random number generator state based on the given seed value. A given seed will give a reproducible sequence of pseudo-random numbers.
 --   			__Note:__ The RNG does not have an avalanche effect, and can output similar random streams given similar seeds. Consider using a hash function to improve your seed quality if they're sourced externally.
+--   			__Note:__ Setting this property produces a side effect of changing the internal @state@, so make sure to initialize the seed @i@before@/i@ modifying the @state@:
+--   			
+--   @
+--   
+--   			var rng = RandomNumberGenerator.new()
+--   			rng.seed = hash("Godot")
+--   			rng.state = 100 # Restore to some previously saved state.
+--   			
+--   @
+--   
+--   			__Warning:__ the getter of this property returns the previous @state@, and not the initial seed value, which is going to be fixed in Godot 4.0.
 bindRandomNumberGenerator_get_seed :: MethodBind
 bindRandomNumberGenerator_get_seed
   = unsafePerformIO $
@@ -39,8 +56,19 @@ bindRandomNumberGenerator_get_seed
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | The seed used by the random number generator. A given seed will give a reproducible sequence of pseudo-random numbers.
+-- | Initializes the random number generator state based on the given seed value. A given seed will give a reproducible sequence of pseudo-random numbers.
 --   			__Note:__ The RNG does not have an avalanche effect, and can output similar random streams given similar seeds. Consider using a hash function to improve your seed quality if they're sourced externally.
+--   			__Note:__ Setting this property produces a side effect of changing the internal @state@, so make sure to initialize the seed @i@before@/i@ modifying the @state@:
+--   			
+--   @
+--   
+--   			var rng = RandomNumberGenerator.new()
+--   			rng.seed = hash("Godot")
+--   			rng.state = 100 # Restore to some previously saved state.
+--   			
+--   @
+--   
+--   			__Warning:__ the getter of this property returns the previous @state@, and not the initial seed value, which is going to be fixed in Godot 4.0.
 get_seed ::
            (RandomNumberGenerator :< cls, Object :< cls) => cls -> IO Int
 get_seed cls
@@ -55,6 +83,60 @@ get_seed cls
 instance NodeMethod RandomNumberGenerator "get_seed" '[] (IO Int)
          where
         nodeMethod = Godot.Core.RandomNumberGenerator.get_seed
+
+{-# NOINLINE bindRandomNumberGenerator_get_state #-}
+
+-- | The current state of the random number generator. Save and restore this property to restore the generator to a previous state:
+--   			
+--   @
+--   
+--   			var rng = RandomNumberGenerator.new()
+--   			print(rng.randf())
+--   			var saved_state = rng.state # Store current state.
+--   			print(rng.randf()) # Advance internal state.
+--   			rng.state = saved_state # Restore the state.
+--   			print(rng.randf()) # Prints the same value as in previous.
+--   			
+--   @
+--   
+--   			__Note:__ Do not set state to arbitrary values, since the random number generator requires the state to have certain qualities to behave properly. It should only be set to values that came from the state property itself. To initialize the random number generator with arbitrary input, use @seed@ instead.
+bindRandomNumberGenerator_get_state :: MethodBind
+bindRandomNumberGenerator_get_state
+  = unsafePerformIO $
+      withCString "RandomNumberGenerator" $
+        \ clsNamePtr ->
+          withCString "get_state" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | The current state of the random number generator. Save and restore this property to restore the generator to a previous state:
+--   			
+--   @
+--   
+--   			var rng = RandomNumberGenerator.new()
+--   			print(rng.randf())
+--   			var saved_state = rng.state # Store current state.
+--   			print(rng.randf()) # Advance internal state.
+--   			rng.state = saved_state # Restore the state.
+--   			print(rng.randf()) # Prints the same value as in previous.
+--   			
+--   @
+--   
+--   			__Note:__ Do not set state to arbitrary values, since the random number generator requires the state to have certain qualities to behave properly. It should only be set to values that came from the state property itself. To initialize the random number generator with arbitrary input, use @seed@ instead.
+get_state ::
+            (RandomNumberGenerator :< cls, Object :< cls) => cls -> IO Int
+get_state cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindRandomNumberGenerator_get_state
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod RandomNumberGenerator "get_state" '[] (IO Int)
+         where
+        nodeMethod = Godot.Core.RandomNumberGenerator.get_state
 
 {-# NOINLINE bindRandomNumberGenerator_randf #-}
 
@@ -234,8 +316,19 @@ instance NodeMethod RandomNumberGenerator "randomize" '[] (IO ())
 
 {-# NOINLINE bindRandomNumberGenerator_set_seed #-}
 
--- | The seed used by the random number generator. A given seed will give a reproducible sequence of pseudo-random numbers.
+-- | Initializes the random number generator state based on the given seed value. A given seed will give a reproducible sequence of pseudo-random numbers.
 --   			__Note:__ The RNG does not have an avalanche effect, and can output similar random streams given similar seeds. Consider using a hash function to improve your seed quality if they're sourced externally.
+--   			__Note:__ Setting this property produces a side effect of changing the internal @state@, so make sure to initialize the seed @i@before@/i@ modifying the @state@:
+--   			
+--   @
+--   
+--   			var rng = RandomNumberGenerator.new()
+--   			rng.seed = hash("Godot")
+--   			rng.state = 100 # Restore to some previously saved state.
+--   			
+--   @
+--   
+--   			__Warning:__ the getter of this property returns the previous @state@, and not the initial seed value, which is going to be fixed in Godot 4.0.
 bindRandomNumberGenerator_set_seed :: MethodBind
 bindRandomNumberGenerator_set_seed
   = unsafePerformIO $
@@ -245,8 +338,19 @@ bindRandomNumberGenerator_set_seed
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | The seed used by the random number generator. A given seed will give a reproducible sequence of pseudo-random numbers.
+-- | Initializes the random number generator state based on the given seed value. A given seed will give a reproducible sequence of pseudo-random numbers.
 --   			__Note:__ The RNG does not have an avalanche effect, and can output similar random streams given similar seeds. Consider using a hash function to improve your seed quality if they're sourced externally.
+--   			__Note:__ Setting this property produces a side effect of changing the internal @state@, so make sure to initialize the seed @i@before@/i@ modifying the @state@:
+--   			
+--   @
+--   
+--   			var rng = RandomNumberGenerator.new()
+--   			rng.seed = hash("Godot")
+--   			rng.state = 100 # Restore to some previously saved state.
+--   			
+--   @
+--   
+--   			__Warning:__ the getter of this property returns the previous @state@, and not the initial seed value, which is going to be fixed in Godot 4.0.
 set_seed ::
            (RandomNumberGenerator :< cls, Object :< cls) =>
            cls -> Int -> IO ()
@@ -262,3 +366,59 @@ set_seed cls arg1
 instance NodeMethod RandomNumberGenerator "set_seed" '[Int] (IO ())
          where
         nodeMethod = Godot.Core.RandomNumberGenerator.set_seed
+
+{-# NOINLINE bindRandomNumberGenerator_set_state #-}
+
+-- | The current state of the random number generator. Save and restore this property to restore the generator to a previous state:
+--   			
+--   @
+--   
+--   			var rng = RandomNumberGenerator.new()
+--   			print(rng.randf())
+--   			var saved_state = rng.state # Store current state.
+--   			print(rng.randf()) # Advance internal state.
+--   			rng.state = saved_state # Restore the state.
+--   			print(rng.randf()) # Prints the same value as in previous.
+--   			
+--   @
+--   
+--   			__Note:__ Do not set state to arbitrary values, since the random number generator requires the state to have certain qualities to behave properly. It should only be set to values that came from the state property itself. To initialize the random number generator with arbitrary input, use @seed@ instead.
+bindRandomNumberGenerator_set_state :: MethodBind
+bindRandomNumberGenerator_set_state
+  = unsafePerformIO $
+      withCString "RandomNumberGenerator" $
+        \ clsNamePtr ->
+          withCString "set_state" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | The current state of the random number generator. Save and restore this property to restore the generator to a previous state:
+--   			
+--   @
+--   
+--   			var rng = RandomNumberGenerator.new()
+--   			print(rng.randf())
+--   			var saved_state = rng.state # Store current state.
+--   			print(rng.randf()) # Advance internal state.
+--   			rng.state = saved_state # Restore the state.
+--   			print(rng.randf()) # Prints the same value as in previous.
+--   			
+--   @
+--   
+--   			__Note:__ Do not set state to arbitrary values, since the random number generator requires the state to have certain qualities to behave properly. It should only be set to values that came from the state property itself. To initialize the random number generator with arbitrary input, use @seed@ instead.
+set_state ::
+            (RandomNumberGenerator :< cls, Object :< cls) =>
+            cls -> Int -> IO ()
+set_state cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindRandomNumberGenerator_set_state
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod RandomNumberGenerator "set_state" '[Int]
+           (IO ())
+         where
+        nodeMethod = Godot.Core.RandomNumberGenerator.set_state

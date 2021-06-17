@@ -36,7 +36,7 @@ sig_filesystem_changed
 
 instance NodeSignal EditorFileSystem "filesystem_changed" '[]
 
--- | Remitted if a resource is reimported.
+-- | Emitted if a resource is reimported.
 sig_resources_reimported ::
                          Godot.Internal.Dispatch.Signal EditorFileSystem
 sig_resources_reimported

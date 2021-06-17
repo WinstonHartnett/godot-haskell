@@ -12,13 +12,17 @@ module Godot.Core.GraphEdit
         Godot.Core.GraphEdit.sig_disconnection_request,
         Godot.Core.GraphEdit.sig_duplicate_nodes_request,
         Godot.Core.GraphEdit.sig_node_selected,
+        Godot.Core.GraphEdit.sig_node_unselected,
         Godot.Core.GraphEdit.sig_paste_nodes_request,
         Godot.Core.GraphEdit.sig_popup_request,
         Godot.Core.GraphEdit.sig_scroll_offset_changed,
         Godot.Core.GraphEdit._connections_layer_draw,
         Godot.Core.GraphEdit._graph_node_moved,
         Godot.Core.GraphEdit._graph_node_raised,
+        Godot.Core.GraphEdit._graph_node_slot_updated,
         Godot.Core.GraphEdit._gui_input,
+        Godot.Core.GraphEdit._minimap_draw,
+        Godot.Core.GraphEdit._minimap_toggled,
         Godot.Core.GraphEdit._scroll_moved,
         Godot.Core.GraphEdit._snap_toggled,
         Godot.Core.GraphEdit._snap_value_changed,
@@ -34,8 +38,11 @@ module Godot.Core.GraphEdit
         Godot.Core.GraphEdit.connect_node,
         Godot.Core.GraphEdit.disconnect_node,
         Godot.Core.GraphEdit.get_connection_list,
+        Godot.Core.GraphEdit.get_minimap_opacity,
+        Godot.Core.GraphEdit.get_minimap_size,
         Godot.Core.GraphEdit.get_scroll_ofs, Godot.Core.GraphEdit.get_snap,
         Godot.Core.GraphEdit.get_zoom, Godot.Core.GraphEdit.get_zoom_hbox,
+        Godot.Core.GraphEdit.is_minimap_enabled,
         Godot.Core.GraphEdit.is_node_connected,
         Godot.Core.GraphEdit.is_right_disconnects_enabled,
         Godot.Core.GraphEdit.is_using_snap,
@@ -44,6 +51,9 @@ module Godot.Core.GraphEdit
         Godot.Core.GraphEdit.remove_valid_left_disconnect_type,
         Godot.Core.GraphEdit.remove_valid_right_disconnect_type,
         Godot.Core.GraphEdit.set_connection_activity,
+        Godot.Core.GraphEdit.set_minimap_enabled,
+        Godot.Core.GraphEdit.set_minimap_opacity,
+        Godot.Core.GraphEdit.set_minimap_size,
         Godot.Core.GraphEdit.set_right_disconnects,
         Godot.Core.GraphEdit.set_scroll_ofs,
         Godot.Core.GraphEdit.set_selected, Godot.Core.GraphEdit.set_snap,
@@ -138,6 +148,12 @@ sig_node_selected = Godot.Internal.Dispatch.Signal "node_selected"
 
 instance NodeSignal GraphEdit "node_selected" '[Node]
 
+sig_node_unselected :: Godot.Internal.Dispatch.Signal GraphEdit
+sig_node_unselected
+  = Godot.Internal.Dispatch.Signal "node_unselected"
+
+instance NodeSignal GraphEdit "node_unselected" '[Node]
+
 -- | Emitted when the user presses @Ctrl + V@.
 sig_paste_nodes_request :: Godot.Internal.Dispatch.Signal GraphEdit
 sig_paste_nodes_request
@@ -158,6 +174,21 @@ sig_scroll_offset_changed
   = Godot.Internal.Dispatch.Signal "scroll_offset_changed"
 
 instance NodeSignal GraphEdit "scroll_offset_changed" '[Vector2]
+
+instance NodeProperty GraphEdit "minimap_enabled" Bool 'False where
+        nodeProperty
+          = (is_minimap_enabled, wrapDroppingSetter set_minimap_enabled,
+             Nothing)
+
+instance NodeProperty GraphEdit "minimap_opacity" Float 'False
+         where
+        nodeProperty
+          = (get_minimap_opacity, wrapDroppingSetter set_minimap_opacity,
+             Nothing)
+
+instance NodeProperty GraphEdit "minimap_size" Vector2 'False where
+        nodeProperty
+          = (get_minimap_size, wrapDroppingSetter set_minimap_size, Nothing)
 
 instance NodeProperty GraphEdit "right_disconnects" Bool 'False
          where
@@ -257,6 +288,34 @@ instance NodeMethod GraphEdit "_graph_node_raised" '[Node] (IO ())
          where
         nodeMethod = Godot.Core.GraphEdit._graph_node_raised
 
+{-# NOINLINE bindGraphEdit__graph_node_slot_updated #-}
+
+bindGraphEdit__graph_node_slot_updated :: MethodBind
+bindGraphEdit__graph_node_slot_updated
+  = unsafePerformIO $
+      withCString "GraphEdit" $
+        \ clsNamePtr ->
+          withCString "_graph_node_slot_updated" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+_graph_node_slot_updated ::
+                           (GraphEdit :< cls, Object :< cls) => cls -> Int -> Node -> IO ()
+_graph_node_slot_updated cls arg1 arg2
+  = withVariantArray [toVariant arg1, toVariant arg2]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindGraphEdit__graph_node_slot_updated
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod GraphEdit "_graph_node_slot_updated"
+           '[Int, Node]
+           (IO ())
+         where
+        nodeMethod = Godot.Core.GraphEdit._graph_node_slot_updated
+
 {-# NOINLINE bindGraphEdit__gui_input #-}
 
 bindGraphEdit__gui_input :: MethodBind
@@ -280,6 +339,53 @@ _gui_input cls arg1
 instance NodeMethod GraphEdit "_gui_input" '[InputEvent] (IO ())
          where
         nodeMethod = Godot.Core.GraphEdit._gui_input
+
+{-# NOINLINE bindGraphEdit__minimap_draw #-}
+
+bindGraphEdit__minimap_draw :: MethodBind
+bindGraphEdit__minimap_draw
+  = unsafePerformIO $
+      withCString "GraphEdit" $
+        \ clsNamePtr ->
+          withCString "_minimap_draw" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+_minimap_draw :: (GraphEdit :< cls, Object :< cls) => cls -> IO ()
+_minimap_draw cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindGraphEdit__minimap_draw (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod GraphEdit "_minimap_draw" '[] (IO ()) where
+        nodeMethod = Godot.Core.GraphEdit._minimap_draw
+
+{-# NOINLINE bindGraphEdit__minimap_toggled #-}
+
+bindGraphEdit__minimap_toggled :: MethodBind
+bindGraphEdit__minimap_toggled
+  = unsafePerformIO $
+      withCString "GraphEdit" $
+        \ clsNamePtr ->
+          withCString "_minimap_toggled" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+_minimap_toggled ::
+                   (GraphEdit :< cls, Object :< cls) => cls -> IO ()
+_minimap_toggled cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindGraphEdit__minimap_toggled (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod GraphEdit "_minimap_toggled" '[] (IO ()) where
+        nodeMethod = Godot.Core.GraphEdit._minimap_toggled
 
 {-# NOINLINE bindGraphEdit__scroll_moved #-}
 
@@ -707,6 +813,61 @@ instance NodeMethod GraphEdit "get_connection_list" '[] (IO Array)
          where
         nodeMethod = Godot.Core.GraphEdit.get_connection_list
 
+{-# NOINLINE bindGraphEdit_get_minimap_opacity #-}
+
+-- | The opacity of the minimap rectangle.
+bindGraphEdit_get_minimap_opacity :: MethodBind
+bindGraphEdit_get_minimap_opacity
+  = unsafePerformIO $
+      withCString "GraphEdit" $
+        \ clsNamePtr ->
+          withCString "get_minimap_opacity" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | The opacity of the minimap rectangle.
+get_minimap_opacity ::
+                      (GraphEdit :< cls, Object :< cls) => cls -> IO Float
+get_minimap_opacity cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindGraphEdit_get_minimap_opacity
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod GraphEdit "get_minimap_opacity" '[] (IO Float)
+         where
+        nodeMethod = Godot.Core.GraphEdit.get_minimap_opacity
+
+{-# NOINLINE bindGraphEdit_get_minimap_size #-}
+
+-- | The size of the minimap rectangle. The map itself is based on the size of the grid area and is scaled to fit this rectangle.
+bindGraphEdit_get_minimap_size :: MethodBind
+bindGraphEdit_get_minimap_size
+  = unsafePerformIO $
+      withCString "GraphEdit" $
+        \ clsNamePtr ->
+          withCString "get_minimap_size" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | The size of the minimap rectangle. The map itself is based on the size of the grid area and is scaled to fit this rectangle.
+get_minimap_size ::
+                   (GraphEdit :< cls, Object :< cls) => cls -> IO Vector2
+get_minimap_size cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindGraphEdit_get_minimap_size (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod GraphEdit "get_minimap_size" '[] (IO Vector2)
+         where
+        nodeMethod = Godot.Core.GraphEdit.get_minimap_size
+
 {-# NOINLINE bindGraphEdit_get_scroll_ofs #-}
 
 -- | The scroll offset.
@@ -785,7 +946,7 @@ instance NodeMethod GraphEdit "get_zoom" '[] (IO Float) where
 {-# NOINLINE bindGraphEdit_get_zoom_hbox #-}
 
 -- | Gets the @HBoxContainer@ that contains the zooming and grid snap controls in the top left of the graph.
---   				Warning: The intended usage of this function is to allow you to reposition or add your own custom controls to the container. This is an internal control and as such should not be freed. If you wish to hide this or any of it's children use their @CanvasItem.visible@ property instead.
+--   				Warning: The intended usage of this function is to allow you to reposition or add your own custom controls to the container. This is an internal control and as such should not be freed. If you wish to hide this or any of its children, use their @CanvasItem.visible@ property instead.
 bindGraphEdit_get_zoom_hbox :: MethodBind
 bindGraphEdit_get_zoom_hbox
   = unsafePerformIO $
@@ -796,7 +957,7 @@ bindGraphEdit_get_zoom_hbox
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
 -- | Gets the @HBoxContainer@ that contains the zooming and grid snap controls in the top left of the graph.
---   				Warning: The intended usage of this function is to allow you to reposition or add your own custom controls to the container. This is an internal control and as such should not be freed. If you wish to hide this or any of it's children use their @CanvasItem.visible@ property instead.
+--   				Warning: The intended usage of this function is to allow you to reposition or add your own custom controls to the container. This is an internal control and as such should not be freed. If you wish to hide this or any of its children, use their @CanvasItem.visible@ property instead.
 get_zoom_hbox ::
                 (GraphEdit :< cls, Object :< cls) => cls -> IO HBoxContainer
 get_zoom_hbox cls
@@ -811,6 +972,34 @@ instance NodeMethod GraphEdit "get_zoom_hbox" '[]
            (IO HBoxContainer)
          where
         nodeMethod = Godot.Core.GraphEdit.get_zoom_hbox
+
+{-# NOINLINE bindGraphEdit_is_minimap_enabled #-}
+
+-- | If @true@, the minimap is visible.
+bindGraphEdit_is_minimap_enabled :: MethodBind
+bindGraphEdit_is_minimap_enabled
+  = unsafePerformIO $
+      withCString "GraphEdit" $
+        \ clsNamePtr ->
+          withCString "is_minimap_enabled" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | If @true@, the minimap is visible.
+is_minimap_enabled ::
+                     (GraphEdit :< cls, Object :< cls) => cls -> IO Bool
+is_minimap_enabled cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindGraphEdit_is_minimap_enabled
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod GraphEdit "is_minimap_enabled" '[] (IO Bool)
+         where
+        nodeMethod = Godot.Core.GraphEdit.is_minimap_enabled
 
 {-# NOINLINE bindGraphEdit_is_node_connected #-}
 
@@ -1053,6 +1242,90 @@ instance NodeMethod GraphEdit "set_connection_activity"
            (IO ())
          where
         nodeMethod = Godot.Core.GraphEdit.set_connection_activity
+
+{-# NOINLINE bindGraphEdit_set_minimap_enabled #-}
+
+-- | If @true@, the minimap is visible.
+bindGraphEdit_set_minimap_enabled :: MethodBind
+bindGraphEdit_set_minimap_enabled
+  = unsafePerformIO $
+      withCString "GraphEdit" $
+        \ clsNamePtr ->
+          withCString "set_minimap_enabled" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | If @true@, the minimap is visible.
+set_minimap_enabled ::
+                      (GraphEdit :< cls, Object :< cls) => cls -> Bool -> IO ()
+set_minimap_enabled cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindGraphEdit_set_minimap_enabled
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod GraphEdit "set_minimap_enabled" '[Bool] (IO ())
+         where
+        nodeMethod = Godot.Core.GraphEdit.set_minimap_enabled
+
+{-# NOINLINE bindGraphEdit_set_minimap_opacity #-}
+
+-- | The opacity of the minimap rectangle.
+bindGraphEdit_set_minimap_opacity :: MethodBind
+bindGraphEdit_set_minimap_opacity
+  = unsafePerformIO $
+      withCString "GraphEdit" $
+        \ clsNamePtr ->
+          withCString "set_minimap_opacity" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | The opacity of the minimap rectangle.
+set_minimap_opacity ::
+                      (GraphEdit :< cls, Object :< cls) => cls -> Float -> IO ()
+set_minimap_opacity cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindGraphEdit_set_minimap_opacity
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod GraphEdit "set_minimap_opacity" '[Float]
+           (IO ())
+         where
+        nodeMethod = Godot.Core.GraphEdit.set_minimap_opacity
+
+{-# NOINLINE bindGraphEdit_set_minimap_size #-}
+
+-- | The size of the minimap rectangle. The map itself is based on the size of the grid area and is scaled to fit this rectangle.
+bindGraphEdit_set_minimap_size :: MethodBind
+bindGraphEdit_set_minimap_size
+  = unsafePerformIO $
+      withCString "GraphEdit" $
+        \ clsNamePtr ->
+          withCString "set_minimap_size" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | The size of the minimap rectangle. The map itself is based on the size of the grid area and is scaled to fit this rectangle.
+set_minimap_size ::
+                   (GraphEdit :< cls, Object :< cls) => cls -> Vector2 -> IO ()
+set_minimap_size cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindGraphEdit_set_minimap_size (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod GraphEdit "set_minimap_size" '[Vector2] (IO ())
+         where
+        nodeMethod = Godot.Core.GraphEdit.set_minimap_size
 
 {-# NOINLINE bindGraphEdit_set_right_disconnects #-}
 

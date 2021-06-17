@@ -3,8 +3,8 @@
   MultiParamTypeClasses #-}
 module Godot.Core.FuncRef
        (Godot.Core.FuncRef.call_func, Godot.Core.FuncRef.call_funcv,
-        Godot.Core.FuncRef.is_valid, Godot.Core.FuncRef.set_function,
-        Godot.Core.FuncRef.set_instance)
+        Godot.Core.FuncRef.get_function, Godot.Core.FuncRef.is_valid,
+        Godot.Core.FuncRef.set_function, Godot.Core.FuncRef.set_instance)
        where
 import Data.Coerce
 import Foreign.C
@@ -18,9 +18,13 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.Reference()
 
+instance NodeProperty FuncRef "function" GodotString 'False where
+        nodeProperty
+          = (get_function, wrapDroppingSetter set_function, Nothing)
+
 {-# NOINLINE bindFuncRef_call_func #-}
 
--- | Calls the referenced function previously set by @method set_function@ or @method @GDScript.funcref@.
+-- | Calls the referenced function previously set in @function@ or @method @GDScript.funcref@.
 bindFuncRef_call_func :: MethodBind
 bindFuncRef_call_func
   = unsafePerformIO $
@@ -30,7 +34,7 @@ bindFuncRef_call_func
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Calls the referenced function previously set by @method set_function@ or @method @GDScript.funcref@.
+-- | Calls the referenced function previously set in @function@ or @method @GDScript.funcref@.
 call_func ::
             (FuncRef :< cls, Object :< cls) =>
             cls -> [Variant 'GodotTy] -> IO GodotVariant
@@ -48,7 +52,7 @@ instance NodeMethod FuncRef "call_func" '[[Variant 'GodotTy]]
 
 {-# NOINLINE bindFuncRef_call_funcv #-}
 
--- | Calls the referenced function previously set by @method set_function@ or @method @GDScript.funcref@. Contrarily to @method call_func@, this method does not support a variable number of arguments but expects all parameters to be passed via a single @Array@.
+-- | Calls the referenced function previously set in @function@ or @method @GDScript.funcref@. Contrarily to @method call_func@, this method does not support a variable number of arguments but expects all parameters to be passed via a single @Array@.
 bindFuncRef_call_funcv :: MethodBind
 bindFuncRef_call_funcv
   = unsafePerformIO $
@@ -58,7 +62,7 @@ bindFuncRef_call_funcv
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Calls the referenced function previously set by @method set_function@ or @method @GDScript.funcref@. Contrarily to @method call_func@, this method does not support a variable number of arguments but expects all parameters to be passed via a single @Array@.
+-- | Calls the referenced function previously set in @function@ or @method @GDScript.funcref@. Contrarily to @method call_func@, this method does not support a variable number of arguments but expects all parameters to be passed via a single @Array@.
 call_funcv ::
              (FuncRef :< cls, Object :< cls) => cls -> Array -> IO GodotVariant
 call_funcv cls arg1
@@ -71,6 +75,32 @@ call_funcv cls arg1
 instance NodeMethod FuncRef "call_funcv" '[Array] (IO GodotVariant)
          where
         nodeMethod = Godot.Core.FuncRef.call_funcv
+
+{-# NOINLINE bindFuncRef_get_function #-}
+
+-- | The name of the referenced function.
+bindFuncRef_get_function :: MethodBind
+bindFuncRef_get_function
+  = unsafePerformIO $
+      withCString "FuncRef" $
+        \ clsNamePtr ->
+          withCString "get_function" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | The name of the referenced function.
+get_function ::
+               (FuncRef :< cls, Object :< cls) => cls -> IO GodotString
+get_function cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindFuncRef_get_function (upcast cls) arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod FuncRef "get_function" '[] (IO GodotString)
+         where
+        nodeMethod = Godot.Core.FuncRef.get_function
 
 {-# NOINLINE bindFuncRef_is_valid #-}
 
@@ -97,7 +127,7 @@ instance NodeMethod FuncRef "is_valid" '[] (IO Bool) where
 
 {-# NOINLINE bindFuncRef_set_function #-}
 
--- | The name of the referenced function to call on the object, without parentheses or any parameters.
+-- | The name of the referenced function.
 bindFuncRef_set_function :: MethodBind
 bindFuncRef_set_function
   = unsafePerformIO $
@@ -107,7 +137,7 @@ bindFuncRef_set_function
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | The name of the referenced function to call on the object, without parentheses or any parameters.
+-- | The name of the referenced function.
 set_function ::
                (FuncRef :< cls, Object :< cls) => cls -> GodotString -> IO ()
 set_function cls arg1

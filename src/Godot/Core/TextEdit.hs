@@ -73,6 +73,9 @@ module Godot.Core.TextEdit
         Godot.Core.TextEdit.is_highlight_all_occurrences_enabled,
         Godot.Core.TextEdit.is_highlight_current_line_enabled,
         Godot.Core.TextEdit.is_line_hidden,
+        Godot.Core.TextEdit.is_line_set_as_bookmark,
+        Godot.Core.TextEdit.is_line_set_as_breakpoint,
+        Godot.Core.TextEdit.is_line_set_as_safe,
         Godot.Core.TextEdit.is_overriding_selected_font_color,
         Godot.Core.TextEdit.is_readonly,
         Godot.Core.TextEdit.is_right_click_moving_caret,
@@ -82,6 +85,7 @@ module Godot.Core.TextEdit
         Godot.Core.TextEdit.is_show_line_numbers_enabled,
         Godot.Core.TextEdit.is_smooth_scroll_enabled,
         Godot.Core.TextEdit.is_syntax_coloring_enabled,
+        Godot.Core.TextEdit.is_virtual_keyboard_enabled,
         Godot.Core.TextEdit.is_wrap_enabled,
         Godot.Core.TextEdit.menu_option, Godot.Core.TextEdit.paste,
         Godot.Core.TextEdit.redo, Godot.Core.TextEdit.remove_breakpoints,
@@ -96,7 +100,11 @@ module Godot.Core.TextEdit
         Godot.Core.TextEdit.set_hiding_enabled,
         Godot.Core.TextEdit.set_highlight_all_occurrences,
         Godot.Core.TextEdit.set_highlight_current_line,
+        Godot.Core.TextEdit.set_line,
+        Godot.Core.TextEdit.set_line_as_bookmark,
+        Godot.Core.TextEdit.set_line_as_breakpoint,
         Godot.Core.TextEdit.set_line_as_hidden,
+        Godot.Core.TextEdit.set_line_as_safe,
         Godot.Core.TextEdit.set_minimap_width,
         Godot.Core.TextEdit.set_override_selected_font_color,
         Godot.Core.TextEdit.set_readonly,
@@ -108,6 +116,7 @@ module Godot.Core.TextEdit
         Godot.Core.TextEdit.set_syntax_coloring,
         Godot.Core.TextEdit.set_text, Godot.Core.TextEdit.set_v_scroll,
         Godot.Core.TextEdit.set_v_scroll_speed,
+        Godot.Core.TextEdit.set_virtual_keyboard_enabled,
         Godot.Core.TextEdit.set_wrap_enabled,
         Godot.Core.TextEdit.toggle_fold_line, Godot.Core.TextEdit.undo,
         Godot.Core.TextEdit.unfold_line,
@@ -332,6 +341,13 @@ instance NodeProperty TextEdit "v_scroll_speed" Float 'False where
         nodeProperty
           = (get_v_scroll_speed, wrapDroppingSetter set_v_scroll_speed,
              Nothing)
+
+instance NodeProperty TextEdit "virtual_keyboard_enabled" Bool
+           'False
+         where
+        nodeProperty
+          = (is_virtual_keyboard_enabled,
+             wrapDroppingSetter set_virtual_keyboard_enabled, Nothing)
 
 instance NodeProperty TextEdit "wrap_enabled" Bool 'False where
         nodeProperty
@@ -1566,7 +1582,7 @@ instance NodeMethod TextEdit "get_v_scroll_speed" '[] (IO Float)
 
 {-# NOINLINE bindTextEdit_get_word_under_cursor #-}
 
--- | Returns a @String@ text with the word under the mouse cursor location.
+-- | Returns a @String@ text with the word under the caret (text cursor) location.
 bindTextEdit_get_word_under_cursor :: MethodBind
 bindTextEdit_get_word_under_cursor
   = unsafePerformIO $
@@ -1576,7 +1592,7 @@ bindTextEdit_get_word_under_cursor
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Returns a @String@ text with the word under the mouse cursor location.
+-- | Returns a @String@ text with the word under the caret (text cursor) location.
 get_word_under_cursor ::
                         (TextEdit :< cls, Object :< cls) => cls -> IO GodotString
 get_word_under_cursor cls
@@ -1958,6 +1974,92 @@ instance NodeMethod TextEdit "is_line_hidden" '[Int] (IO Bool)
          where
         nodeMethod = Godot.Core.TextEdit.is_line_hidden
 
+{-# NOINLINE bindTextEdit_is_line_set_as_bookmark #-}
+
+-- | Returns @true@ when the specified @line@ is bookmarked.
+bindTextEdit_is_line_set_as_bookmark :: MethodBind
+bindTextEdit_is_line_set_as_bookmark
+  = unsafePerformIO $
+      withCString "TextEdit" $
+        \ clsNamePtr ->
+          withCString "is_line_set_as_bookmark" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Returns @true@ when the specified @line@ is bookmarked.
+is_line_set_as_bookmark ::
+                          (TextEdit :< cls, Object :< cls) => cls -> Int -> IO Bool
+is_line_set_as_bookmark cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindTextEdit_is_line_set_as_bookmark
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod TextEdit "is_line_set_as_bookmark" '[Int]
+           (IO Bool)
+         where
+        nodeMethod = Godot.Core.TextEdit.is_line_set_as_bookmark
+
+{-# NOINLINE bindTextEdit_is_line_set_as_breakpoint #-}
+
+-- | Returns @true@ when the specified @line@ has a breakpoint.
+bindTextEdit_is_line_set_as_breakpoint :: MethodBind
+bindTextEdit_is_line_set_as_breakpoint
+  = unsafePerformIO $
+      withCString "TextEdit" $
+        \ clsNamePtr ->
+          withCString "is_line_set_as_breakpoint" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Returns @true@ when the specified @line@ has a breakpoint.
+is_line_set_as_breakpoint ::
+                            (TextEdit :< cls, Object :< cls) => cls -> Int -> IO Bool
+is_line_set_as_breakpoint cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindTextEdit_is_line_set_as_breakpoint
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod TextEdit "is_line_set_as_breakpoint" '[Int]
+           (IO Bool)
+         where
+        nodeMethod = Godot.Core.TextEdit.is_line_set_as_breakpoint
+
+{-# NOINLINE bindTextEdit_is_line_set_as_safe #-}
+
+-- | Returns @true@ when the specified @line@ is marked as safe.
+bindTextEdit_is_line_set_as_safe :: MethodBind
+bindTextEdit_is_line_set_as_safe
+  = unsafePerformIO $
+      withCString "TextEdit" $
+        \ clsNamePtr ->
+          withCString "is_line_set_as_safe" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Returns @true@ when the specified @line@ is marked as safe.
+is_line_set_as_safe ::
+                      (TextEdit :< cls, Object :< cls) => cls -> Int -> IO Bool
+is_line_set_as_safe cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindTextEdit_is_line_set_as_safe
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod TextEdit "is_line_set_as_safe" '[Int] (IO Bool)
+         where
+        nodeMethod = Godot.Core.TextEdit.is_line_set_as_safe
+
 {-# NOINLINE bindTextEdit_is_overriding_selected_font_color #-}
 
 -- | If @true@, custom @font_color_selected@ will be used for selected text.
@@ -2217,6 +2319,35 @@ instance NodeMethod TextEdit "is_syntax_coloring_enabled" '[]
            (IO Bool)
          where
         nodeMethod = Godot.Core.TextEdit.is_syntax_coloring_enabled
+
+{-# NOINLINE bindTextEdit_is_virtual_keyboard_enabled #-}
+
+-- | If @true@, the native virtual keyboard is shown when focused on platforms that support it.
+bindTextEdit_is_virtual_keyboard_enabled :: MethodBind
+bindTextEdit_is_virtual_keyboard_enabled
+  = unsafePerformIO $
+      withCString "TextEdit" $
+        \ clsNamePtr ->
+          withCString "is_virtual_keyboard_enabled" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | If @true@, the native virtual keyboard is shown when focused on platforms that support it.
+is_virtual_keyboard_enabled ::
+                              (TextEdit :< cls, Object :< cls) => cls -> IO Bool
+is_virtual_keyboard_enabled cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindTextEdit_is_virtual_keyboard_enabled
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod TextEdit "is_virtual_keyboard_enabled" '[]
+           (IO Bool)
+         where
+        nodeMethod = Godot.Core.TextEdit.is_virtual_keyboard_enabled
 
 {-# NOINLINE bindTextEdit_is_wrap_enabled #-}
 
@@ -2698,6 +2829,93 @@ instance NodeMethod TextEdit "set_highlight_current_line" '[Bool]
          where
         nodeMethod = Godot.Core.TextEdit.set_highlight_current_line
 
+{-# NOINLINE bindTextEdit_set_line #-}
+
+-- | Sets the text for a specific line.
+bindTextEdit_set_line :: MethodBind
+bindTextEdit_set_line
+  = unsafePerformIO $
+      withCString "TextEdit" $
+        \ clsNamePtr ->
+          withCString "set_line" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Sets the text for a specific line.
+set_line ::
+           (TextEdit :< cls, Object :< cls) =>
+           cls -> Int -> GodotString -> IO ()
+set_line cls arg1 arg2
+  = withVariantArray [toVariant arg1, toVariant arg2]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindTextEdit_set_line (upcast cls) arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod TextEdit "set_line" '[Int, GodotString] (IO ())
+         where
+        nodeMethod = Godot.Core.TextEdit.set_line
+
+{-# NOINLINE bindTextEdit_set_line_as_bookmark #-}
+
+-- | Bookmarks the @line@ if @bookmark@ is true. Deletes the bookmark if @bookmark@ is false.
+--   				Bookmarks are shown in the @breakpoint_gutter@.
+bindTextEdit_set_line_as_bookmark :: MethodBind
+bindTextEdit_set_line_as_bookmark
+  = unsafePerformIO $
+      withCString "TextEdit" $
+        \ clsNamePtr ->
+          withCString "set_line_as_bookmark" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Bookmarks the @line@ if @bookmark@ is true. Deletes the bookmark if @bookmark@ is false.
+--   				Bookmarks are shown in the @breakpoint_gutter@.
+set_line_as_bookmark ::
+                       (TextEdit :< cls, Object :< cls) => cls -> Int -> Bool -> IO ()
+set_line_as_bookmark cls arg1 arg2
+  = withVariantArray [toVariant arg1, toVariant arg2]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindTextEdit_set_line_as_bookmark
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod TextEdit "set_line_as_bookmark" '[Int, Bool]
+           (IO ())
+         where
+        nodeMethod = Godot.Core.TextEdit.set_line_as_bookmark
+
+{-# NOINLINE bindTextEdit_set_line_as_breakpoint #-}
+
+-- | Adds or removes the breakpoint in @line@. Breakpoints are shown in the @breakpoint_gutter@.
+bindTextEdit_set_line_as_breakpoint :: MethodBind
+bindTextEdit_set_line_as_breakpoint
+  = unsafePerformIO $
+      withCString "TextEdit" $
+        \ clsNamePtr ->
+          withCString "set_line_as_breakpoint" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Adds or removes the breakpoint in @line@. Breakpoints are shown in the @breakpoint_gutter@.
+set_line_as_breakpoint ::
+                         (TextEdit :< cls, Object :< cls) => cls -> Int -> Bool -> IO ()
+set_line_as_breakpoint cls arg1 arg2
+  = withVariantArray [toVariant arg1, toVariant arg2]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindTextEdit_set_line_as_breakpoint
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod TextEdit "set_line_as_breakpoint" '[Int, Bool]
+           (IO ())
+         where
+        nodeMethod = Godot.Core.TextEdit.set_line_as_breakpoint
+
 {-# NOINLINE bindTextEdit_set_line_as_hidden #-}
 
 -- | If @true@, hides the line of the specified index.
@@ -2725,6 +2943,36 @@ instance NodeMethod TextEdit "set_line_as_hidden" '[Int, Bool]
            (IO ())
          where
         nodeMethod = Godot.Core.TextEdit.set_line_as_hidden
+
+{-# NOINLINE bindTextEdit_set_line_as_safe #-}
+
+-- | If @true@, marks the @line@ as safe.
+--   				This will show the line number with the color provided in the @safe_line_number_color@ theme property.
+bindTextEdit_set_line_as_safe :: MethodBind
+bindTextEdit_set_line_as_safe
+  = unsafePerformIO $
+      withCString "TextEdit" $
+        \ clsNamePtr ->
+          withCString "set_line_as_safe" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | If @true@, marks the @line@ as safe.
+--   				This will show the line number with the color provided in the @safe_line_number_color@ theme property.
+set_line_as_safe ::
+                   (TextEdit :< cls, Object :< cls) => cls -> Int -> Bool -> IO ()
+set_line_as_safe cls arg1 arg2
+  = withVariantArray [toVariant arg1, toVariant arg2]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindTextEdit_set_line_as_safe (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod TextEdit "set_line_as_safe" '[Int, Bool]
+           (IO ())
+         where
+        nodeMethod = Godot.Core.TextEdit.set_line_as_safe
 
 {-# NOINLINE bindTextEdit_set_minimap_width #-}
 
@@ -3065,6 +3313,35 @@ set_v_scroll_speed cls arg1
 instance NodeMethod TextEdit "set_v_scroll_speed" '[Float] (IO ())
          where
         nodeMethod = Godot.Core.TextEdit.set_v_scroll_speed
+
+{-# NOINLINE bindTextEdit_set_virtual_keyboard_enabled #-}
+
+-- | If @true@, the native virtual keyboard is shown when focused on platforms that support it.
+bindTextEdit_set_virtual_keyboard_enabled :: MethodBind
+bindTextEdit_set_virtual_keyboard_enabled
+  = unsafePerformIO $
+      withCString "TextEdit" $
+        \ clsNamePtr ->
+          withCString "set_virtual_keyboard_enabled" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | If @true@, the native virtual keyboard is shown when focused on platforms that support it.
+set_virtual_keyboard_enabled ::
+                               (TextEdit :< cls, Object :< cls) => cls -> Bool -> IO ()
+set_virtual_keyboard_enabled cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindTextEdit_set_virtual_keyboard_enabled
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod TextEdit "set_virtual_keyboard_enabled" '[Bool]
+           (IO ())
+         where
+        nodeMethod = Godot.Core.TextEdit.set_virtual_keyboard_enabled
 
 {-# NOINLINE bindTextEdit_set_wrap_enabled #-}
 

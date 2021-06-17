@@ -3,8 +3,10 @@
   MultiParamTypeClasses #-}
 module Godot.Core.ReferenceRect
        (Godot.Core.ReferenceRect.get_border_color,
+        Godot.Core.ReferenceRect.get_border_width,
         Godot.Core.ReferenceRect.get_editor_only,
         Godot.Core.ReferenceRect.set_border_color,
+        Godot.Core.ReferenceRect.set_border_width,
         Godot.Core.ReferenceRect.set_editor_only)
        where
 import Data.Coerce
@@ -23,6 +25,11 @@ instance NodeProperty ReferenceRect "border_color" Color 'False
          where
         nodeProperty
           = (get_border_color, wrapDroppingSetter set_border_color, Nothing)
+
+instance NodeProperty ReferenceRect "border_width" Float 'False
+         where
+        nodeProperty
+          = (get_border_width, wrapDroppingSetter set_border_width, Nothing)
 
 instance NodeProperty ReferenceRect "editor_only" Bool 'False where
         nodeProperty
@@ -55,6 +62,34 @@ get_border_color cls
 instance NodeMethod ReferenceRect "get_border_color" '[] (IO Color)
          where
         nodeMethod = Godot.Core.ReferenceRect.get_border_color
+
+{-# NOINLINE bindReferenceRect_get_border_width #-}
+
+-- | Sets the border width of the @ReferenceRect@. The border grows both inwards and outwards with respect to the rectangle box.
+bindReferenceRect_get_border_width :: MethodBind
+bindReferenceRect_get_border_width
+  = unsafePerformIO $
+      withCString "ReferenceRect" $
+        \ clsNamePtr ->
+          withCString "get_border_width" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Sets the border width of the @ReferenceRect@. The border grows both inwards and outwards with respect to the rectangle box.
+get_border_width ::
+                   (ReferenceRect :< cls, Object :< cls) => cls -> IO Float
+get_border_width cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindReferenceRect_get_border_width
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod ReferenceRect "get_border_width" '[] (IO Float)
+         where
+        nodeMethod = Godot.Core.ReferenceRect.get_border_width
 
 {-# NOINLINE bindReferenceRect_get_editor_only #-}
 
@@ -112,6 +147,35 @@ instance NodeMethod ReferenceRect "set_border_color" '[Color]
            (IO ())
          where
         nodeMethod = Godot.Core.ReferenceRect.set_border_color
+
+{-# NOINLINE bindReferenceRect_set_border_width #-}
+
+-- | Sets the border width of the @ReferenceRect@. The border grows both inwards and outwards with respect to the rectangle box.
+bindReferenceRect_set_border_width :: MethodBind
+bindReferenceRect_set_border_width
+  = unsafePerformIO $
+      withCString "ReferenceRect" $
+        \ clsNamePtr ->
+          withCString "set_border_width" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Sets the border width of the @ReferenceRect@. The border grows both inwards and outwards with respect to the rectangle box.
+set_border_width ::
+                   (ReferenceRect :< cls, Object :< cls) => cls -> Float -> IO ()
+set_border_width cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindReferenceRect_set_border_width
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod ReferenceRect "set_border_width" '[Float]
+           (IO ())
+         where
+        nodeMethod = Godot.Core.ReferenceRect.set_border_width
 
 {-# NOINLINE bindReferenceRect_set_editor_only #-}
 

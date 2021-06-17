@@ -1293,6 +1293,7 @@ instance NodeMethod SpatialMaterial "get_ao_texture_channel" '[]
 {-# NOINLINE bindSpatialMaterial_get_billboard_mode #-}
 
 -- | Controls how the object faces the camera. See @enum BillboardMode@.
+--   			__Note:__ Billboard mode is not suitable for VR because the left-right vector of the camera is not horizontal when the screen is attached to your head instead of on the table. See @url=https://github.com/godotengine/godot/issues/41567@GitHub issue #41567@/url@ for details.
 bindSpatialMaterial_get_billboard_mode :: MethodBind
 bindSpatialMaterial_get_billboard_mode
   = unsafePerformIO $
@@ -1303,6 +1304,7 @@ bindSpatialMaterial_get_billboard_mode
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
 -- | Controls how the object faces the camera. See @enum BillboardMode@.
+--   			__Note:__ Billboard mode is not suitable for VR because the left-right vector of the camera is not horizontal when the screen is attached to your head instead of on the table. See @url=https://github.com/godotengine/godot/issues/41567@GitHub issue #41567@/url@ for details.
 get_billboard_mode ::
                      (SpatialMaterial :< cls, Object :< cls) => cls -> IO Int
 get_billboard_mode cls
@@ -1748,7 +1750,8 @@ instance NodeMethod SpatialMaterial "get_distance_fade" '[]
 
 {-# NOINLINE bindSpatialMaterial_get_distance_fade_max_distance #-}
 
--- | Distance at which the object fades fully and is no longer visible.
+-- | Distance at which the object appears fully opaque.
+--   			__Note:__ If @distance_fade_max_distance@ is less than @distance_fade_min_distance@, the behavior will be reversed. The object will start to fade away at @distance_fade_max_distance@ and will fully disappear once it reaches @distance_fade_min_distance@.
 bindSpatialMaterial_get_distance_fade_max_distance :: MethodBind
 bindSpatialMaterial_get_distance_fade_max_distance
   = unsafePerformIO $
@@ -1758,7 +1761,8 @@ bindSpatialMaterial_get_distance_fade_max_distance
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Distance at which the object fades fully and is no longer visible.
+-- | Distance at which the object appears fully opaque.
+--   			__Note:__ If @distance_fade_max_distance@ is less than @distance_fade_min_distance@, the behavior will be reversed. The object will start to fade away at @distance_fade_max_distance@ and will fully disappear once it reaches @distance_fade_min_distance@.
 get_distance_fade_max_distance ::
                                  (SpatialMaterial :< cls, Object :< cls) => cls -> IO Float
 get_distance_fade_max_distance cls
@@ -1781,7 +1785,8 @@ instance NodeMethod SpatialMaterial
 
 {-# NOINLINE bindSpatialMaterial_get_distance_fade_min_distance #-}
 
--- | Distance at which the object starts to fade. If the object is less than this distance away it will appear normal.
+-- | Distance at which the object starts to become visible. If the object is less than this distance away, it will be invisible.
+--   			__Note:__ If @distance_fade_min_distance@ is greater than @distance_fade_max_distance@, the behavior will be reversed. The object will start to fade away at @distance_fade_max_distance@ and will fully disappear once it reaches @distance_fade_min_distance@.
 bindSpatialMaterial_get_distance_fade_min_distance :: MethodBind
 bindSpatialMaterial_get_distance_fade_min_distance
   = unsafePerformIO $
@@ -1791,7 +1796,8 @@ bindSpatialMaterial_get_distance_fade_min_distance
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Distance at which the object starts to fade. If the object is less than this distance away it will appear normal.
+-- | Distance at which the object starts to become visible. If the object is less than this distance away, it will be invisible.
+--   			__Note:__ If @distance_fade_min_distance@ is greater than @distance_fade_max_distance@, the behavior will be reversed. The object will start to fade away at @distance_fade_max_distance@ and will fully disappear once it reaches @distance_fade_min_distance@.
 get_distance_fade_min_distance ::
                                  (SpatialMaterial :< cls, Object :< cls) => cls -> IO Float
 get_distance_fade_min_distance cls
@@ -2994,6 +3000,7 @@ instance NodeMethod SpatialMaterial "set_ao_texture_channel" '[Int]
 {-# NOINLINE bindSpatialMaterial_set_billboard_mode #-}
 
 -- | Controls how the object faces the camera. See @enum BillboardMode@.
+--   			__Note:__ Billboard mode is not suitable for VR because the left-right vector of the camera is not horizontal when the screen is attached to your head instead of on the table. See @url=https://github.com/godotengine/godot/issues/41567@GitHub issue #41567@/url@ for details.
 bindSpatialMaterial_set_billboard_mode :: MethodBind
 bindSpatialMaterial_set_billboard_mode
   = unsafePerformIO $
@@ -3004,6 +3011,7 @@ bindSpatialMaterial_set_billboard_mode
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
 -- | Controls how the object faces the camera. See @enum BillboardMode@.
+--   			__Note:__ Billboard mode is not suitable for VR because the left-right vector of the camera is not horizontal when the screen is attached to your head instead of on the table. See @url=https://github.com/godotengine/godot/issues/41567@GitHub issue #41567@/url@ for details.
 set_billboard_mode ::
                      (SpatialMaterial :< cls, Object :< cls) => cls -> Int -> IO ()
 set_billboard_mode cls arg1
@@ -3483,7 +3491,8 @@ instance NodeMethod SpatialMaterial "set_distance_fade" '[Int]
 
 {-# NOINLINE bindSpatialMaterial_set_distance_fade_max_distance #-}
 
--- | Distance at which the object fades fully and is no longer visible.
+-- | Distance at which the object appears fully opaque.
+--   			__Note:__ If @distance_fade_max_distance@ is less than @distance_fade_min_distance@, the behavior will be reversed. The object will start to fade away at @distance_fade_max_distance@ and will fully disappear once it reaches @distance_fade_min_distance@.
 bindSpatialMaterial_set_distance_fade_max_distance :: MethodBind
 bindSpatialMaterial_set_distance_fade_max_distance
   = unsafePerformIO $
@@ -3493,7 +3502,8 @@ bindSpatialMaterial_set_distance_fade_max_distance
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Distance at which the object fades fully and is no longer visible.
+-- | Distance at which the object appears fully opaque.
+--   			__Note:__ If @distance_fade_max_distance@ is less than @distance_fade_min_distance@, the behavior will be reversed. The object will start to fade away at @distance_fade_max_distance@ and will fully disappear once it reaches @distance_fade_min_distance@.
 set_distance_fade_max_distance ::
                                  (SpatialMaterial :< cls, Object :< cls) => cls -> Float -> IO ()
 set_distance_fade_max_distance cls arg1
@@ -3516,7 +3526,8 @@ instance NodeMethod SpatialMaterial
 
 {-# NOINLINE bindSpatialMaterial_set_distance_fade_min_distance #-}
 
--- | Distance at which the object starts to fade. If the object is less than this distance away it will appear normal.
+-- | Distance at which the object starts to become visible. If the object is less than this distance away, it will be invisible.
+--   			__Note:__ If @distance_fade_min_distance@ is greater than @distance_fade_max_distance@, the behavior will be reversed. The object will start to fade away at @distance_fade_max_distance@ and will fully disappear once it reaches @distance_fade_min_distance@.
 bindSpatialMaterial_set_distance_fade_min_distance :: MethodBind
 bindSpatialMaterial_set_distance_fade_min_distance
   = unsafePerformIO $
@@ -3526,7 +3537,8 @@ bindSpatialMaterial_set_distance_fade_min_distance
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Distance at which the object starts to fade. If the object is less than this distance away it will appear normal.
+-- | Distance at which the object starts to become visible. If the object is less than this distance away, it will be invisible.
+--   			__Note:__ If @distance_fade_min_distance@ is greater than @distance_fade_max_distance@, the behavior will be reversed. The object will start to fade away at @distance_fade_max_distance@ and will fully disappear once it reaches @distance_fade_min_distance@.
 set_distance_fade_min_distance ::
                                  (SpatialMaterial :< cls, Object :< cls) => cls -> Float -> IO ()
 set_distance_fade_min_distance cls arg1

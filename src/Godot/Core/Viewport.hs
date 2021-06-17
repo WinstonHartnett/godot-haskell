@@ -33,7 +33,9 @@ module Godot.Core.Viewport
         Godot.Core.Viewport._MSAA_16X,
         Godot.Core.Viewport._SHADOW_ATLAS_QUADRANT_SUBDIV_4,
         Godot.Core.Viewport._USAGE_2D_NO_SAMPLING,
+        Godot.Core.Viewport._RENDER_INFO_2D_ITEMS_IN_FRAME,
         Godot.Core.Viewport._UPDATE_ONCE,
+        Godot.Core.Viewport._RENDER_INFO_2D_DRAW_CALLS_IN_FRAME,
         Godot.Core.Viewport._RENDER_INFO_SURFACE_CHANGES_IN_FRAME,
         Godot.Core.Viewport.sig_gui_focus_changed,
         Godot.Core.Viewport.sig_size_changed,
@@ -41,6 +43,7 @@ module Godot.Core.Viewport
         Godot.Core.Viewport._gui_show_tooltip,
         Godot.Core.Viewport._own_world_changed,
         Godot.Core.Viewport._post_gui_grab_click_focus,
+        Godot.Core.Viewport._process_picking,
         Godot.Core.Viewport._subwindow_visibility_changed,
         Godot.Core.Viewport._vp_input, Godot.Core.Viewport._vp_input_text,
         Godot.Core.Viewport._vp_unhandled_input,
@@ -64,7 +67,8 @@ module Godot.Core.Viewport
         Godot.Core.Viewport.get_size_override,
         Godot.Core.Viewport.get_texture,
         Godot.Core.Viewport.get_update_mode, Godot.Core.Viewport.get_usage,
-        Godot.Core.Viewport.get_vflip,
+        Godot.Core.Viewport.get_use_debanding,
+        Godot.Core.Viewport.get_use_fxaa, Godot.Core.Viewport.get_vflip,
         Godot.Core.Viewport.get_viewport_rid,
         Godot.Core.Viewport.get_visible_rect,
         Godot.Core.Viewport.get_world, Godot.Core.Viewport.get_world_2d,
@@ -107,6 +111,8 @@ module Godot.Core.Viewport
         Godot.Core.Viewport.set_transparent_background,
         Godot.Core.Viewport.set_update_mode, Godot.Core.Viewport.set_usage,
         Godot.Core.Viewport.set_use_arvr,
+        Godot.Core.Viewport.set_use_debanding,
+        Godot.Core.Viewport.set_use_fxaa,
         Godot.Core.Viewport.set_use_own_world,
         Godot.Core.Viewport.set_use_render_direct_to_screen,
         Godot.Core.Viewport.set_vflip, Godot.Core.Viewport.set_world,
@@ -155,7 +161,7 @@ _RENDER_INFO_SHADER_CHANGES_IN_FRAME :: Int
 _RENDER_INFO_SHADER_CHANGES_IN_FRAME = 3
 
 _RENDER_INFO_MAX :: Int
-_RENDER_INFO_MAX = 6
+_RENDER_INFO_MAX = 8
 
 _CLEAR_MODE_NEVER :: Int
 _CLEAR_MODE_NEVER = 1
@@ -226,8 +232,14 @@ _SHADOW_ATLAS_QUADRANT_SUBDIV_4 = 2
 _USAGE_2D_NO_SAMPLING :: Int
 _USAGE_2D_NO_SAMPLING = 1
 
+_RENDER_INFO_2D_ITEMS_IN_FRAME :: Int
+_RENDER_INFO_2D_ITEMS_IN_FRAME = 6
+
 _UPDATE_ONCE :: Int
 _UPDATE_ONCE = 1
+
+_RENDER_INFO_2D_DRAW_CALLS_IN_FRAME :: Int
+_RENDER_INFO_2D_DRAW_CALLS_IN_FRAME = 7
 
 _RENDER_INFO_SURFACE_CHANGES_IN_FRAME :: Int
 _RENDER_INFO_SURFACE_CHANGES_IN_FRAME = 4
@@ -269,6 +281,11 @@ instance NodeProperty Viewport "canvas_transform" Transform2d
           = (get_canvas_transform, wrapDroppingSetter set_canvas_transform,
              Nothing)
 
+instance NodeProperty Viewport "debanding" Bool 'False where
+        nodeProperty
+          = (get_use_debanding, wrapDroppingSetter set_use_debanding,
+             Nothing)
+
 instance NodeProperty Viewport "debug_draw" Int 'False where
         nodeProperty
           = (get_debug_draw, wrapDroppingSetter set_debug_draw, Nothing)
@@ -276,6 +293,10 @@ instance NodeProperty Viewport "debug_draw" Int 'False where
 instance NodeProperty Viewport "disable_3d" Bool 'False where
         nodeProperty
           = (is_3d_disabled, wrapDroppingSetter set_disable_3d, Nothing)
+
+instance NodeProperty Viewport "fxaa" Bool 'False where
+        nodeProperty
+          = (get_use_fxaa, wrapDroppingSetter set_use_fxaa, Nothing)
 
 instance NodeProperty Viewport "global_canvas_transform"
            Transform2d
@@ -500,6 +521,31 @@ instance NodeMethod Viewport "_post_gui_grab_click_focus" '[]
            (IO ())
          where
         nodeMethod = Godot.Core.Viewport._post_gui_grab_click_focus
+
+{-# NOINLINE bindViewport__process_picking #-}
+
+bindViewport__process_picking :: MethodBind
+bindViewport__process_picking
+  = unsafePerformIO $
+      withCString "Viewport" $
+        \ clsNamePtr ->
+          withCString "_process_picking" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+_process_picking ::
+                   (Viewport :< cls, Object :< cls) => cls -> Bool -> IO ()
+_process_picking cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindViewport__process_picking (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod Viewport "_process_picking" '[Bool] (IO ())
+         where
+        nodeMethod = Godot.Core.Viewport._process_picking
 
 {-# NOINLINE bindViewport__subwindow_visibility_changed #-}
 
@@ -1209,6 +1255,60 @@ get_usage cls
 instance NodeMethod Viewport "get_usage" '[] (IO Int) where
         nodeMethod = Godot.Core.Viewport.get_usage
 
+{-# NOINLINE bindViewport_get_use_debanding #-}
+
+-- | If @true@, uses a fast post-processing filter to make banding significantly less visible. In some cases, debanding may introduce a slightly noticeable dithering pattern. It's recommended to enable debanding only when actually needed since the dithering pattern will make lossless-compressed screenshots larger.
+--   			__Note:__ Only available on the GLES3 backend. @hdr@ must also be @true@ for debanding to be effective.
+bindViewport_get_use_debanding :: MethodBind
+bindViewport_get_use_debanding
+  = unsafePerformIO $
+      withCString "Viewport" $
+        \ clsNamePtr ->
+          withCString "get_use_debanding" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | If @true@, uses a fast post-processing filter to make banding significantly less visible. In some cases, debanding may introduce a slightly noticeable dithering pattern. It's recommended to enable debanding only when actually needed since the dithering pattern will make lossless-compressed screenshots larger.
+--   			__Note:__ Only available on the GLES3 backend. @hdr@ must also be @true@ for debanding to be effective.
+get_use_debanding ::
+                    (Viewport :< cls, Object :< cls) => cls -> IO Bool
+get_use_debanding cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindViewport_get_use_debanding (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod Viewport "get_use_debanding" '[] (IO Bool)
+         where
+        nodeMethod = Godot.Core.Viewport.get_use_debanding
+
+{-# NOINLINE bindViewport_get_use_fxaa #-}
+
+-- | Enables fast approximate antialiasing. FXAA is a popular screen-space antialiasing method, which is fast but will make the image look blurry, especially at lower resolutions. It can still work relatively well at large resolutions such as 1440p and 4K.
+bindViewport_get_use_fxaa :: MethodBind
+bindViewport_get_use_fxaa
+  = unsafePerformIO $
+      withCString "Viewport" $
+        \ clsNamePtr ->
+          withCString "get_use_fxaa" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Enables fast approximate antialiasing. FXAA is a popular screen-space antialiasing method, which is fast but will make the image look blurry, especially at lower resolutions. It can still work relatively well at large resolutions such as 1440p and 4K.
+get_use_fxaa :: (Viewport :< cls, Object :< cls) => cls -> IO Bool
+get_use_fxaa cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindViewport_get_use_fxaa (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod Viewport "get_use_fxaa" '[] (IO Bool) where
+        nodeMethod = Godot.Core.Viewport.get_use_fxaa
+
 {-# NOINLINE bindViewport_get_vflip #-}
 
 -- | If @true@, the result of rendering will be flipped vertically.
@@ -1579,7 +1679,7 @@ instance NodeMethod Viewport "is_handling_input_locally" '[]
 
 {-# NOINLINE bindViewport_is_input_disabled #-}
 
--- | If @true@, the viewport will not receive input event.
+-- | If @true@, the viewport will not receive input events.
 bindViewport_is_input_disabled :: MethodBind
 bindViewport_is_input_disabled
   = unsafePerformIO $
@@ -1589,7 +1689,7 @@ bindViewport_is_input_disabled
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | If @true@, the viewport will not receive input event.
+-- | If @true@, the viewport will not receive input events.
 is_input_disabled ::
                     (Viewport :< cls, Object :< cls) => cls -> IO Bool
 is_input_disabled cls
@@ -1973,7 +2073,7 @@ instance NodeMethod Viewport "set_disable_3d" '[Bool] (IO ()) where
 
 {-# NOINLINE bindViewport_set_disable_input #-}
 
--- | If @true@, the viewport will not receive input event.
+-- | If @true@, the viewport will not receive input events.
 bindViewport_set_disable_input :: MethodBind
 bindViewport_set_disable_input
   = unsafePerformIO $
@@ -1983,7 +2083,7 @@ bindViewport_set_disable_input
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | If @true@, the viewport will not receive input event.
+-- | If @true@, the viewport will not receive input events.
 set_disable_input ::
                     (Viewport :< cls, Object :< cls) => cls -> Bool -> IO ()
 set_disable_input cls arg1
@@ -2470,6 +2570,61 @@ set_use_arvr cls arg1
 
 instance NodeMethod Viewport "set_use_arvr" '[Bool] (IO ()) where
         nodeMethod = Godot.Core.Viewport.set_use_arvr
+
+{-# NOINLINE bindViewport_set_use_debanding #-}
+
+-- | If @true@, uses a fast post-processing filter to make banding significantly less visible. In some cases, debanding may introduce a slightly noticeable dithering pattern. It's recommended to enable debanding only when actually needed since the dithering pattern will make lossless-compressed screenshots larger.
+--   			__Note:__ Only available on the GLES3 backend. @hdr@ must also be @true@ for debanding to be effective.
+bindViewport_set_use_debanding :: MethodBind
+bindViewport_set_use_debanding
+  = unsafePerformIO $
+      withCString "Viewport" $
+        \ clsNamePtr ->
+          withCString "set_use_debanding" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | If @true@, uses a fast post-processing filter to make banding significantly less visible. In some cases, debanding may introduce a slightly noticeable dithering pattern. It's recommended to enable debanding only when actually needed since the dithering pattern will make lossless-compressed screenshots larger.
+--   			__Note:__ Only available on the GLES3 backend. @hdr@ must also be @true@ for debanding to be effective.
+set_use_debanding ::
+                    (Viewport :< cls, Object :< cls) => cls -> Bool -> IO ()
+set_use_debanding cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindViewport_set_use_debanding (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod Viewport "set_use_debanding" '[Bool] (IO ())
+         where
+        nodeMethod = Godot.Core.Viewport.set_use_debanding
+
+{-# NOINLINE bindViewport_set_use_fxaa #-}
+
+-- | Enables fast approximate antialiasing. FXAA is a popular screen-space antialiasing method, which is fast but will make the image look blurry, especially at lower resolutions. It can still work relatively well at large resolutions such as 1440p and 4K.
+bindViewport_set_use_fxaa :: MethodBind
+bindViewport_set_use_fxaa
+  = unsafePerformIO $
+      withCString "Viewport" $
+        \ clsNamePtr ->
+          withCString "set_use_fxaa" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Enables fast approximate antialiasing. FXAA is a popular screen-space antialiasing method, which is fast but will make the image look blurry, especially at lower resolutions. It can still work relatively well at large resolutions such as 1440p and 4K.
+set_use_fxaa ::
+               (Viewport :< cls, Object :< cls) => cls -> Bool -> IO ()
+set_use_fxaa cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindViewport_set_use_fxaa (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod Viewport "set_use_fxaa" '[Bool] (IO ()) where
+        nodeMethod = Godot.Core.Viewport.set_use_fxaa
 
 {-# NOINLINE bindViewport_set_use_own_world #-}
 

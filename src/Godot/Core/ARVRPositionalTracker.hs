@@ -18,6 +18,7 @@ module Godot.Core.ARVRPositionalTracker
         Godot.Core.ARVRPositionalTracker.get_orientation,
         Godot.Core.ARVRPositionalTracker.get_position,
         Godot.Core.ARVRPositionalTracker.get_rumble,
+        Godot.Core.ARVRPositionalTracker.get_tracker_id,
         Godot.Core.ARVRPositionalTracker.get_tracks_orientation,
         Godot.Core.ARVRPositionalTracker.get_tracks_position,
         Godot.Core.ARVRPositionalTracker.get_transform,
@@ -420,6 +421,35 @@ instance NodeMethod ARVRPositionalTracker "get_rumble" '[]
            (IO Float)
          where
         nodeMethod = Godot.Core.ARVRPositionalTracker.get_rumble
+
+{-# NOINLINE bindARVRPositionalTracker_get_tracker_id #-}
+
+-- | Returns the internal tracker ID. This uniquely identifies the tracker per tracker type and matches the ID you need to specify for nodes such as the @ARVRController@ and @ARVRAnchor@ nodes.
+bindARVRPositionalTracker_get_tracker_id :: MethodBind
+bindARVRPositionalTracker_get_tracker_id
+  = unsafePerformIO $
+      withCString "ARVRPositionalTracker" $
+        \ clsNamePtr ->
+          withCString "get_tracker_id" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Returns the internal tracker ID. This uniquely identifies the tracker per tracker type and matches the ID you need to specify for nodes such as the @ARVRController@ and @ARVRAnchor@ nodes.
+get_tracker_id ::
+                 (ARVRPositionalTracker :< cls, Object :< cls) => cls -> IO Int
+get_tracker_id cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindARVRPositionalTracker_get_tracker_id
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod ARVRPositionalTracker "get_tracker_id" '[]
+           (IO Int)
+         where
+        nodeMethod = Godot.Core.ARVRPositionalTracker.get_tracker_id
 
 {-# NOINLINE bindARVRPositionalTracker_get_tracks_orientation #-}
 

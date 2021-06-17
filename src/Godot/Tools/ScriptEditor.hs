@@ -239,9 +239,9 @@ bindScriptEditor__close_current_tab
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
 _close_current_tab ::
-                     (ScriptEditor :< cls, Object :< cls) => cls -> IO ()
-_close_current_tab cls
-  = withVariantArray []
+                     (ScriptEditor :< cls, Object :< cls) => cls -> Bool -> IO ()
+_close_current_tab cls arg1
+  = withVariantArray [toVariant arg1]
       (\ (arrPtr, len) ->
          godot_method_bind_call bindScriptEditor__close_current_tab
            (upcast cls)
@@ -249,7 +249,8 @@ _close_current_tab cls
            len
            >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
 
-instance NodeMethod ScriptEditor "_close_current_tab" '[] (IO ())
+instance NodeMethod ScriptEditor "_close_current_tab" '[Bool]
+           (IO ())
          where
         nodeMethod = Godot.Tools.ScriptEditor._close_current_tab
 
@@ -1770,6 +1771,7 @@ instance NodeMethod ScriptEditor "goto_line" '[Int] (IO ()) where
 
 {-# NOINLINE bindScriptEditor_open_script_create_dialog #-}
 
+-- | Opens the script create dialog. The script will extend @base_name@. The file extension can be omitted from @base_path@. It will be added based on the selected scripting language.
 bindScriptEditor_open_script_create_dialog :: MethodBind
 bindScriptEditor_open_script_create_dialog
   = unsafePerformIO $
@@ -1779,6 +1781,7 @@ bindScriptEditor_open_script_create_dialog
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
+-- | Opens the script create dialog. The script will extend @base_name@. The file extension can be omitted from @base_path@. It will be added based on the selected scripting language.
 open_script_create_dialog ::
                             (ScriptEditor :< cls, Object :< cls) =>
                             cls -> GodotString -> GodotString -> IO ()

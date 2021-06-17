@@ -6,6 +6,8 @@ module Godot.Core.CollisionObject
         Godot.Core.CollisionObject.sig_mouse_entered,
         Godot.Core.CollisionObject.sig_mouse_exited,
         Godot.Core.CollisionObject._input_event,
+        Godot.Core.CollisionObject._shape_changed,
+        Godot.Core.CollisionObject._update_debug_shapes,
         Godot.Core.CollisionObject.create_shape_owner,
         Godot.Core.CollisionObject.get_capture_input_on_drag,
         Godot.Core.CollisionObject.get_rid,
@@ -103,6 +105,60 @@ instance NodeMethod CollisionObject "_input_event"
            (IO ())
          where
         nodeMethod = Godot.Core.CollisionObject._input_event
+
+{-# NOINLINE bindCollisionObject__shape_changed #-}
+
+bindCollisionObject__shape_changed :: MethodBind
+bindCollisionObject__shape_changed
+  = unsafePerformIO $
+      withCString "CollisionObject" $
+        \ clsNamePtr ->
+          withCString "_shape_changed" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+_shape_changed ::
+                 (CollisionObject :< cls, Object :< cls) => cls -> Shape -> IO ()
+_shape_changed cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindCollisionObject__shape_changed
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod CollisionObject "_shape_changed" '[Shape]
+           (IO ())
+         where
+        nodeMethod = Godot.Core.CollisionObject._shape_changed
+
+{-# NOINLINE bindCollisionObject__update_debug_shapes #-}
+
+bindCollisionObject__update_debug_shapes :: MethodBind
+bindCollisionObject__update_debug_shapes
+  = unsafePerformIO $
+      withCString "CollisionObject" $
+        \ clsNamePtr ->
+          withCString "_update_debug_shapes" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+_update_debug_shapes ::
+                       (CollisionObject :< cls, Object :< cls) => cls -> IO ()
+_update_debug_shapes cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindCollisionObject__update_debug_shapes
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod CollisionObject "_update_debug_shapes" '[]
+           (IO ())
+         where
+        nodeMethod = Godot.Core.CollisionObject._update_debug_shapes
 
 {-# NOINLINE bindCollisionObject_create_shape_owner #-}
 

@@ -2,7 +2,8 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.Joint
-       (Godot.Core.Joint.get_exclude_nodes_from_collision,
+       (Godot.Core.Joint._body_exit_tree,
+        Godot.Core.Joint.get_exclude_nodes_from_collision,
         Godot.Core.Joint.get_node_a, Godot.Core.Joint.get_node_b,
         Godot.Core.Joint.get_solver_priority,
         Godot.Core.Joint.set_exclude_nodes_from_collision,
@@ -37,6 +38,29 @@ instance NodeProperty Joint "solver/priority" Int 'False where
         nodeProperty
           = (get_solver_priority, wrapDroppingSetter set_solver_priority,
              Nothing)
+
+{-# NOINLINE bindJoint__body_exit_tree #-}
+
+bindJoint__body_exit_tree :: MethodBind
+bindJoint__body_exit_tree
+  = unsafePerformIO $
+      withCString "Joint" $
+        \ clsNamePtr ->
+          withCString "_body_exit_tree" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+_body_exit_tree :: (Joint :< cls, Object :< cls) => cls -> IO ()
+_body_exit_tree cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindJoint__body_exit_tree (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod Joint "_body_exit_tree" '[] (IO ()) where
+        nodeMethod = Godot.Core.Joint._body_exit_tree
 
 {-# NOINLINE bindJoint_get_exclude_nodes_from_collision #-}
 

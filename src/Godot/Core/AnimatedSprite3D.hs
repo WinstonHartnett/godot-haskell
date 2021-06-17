@@ -2,7 +2,8 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.AnimatedSprite3D
-       (Godot.Core.AnimatedSprite3D.sig_frame_changed,
+       (Godot.Core.AnimatedSprite3D.sig_animation_finished,
+        Godot.Core.AnimatedSprite3D.sig_frame_changed,
         Godot.Core.AnimatedSprite3D._is_playing,
         Godot.Core.AnimatedSprite3D._res_changed,
         Godot.Core.AnimatedSprite3D._set_playing,
@@ -27,6 +28,14 @@ import System.IO.Unsafe
 import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.SpriteBase3D()
+
+-- | Emitted when the animation is finished (when it plays the last frame). If the animation is looping, this signal is emitted every time the last frame is drawn.
+sig_animation_finished ::
+                       Godot.Internal.Dispatch.Signal AnimatedSprite3D
+sig_animation_finished
+  = Godot.Internal.Dispatch.Signal "animation_finished"
+
+instance NodeSignal AnimatedSprite3D "animation_finished" '[]
 
 -- | Emitted when @frame@ changed.
 sig_frame_changed ::

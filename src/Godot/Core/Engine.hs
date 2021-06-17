@@ -40,7 +40,19 @@ import Godot.Core.Object()
 
 {-# NOINLINE bindEngine_is_editor_hint #-}
 
--- | If @true@, it is running inside the editor. Useful for tool scripts.
+-- | If @true@, the script is currently running inside the editor. This is useful for @tool@ scripts to conditionally draw editor helpers, or prevent accidentally running "game" code that would affect the scene state while in the editor:
+--   			
+--   @
+--   
+--   			if Engine.editor_hint:
+--   			    draw_gizmos()
+--   			else:
+--   			    simulate_physics()
+--   			
+--   @
+--   
+--   			See @url=https://docs.godotengine.org/en/stable/tutorials/misc/running_code_in_the_editor.html@Running code in the editor@/url@ in the documentation for more information.
+--   			__Note:__ To detect whether the script is run from an editor @i@build@/i@ (e.g. when pressing @F5@), use @method OS.has_feature@ with the @"editor"@ argument instead. @OS.has_feature("editor")@ will evaluate to @true@ both when the code is running in the editor and when running the project from the editor, but it will evaluate to @false@ when the code is run from an exported project.
 bindEngine_is_editor_hint :: MethodBind
 bindEngine_is_editor_hint
   = unsafePerformIO $
@@ -50,7 +62,19 @@ bindEngine_is_editor_hint
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | If @true@, it is running inside the editor. Useful for tool scripts.
+-- | If @true@, the script is currently running inside the editor. This is useful for @tool@ scripts to conditionally draw editor helpers, or prevent accidentally running "game" code that would affect the scene state while in the editor:
+--   			
+--   @
+--   
+--   			if Engine.editor_hint:
+--   			    draw_gizmos()
+--   			else:
+--   			    simulate_physics()
+--   			
+--   @
+--   
+--   			See @url=https://docs.godotengine.org/en/stable/tutorials/misc/running_code_in_the_editor.html@Running code in the editor@/url@ in the documentation for more information.
+--   			__Note:__ To detect whether the script is run from an editor @i@build@/i@ (e.g. when pressing @F5@), use @method OS.has_feature@ with the @"editor"@ argument instead. @OS.has_feature("editor")@ will evaluate to @true@ both when the code is running in the editor and when running the project from the editor, but it will evaluate to @false@ when the code is run from an exported project.
 is_editor_hint :: (Engine :< cls, Object :< cls) => cls -> IO Bool
 is_editor_hint cls
   = withVariantArray []
@@ -65,7 +89,19 @@ instance NodeMethod Engine "is_editor_hint" '[] (IO Bool) where
 
 {-# NOINLINE bindEngine_set_editor_hint #-}
 
--- | If @true@, it is running inside the editor. Useful for tool scripts.
+-- | If @true@, the script is currently running inside the editor. This is useful for @tool@ scripts to conditionally draw editor helpers, or prevent accidentally running "game" code that would affect the scene state while in the editor:
+--   			
+--   @
+--   
+--   			if Engine.editor_hint:
+--   			    draw_gizmos()
+--   			else:
+--   			    simulate_physics()
+--   			
+--   @
+--   
+--   			See @url=https://docs.godotengine.org/en/stable/tutorials/misc/running_code_in_the_editor.html@Running code in the editor@/url@ in the documentation for more information.
+--   			__Note:__ To detect whether the script is run from an editor @i@build@/i@ (e.g. when pressing @F5@), use @method OS.has_feature@ with the @"editor"@ argument instead. @OS.has_feature("editor")@ will evaluate to @true@ both when the code is running in the editor and when running the project from the editor, but it will evaluate to @false@ when the code is run from an exported project.
 bindEngine_set_editor_hint :: MethodBind
 bindEngine_set_editor_hint
   = unsafePerformIO $
@@ -75,7 +111,19 @@ bindEngine_set_editor_hint
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | If @true@, it is running inside the editor. Useful for tool scripts.
+-- | If @true@, the script is currently running inside the editor. This is useful for @tool@ scripts to conditionally draw editor helpers, or prevent accidentally running "game" code that would affect the scene state while in the editor:
+--   			
+--   @
+--   
+--   			if Engine.editor_hint:
+--   			    draw_gizmos()
+--   			else:
+--   			    simulate_physics()
+--   			
+--   @
+--   
+--   			See @url=https://docs.godotengine.org/en/stable/tutorials/misc/running_code_in_the_editor.html@Running code in the editor@/url@ in the documentation for more information.
+--   			__Note:__ To detect whether the script is run from an editor @i@build@/i@ (e.g. when pressing @F5@), use @method OS.has_feature@ with the @"editor"@ argument instead. @OS.has_feature("editor")@ will evaluate to @true@ both when the code is running in the editor and when running the project from the editor, but it will evaluate to @false@ when the code is run from an exported project.
 set_editor_hint ::
                   (Engine :< cls, Object :< cls) => cls -> Bool -> IO ()
 set_editor_hint cls arg1
@@ -158,7 +206,7 @@ instance NodeProperty Engine "iterations_per_second" Int 'False
 
 {-# NOINLINE bindEngine_get_physics_jitter_fix #-}
 
--- | Controls how much physics ticks are synchronized with real time. For 0 or less, the ticks are synchronized. Such values are recommended for network games, where clock synchronization matters. Higher values cause higher deviation of in-game clock and real clock, but allows to smooth out framerate jitters. The default value of 0.5 should be fine for most; values above 2 could cause the game to react to dropped frames with a noticeable delay and are not recommended.
+-- | Controls how much physics ticks are synchronized with real time. For 0 or less, the ticks are synchronized. Such values are recommended for network games, where clock synchronization matters. Higher values cause higher deviation of in-game clock and real clock, but allows smoothing out framerate jitters. The default value of 0.5 should be fine for most; values above 2 could cause the game to react to dropped frames with a noticeable delay and are not recommended.
 bindEngine_get_physics_jitter_fix :: MethodBind
 bindEngine_get_physics_jitter_fix
   = unsafePerformIO $
@@ -168,7 +216,7 @@ bindEngine_get_physics_jitter_fix
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Controls how much physics ticks are synchronized with real time. For 0 or less, the ticks are synchronized. Such values are recommended for network games, where clock synchronization matters. Higher values cause higher deviation of in-game clock and real clock, but allows to smooth out framerate jitters. The default value of 0.5 should be fine for most; values above 2 could cause the game to react to dropped frames with a noticeable delay and are not recommended.
+-- | Controls how much physics ticks are synchronized with real time. For 0 or less, the ticks are synchronized. Such values are recommended for network games, where clock synchronization matters. Higher values cause higher deviation of in-game clock and real clock, but allows smoothing out framerate jitters. The default value of 0.5 should be fine for most; values above 2 could cause the game to react to dropped frames with a noticeable delay and are not recommended.
 get_physics_jitter_fix ::
                          (Engine :< cls, Object :< cls) => cls -> IO Float
 get_physics_jitter_fix cls
@@ -186,7 +234,7 @@ instance NodeMethod Engine "get_physics_jitter_fix" '[] (IO Float)
 
 {-# NOINLINE bindEngine_set_physics_jitter_fix #-}
 
--- | Controls how much physics ticks are synchronized with real time. For 0 or less, the ticks are synchronized. Such values are recommended for network games, where clock synchronization matters. Higher values cause higher deviation of in-game clock and real clock, but allows to smooth out framerate jitters. The default value of 0.5 should be fine for most; values above 2 could cause the game to react to dropped frames with a noticeable delay and are not recommended.
+-- | Controls how much physics ticks are synchronized with real time. For 0 or less, the ticks are synchronized. Such values are recommended for network games, where clock synchronization matters. Higher values cause higher deviation of in-game clock and real clock, but allows smoothing out framerate jitters. The default value of 0.5 should be fine for most; values above 2 could cause the game to react to dropped frames with a noticeable delay and are not recommended.
 bindEngine_set_physics_jitter_fix :: MethodBind
 bindEngine_set_physics_jitter_fix
   = unsafePerformIO $
@@ -196,7 +244,7 @@ bindEngine_set_physics_jitter_fix
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Controls how much physics ticks are synchronized with real time. For 0 or less, the ticks are synchronized. Such values are recommended for network games, where clock synchronization matters. Higher values cause higher deviation of in-game clock and real clock, but allows to smooth out framerate jitters. The default value of 0.5 should be fine for most; values above 2 could cause the game to react to dropped frames with a noticeable delay and are not recommended.
+-- | Controls how much physics ticks are synchronized with real time. For 0 or less, the ticks are synchronized. Such values are recommended for network games, where clock synchronization matters. Higher values cause higher deviation of in-game clock and real clock, but allows smoothing out framerate jitters. The default value of 0.5 should be fine for most; values above 2 could cause the game to react to dropped frames with a noticeable delay and are not recommended.
 set_physics_jitter_fix ::
                          (Engine :< cls, Object :< cls) => cls -> Float -> IO ()
 set_physics_jitter_fix cls arg1

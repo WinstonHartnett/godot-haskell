@@ -20,13 +20,16 @@ module Godot.Core.LineEdit
         Godot.Core.LineEdit.cursor_get_blink_speed,
         Godot.Core.LineEdit.cursor_set_blink_enabled,
         Godot.Core.LineEdit.cursor_set_blink_speed,
-        Godot.Core.LineEdit.deselect, Godot.Core.LineEdit.get_align,
+        Godot.Core.LineEdit.delete_char_at_cursor,
+        Godot.Core.LineEdit.delete_text, Godot.Core.LineEdit.deselect,
+        Godot.Core.LineEdit.get_align,
         Godot.Core.LineEdit.get_cursor_position,
         Godot.Core.LineEdit.get_expand_to_text_length,
         Godot.Core.LineEdit.get_max_length, Godot.Core.LineEdit.get_menu,
         Godot.Core.LineEdit.get_placeholder,
         Godot.Core.LineEdit.get_placeholder_alpha,
         Godot.Core.LineEdit.get_right_icon,
+        Godot.Core.LineEdit.get_scroll_offset,
         Godot.Core.LineEdit.get_secret_character,
         Godot.Core.LineEdit.get_text,
         Godot.Core.LineEdit.is_clear_button_enabled,
@@ -34,6 +37,7 @@ module Godot.Core.LineEdit
         Godot.Core.LineEdit.is_editable, Godot.Core.LineEdit.is_secret,
         Godot.Core.LineEdit.is_selecting_enabled,
         Godot.Core.LineEdit.is_shortcut_keys_enabled,
+        Godot.Core.LineEdit.is_virtual_keyboard_enabled,
         Godot.Core.LineEdit.menu_option, Godot.Core.LineEdit.select,
         Godot.Core.LineEdit.select_all, Godot.Core.LineEdit.set_align,
         Godot.Core.LineEdit.set_clear_button_enabled,
@@ -48,7 +52,8 @@ module Godot.Core.LineEdit
         Godot.Core.LineEdit.set_secret_character,
         Godot.Core.LineEdit.set_selecting_enabled,
         Godot.Core.LineEdit.set_shortcut_keys_enabled,
-        Godot.Core.LineEdit.set_text)
+        Godot.Core.LineEdit.set_text,
+        Godot.Core.LineEdit.set_virtual_keyboard_enabled)
        where
 import Data.Coerce
 import Foreign.C
@@ -202,6 +207,13 @@ instance NodeProperty LineEdit "shortcut_keys_enabled" Bool 'False
 
 instance NodeProperty LineEdit "text" GodotString 'False where
         nodeProperty = (get_text, wrapDroppingSetter set_text, Nothing)
+
+instance NodeProperty LineEdit "virtual_keyboard_enabled" Bool
+           'False
+         where
+        nodeProperty
+          = (is_virtual_keyboard_enabled,
+             wrapDroppingSetter set_virtual_keyboard_enabled, Nothing)
 
 {-# NOINLINE bindLineEdit__editor_settings_changed #-}
 
@@ -467,6 +479,60 @@ instance NodeMethod LineEdit "cursor_set_blink_speed" '[Float]
          where
         nodeMethod = Godot.Core.LineEdit.cursor_set_blink_speed
 
+{-# NOINLINE bindLineEdit_delete_char_at_cursor #-}
+
+-- | Deletes one character at the cursor's current position (equivalent to pressing the @Delete@ key).
+bindLineEdit_delete_char_at_cursor :: MethodBind
+bindLineEdit_delete_char_at_cursor
+  = unsafePerformIO $
+      withCString "LineEdit" $
+        \ clsNamePtr ->
+          withCString "delete_char_at_cursor" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Deletes one character at the cursor's current position (equivalent to pressing the @Delete@ key).
+delete_char_at_cursor ::
+                        (LineEdit :< cls, Object :< cls) => cls -> IO ()
+delete_char_at_cursor cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindLineEdit_delete_char_at_cursor
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod LineEdit "delete_char_at_cursor" '[] (IO ())
+         where
+        nodeMethod = Godot.Core.LineEdit.delete_char_at_cursor
+
+{-# NOINLINE bindLineEdit_delete_text #-}
+
+-- | Deletes a section of the @text@ going from position @from_column@ to @to_column@. Both parameters should be within the text's length.
+bindLineEdit_delete_text :: MethodBind
+bindLineEdit_delete_text
+  = unsafePerformIO $
+      withCString "LineEdit" $
+        \ clsNamePtr ->
+          withCString "delete_text" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Deletes a section of the @text@ going from position @from_column@ to @to_column@. Both parameters should be within the text's length.
+delete_text ::
+              (LineEdit :< cls, Object :< cls) => cls -> Int -> Int -> IO ()
+delete_text cls arg1 arg2
+  = withVariantArray [toVariant arg1, toVariant arg2]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindLineEdit_delete_text (upcast cls) arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod LineEdit "delete_text" '[Int, Int] (IO ())
+         where
+        nodeMethod = Godot.Core.LineEdit.delete_text
+
 {-# NOINLINE bindLineEdit_deselect #-}
 
 -- | Clears the current selection.
@@ -703,6 +769,32 @@ instance NodeMethod LineEdit "get_right_icon" '[] (IO Texture)
          where
         nodeMethod = Godot.Core.LineEdit.get_right_icon
 
+{-# NOINLINE bindLineEdit_get_scroll_offset #-}
+
+-- | Returns the scroll offset due to @caret_position@, as a number of characters.
+bindLineEdit_get_scroll_offset :: MethodBind
+bindLineEdit_get_scroll_offset
+  = unsafePerformIO $
+      withCString "LineEdit" $
+        \ clsNamePtr ->
+          withCString "get_scroll_offset" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Returns the scroll offset due to @caret_position@, as a number of characters.
+get_scroll_offset ::
+                    (LineEdit :< cls, Object :< cls) => cls -> IO Int
+get_scroll_offset cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindLineEdit_get_scroll_offset (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod LineEdit "get_scroll_offset" '[] (IO Int) where
+        nodeMethod = Godot.Core.LineEdit.get_scroll_offset
+
 {-# NOINLINE bindLineEdit_get_secret_character #-}
 
 -- | The character to use to mask secret input (defaults to "*"). Only a single character can be used as the secret character.
@@ -921,6 +1013,35 @@ instance NodeMethod LineEdit "is_shortcut_keys_enabled" '[]
            (IO Bool)
          where
         nodeMethod = Godot.Core.LineEdit.is_shortcut_keys_enabled
+
+{-# NOINLINE bindLineEdit_is_virtual_keyboard_enabled #-}
+
+-- | If @true@, the native virtual keyboard is shown when focused on platforms that support it.
+bindLineEdit_is_virtual_keyboard_enabled :: MethodBind
+bindLineEdit_is_virtual_keyboard_enabled
+  = unsafePerformIO $
+      withCString "LineEdit" $
+        \ clsNamePtr ->
+          withCString "is_virtual_keyboard_enabled" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | If @true@, the native virtual keyboard is shown when focused on platforms that support it.
+is_virtual_keyboard_enabled ::
+                              (LineEdit :< cls, Object :< cls) => cls -> IO Bool
+is_virtual_keyboard_enabled cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindLineEdit_is_virtual_keyboard_enabled
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod LineEdit "is_virtual_keyboard_enabled" '[]
+           (IO Bool)
+         where
+        nodeMethod = Godot.Core.LineEdit.is_virtual_keyboard_enabled
 
 {-# NOINLINE bindLineEdit_menu_option #-}
 
@@ -1433,3 +1554,32 @@ set_text cls arg1
 instance NodeMethod LineEdit "set_text" '[GodotString] (IO ())
          where
         nodeMethod = Godot.Core.LineEdit.set_text
+
+{-# NOINLINE bindLineEdit_set_virtual_keyboard_enabled #-}
+
+-- | If @true@, the native virtual keyboard is shown when focused on platforms that support it.
+bindLineEdit_set_virtual_keyboard_enabled :: MethodBind
+bindLineEdit_set_virtual_keyboard_enabled
+  = unsafePerformIO $
+      withCString "LineEdit" $
+        \ clsNamePtr ->
+          withCString "set_virtual_keyboard_enabled" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | If @true@, the native virtual keyboard is shown when focused on platforms that support it.
+set_virtual_keyboard_enabled ::
+                               (LineEdit :< cls, Object :< cls) => cls -> Bool -> IO ()
+set_virtual_keyboard_enabled cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindLineEdit_set_virtual_keyboard_enabled
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod LineEdit "set_virtual_keyboard_enabled" '[Bool]
+           (IO ())
+         where
+        nodeMethod = Godot.Core.LineEdit.set_virtual_keyboard_enabled

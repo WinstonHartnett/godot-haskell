@@ -1,7 +1,7 @@
 {-# LANGUAGE DerivingStrategies, GeneralizedNewtypeDeriving,
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
-module Godot.Tools.EditorSceneImporterAssimp () where
+module Godot.Core.JNISingleton () where
 import Data.Coerce
 import Foreign.C
 import Godot.Internal.Dispatch
@@ -12,4 +12,4 @@ import Data.Colour.SRGB(sRGB)
 import System.IO.Unsafe
 import Godot.Gdnative.Internal
 import Godot.Api.Types
-import Godot.Tools.EditorSceneImporter()
+import Godot.Core.Object()

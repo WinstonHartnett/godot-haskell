@@ -385,7 +385,7 @@ instance NodeMethod SpriteBase3D "get_offset" '[] (IO Vector2)
 
 {-# NOINLINE bindSpriteBase3D_get_opacity #-}
 
--- | The objects visibility on a scale from @0@ fully invisible to @1@ fully visible.
+-- | The objects' visibility on a scale from @0@ fully invisible to @1@ fully visible.
 bindSpriteBase3D_get_opacity :: MethodBind
 bindSpriteBase3D_get_opacity
   = unsafePerformIO $
@@ -395,7 +395,7 @@ bindSpriteBase3D_get_opacity
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | The objects visibility on a scale from @0@ fully invisible to @1@ fully visible.
+-- | The objects' visibility on a scale from @0@ fully invisible to @1@ fully visible.
 get_opacity ::
               (SpriteBase3D :< cls, Object :< cls) => cls -> IO Float
 get_opacity cls
@@ -757,7 +757,7 @@ instance NodeMethod SpriteBase3D "set_offset" '[Vector2] (IO ())
 
 {-# NOINLINE bindSpriteBase3D_set_opacity #-}
 
--- | The objects visibility on a scale from @0@ fully invisible to @1@ fully visible.
+-- | The objects' visibility on a scale from @0@ fully invisible to @1@ fully visible.
 bindSpriteBase3D_set_opacity :: MethodBind
 bindSpriteBase3D_set_opacity
   = unsafePerformIO $
@@ -767,7 +767,7 @@ bindSpriteBase3D_set_opacity
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | The objects visibility on a scale from @0@ fully invisible to @1@ fully visible.
+-- | The objects' visibility on a scale from @0@ fully invisible to @1@ fully visible.
 set_opacity ::
               (SpriteBase3D :< cls, Object :< cls) => cls -> Float -> IO ()
 set_opacity cls arg1

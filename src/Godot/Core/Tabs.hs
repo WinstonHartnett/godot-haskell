@@ -18,6 +18,7 @@ module Godot.Core.Tabs
         Godot.Core.Tabs.get_current_tab,
         Godot.Core.Tabs.get_drag_to_rearrange_enabled,
         Godot.Core.Tabs.get_offset_buttons_visible,
+        Godot.Core.Tabs.get_previous_tab,
         Godot.Core.Tabs.get_scrolling_enabled,
         Godot.Core.Tabs.get_select_with_rmb, Godot.Core.Tabs.get_tab_align,
         Godot.Core.Tabs.get_tab_close_display_policy,
@@ -338,9 +339,34 @@ instance NodeMethod Tabs "get_offset_buttons_visible" '[] (IO Bool)
          where
         nodeMethod = Godot.Core.Tabs.get_offset_buttons_visible
 
+{-# NOINLINE bindTabs_get_previous_tab #-}
+
+-- | Returns the previously active tab index.
+bindTabs_get_previous_tab :: MethodBind
+bindTabs_get_previous_tab
+  = unsafePerformIO $
+      withCString "Tabs" $
+        \ clsNamePtr ->
+          withCString "get_previous_tab" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Returns the previously active tab index.
+get_previous_tab :: (Tabs :< cls, Object :< cls) => cls -> IO Int
+get_previous_tab cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindTabs_get_previous_tab (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod Tabs "get_previous_tab" '[] (IO Int) where
+        nodeMethod = Godot.Core.Tabs.get_previous_tab
+
 {-# NOINLINE bindTabs_get_scrolling_enabled #-}
 
--- | if @true@, the mouse's scroll wheel cab be used to navigate the scroll view.
+-- | if @true@, the mouse's scroll wheel can be used to navigate the scroll view.
 bindTabs_get_scrolling_enabled :: MethodBind
 bindTabs_get_scrolling_enabled
   = unsafePerformIO $
@@ -350,7 +376,7 @@ bindTabs_get_scrolling_enabled
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | if @true@, the mouse's scroll wheel cab be used to navigate the scroll view.
+-- | if @true@, the mouse's scroll wheel can be used to navigate the scroll view.
 get_scrolling_enabled ::
                         (Tabs :< cls, Object :< cls) => cls -> IO Bool
 get_scrolling_enabled cls
@@ -725,7 +751,7 @@ instance NodeMethod Tabs "set_drag_to_rearrange_enabled" '[Bool]
 
 {-# NOINLINE bindTabs_set_scrolling_enabled #-}
 
--- | if @true@, the mouse's scroll wheel cab be used to navigate the scroll view.
+-- | if @true@, the mouse's scroll wheel can be used to navigate the scroll view.
 bindTabs_set_scrolling_enabled :: MethodBind
 bindTabs_set_scrolling_enabled
   = unsafePerformIO $
@@ -735,7 +761,7 @@ bindTabs_set_scrolling_enabled
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | if @true@, the mouse's scroll wheel cab be used to navigate the scroll view.
+-- | if @true@, the mouse's scroll wheel can be used to navigate the scroll view.
 set_scrolling_enabled ::
                         (Tabs :< cls, Object :< cls) => cls -> Bool -> IO ()
 set_scrolling_enabled cls arg1

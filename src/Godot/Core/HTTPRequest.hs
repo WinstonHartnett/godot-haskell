@@ -291,7 +291,7 @@ instance NodeMethod HTTPRequest "get_body_size_limit" '[] (IO Int)
 {-# NOINLINE bindHTTPRequest_get_download_chunk_size #-}
 
 -- | The size of the buffer used and maximum bytes to read per iteration. See @HTTPClient.read_chunk_size@.
---   			Set this to a higher value (e.g. 65536 for 64 KiB) when downloading large files to achieve better speeds at the cost of memory.
+--   			Set this to a lower value (e.g. 4096 for 4 KiB) when downloading small files to decrease memory usage at the cost of download speeds.
 bindHTTPRequest_get_download_chunk_size :: MethodBind
 bindHTTPRequest_get_download_chunk_size
   = unsafePerformIO $
@@ -302,7 +302,7 @@ bindHTTPRequest_get_download_chunk_size
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
 -- | The size of the buffer used and maximum bytes to read per iteration. See @HTTPClient.read_chunk_size@.
---   			Set this to a higher value (e.g. 65536 for 64 KiB) when downloading large files to achieve better speeds at the cost of memory.
+--   			Set this to a lower value (e.g. 4096 for 4 KiB) when downloading small files to decrease memory usage at the cost of download speeds.
 get_download_chunk_size ::
                           (HTTPRequest :< cls, Object :< cls) => cls -> IO Int
 get_download_chunk_size cls
@@ -558,7 +558,7 @@ instance NodeMethod HTTPRequest "set_body_size_limit" '[Int]
 {-# NOINLINE bindHTTPRequest_set_download_chunk_size #-}
 
 -- | The size of the buffer used and maximum bytes to read per iteration. See @HTTPClient.read_chunk_size@.
---   			Set this to a higher value (e.g. 65536 for 64 KiB) when downloading large files to achieve better speeds at the cost of memory.
+--   			Set this to a lower value (e.g. 4096 for 4 KiB) when downloading small files to decrease memory usage at the cost of download speeds.
 bindHTTPRequest_set_download_chunk_size :: MethodBind
 bindHTTPRequest_set_download_chunk_size
   = unsafePerformIO $
@@ -569,7 +569,7 @@ bindHTTPRequest_set_download_chunk_size
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
 -- | The size of the buffer used and maximum bytes to read per iteration. See @HTTPClient.read_chunk_size@.
---   			Set this to a higher value (e.g. 65536 for 64 KiB) when downloading large files to achieve better speeds at the cost of memory.
+--   			Set this to a lower value (e.g. 4096 for 4 KiB) when downloading small files to decrease memory usage at the cost of download speeds.
 set_download_chunk_size ::
                           (HTTPRequest :< cls, Object :< cls) => cls -> Int -> IO ()
 set_download_chunk_size cls arg1

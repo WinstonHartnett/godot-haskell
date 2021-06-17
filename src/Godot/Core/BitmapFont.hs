@@ -14,7 +14,6 @@ module Godot.Core.BitmapFont
         Godot.Core.BitmapFont.add_kerning_pair,
         Godot.Core.BitmapFont.add_texture, Godot.Core.BitmapFont.clear,
         Godot.Core.BitmapFont.create_from_fnt,
-        Godot.Core.BitmapFont.get_char_size,
         Godot.Core.BitmapFont.get_fallback,
         Godot.Core.BitmapFont.get_kerning_pair,
         Godot.Core.BitmapFont.get_texture,
@@ -431,34 +430,6 @@ instance NodeMethod BitmapFont "create_from_fnt" '[GodotString]
            (IO Int)
          where
         nodeMethod = Godot.Core.BitmapFont.create_from_fnt
-
-{-# NOINLINE bindBitmapFont_get_char_size #-}
-
-bindBitmapFont_get_char_size :: MethodBind
-bindBitmapFont_get_char_size
-  = unsafePerformIO $
-      withCString "BitmapFont" $
-        \ clsNamePtr ->
-          withCString "get_char_size" $
-            \ methodNamePtr ->
-              godot_method_bind_get_method clsNamePtr methodNamePtr
-
-get_char_size ::
-                (BitmapFont :< cls, Object :< cls) =>
-                cls -> Int -> Maybe Int -> IO Vector2
-get_char_size cls arg1 arg2
-  = withVariantArray
-      [toVariant arg1, maybe (VariantInt (0)) toVariant arg2]
-      (\ (arrPtr, len) ->
-         godot_method_bind_call bindBitmapFont_get_char_size (upcast cls)
-           arrPtr
-           len
-           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
-
-instance NodeMethod BitmapFont "get_char_size" '[Int, Maybe Int]
-           (IO Vector2)
-         where
-        nodeMethod = Godot.Core.BitmapFont.get_char_size
 
 {-# NOINLINE bindBitmapFont_get_fallback #-}
 

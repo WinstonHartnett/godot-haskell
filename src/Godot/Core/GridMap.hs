@@ -19,6 +19,7 @@ module Godot.Core.GridMap
         Godot.Core.GridMap.get_collision_mask_bit,
         Godot.Core.GridMap.get_mesh_library, Godot.Core.GridMap.get_meshes,
         Godot.Core.GridMap.get_octant_size,
+        Godot.Core.GridMap.get_use_in_baked_light,
         Godot.Core.GridMap.get_used_cells,
         Godot.Core.GridMap.make_baked_meshes,
         Godot.Core.GridMap.map_to_world,
@@ -34,6 +35,7 @@ module Godot.Core.GridMap
         Godot.Core.GridMap.set_collision_mask_bit,
         Godot.Core.GridMap.set_mesh_library,
         Godot.Core.GridMap.set_octant_size,
+        Godot.Core.GridMap.set_use_in_baked_light,
         Godot.Core.GridMap.world_to_map)
        where
 import Data.Coerce
@@ -95,6 +97,12 @@ instance NodeProperty GridMap "mesh_library" MeshLibrary 'False
          where
         nodeProperty
           = (get_mesh_library, wrapDroppingSetter set_mesh_library, Nothing)
+
+instance NodeProperty GridMap "use_in_baked_light" Bool 'False
+         where
+        nodeProperty
+          = (get_use_in_baked_light,
+             wrapDroppingSetter set_use_in_baked_light, Nothing)
 
 {-# NOINLINE bindGridMap__update_octants_callback #-}
 
@@ -561,6 +569,32 @@ get_octant_size cls
 instance NodeMethod GridMap "get_octant_size" '[] (IO Int) where
         nodeMethod = Godot.Core.GridMap.get_octant_size
 
+{-# NOINLINE bindGridMap_get_use_in_baked_light #-}
+
+bindGridMap_get_use_in_baked_light :: MethodBind
+bindGridMap_get_use_in_baked_light
+  = unsafePerformIO $
+      withCString "GridMap" $
+        \ clsNamePtr ->
+          withCString "get_use_in_baked_light" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+get_use_in_baked_light ::
+                         (GridMap :< cls, Object :< cls) => cls -> IO Bool
+get_use_in_baked_light cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindGridMap_get_use_in_baked_light
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod GridMap "get_use_in_baked_light" '[] (IO Bool)
+         where
+        nodeMethod = Godot.Core.GridMap.get_use_in_baked_light
+
 {-# NOINLINE bindGridMap_get_used_cells #-}
 
 bindGridMap_get_used_cells :: MethodBind
@@ -996,6 +1030,33 @@ set_octant_size cls arg1
 
 instance NodeMethod GridMap "set_octant_size" '[Int] (IO ()) where
         nodeMethod = Godot.Core.GridMap.set_octant_size
+
+{-# NOINLINE bindGridMap_set_use_in_baked_light #-}
+
+bindGridMap_set_use_in_baked_light :: MethodBind
+bindGridMap_set_use_in_baked_light
+  = unsafePerformIO $
+      withCString "GridMap" $
+        \ clsNamePtr ->
+          withCString "set_use_in_baked_light" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+set_use_in_baked_light ::
+                         (GridMap :< cls, Object :< cls) => cls -> Bool -> IO ()
+set_use_in_baked_light cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindGridMap_set_use_in_baked_light
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod GridMap "set_use_in_baked_light" '[Bool]
+           (IO ())
+         where
+        nodeMethod = Godot.Core.GridMap.set_use_in_baked_light
 
 {-# NOINLINE bindGridMap_world_to_map #-}
 

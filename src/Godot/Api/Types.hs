@@ -19,29 +19,31 @@ module Godot.Api.Types
         AnimationNodeTransition(..), AnimationPlayer(..),
         AnimationRootNode(..), AnimationTrackEditPlugin(..),
         AnimationTree(..), AnimationTreePlayer(..), Area(..), Area2D(..),
-        ArrayMesh(..), AtlasTexture(..), AudioBusLayout(..),
-        AudioEffect(..), AudioEffectAmplify(..),
+        ArrayMesh(..), AspectRatioContainer(..), AtlasTexture(..),
+        AudioBusLayout(..), AudioEffect(..), AudioEffectAmplify(..),
         AudioEffectBandLimitFilter(..), AudioEffectBandPassFilter(..),
-        AudioEffectChorus(..), AudioEffectCompressor(..),
-        AudioEffectDelay(..), AudioEffectDistortion(..), AudioEffectEQ(..),
-        AudioEffectEQ10(..), AudioEffectEQ21(..), AudioEffectEQ6(..),
-        AudioEffectFilter(..), AudioEffectHighPassFilter(..),
-        AudioEffectHighShelfFilter(..), AudioEffectInstance(..),
-        AudioEffectLimiter(..), AudioEffectLowPassFilter(..),
-        AudioEffectLowShelfFilter(..), AudioEffectNotchFilter(..),
-        AudioEffectPanner(..), AudioEffectPhaser(..),
-        AudioEffectPitchShift(..), AudioEffectRecord(..),
-        AudioEffectReverb(..), AudioEffectSpectrumAnalyzer(..),
+        AudioEffectCapture(..), AudioEffectChorus(..),
+        AudioEffectCompressor(..), AudioEffectDelay(..),
+        AudioEffectDistortion(..), AudioEffectEQ(..), AudioEffectEQ10(..),
+        AudioEffectEQ21(..), AudioEffectEQ6(..), AudioEffectFilter(..),
+        AudioEffectHighPassFilter(..), AudioEffectHighShelfFilter(..),
+        AudioEffectInstance(..), AudioEffectLimiter(..),
+        AudioEffectLowPassFilter(..), AudioEffectLowShelfFilter(..),
+        AudioEffectNotchFilter(..), AudioEffectPanner(..),
+        AudioEffectPhaser(..), AudioEffectPitchShift(..),
+        AudioEffectRecord(..), AudioEffectReverb(..),
+        AudioEffectSpectrumAnalyzer(..),
         AudioEffectSpectrumAnalyzerInstance(..),
         AudioEffectStereoEnhance(..), AudioServer(..), AudioStream(..),
         AudioStreamGenerator(..), AudioStreamGeneratorPlayback(..),
-        AudioStreamMicrophone(..), AudioStreamOGGVorbis(..),
-        AudioStreamPlayback(..), AudioStreamPlaybackResampled(..),
-        AudioStreamPlayer(..), AudioStreamPlayer2D(..),
-        AudioStreamPlayer3D(..), AudioStreamRandomPitch(..),
-        AudioStreamSample(..), BackBufferCopy(..), BakedLightmap(..),
-        BakedLightmapData(..), BaseButton(..), BitMap(..), BitmapFont(..),
-        Bone2D(..), BoneAttachment(..), BoxContainer(..), BoxShape(..),
+        AudioStreamMP3(..), AudioStreamMicrophone(..),
+        AudioStreamOGGVorbis(..), AudioStreamPlayback(..),
+        AudioStreamPlaybackResampled(..), AudioStreamPlayer(..),
+        AudioStreamPlayer2D(..), AudioStreamPlayer3D(..),
+        AudioStreamRandomPitch(..), AudioStreamSample(..),
+        BackBufferCopy(..), BakedLightmap(..), BakedLightmapData(..),
+        BaseButton(..), BitMap(..), BitmapFont(..), Bone2D(..),
+        BoneAttachment(..), BoxContainer(..), BoxShape(..),
         BulletPhysicsDirectBodyState(..), BulletPhysicsServer(..),
         Button(..), ButtonGroup(..), CPUParticles(..), CPUParticles2D(..),
         CSGBox(..), CSGCombiner(..), CSGCylinder(..), CSGMesh(..),
@@ -61,8 +63,8 @@ module Godot.Api.Types
         ConvexPolygonShape2D(..), Crypto(..), CryptoKey(..), CubeMap(..),
         CubeMesh(..), Curve(..), Curve2D(..), Curve3D(..),
         CurveTexture(..), CylinderMesh(..), CylinderShape(..),
-        DampedSpringJoint2D(..), DirectionalLight(..), DynamicFont(..),
-        DynamicFontData(..), EditorExportPlugin(..),
+        DTLSServer(..), DampedSpringJoint2D(..), DirectionalLight(..),
+        DynamicFont(..), DynamicFontData(..), EditorExportPlugin(..),
         EditorFeatureProfile(..), EditorFileDialog(..),
         EditorFileSystem(..), EditorFileSystemDirectory(..),
         EditorImportPlugin(..), EditorInspector(..),
@@ -70,48 +72,50 @@ module Godot.Api.Types
         EditorNavigationMeshGenerator(..), EditorPlugin(..),
         EditorProperty(..), EditorResourceConversionPlugin(..),
         EditorResourcePreview(..), EditorResourcePreviewGenerator(..),
-        EditorSceneImporter(..), EditorSceneImporterAssimp(..),
+        EditorSceneImporter(..), EditorSceneImporterFBX(..),
         EditorScenePostImport(..), EditorScript(..), EditorSelection(..),
         EditorSettings(..), EditorSpatialGizmo(..),
         EditorSpatialGizmoPlugin(..), EditorSpinSlider(..),
         EditorVCSInterface(..), EncodedObjectAsID(..), Environment(..),
-        Expression(..), FileDialog(..), Font(..), FuncRef(..),
-        GDNative(..), GDNativeLibrary(..), GDScript(..),
-        GDScriptFunctionState(..), GIProbe(..), GIProbeData(..),
-        Generic6DOFJoint(..), GeometryInstance(..), Gradient(..),
-        GradientTexture(..), GraphEdit(..), GraphNode(..),
-        GridContainer(..), GridMap(..), GrooveJoint2D(..),
-        HBoxContainer(..), HScrollBar(..), HSeparator(..), HSlider(..),
-        HSplitContainer(..), HTTPClient(..), HTTPRequest(..),
-        HashingContext(..), HeightMapShape(..), HingeJoint(..), IP(..),
-        IP_Unix(..), Image(..), ImageTexture(..), ImmediateGeometry(..),
-        Input(..), InputDefault(..), InputEvent(..), InputEventAction(..),
-        InputEventGesture(..), InputEventJoypadButton(..),
-        InputEventJoypadMotion(..), InputEventKey(..), InputEventMIDI(..),
+        Expression(..), ExternalTexture(..), FileDialog(..),
+        FileSystemDock(..), Font(..), FuncRef(..), GDNative(..),
+        GDNativeLibrary(..), GDScript(..), GDScriptFunctionState(..),
+        GIProbe(..), GIProbeData(..), Generic6DOFJoint(..),
+        GeometryInstance(..), Gradient(..), GradientTexture(..),
+        GraphEdit(..), GraphNode(..), GridContainer(..), GridMap(..),
+        GrooveJoint2D(..), HBoxContainer(..), HScrollBar(..),
+        HSeparator(..), HSlider(..), HSplitContainer(..), HTTPClient(..),
+        HTTPRequest(..), HashingContext(..), HeightMapShape(..),
+        HingeJoint(..), IP(..), IP_Unix(..), Image(..), ImageTexture(..),
+        ImmediateGeometry(..), Input(..), InputDefault(..), InputEvent(..),
+        InputEventAction(..), InputEventGesture(..),
+        InputEventJoypadButton(..), InputEventJoypadMotion(..),
+        InputEventKey(..), InputEventMIDI(..),
         InputEventMagnifyGesture(..), InputEventMouse(..),
         InputEventMouseButton(..), InputEventMouseMotion(..),
         InputEventPanGesture(..), InputEventScreenDrag(..),
         InputEventScreenTouch(..), InputEventWithModifiers(..),
         InputMap(..), InstancePlaceholder(..), InterpolatedCamera(..),
-        ItemList(..), JSONParseResult(..), JSONRPC(..), JavaClass(..),
-        JavaClassWrapper(..), JavaScript(..), Joint(..), Joint2D(..),
-        KinematicBody(..), KinematicBody2D(..), KinematicCollision(..),
-        KinematicCollision2D(..), Label(..), LargeTexture(..), Light(..),
-        Light2D(..), LightOccluder2D(..), Line2D(..), LineEdit(..),
-        LineShape2D(..), LinkButton(..), Listener(..), MainLoop(..),
-        MarginContainer(..), Material(..), MenuButton(..), Mesh(..),
-        MeshDataTool(..), MeshInstance(..), MeshInstance2D(..),
-        MeshLibrary(..), MeshTexture(..), MobileVRInterface(..),
-        MultiMesh(..), MultiMeshInstance(..), MultiMeshInstance2D(..),
-        MultiplayerAPI(..), MultiplayerPeerGDNative(..), NativeScript(..),
-        Navigation(..), Navigation2D(..), NavigationMesh(..),
-        NavigationMeshInstance(..), NavigationPolygon(..),
-        NavigationPolygonInstance(..), NetworkedMultiplayerENet(..),
-        NetworkedMultiplayerPeer(..), NinePatchRect(..), Node(..),
-        Node2D(..), NoiseTexture(..), OccluderPolygon2D(..), OmniLight(..),
-        OpenSimplexNoise(..), OptionButton(..), PCKPacker(..),
-        PHashTranslation(..), PackedDataContainer(..),
-        PackedDataContainerRef(..), PackedScene(..), PacketPeer(..),
+        ItemList(..), JNISingleton(..), JSONParseResult(..), JSONRPC(..),
+        JavaClass(..), JavaClassWrapper(..), JavaScript(..), Joint(..),
+        Joint2D(..), KinematicBody(..), KinematicBody2D(..),
+        KinematicCollision(..), KinematicCollision2D(..), Label(..),
+        LargeTexture(..), Light(..), Light2D(..), LightOccluder2D(..),
+        Line2D(..), LineEdit(..), LineShape2D(..), LinkButton(..),
+        Listener(..), MainLoop(..), MarginContainer(..), Material(..),
+        MenuButton(..), Mesh(..), MeshDataTool(..), MeshInstance(..),
+        MeshInstance2D(..), MeshLibrary(..), MeshTexture(..),
+        MobileVRInterface(..), MultiMesh(..), MultiMeshInstance(..),
+        MultiMeshInstance2D(..), MultiplayerAPI(..),
+        MultiplayerPeerGDNative(..), NativeScript(..), Navigation(..),
+        Navigation2D(..), NavigationMesh(..), NavigationMeshInstance(..),
+        NavigationPolygon(..), NavigationPolygonInstance(..),
+        NetworkedMultiplayerENet(..), NetworkedMultiplayerPeer(..),
+        NinePatchRect(..), Node(..), Node2D(..), NoiseTexture(..),
+        OccluderPolygon2D(..), OmniLight(..), OpenSimplexNoise(..),
+        OptionButton(..), PCKPacker(..), PHashTranslation(..),
+        PackedDataContainer(..), PackedDataContainerRef(..),
+        PackedScene(..), PacketPeer(..), PacketPeerDTLS(..),
         PacketPeerGDNative(..), PacketPeerStream(..), PacketPeerUDP(..),
         Panel(..), PanelContainer(..), PanoramaSky(..),
         ParallaxBackground(..), ParallaxLayer(..), Particles(..),
@@ -135,22 +139,21 @@ module Godot.Api.Types
         RayCast2D(..), RayShape(..), RayShape2D(..), RectangleShape2D(..),
         Reference(..), ReferenceRect(..), ReflectionProbe(..), RegEx(..),
         RegExMatch(..), RemoteTransform(..), RemoteTransform2D(..),
-        Resource(..), ResourceFormatLoader(..),
-        ResourceFormatLoaderCrypto(..), ResourceFormatSaver(..),
-        ResourceFormatSaverCrypto(..), ResourceImporter(..),
-        ResourceInteractiveLoader(..), ResourcePreloader(..),
-        RichTextEffect(..), RichTextLabel(..), RigidBody(..),
-        RigidBody2D(..), RootMotionView(..), SceneState(..), SceneTree(..),
-        SceneTreeTimer(..), Script(..), ScriptCreateDialog(..),
-        ScriptEditor(..), ScrollBar(..), ScrollContainer(..),
-        SegmentShape2D(..), Separator(..), Shader(..), ShaderMaterial(..),
-        Shape(..), Shape2D(..), ShortCut(..), Skeleton(..), Skeleton2D(..),
-        SkeletonIK(..), Skin(..), SkinReference(..), Sky(..), Slider(..),
-        SliderJoint(..), SoftBody(..), Spatial(..), SpatialGizmo(..),
-        SpatialMaterial(..), SpatialVelocityTracker(..), SphereMesh(..),
-        SphereShape(..), SpinBox(..), SplitContainer(..), SpotLight(..),
-        SpringArm(..), Sprite(..), Sprite3D(..), SpriteBase3D(..),
-        SpriteFrames(..), StaticBody(..), StaticBody2D(..), StreamPeer(..),
+        Resource(..), ResourceFormatLoader(..), ResourceFormatSaver(..),
+        ResourceImporter(..), ResourceInteractiveLoader(..),
+        ResourcePreloader(..), RichTextEffect(..), RichTextLabel(..),
+        RigidBody(..), RigidBody2D(..), RootMotionView(..), SceneState(..),
+        SceneTree(..), SceneTreeTimer(..), Script(..),
+        ScriptCreateDialog(..), ScriptEditor(..), ScrollBar(..),
+        ScrollContainer(..), SegmentShape2D(..), Separator(..), Shader(..),
+        ShaderMaterial(..), Shape(..), Shape2D(..), ShortCut(..),
+        Skeleton(..), Skeleton2D(..), SkeletonIK(..), Skin(..),
+        SkinReference(..), Sky(..), Slider(..), SliderJoint(..),
+        SoftBody(..), Spatial(..), SpatialGizmo(..), SpatialMaterial(..),
+        SpatialVelocityTracker(..), SphereMesh(..), SphereShape(..),
+        SpinBox(..), SplitContainer(..), SpotLight(..), SpringArm(..),
+        Sprite(..), Sprite3D(..), SpriteBase3D(..), SpriteFrames(..),
+        StaticBody(..), StaticBody2D(..), StreamPeer(..),
         StreamPeerBuffer(..), StreamPeerGDNative(..), StreamPeerSSL(..),
         StreamPeerTCP(..), StreamTexture(..), StyleBox(..),
         StyleBoxEmpty(..), StyleBoxFlat(..), StyleBoxLine(..),
@@ -160,11 +163,11 @@ module Godot.Api.Types
         TextureLayered(..), TextureProgress(..), TextureRect(..),
         Theme(..), TileMap(..), TileSet(..), Timer(..), ToolButton(..),
         TouchScreenButton(..), Translation(..), TranslationServer(..),
-        Tree(..), TreeItem(..), TriangleMesh(..), Tween(..), UPNP(..),
-        UPNPDevice(..), UndoRedo(..), VBoxContainer(..), VScrollBar(..),
-        VSeparator(..), VSlider(..), VSplitContainer(..), VehicleBody(..),
-        VehicleWheel(..), VideoPlayer(..), VideoStream(..),
-        VideoStreamGDNative(..), VideoStreamTheora(..),
+        Tree(..), TreeItem(..), TriangleMesh(..), Tween(..), UDPServer(..),
+        UPNP(..), UPNPDevice(..), UndoRedo(..), VBoxContainer(..),
+        VScrollBar(..), VSeparator(..), VSlider(..), VSplitContainer(..),
+        VehicleBody(..), VehicleWheel(..), VideoPlayer(..),
+        VideoStream(..), VideoStreamGDNative(..), VideoStreamTheora(..),
         VideoStreamWebm(..), Viewport(..), ViewportContainer(..),
         ViewportTexture(..), VisibilityEnabler(..),
         VisibilityEnabler2D(..), VisibilityNotifier(..),
@@ -220,8 +223,9 @@ module Godot.Api.Types
         VisualShaderNodeTransformMult(..),
         VisualShaderNodeTransformUniform(..),
         VisualShaderNodeTransformVecMult(..), VisualShaderNodeUniform(..),
-        VisualShaderNodeVec3Constant(..), VisualShaderNodeVec3Uniform(..),
-        VisualShaderNodeVectorClamp(..), VisualShaderNodeVectorCompose(..),
+        VisualShaderNodeUniformRef(..), VisualShaderNodeVec3Constant(..),
+        VisualShaderNodeVec3Uniform(..), VisualShaderNodeVectorClamp(..),
+        VisualShaderNodeVectorCompose(..),
         VisualShaderNodeVectorDecompose(..),
         VisualShaderNodeVectorDerivativeFunc(..),
         VisualShaderNodeVectorDistance(..), VisualShaderNodeVectorFunc(..),
@@ -235,10 +239,10 @@ module Godot.Api.Types
         WebRTCMultiplayer(..), WebRTCPeerConnection(..),
         WebRTCPeerConnectionGDNative(..), WebSocketClient(..),
         WebSocketMultiplayerPeer(..), WebSocketPeer(..),
-        WebSocketServer(..), WindowDialog(..), World(..), World2D(..),
-        WorldEnvironment(..), X509Certificate(..), XMLParser(..),
-        YSort(..), ClassDB(..), Directory(..), Engine(..), File(..),
-        Geometry(..), JSON(..), Marshalls(..), Mutex(..), OS(..),
+        WebSocketServer(..), WebXRInterface(..), WindowDialog(..),
+        World(..), World2D(..), WorldEnvironment(..), X509Certificate(..),
+        XMLParser(..), YSort(..), ClassDB(..), Directory(..), Engine(..),
+        File(..), Geometry(..), JSON(..), Marshalls(..), Mutex(..), OS(..),
         ResourceLoader(..), ResourceSaver(..), Semaphore(..), Thread(..),
         VisualScriptEditor(..))
        where
@@ -331,7 +335,7 @@ instance HasBaseClass ARVRServer where
         type BaseClass ARVRServer = Object
         super = coerce
 
--- | An implementation of A* to find shortest paths among connected points in space.
+-- | An implementation of A* to find the shortest paths among connected points in space.
 --   A* (A star) is a computer algorithm that is widely used in pathfinding and graph traversal, the process of plotting short paths among vertices (points), passing through a given set of edges (segments). It enjoys widespread use due to its performance and accuracy. Godot's A* implementation uses points in three-dimensional space and Euclidean distances by default.
 --   		You must add points manually with @method add_point@ and create segments manually with @method connect_points@. Then you can test if there is a path between two points with the @method are_points_connected@ function, get a path containing indices by @method get_id_path@, or one containing actual coordinates with @method get_point_path@.
 --   		It is also possible to use non-Euclidean distances. To do so, create a class that extends @AStar@ and override methods @method _compute_cost@ and @method _estimate_cost@. Both take two indices and return a length, as is shown in the following example.
@@ -350,6 +354,7 @@ instance HasBaseClass ARVRServer where
 --   @
 --   
 --   		@method _estimate_cost@ should return a lower bound of the distance, i.e. @_estimate_cost(u, v) <= _compute_cost(u, v)@. This serves as a hint to the algorithm because the custom @_compute_cost@ might be computation-heavy. If this is not the case, make @method _estimate_cost@ return the same value as @method _compute_cost@ to provide the algorithm with the most accurate information.
+--   		If the default @method _estimate_cost@ and @method _compute_cost@ methods are used, or if the supplied @method _estimate_cost@ method returns a lower bound of the cost, then the paths returned by A* will be the lowest cost paths. Here, the cost of a path equals to the sum of the @method _compute_cost@ results of all segments in the path multiplied by the @weight_scale@s of the end points of the respective segments. If the default methods are used and the @weight_scale@s of all points are set to @1.0@, then this equals to the sum of Euclidean distances of all segments in the path.
 newtype AStar = AStar Object
                   deriving newtype AsVariant
 
@@ -592,7 +597,21 @@ instance HasBaseClass AnimationNodeTimeScale where
         super = coerce
 
 -- | A time-seeking animation node to be used with @AnimationTree@.
---   This node can be used to cause a seek command to happen to any sub-children of the graph. After setting the time, this value returns to -1.
+--   This node can be used to cause a seek command to happen to any sub-children of the animation graph. Use this node type to play an @Animation@ from the start or a certain playback position inside the @AnimationNodeBlendTree@. After setting the time and changing the animation playback, the seek node automatically goes into sleep mode on the next process frame by setting its @seek_position@ value to @-1.0@.
+--   		
+--   @
+--   
+--   		# Play child animation from the start.
+--   		animation_tree.set("parameters/Seek/seek_position", 0.0)
+--   		# Alternative syntax (same result as above).
+--   		animation_tree@"parameters/Seek/seek_position"@ = 0.0
+--   
+--   		# Play child animation from 12 second timestamp.
+--   		animation_tree.set("parameters/Seek/seek_position", 12.0)
+--   		# Alternative syntax (same result as above).
+--   		animation_tree@"parameters/Seek/seek_position"@ = 12.0
+--   		
+--   @
 newtype AnimationNodeTimeSeek = AnimationNodeTimeSeek Object
                                   deriving newtype AsVariant
 
@@ -704,8 +723,19 @@ instance HasBaseClass ArrayMesh where
         type BaseClass ArrayMesh = Mesh
         super = coerce
 
--- | Packs multiple small textures in a single, bigger one. Helps to optimize video memory costs and render calls.
---   @Texture@ resource aimed at managing big textures files that pack multiple smaller textures. Consists of a @Texture@, a margin that defines the border width, and a region that defines the actual area of the AtlasTexture.
+-- | Container that preserves its child controls' aspect ratio.
+--   Arranges child controls in a way to preserve their aspect ratio automatically whenever the container is resized. Solves the problem where the container size is dynamic and the contents' size needs to adjust accordingly without losing proportions.
+newtype AspectRatioContainer = AspectRatioContainer Object
+                                 deriving newtype AsVariant
+
+instance HasBaseClass AspectRatioContainer where
+        type BaseClass AspectRatioContainer = Container
+        super = coerce
+
+-- | Crops out one part of a texture, such as a texture from a texture atlas.
+--   @Texture@ resource that crops out one part of the @atlas@ texture, defined by @region@. The main use case is cropping out textures from a texture atlas, which is a big texture file that packs multiple smaller textures. Consists of a @Texture@ for the @atlas@, a @region@ that defines the area of @atlas@ to use, and a @margin@ that defines the border width.
+--   		@AtlasTexture@ cannot be used in an @AnimatedTexture@, cannot be tiled in nodes such as @TextureRect@, and does not work properly if used inside of other @AtlasTexture@ resources. Multiple @AtlasTexture@ resources can be used to crop multiple textures from the atlas. Using a texture atlas helps to optimize video memory costs and render calls compared to using multiple small files.
+--   		__Note:__ AtlasTextures don't support repetition. The @Texture.FLAG_REPEAT@ and @Texture.FLAG_MIRRORED_REPEAT@ flags are ignored when using an AtlasTexture.
 newtype AtlasTexture = AtlasTexture Object
                          deriving newtype AsVariant
 
@@ -757,6 +787,16 @@ newtype AudioEffectBandPassFilter = AudioEffectBandPassFilter Object
 
 instance HasBaseClass AudioEffectBandPassFilter where
         type BaseClass AudioEffectBandPassFilter = AudioEffectFilter
+        super = coerce
+
+-- | Captures audio from an audio bus in real-time.
+--   AudioEffectCapture is an AudioEffect which copies all audio frames from the attached audio effect bus into its internal ring buffer.
+--   		Application code should consume these audio frames from this ring buffer using @method get_buffer@ and process it as needed, for example to capture data from a microphone, implement application defined effects, or to transmit audio over the network.
+newtype AudioEffectCapture = AudioEffectCapture Object
+                               deriving newtype AsVariant
+
+instance HasBaseClass AudioEffectCapture where
+        type BaseClass AudioEffectCapture = AudioEffect
         super = coerce
 
 -- | Adds a chorus audio effect.
@@ -902,6 +942,7 @@ instance HasBaseClass AudioEffectHighPassFilter where
         type BaseClass AudioEffectHighPassFilter = AudioEffectFilter
         super = coerce
 
+-- | Reduces all frequencies above the @AudioEffectFilter.cutoff_hz@.
 newtype AudioEffectHighShelfFilter = AudioEffectHighShelfFilter Object
                                        deriving newtype AsVariant
 
@@ -935,6 +976,7 @@ instance HasBaseClass AudioEffectLowPassFilter where
         type BaseClass AudioEffectLowPassFilter = AudioEffectFilter
         super = coerce
 
+-- | Reduces all frequencies below the @AudioEffectFilter.cutoff_hz@.
 newtype AudioEffectLowShelfFilter = AudioEffectLowShelfFilter Object
                                       deriving newtype AsVariant
 
@@ -1054,6 +1096,13 @@ instance HasBaseClass AudioStreamGeneratorPlayback where
              AudioStreamPlaybackResampled
         super = coerce
 
+newtype AudioStreamMP3 = AudioStreamMP3 Object
+                           deriving newtype AsVariant
+
+instance HasBaseClass AudioStreamMP3 where
+        type BaseClass AudioStreamMP3 = AudioStream
+        super = coerce
+
 newtype AudioStreamMicrophone = AudioStreamMicrophone Object
                                   deriving newtype AsVariant
 
@@ -1086,6 +1135,7 @@ instance HasBaseClass AudioStreamPlaybackResampled where
 
 -- | Plays back audio non-positionally.
 --   Plays an audio stream non-positionally.
+--   		To play audio positionally, use @AudioStreamPlayer2D@ or @AudioStreamPlayer3D@ instead of @AudioStreamPlayer@.
 newtype AudioStreamPlayer = AudioStreamPlayer Object
                               deriving newtype AsVariant
 
@@ -1093,8 +1143,10 @@ instance HasBaseClass AudioStreamPlayer where
         type BaseClass AudioStreamPlayer = Node
         super = coerce
 
--- | Plays audio in 2D.
+-- | Plays positional sound in 2D space.
 --   Plays audio that dampens with distance from screen center.
+--   		See also @AudioStreamPlayer@ to play a sound non-positionally.
+--   		__Note:__ Hiding an @AudioStreamPlayer2D@ node does not disable its audio output. To temporarily disable an @AudioStreamPlayer2D@'s audio output, set @volume_db@ to a very low value like @-100@ (which isn't audible to human hearing).
 newtype AudioStreamPlayer2D = AudioStreamPlayer2D Object
                                 deriving newtype AsVariant
 
@@ -1102,9 +1154,11 @@ instance HasBaseClass AudioStreamPlayer2D where
         type BaseClass AudioStreamPlayer2D = Node2D
         super = coerce
 
--- | Plays 3D sound in 3D space.
---   Plays a sound effect with directed sound effects, dampens with distance if needed, generates effect of hearable position in space.
+-- | Plays positional sound in 3D space.
+--   Plays a sound effect with directed sound effects, dampens with distance if needed, generates effect of hearable position in space. For greater realism, a low-pass filter is automatically applied to distant sounds. This can be disabled by setting @attenuation_filter_cutoff_hz@ to @20500@.
 --   		By default, audio is heard from the camera position. This can be changed by adding a @Listener@ node to the scene and enabling it by calling @method Listener.make_current@ on it.
+--   		See also @AudioStreamPlayer@ to play a sound non-positionally.
+--   		__Note:__ Hiding an @AudioStreamPlayer3D@ node does not disable its audio output. To temporarily disable an @AudioStreamPlayer3D@'s audio output, set @unit_db@ to a very low value like @-100@ (which isn't audible to human hearing).
 newtype AudioStreamPlayer3D = AudioStreamPlayer3D Object
                                 deriving newtype AsVariant
 
@@ -1132,7 +1186,7 @@ instance HasBaseClass AudioStreamSample where
         super = coerce
 
 -- | Copies a region of the screen (or the whole screen) to a buffer so it can be accessed in your shader scripts through the @texture(SCREEN_TEXTURE, ...)@ function.
---   Node for back-buffering the currently-displayed screen. The region defined in the BackBufferCopy node is bufferized with the content of the screen it covers, or the entire screen according to the copy mode set. Use the @texture(SCREEN_TEXTURE, ...)@ function in your shader scripts to access the buffer.
+--   Node for back-buffering the currently-displayed screen. The region defined in the BackBufferCopy node is buffered with the content of the screen it covers, or the entire screen according to the copy mode set. Use the @texture(SCREEN_TEXTURE, ...)@ function in your shader scripts to access the buffer.
 --   		__Note:__ Since this node inherits from @Node2D@ (and not @Control@), anchors and margins won't apply to child @Control@-derived nodes. This can be problematic when resizing the window. To avoid this, add @Control@-derived nodes as @i@siblings@/i@ to the BackBufferCopy node instead of adding them as children.
 newtype BackBufferCopy = BackBufferCopy Object
                            deriving newtype AsVariant
@@ -1143,7 +1197,6 @@ instance HasBaseClass BackBufferCopy where
 
 -- | Prerendered indirect light map for a scene.
 --   Baked lightmaps are an alternative workflow for adding indirect (or baked) lighting to a scene. Unlike the @GIProbe@ approach, baked lightmaps work fine on low-end PCs and mobile devices as they consume almost no resources in run-time.
---   		__Note:__ This node has many known bugs and will be @url=https://godotengine.org/article/godot-40-will-get-new-modernized-lightmapper@rewritten for Godot 4.0@/url@. See @url=https://github.com/godotengine/godot/issues/30929@GitHub issue #30929@/url@.
 newtype BakedLightmap = BakedLightmap Object
                           deriving newtype AsVariant
 
@@ -1258,6 +1311,8 @@ instance HasBaseClass BulletPhysicsServer where
 --   @
 --   
 --   		Buttons (like all Control nodes) can also be created in the editor, but some situations may require creating them from code.
+--   		See also @BaseButton@ which contains common properties and methods associated with this node.
+--   		__Note:__ Buttons do not interpret touch input and therefore don't support multitouch, since mouse emulation can only press one button at a given time. Use @TouchScreenButton@ for buttons that trigger gameplay movement or actions, as @TouchScreenButton@ supports multitouch.
 newtype Button = Button Object
                    deriving newtype AsVariant
 
@@ -1278,6 +1333,7 @@ instance HasBaseClass ButtonGroup where
 -- | CPU-based 3D particle emitter.
 --   CPU-based 3D particle node used to create a variety of particle systems and effects.
 --   		See also @Particles@, which provides the same functionality with hardware acceleration, but may not run on older devices.
+--   		__Note:__ Unlike @Particles@, the visibility rect is generated on-the-fly and doesn't need to be configured by the user.
 newtype CPUParticles = CPUParticles Object
                          deriving newtype AsVariant
 
@@ -1288,6 +1344,7 @@ instance HasBaseClass CPUParticles where
 -- | CPU-based 2D particle emitter.
 --   CPU-based 2D particle node used to create a variety of particle systems and effects.
 --   		See also @Particles2D@, which provides the same functionality with hardware acceleration, but may not run on older devices.
+--   		__Note:__ Unlike @Particles2D@, the visibility rect is generated on-the-fly and doesn't need to be configured by the user.
 newtype CPUParticles2D = CPUParticles2D Object
                            deriving newtype AsVariant
 
@@ -1492,7 +1549,8 @@ instance HasBaseClass CharFXTransform where
         super = coerce
 
 -- | Binary choice user interface widget. See also @CheckButton@.
---   A checkbox allows the user to make a binary choice (choosing only one of two possible options). It's similar to @CheckButton@ in functionality, but it has a different apperance. To follow established UX patterns, it's recommended to use CheckBox when toggling it has __no__ immediate effect on something. For instance, it should be used when toggling it will only do something once a confirmation button is pressed.
+--   A checkbox allows the user to make a binary choice (choosing only one of two possible options). It's similar to @CheckButton@ in functionality, but it has a different appearance. To follow established UX patterns, it's recommended to use CheckBox when toggling it has __no__ immediate effect on something. For instance, it should be used when toggling it will only do something once a confirmation button is pressed.
+--   		See also @BaseButton@ which contains common properties and methods associated with this node.
 newtype CheckBox = CheckBox Object
                      deriving newtype AsVariant
 
@@ -1501,7 +1559,8 @@ instance HasBaseClass CheckBox where
         super = coerce
 
 -- | Checkable button. See also @CheckBox@.
---   CheckButton is a toggle button displayed as a check field. It's similar to @CheckBox@ in functionality, but it has a different apperance. To follow established UX patterns, it's recommended to use CheckButton when toggling it has an __immediate__ effect on something. For instance, it should be used if toggling it enables/disables a setting without requiring the user to press a confirmation button.
+--   CheckButton is a toggle button displayed as a check field. It's similar to @CheckBox@ in functionality, but it has a different appearance. To follow established UX patterns, it's recommended to use CheckButton when toggling it has an __immediate__ effect on something. For instance, it should be used if toggling it enables/disables a setting without requiring the user to press a confirmation button.
+--   		See also @BaseButton@ which contains common properties and methods associated with this node.
 newtype CheckButton = CheckButton Object
                         deriving newtype AsVariant
 
@@ -1592,6 +1651,7 @@ instance HasBaseClass ColorPicker where
 
 -- | Button that pops out a @ColorPicker@.
 --   Encapsulates a @ColorPicker@ making it accessible by pressing a button. Pressing the button will toggle the @ColorPicker@ visibility.
+--   		See also @BaseButton@ which contains common properties and methods associated with this node.
 newtype ColorPickerButton = ColorPickerButton Object
                               deriving newtype AsVariant
 
@@ -1600,7 +1660,7 @@ instance HasBaseClass ColorPickerButton where
         super = coerce
 
 -- | Colored rectangle.
---   Displays a colored rectangle.
+--   Displays a rectangle filled with a solid @color@. If you need to display the border alone, consider using @ReferenceRect@ instead.
 newtype ColorRect = ColorRect Object
                       deriving newtype AsVariant
 
@@ -1628,10 +1688,10 @@ instance HasBaseClass ConcavePolygonShape2D where
         type BaseClass ConcavePolygonShape2D = Shape2D
         super = coerce
 
--- | A twist joint between two 3D bodies.
+-- | A twist joint between two 3D PhysicsBodies.
 --   The joint can rotate the bodies across an axis defined by the local x-axes of the @Joint@.
 --   		The twist axis is initiated as the X axis of the @Joint@.
---   		Once the Bodies swing, the twist axis is calculated as the middle of the x-axes of the Joint in the local space of the two Bodies.
+--   		Once the Bodies swing, the twist axis is calculated as the middle of the x-axes of the Joint in the local space of the two Bodies. See also @Generic6DOFJoint@.
 newtype ConeTwistJoint = ConeTwistJoint Object
                            deriving newtype AsVariant
 
@@ -1794,6 +1854,7 @@ instance HasBaseClass CubeMap where
 -- | Generate an axis-aligned cuboid @PrimitiveMesh@.
 --   
 --   		The cube's UV layout is arranged in a 3×2 layout that allows texturing each face individually. To apply the same texture on all faces, change the material's UV property to @Vector3(3, 2, 1)@.
+--   		__Note:__ When using a large textured @CubeMesh@ (e.g. as a floor), you may stumble upon UV jittering issues depending on the camera angle. To solve this, increase @subdivide_depth@, @subdivide_height@ and @subdivide_width@ until you no longer notice UV jittering.
 newtype CubeMesh = CubeMesh Object
                      deriving newtype AsVariant
 
@@ -1856,6 +1917,74 @@ instance HasBaseClass CylinderShape where
         type BaseClass CylinderShape = Shape
         super = coerce
 
+-- | Helper class to implement a DTLS server.
+--   This class is used to store the state of a DTLS server. Upon @method setup@ it converts connected @PacketPeerUDP@ to @PacketPeerDTLS@ accepting them via @method take_connection@ as DTLS clients. Under the hood, this class is used to store the DTLS state and cookies of the server. The reason of why the state and cookies are needed is outside of the scope of this documentation.
+--   		Below a small example of how to use it:
+--   		
+--   @
+--   
+--   		# server.gd
+--   		extends Node
+--   
+--   		var dtls := DTLSServer.new()
+--   		var server := UDPServer.new()
+--   		var peers = @@
+--   
+--   		func _ready():
+--   		    server.listen(4242)
+--   		    var key = load("key.key") # Your private key.
+--   		    var cert = load("cert.crt") # Your X509 certificate.
+--   		    dtls.setup(key, cert)
+--   
+--   		func _process(delta):
+--   		    while server.is_connection_available():
+--   		        var peer : PacketPeerUDP = server.take_connection()
+--   		        var dtls_peer : PacketPeerDTLS = dtls.take_connection(peer)
+--   		        if dtls_peer.get_status() != PacketPeerDTLS.STATUS_HANDSHAKING:
+--   		            continue # It is normal that 50% of the connections fails due to cookie exchange.
+--   		        print("Peer connected!")
+--   		        peers.append(dtls_peer)
+--   		    for p in peers:
+--   		        p.poll() # Must poll to update the state.
+--   		        if p.get_status() == PacketPeerDTLS.STATUS_CONNECTED:
+--   		            while p.get_available_packet_count() > 0:
+--   		                print("Received message from client: %s" % p.get_packet().get_string_from_utf8())
+--   		                p.put_packet("Hello DTLS client".to_utf8())
+--   		
+--   @
+--   
+--   		
+--   @
+--   
+--   		# client.gd
+--   		extends Node
+--   
+--   		var dtls := PacketPeerDTLS.new()
+--   		var udp := PacketPeerUDP.new()
+--   		var connected = false
+--   
+--   		func _ready():
+--   		    udp.connect_to_host("127.0.0.1", 4242)
+--   		    dtls.connect_to_peer(udp, false) # Use true in production for certificate validation!
+--   
+--   		func _process(delta):
+--   		    dtls.poll()
+--   		    if dtls.get_status() == PacketPeerDTLS.STATUS_CONNECTED:
+--   		        if !connected:
+--   		            # Try to contact server
+--   		            dtls.put_packet("The answer is... 42!".to_utf8())
+--   		        while dtls.get_available_packet_count() > 0:
+--   		            print("Connected: %s" % dtls.get_packet().get_string_from_utf8())
+--   		            connected = true
+--   		
+--   @
+newtype DTLSServer = DTLSServer Object
+                       deriving newtype AsVariant
+
+instance HasBaseClass DTLSServer where
+        type BaseClass DTLSServer = Reference
+        super = coerce
+
 -- | Damped spring constraint for 2D physics.
 --    This resembles a spring joint that always wants to go back to a given length.
 newtype DampedSpringJoint2D = DampedSpringJoint2D Object
@@ -1904,7 +2033,8 @@ instance HasBaseClass DynamicFontData where
         type BaseClass DynamicFontData = Resource
         super = coerce
 
--- | A script that is executed when exporting projects.
+-- | A script that is executed when exporting the project.
+--   Editor export plugins are automatically activated whenever the user exports the project. Their most common use is to determine what files are being included in the exported project. For each plugin, @method _export_begin@ is called at the beginning of the export process and then @method _export_file@ is called for each exported file.
 newtype EditorExportPlugin = EditorExportPlugin Object
                                deriving newtype AsVariant
 
@@ -1963,7 +2093,7 @@ instance HasBaseClass EditorFileSystemDirectory where
 --   		    return "my.special.plugin"
 --   
 --   		func get_visible_name():
---   		    return "Special Mesh Importer"
+--   		    return "Special Mesh"
 --   
 --   		func get_recognized_extensions():
 --   		    return @"special", "spec"@
@@ -1992,8 +2122,7 @@ instance HasBaseClass EditorFileSystemDirectory where
 --   		    # Fill the Mesh with data read in "file", left as an exercise to the reader
 --   
 --   		    var filename = save_path + "." + get_save_extension()
---   		    ResourceSaver.save(filename, mesh)
---   		    return OK
+--   		    return ResourceSaver.save(filename, mesh)
 --   		
 --   @
 newtype EditorImportPlugin = EditorImportPlugin Object
@@ -2014,12 +2143,12 @@ instance HasBaseClass EditorInspector where
         super = coerce
 
 -- | Plugin for adding custom property editors on inspector.
---   This plugins allows adding custom property editors to @EditorInspector@.
+--   These plugins allow adding custom property editors to @EditorInspector@.
 --   		Plugins are registered via @method EditorPlugin.add_inspector_plugin@.
 --   		When an object is edited, the @method can_handle@ function is called and must return @true@ if the object type is supported.
 --   		If supported, the function @method parse_begin@ will be called, allowing to place custom controls at the beginning of the class.
 --   		Subsequently, the @method parse_category@ and @method parse_property@ are called for every category and property. They offer the ability to add custom controls to the inspector too.
---   		Finally @method parse_end@ will be called.
+--   		Finally, @method parse_end@ will be called.
 --   		On each of these calls, the "add" functions can be called.
 newtype EditorInspectorPlugin = EditorInspectorPlugin Object
                                   deriving newtype AsVariant
@@ -2097,37 +2226,11 @@ instance HasBaseClass EditorSceneImporter where
         type BaseClass EditorSceneImporter = Reference
         super = coerce
 
--- | FBX 3D asset importer based on @url=http://assimp.org/@Assimp@/url@.
---   This is an FBX 3D asset importer based on @url=http://assimp.org/@Assimp@/url@. It currently has many known limitations and works best with static meshes. Most animated meshes won't import correctly.
---   		If exporting a FBX scene from Autodesk Maya, use these FBX export settings:
---   		
---   @
---   
---   		- Smoothing Groups
---   		- Smooth Mesh
---   		- Triangluate (for meshes with blend shapes)
---   		- Bake Animation
---   		- Resample All
---   		- Deformed Models
---   		- Skins
---   		- Blend Shapes
---   		- Curve Filters
---   		- Constant Key Reducer
---   		- Auto Tangents Only
---   		- *Do not check* Constraints (as it will break the file)
---   		- Can check Embed Media (embeds textures into the exported FBX file)
---   		  - Note that when importing embedded media, the texture and mesh will be a single immutable file.
---   		  - You will have to re-export then re-import the FBX if the texture has changed.
---   		- Units: Centimeters
---   		- Up Axis: Y
---   		- Binary format in FBX 2017
---   		
---   @
-newtype EditorSceneImporterAssimp = EditorSceneImporterAssimp Object
-                                      deriving newtype AsVariant
+newtype EditorSceneImporterFBX = EditorSceneImporterFBX Object
+                                   deriving newtype AsVariant
 
-instance HasBaseClass EditorSceneImporterAssimp where
-        type BaseClass EditorSceneImporterAssimp = EditorSceneImporter
+instance HasBaseClass EditorSceneImporterFBX where
+        type BaseClass EditorSceneImporterFBX = EditorSceneImporter
         super = coerce
 
 -- | Post-processes scenes after import.
@@ -2306,6 +2409,16 @@ instance HasBaseClass Expression where
         type BaseClass Expression = Reference
         super = coerce
 
+-- | Enable OpenGL ES external texture extension.
+--   Enable support for the OpenGL ES external texture extension as defined by @url=https://www.khronos.org/registry/OpenGL/extensions/OES/OES_EGL_image_external.txt@OES_EGL_image_external@/url@.
+--   		__Note:__ This is only supported for Android platforms.
+newtype ExternalTexture = ExternalTexture Object
+                            deriving newtype AsVariant
+
+instance HasBaseClass ExternalTexture where
+        type BaseClass ExternalTexture = Texture
+        super = coerce
+
 -- | Dialog for selecting files or directories in the filesystem.
 --   FileDialog is a preset dialog used to choose files and directories in the filesystem. It supports filter masks. The FileDialog automatically sets its window title according to the @mode@. If you want to use a custom title, disable this by setting @mode_overrides_title@ to @false@.
 newtype FileDialog = FileDialog Object
@@ -2313,6 +2426,13 @@ newtype FileDialog = FileDialog Object
 
 instance HasBaseClass FileDialog where
         type BaseClass FileDialog = ConfirmationDialog
+        super = coerce
+
+newtype FileSystemDock = FileSystemDock Object
+                           deriving newtype AsVariant
+
+instance HasBaseClass FileSystemDock where
+        type BaseClass FileSystemDock = VBoxContainer
         super = coerce
 
 -- | Internationalized font and text drawing support.
@@ -2367,6 +2487,8 @@ instance HasBaseClass GDScriptFunctionState where
 -- | Real-time global illumination (GI) probe.
 --   @GIProbe@s are used to provide high-quality real-time indirect light to scenes. They precompute the effect of objects that emit light and the effect of static geometry to simulate the behavior of complex light in real-time. @GIProbe@s need to be baked before using, however, once baked, dynamic objects will receive light from them. Further, lights can be fully dynamic or baked.
 --   		Having @GIProbe@s in a scene can be expensive, the quality of the probe can be turned down in exchange for better performance in the @ProjectSettings@ using @ProjectSettings.rendering/quality/voxel_cone_tracing/high_quality@.
+--   		__Note:__ Meshes should have sufficiently thick walls to avoid light leaks (avoid one-sided walls). For interior levels, enclose your level geometry in a sufficiently large box and bridge the loops to close the mesh.
+--   		__Note:__ Due to a renderer limitation, emissive @ShaderMaterial@s cannot emit light when used in a @GIProbe@. Only emissive @SpatialMaterial@s can emit light in a @GIProbe@.
 newtype GIProbe = GIProbe Object
                     deriving newtype AsVariant
 
@@ -2430,7 +2552,7 @@ instance HasBaseClass GraphEdit where
 -- | A GraphNode is a container with potentially several input and output slots allowing connections between GraphNodes. Slots can have different, incompatible types.
 --   A GraphNode is a container. Each GraphNode can have several input and output slots, sometimes referred to as ports, allowing connections between GraphNodes. To add a slot to GraphNode, add any @Control@-derived child node to it.
 --   		After adding at least one child to GraphNode new sections will be automatically created in the Inspector called 'Slot'. When 'Slot' is expanded you will see list with index number for each slot. You can click on each of them to expand further.
---   		In the Inspector you can enable (show) or disable (hide) slots. By default all slots are disabled so you may not see any slots on your GraphNode initially. You can assign a type to each slot. Only slots of the same type will be able to connect to each other. You can also assign colors to slots. A tuple of input and output slots is defined for each GUI element included in the GraphNode. Input connections are on the left and output connections are on the right side of GraphNode. Only enabled slots are counted as connections.
+--   		In the Inspector you can enable (show) or disable (hide) slots. By default, all slots are disabled so you may not see any slots on your GraphNode initially. You can assign a type to each slot. Only slots of the same type will be able to connect to each other. You can also assign colors to slots. A tuple of input and output slots is defined for each GUI element included in the GraphNode. Input connections are on the left and output connections are on the right side of GraphNode. Only enabled slots are counted as connections.
 newtype GraphNode = GraphNode Object
                       deriving newtype AsVariant
 
@@ -2512,11 +2634,12 @@ instance HasBaseClass HSplitContainer where
         super = coerce
 
 -- | Low-level hyper-text transfer protocol client.
---   Hyper-text transfer protocol client (sometimes called "User Agent"). Used to make HTTP requests to download web content, upload files and other data or to communicate with various services, among other use cases. __See the @HTTPRequest@ node for an higher-level alternative.__
+--   Hyper-text transfer protocol client (sometimes called "User Agent"). Used to make HTTP requests to download web content, upload files and other data or to communicate with various services, among other use cases. __See the @HTTPRequest@ node for a higher-level alternative.__
 --   		__Note:__ This client only needs to connect to a host once (see @method connect_to_host@) to send multiple requests. Because of this, methods that take URLs usually take just the part after the host instead of the full URL, as the client is already connected to a host. See @method request@ for a full example and to get started.
 --   		A @HTTPClient@ should be reused between multiple requests or to connect to different hosts instead of creating one client per request. Supports SSL and SSL server certificate verification. HTTP status codes in the 2xx range indicate success, 3xx redirection (i.e. "try again, but over here"), 4xx something was wrong with the request, and 5xx something went wrong on the server's side.
 --   		For more information on HTTP, see https://developer.mozilla.org/en-US/docs/Web/HTTP (or read RFC 2616 to get it straight from the source: https://tools.ietf.org/html/rfc2616).
 --   		__Note:__ When performing HTTP requests from a project exported to HTML5, keep in mind the remote server may not allow requests from foreign origins due to @url=https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS@CORS@/url@. If you host the server in question, you should modify its backend to allow requests from foreign origins by adding the @Access-Control-Allow-Origin: *@ HTTP header.
+--   		__Note:__ SSL/TLS support is currently limited to TLS 1.0, TLS 1.1, and TLS 1.2. Attempting to connect to a TLS 1.3-only server will return an error.
 newtype HTTPClient = HTTPClient Object
                        deriving newtype AsVariant
 
@@ -2546,7 +2669,7 @@ instance HasBaseClass HTTPClient where
 --   		    # Note: Don't make simultaneous requests using a single HTTPRequest node.
 --   		    # The snippet below is provided for reference only.
 --   		    var body = {"name": "Godette"}
---   		    var error = http_request.request("https://httpbin.org/post", @@, true, HTTPClient.METHOD_POST, body)
+--   		    error = http_request.request("https://httpbin.org/post", @@, true, HTTPClient.METHOD_POST, body)
 --   		    if error != OK:
 --   		        push_error("An error occurred in the HTTP request.")
 --   
@@ -2594,6 +2717,7 @@ instance HasBaseClass HTTPClient where
 --   @
 --   
 --   		__Note:__ When performing HTTP requests from a project exported to HTML5, keep in mind the remote server may not allow requests from foreign origins due to @url=https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS@CORS@/url@. If you host the server in question, you should modify its backend to allow requests from foreign origins by adding the @Access-Control-Allow-Origin: *@ HTTP header.
+--   		__Note:__ SSL/TLS support is currently limited to TLS 1.0, TLS 1.1, and TLS 1.2. Attempting to connect to a TLS 1.3-only server will return an error.
 newtype HTTPRequest = HTTPRequest Object
                         deriving newtype AsVariant
 
@@ -2646,8 +2770,8 @@ instance HasBaseClass HeightMapShape where
         type BaseClass HeightMapShape = Shape
         super = coerce
 
--- | A hinge between two 3D bodies.
---   A HingeJoint normally uses the Z axis of body A as the hinge axis, another axis can be specified when adding it manually though.
+-- | A hinge between two 3D PhysicsBodies.
+--   A HingeJoint normally uses the Z axis of body A as the hinge axis, another axis can be specified when adding it manually though. See also @Generic6DOFJoint@.
 newtype HingeJoint = HingeJoint Object
                        deriving newtype AsVariant
 
@@ -2672,8 +2796,9 @@ instance HasBaseClass IP_Unix where
         super = coerce
 
 -- | Image datatype.
---   Native image datatype. Contains image data, which can be converted to a @Texture@, and several functions to interact with it. The maximum width and height for an @Image@ are @MAX_WIDTH@ and @MAX_HEIGHT@.
---   		__Note:__ The maximum image size is 16384×16384 pixels due to graphics hardware limitations. Larger images will fail to import.
+--   Native image datatype. Contains image data which can be converted to an @ImageTexture@ and provides commonly used @i@image processing@/i@ methods. The maximum width and height for an @Image@ are @MAX_WIDTH@ and @MAX_HEIGHT@.
+--   		An @Image@ cannot be assigned to a @texture@ property of an object directly (such as @Sprite@), and has to be converted manually to an @ImageTexture@ first.
+--   		__Note:__ The maximum image size is 16384×16384 pixels due to graphics hardware limitations. Larger images may fail to import.
 newtype Image = Image Object
                   deriving newtype AsVariant
 
@@ -2682,8 +2807,40 @@ instance HasBaseClass Image where
         super = coerce
 
 -- | A @Texture@ based on an @Image@.
---    Can be created from an @Image@ with @method create_from_image@.
---   		__Note:__ The maximum image size is 16384×16384 pixels due to graphics hardware limitations. Larger images will fail to import.
+--    For an image to be displayed, an @ImageTexture@ has to be created from it using the @method create_from_image@ method:
+--   		
+--   @
+--   
+--   		var texture = ImageTexture.new()
+--   		var image = Image.new()
+--   		image.load("res://icon.png")
+--   		texture.create_from_image(image)
+--   		$Sprite.texture = texture
+--   		
+--   @
+--   
+--   		This way, textures can be created at run-time by loading images both from within the editor and externally.
+--   		__Warning:__ Prefer to load imported textures with @method @GDScript.load@ over loading them from within the filesystem dynamically with @method Image.load@, as it may not work in exported projects:
+--   		
+--   @
+--   
+--   		var texture = load("res://icon.png")
+--   		$Sprite.texture = texture
+--   		
+--   @
+--   
+--   		This is because images have to be imported as @StreamTexture@ first to be loaded with @method @GDScript.load@. If you'd still like to load an image file just like any other @Resource@, import it as an @Image@ resource instead, and then load it normally using the @method @GDScript.load@ method.
+--   		But do note that the image data can still be retrieved from an imported texture as well using the @method Texture.get_data@ method, which returns a copy of the data:
+--   		
+--   @
+--   
+--   		var texture = load("res://icon.png")
+--   		var image : Image = texture.get_data()
+--   		
+--   @
+--   
+--   		An @ImageTexture@ is not meant to be operated from within the editor interface directly, and is mostly useful for rendering images on screen dynamically via code. If you need to generate images procedurally from within the editor, consider saving and importing images as custom texture resources implementing a new @EditorImportPlugin@.
+--   		__Note:__ The maximum texture size is 16384×16384 pixels due to graphics hardware limitations.
 newtype ImageTexture = ImageTexture Object
                          deriving newtype AsVariant
 
@@ -2696,6 +2853,7 @@ instance HasBaseClass ImageTexture where
 --   		See also @ArrayMesh@, @MeshDataTool@ and @SurfaceTool@ for procedural geometry generation.
 --   		__Note:__ ImmediateGeometry3D is best suited to small amounts of mesh data that change every frame. It will be slow when handling large amounts of mesh data. If mesh data doesn't change often, use @ArrayMesh@, @MeshDataTool@ or @SurfaceTool@ instead.
 --   		__Note:__ Godot uses clockwise @url=https://learnopengl.com/Advanced-OpenGL/Face-culling@winding order@/url@ for front faces of triangle primitive modes.
+--   		__Note:__ In case of missing points when handling large amounts of mesh data, try increasing its buffer size limit under @ProjectSettings.rendering/limits/buffers/immediate_buffer_size_kb@.
 newtype ImmediateGeometry = ImmediateGeometry Object
                               deriving newtype AsVariant
 
@@ -2889,6 +3047,13 @@ instance HasBaseClass ItemList where
         type BaseClass ItemList = Control
         super = coerce
 
+newtype JNISingleton = JNISingleton Object
+                         deriving newtype AsVariant
+
+instance HasBaseClass JNISingleton where
+        type BaseClass JNISingleton = Object
+        super = coerce
+
 -- | Data class wrapper for decoded JSON.
 --   Returned by @method JSON.parse@, @JSONParseResult@ contains the decoded JSON or error information if the JSON source wasn't successfully parsed. You can check if the JSON source was successfully parsed with @if json_result.error == OK@.
 newtype JSONParseResult = JSONParseResult Object
@@ -2921,6 +3086,7 @@ instance HasBaseClass JavaClassWrapper where
 
 -- | Singleton that connects the engine with the browser's JavaScript context in HTML5 export.
 --   The JavaScript singleton is implemented only in the HTML5 export. It's used to access the browser's JavaScript context. This allows interaction with embedding pages or calling third-party JavaScript APIs.
+--   		__Note:__ This singleton can be disabled at build-time to improve security. By default, the JavaScript singleton is enabled. Official export templates also have the JavaScript singleton enabled. See @url=https://docs.godotengine.org/en/3.3/development/compiling/compiling_for_web.html@Compiling for the Web@/url@ in the documentation for more information.
 newtype JavaScript = JavaScript Object
                        deriving newtype AsVariant
 
@@ -2949,7 +3115,7 @@ instance HasBaseClass Joint2D where
 -- | Kinematic body 3D node.
 --   Kinematic bodies are special types of bodies that are meant to be user-controlled. They are not affected by physics at all; to other types of bodies, such as a character or a rigid body, these are the same as a static body. However, they have two main uses:
 --   		__Simulated motion:__ When these bodies are moved manually, either from code or from an @AnimationPlayer@ (with @AnimationPlayer.playback_process_mode@ set to "physics"), the physics will automatically compute an estimate of their linear and angular velocity. This makes them very useful for moving platforms or other AnimationPlayer-controlled objects (like a door, a bridge that opens, etc).
---   		__Kinematic characters:__ KinematicBody also has an API for moving objects (the @method move_and_collide@ and @method move_and_slide@ methods) while performing collision tests. This makes them really useful to implement characters that collide against a world, but that don't require advanced physics.
+--   		__Kinematic characters:__ KinematicBody also has an API for moving objects (the @method move_and_collide@ and @method move_and_slide@ methods) while performing collision tests. This makes them really useful to implement characters that collide against a world, but don't require advanced physics.
 newtype KinematicBody = KinematicBody Object
                           deriving newtype AsVariant
 
@@ -2960,7 +3126,7 @@ instance HasBaseClass KinematicBody where
 -- | Kinematic body 2D node.
 --   Kinematic bodies are special types of bodies that are meant to be user-controlled. They are not affected by physics at all; to other types of bodies, such as a character or a rigid body, these are the same as a static body. However, they have two main uses:
 --   		__Simulated motion:__ When these bodies are moved manually, either from code or from an @AnimationPlayer@ (with @AnimationPlayer.playback_process_mode@ set to "physics"), the physics will automatically compute an estimate of their linear and angular velocity. This makes them very useful for moving platforms or other AnimationPlayer-controlled objects (like a door, a bridge that opens, etc).
---   		__Kinematic characters:__ KinematicBody2D also has an API for moving objects (the @method move_and_collide@ and @method move_and_slide@ methods) while performing collision tests. This makes them really useful to implement characters that collide against a world, but that don't require advanced physics.
+--   		__Kinematic characters:__ KinematicBody2D also has an API for moving objects (the @method move_and_collide@ and @method move_and_slide@ methods) while performing collision tests. This makes them really useful to implement characters that collide against a world, but don't require advanced physics.
 newtype KinematicBody2D = KinematicBody2D Object
                             deriving newtype AsVariant
 
@@ -2998,8 +3164,8 @@ instance HasBaseClass Label where
         type BaseClass Label = Control
         super = coerce
 
--- | A @Texture@ capable of storing many smaller textures with offsets.
---   
+-- | @i@Deprecated.@/i@ A @Texture@ capable of storing many smaller textures with offsets.
+--   @i@Deprecated (will be removed in Godot 4.0).@/i@ A @Texture@ capable of storing many smaller textures with offsets.
 --   		You can dynamically add pieces (@Texture@s) to this @LargeTexture@ using different offsets.
 newtype LargeTexture = LargeTexture Object
                          deriving newtype AsVariant
@@ -3085,6 +3251,7 @@ instance HasBaseClass LineShape2D where
 
 -- | Simple button used to represent a link to some resource.
 --   This kind of button is primarily used when the interaction with the button causes a context change (like linking to a web page).
+--   		See also @BaseButton@ which contains common properties and methods associated with this node.
 newtype LinkButton = LinkButton Object
                        deriving newtype AsVariant
 
@@ -3154,11 +3321,12 @@ instance HasBaseClass MainLoop where
 --   		
 --   @
 --   
+--   		# This code sample assumes the current script is extending MarginContainer.
 --   		var margin_value = 100
---   		set("custom_constants/margin_top", margin_value)
---   		set("custom_constants/margin_left", margin_value)
---   		set("custom_constants/margin_bottom", margin_value)
---   		set("custom_constants/margin_right", margin_value)
+--   		add_constant_override("margin_top", margin_value)
+--   		add_constant_override("margin_left", margin_value)
+--   		add_constant_override("margin_bottom", margin_value)
+--   		add_constant_override("margin_right", margin_value)
 --   		
 --   @
 newtype MarginContainer = MarginContainer Object
@@ -3179,7 +3347,8 @@ instance HasBaseClass Material where
 
 -- | Special button that brings up a @PopupMenu@ when clicked.
 --   
---   		New items can be created inside this @PopupMenu@ using @get_popup().add_item("My Item Name")@. You can also create them directly from the editor. To do so, select the @MenuButton@ node, then in the toolbar at the top of the 2D editor, click __Items__ then click __Add__ in the popup. You will be able to give each items new properties.
+--   		New items can be created inside this @PopupMenu@ using @get_popup().add_item("My Item Name")@. You can also create them directly from the editor. To do so, select the @MenuButton@ node, then in the toolbar at the top of the 2D editor, click __Items__ then click __Add__ in the popup. You will be able to give each item new properties.
+--   		See also @BaseButton@ which contains common properties and methods associated with this node.
 newtype MenuButton = MenuButton Object
                        deriving newtype AsVariant
 
@@ -3203,14 +3372,21 @@ instance HasBaseClass Mesh where
 --   		
 --   @
 --   
+--   		var mesh = ArrayMesh.new()
+--   		mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, CubeMesh.new().get_mesh_arrays())
 --   		var mdt = MeshDataTool.new()
 --   		mdt.create_from_surface(mesh, 0)
 --   		for i in range(mdt.get_vertex_count()):
 --   		    var vertex = mdt.get_vertex(i)
---   		    ...
+--   		    # In this example we extend the mesh by one unit, which results in separated faces as it is flat shaded.
+--   		    vertex += mdt.get_vertex_normal(i)
+--   		    # Save your change.
 --   		    mdt.set_vertex(i, vertex)
 --   		mesh.surface_remove(0)
 --   		mdt.commit_to_surface(mesh)
+--   		var mi = MeshInstance.new()
+--   		mi.mesh = mesh
+--   		add_child(mi)
 --   		
 --   @
 --   
@@ -3269,7 +3445,7 @@ instance HasBaseClass MobileVRInterface where
 -- | Provides high-performance mesh instancing.
 --   MultiMesh provides low-level mesh instancing. Drawing thousands of @MeshInstance@ nodes can be slow, since each object is submitted to the GPU then drawn individually.
 --   		MultiMesh is much faster as it can draw thousands of instances with a single draw call, resulting in less API overhead.
---   		As a drawback, if the instances are too far away of each other, performance may be reduced as every single instance will always rendered (they are spatially indexed as one, for the whole object).
+--   		As a drawback, if the instances are too far away of each other, performance may be reduced as every single instance will always render (they are spatially indexed as one, for the whole object).
 --   		Since instances may have any behavior, the AABB used for visibility must be provided by the user.
 newtype MultiMesh = MultiMesh Object
                       deriving newtype AsVariant
@@ -3299,9 +3475,10 @@ instance HasBaseClass MultiMeshInstance2D where
         super = coerce
 
 -- | High-level multiplayer API.
---   This class implements most of the logic behind the high-level multiplayer API.
+--   This class implements most of the logic behind the high-level multiplayer API. See also @NetworkedMultiplayerPeer@.
 --   		By default, @SceneTree@ has a reference to this class that is used to provide multiplayer capabilities (i.e. RPC/RSET) across the whole scene.
 --   		It is possible to override the MultiplayerAPI instance used by specific Nodes by setting the @Node.custom_multiplayer@ property, effectively allowing to run both client and server in the same scene.
+--   		__Note:__ The high-level multiplayer API protocol is an implementation detail and isn't meant to be used by non-Godot servers. It may change without notice.
 newtype MultiplayerAPI = MultiplayerAPI Object
                            deriving newtype AsVariant
 
@@ -3325,6 +3502,7 @@ instance HasBaseClass NativeScript where
 
 -- | Mesh-based navigation and pathfinding node.
 --   Provides navigation and pathfinding within a collection of @NavigationMesh@es. By default, these will be automatically collected from child @NavigationMeshInstance@ nodes, but they can also be added on the fly with @method navmesh_add@. In addition to basic pathfinding, this class also assists with aligning navigation agents with the meshes they are navigating on.
+--   		__Note:__ The current navigation system has many known issues and will not always return optimal paths as expected. These issues will be fixed in Godot 4.0.
 newtype Navigation = Navigation Object
                        deriving newtype AsVariant
 
@@ -3334,6 +3512,7 @@ instance HasBaseClass Navigation where
 
 -- | 2D navigation and pathfinding node.
 --   Navigation2D provides navigation and pathfinding within a 2D area, specified as a collection of @NavigationPolygon@ resources. By default, these are automatically collected from child @NavigationPolygonInstance@ nodes, but they can also be added on the fly with @method navpoly_add@.
+--   		__Note:__ The current navigation system has many known issues and will not always return optimal paths as expected. These issues will be fixed in Godot 4.0.
 newtype Navigation2D = Navigation2D Object
                          deriving newtype AsVariant
 
@@ -3403,7 +3582,8 @@ instance HasBaseClass NetworkedMultiplayerENet where
         super = coerce
 
 -- | A high-level network interface to simplify multiplayer interactions.
---   Manages the connection to network peers. Assigns unique IDs to each client connected to the server.
+--   Manages the connection to network peers. Assigns unique IDs to each client connected to the server. See also @MultiplayerAPI@.
+--   		__Note:__ The high-level multiplayer API protocol is an implementation detail and isn't meant to be used by non-Godot servers. It may change without notice.
 newtype NetworkedMultiplayerPeer = NetworkedMultiplayerPeer Object
                                      deriving newtype AsVariant
 
@@ -3426,7 +3606,7 @@ instance HasBaseClass NinePatchRect where
 --   		__Scene tree:__ The @SceneTree@ contains the active tree of nodes. When a node is added to the scene tree, it receives the @NOTIFICATION_ENTER_TREE@ notification and its @method _enter_tree@ callback is triggered. Child nodes are always added @i@after@/i@ their parent node, i.e. the @method _enter_tree@ callback of a parent node will be triggered before its child's.
 --   		Once all nodes have been added in the scene tree, they receive the @NOTIFICATION_READY@ notification and their respective @method _ready@ callbacks are triggered. For groups of nodes, the @method _ready@ callback is called in reverse order, starting with the children and moving up to the parent nodes.
 --   		This means that when adding a node to the scene tree, the following order will be used for the callbacks: @method _enter_tree@ of the parent, @method _enter_tree@ of the children, @method _ready@ of the children and finally @method _ready@ of the parent (recursively for the entire scene tree).
---   		__Processing:__ Nodes can override the "process" state, so that they receive a callback on each frame requesting them to process (do something). Normal processing (callback @method _process@, toggled with @method set_process@) happens as fast as possible and is dependent on the frame rate, so the processing time @i@delta@/i@ is passed as an argument. Physics processing (callback @method _physics_process@, toggled with @method set_physics_process@) happens a fixed number of times per second (60 by default) and is useful for code related to the physics engine.
+--   		__Processing:__ Nodes can override the "process" state, so that they receive a callback on each frame requesting them to process (do something). Normal processing (callback @method _process@, toggled with @method set_process@) happens as fast as possible and is dependent on the frame rate, so the processing time @i@delta@/i@ (in seconds) is passed as an argument. Physics processing (callback @method _physics_process@, toggled with @method set_physics_process@) happens a fixed number of times per second (60 by default) and is useful for code related to the physics engine.
 --   		Nodes can also process input events. When present, the @method _input@ function will be called for each input that the program receives. In many cases, this can be overkill (unless used for simple projects), and the @method _unhandled_input@ function might be preferred; it is called when the input event was not handled by anyone else (typically, GUI @Control@ nodes), ensuring that the node only receives the events that were meant for it.
 --   		To keep track of the scene hierarchy (especially when instancing scenes into other scenes), an "owner" can be set for the node with the @owner@ property. This keeps track of who instanced what. This is mostly useful when writing editors and tools, though.
 --   		Finally, when a node is freed with @method Object.free@ or @method queue_free@, it will also free all its children.
@@ -3466,6 +3646,7 @@ instance HasBaseClass OccluderPolygon2D where
 
 -- | Omnidirectional light, such as a light bulb or a candle.
 --   An Omnidirectional light is a type of @Light@ that emits light in all directions. The light is attenuated by distance and this attenuation can be configured by changing its energy, radius, and attenuation parameters.
+--   		__Note:__ By default, only 32 OmniLights may affect a single mesh @i@resource@/i@ at once. Consider splitting your level into several meshes to decrease the likelihood that more than 32 lights will affect the same mesh resource. Splitting the level mesh will also improve frustum culling effectiveness, leading to greater performance. If you need to use more lights per mesh, you can increase @ProjectSettings.rendering/limits/rendering/max_lights_per_object@ at the cost of shader compilation times.
 newtype OmniLight = OmniLight Object
                       deriving newtype AsVariant
 
@@ -3482,6 +3663,7 @@ instance HasBaseClass OpenSimplexNoise where
 
 -- | Button control that provides selectable options when pressed.
 --   OptionButton is a type button that provides a selectable list of items when pressed. The item selected becomes the "current" item and is displayed as the button text.
+--   		See also @BaseButton@ which contains common properties and methods associated with this node.
 newtype OptionButton = OptionButton Object
                          deriving newtype AsVariant
 
@@ -3535,7 +3717,7 @@ instance HasBaseClass PackedDataContainerRef where
 
 -- | An abstraction of a serialized scene.
 --   A simplified interface to a scene file. Provides access to operations and checks that can be performed on the scene resource itself.
---   		Can be used to save a node to a file. When saving, the node as well as all the node it owns get saved (see @owner@ property on @Node@).
+--   		Can be used to save a node to a file. When saving, the node as well as all the nodes it owns get saved (see @owner@ property on @Node@).
 --   		__Note:__ The node doesn't need to own itself.
 --   		__Example of loading a saved scene:__
 --   		
@@ -3587,6 +3769,15 @@ newtype PacketPeer = PacketPeer Object
 
 instance HasBaseClass PacketPeer where
         type BaseClass PacketPeer = Reference
+        super = coerce
+
+-- | DTLS packet peer.
+--   This class represents a DTLS peer connection. It can be used to connect to a DTLS server, and is returned by @method DTLSServer.take_connection@.
+newtype PacketPeerDTLS = PacketPeerDTLS Object
+                           deriving newtype AsVariant
+
+instance HasBaseClass PacketPeerDTLS where
+        type BaseClass PacketPeerDTLS = PacketPeer
         super = coerce
 
 newtype PacketPeerGDNative = PacketPeerGDNative Object
@@ -3663,9 +3854,11 @@ instance HasBaseClass ParallaxLayer where
         type BaseClass ParallaxLayer = Node2D
         super = coerce
 
--- | 3D particle emitter.
+-- | GPU-based 3D particle emitter.
 --   3D particle node used to create a variety of particle systems and effects. @Particles@ features an emitter that generates some number of particles at a given rate.
 --   		Use the @process_material@ property to add a @ParticlesMaterial@ to configure particle appearance and behavior. Alternatively, you can add a @ShaderMaterial@ which will be applied to all particles.
+--   		__Note:__ @Particles@ only work when using the GLES3 renderer. If using the GLES2 renderer, use @CPUParticles@ instead. You can convert @Particles@ to @CPUParticles@ by selecting the node, clicking the __Particles__ menu at the top of the 3D editor viewport then choosing __Convert to CPUParticles__.
+--   		__Note:__ After working on a Particles node, remember to update its @visibility_aabb@ by selecting it, clicking the __Particles__ menu at the top of the 3D editor viewport then choose __Generate Visibility AABB__. Otherwise, particles may suddenly disappear depending on the camera position and angle.
 newtype Particles = Particles Object
                       deriving newtype AsVariant
 
@@ -3673,9 +3866,12 @@ instance HasBaseClass Particles where
         type BaseClass Particles = GeometryInstance
         super = coerce
 
--- | 2D particle emitter.
+-- | GPU-based 2D particle emitter.
 --   2D particle node used to create a variety of particle systems and effects. @Particles2D@ features an emitter that generates some number of particles at a given rate.
 --   		Use the @process_material@ property to add a @ParticlesMaterial@ to configure particle appearance and behavior. Alternatively, you can add a @ShaderMaterial@ which will be applied to all particles.
+--   		__Note:__ @Particles2D@ only work when using the GLES3 renderer. If using the GLES2 renderer, use @CPUParticles2D@ instead. You can convert @Particles2D@ to @CPUParticles2D@ by selecting the node, clicking the __Particles__ menu at the top of the 2D editor viewport then choosing __Convert to CPUParticles2D__.
+--   		__Note:__ After working on a Particles node, remember to update its @visibility_rect@ by selecting it, clicking the __Particles__ menu at the top of the 2D editor viewport then choose __Generate Visibility Rect__. Otherwise, particles may suddenly disappear depending on the camera position and angle.
+--   		__Note:__ Unlike @CPUParticles2D@, @Particles2D@ currently ignore the texture region defined in @AtlasTexture@s.
 newtype Particles2D = Particles2D Object
                         deriving newtype AsVariant
 
@@ -3891,8 +4087,8 @@ instance HasBaseClass PhysicsShapeQueryResult where
         type BaseClass PhysicsShapeQueryResult = Reference
         super = coerce
 
--- | Pin joint for 3D shapes.
---   Pin joint for 3D rigid bodies. It pins 2 bodies (rigid or static) together.
+-- | Pin joint for 3D PhysicsBodies.
+--   Pin joint for 3D rigid bodies. It pins 2 bodies (rigid or static) together. See also @Generic6DOFJoint@.
 newtype PinJoint = PinJoint Object
                      deriving newtype AsVariant
 
@@ -3911,6 +4107,7 @@ instance HasBaseClass PinJoint2D where
 
 -- | Class representing a planar @PrimitiveMesh@.
 --    This flat mesh does not have a thickness. By default, this mesh is aligned on the X and Z axes; this default rotation isn't suited for use with billboarded materials. For billboarded materials, use @QuadMesh@ instead.
+--   		__Note:__ When using a large textured @PlaneMesh@ (e.g. as a floor), you may stumble upon UV jittering issues depending on the camera angle. To solve this, increase @subdivide_depth@ and @subdivide_width@ until you no longer notice UV jittering.
 newtype PlaneMesh = PlaneMesh Object
                       deriving newtype AsVariant
 
@@ -4055,7 +4252,8 @@ instance HasBaseClass ProgressBar where
 -- | Contains global variables accessible from everywhere.
 --    Use @method get_setting@, @method set_setting@ or @method has_setting@ to access them. Variables stored in @project.godot@ are also loaded into ProjectSettings, making this object very useful for reading custom game configuration options.
 --   		When naming a Project Settings property, use the full path to the setting including the category. For example, @"application/config/name"@ for the project name. Category and property names can be viewed in the Project Settings dialog.
---   		__Overriding:__ Any project setting can be overridden by creating a file named @override.cfg@ in the project's root directory. This can also be used in exported projects by placing this file in the same directory as the project binary.
+--   		__Feature tags:__ Project settings can be overridden for specific platforms and configurations (debug, release, ...) using @url=https://docs.godotengine.org/en/latest/tutorials/export/feature_tags.html@feature tags@/url@.
+--   		__Overriding:__ Any project setting can be overridden by creating a file named @override.cfg@ in the project's root directory. This can also be used in exported projects by placing this file in the same directory as the project binary. Overriding will still take the base project settings' @url=https://docs.godotengine.org/en/latest/tutorials/export/feature_tags.html@feature tags@/url@ in account. Therefore, make sure to @i@also@/i@ override the setting with the desired feature tags if you want them to override base project settings on all platforms and configurations.
 newtype ProjectSettings = ProjectSettings Object
                             deriving newtype AsVariant
 
@@ -4100,6 +4298,8 @@ instance HasBaseClass QuadMesh where
 --   		    var my_random_number = rng.randf_range(-10.0, 10.0)
 --   		
 --   @
+--   
+--   		__Note:__ The default values of @seed@ and @state@ properties are pseudo-random, and changes when calling @method randomize@. The @0@ value documented here is a placeholder, and not the actual default seed.
 newtype RandomNumberGenerator = RandomNumberGenerator Object
                                   deriving newtype AsVariant
 
@@ -4171,8 +4371,9 @@ instance HasBaseClass RectangleShape2D where
 
 -- | Base class for reference-counted objects.
 --   Base class for any object that keeps a reference count. @Resource@ and many other helper objects inherit this class.
---   		Unlike @Object@s, References keep an internal reference counter so that they are automatically released when no longer in use, and only then. References therefore do not need to be freed manually with @method Object.free@.
+--   		Unlike other @Object@ types, References keep an internal reference counter so that they are automatically released when no longer in use, and only then. References therefore do not need to be freed manually with @method Object.free@.
 --   		In the vast majority of use cases, instantiating and using @Reference@-derived types is all you need to do. The methods provided in this class are only for advanced users, and can cause issues if misused.
+--   		__Note:__ In C#, references will not be freed instantly after they are no longer in use. Instead, garbage collection will run periodically and will free references that are no longer in use. This means that unused references will linger on for a while before being removed.
 newtype Reference = Reference Object
                       deriving newtype AsVariant
 
@@ -4181,7 +4382,7 @@ instance HasBaseClass Reference where
         super = coerce
 
 -- | Reference frame for GUI.
---   A rectangle box that displays only a @border_color@ border color around its rectangle. @ReferenceRect@ has no fill @Color@.
+--   A rectangle box that displays only a @border_color@ border color around its rectangle. @ReferenceRect@ has no fill @Color@. If you need to display a rectangle filled with a solid color, consider using @ColorRect@ instead.
 newtype ReferenceRect = ReferenceRect Object
                           deriving newtype AsVariant
 
@@ -4235,7 +4436,8 @@ instance HasBaseClass RemoteTransform2D where
         super = coerce
 
 -- | Base class for all resources.
---   Resource is the base class for all Godot-specific resource types, serving primarily as data containers. Unlike @Object@s, they are reference-counted and freed when no longer in use. They are also cached once loaded from disk, so that any further attempts to load a resource from a given path will return the same reference (all this in contrast to a @Node@, which is not reference-counted and can be instanced from disk as many times as desired). Resources can be saved externally on disk or bundled into another object, such as a @Node@ or another resource.
+--   Resource is the base class for all Godot-specific resource types, serving primarily as data containers. Since they inherit from @Reference@, resources are reference-counted and freed when no longer in use. They are also cached once loaded from disk, so that any further attempts to load a resource from a given path will return the same reference (all this in contrast to a @Node@, which is not reference-counted and can be instanced from disk as many times as desired). Resources can be saved externally on disk or bundled into another object, such as a @Node@ or another resource.
+--   		__Note:__ In C#, resources will not be freed instantly after they are no longer in use. Instead, garbage collection will run periodically and will free resources that are no longer in use. This means that unused resources will linger on for a while before being removed.
 newtype Resource = Resource Object
                      deriving newtype AsVariant
 
@@ -4246,19 +4448,12 @@ instance HasBaseClass Resource where
 -- | Loads a specific resource type from a file.
 --   Godot loads resources in the editor or in exported games using ResourceFormatLoaders. They are queried automatically via the @ResourceLoader@ singleton, or when a resource with internal dependencies is loaded. Each file type may load as a different resource type, so multiple ResourceFormatLoaders are registered in the engine.
 --   		Extending this class allows you to define your own loader. Be sure to respect the documented return types and values. You should give it a global class name with @class_name@ for it to be registered. Like built-in ResourceFormatLoaders, it will be called automatically when loading resources of its handled type(s). You may also implement a @ResourceFormatSaver@.
---   		__Note:__ You can also extend @EditorImportPlugin@ if the resource type you need exists but Godot is unable to load its format. Choosing one way over another depends if the format is suitable or not for the final exported game. For example, it's better to import @.png@ textures as @.stex@ (@StreamTexture@) first, so they can be loaded with better efficiency on the graphics card.
+--   		__Note:__ You can also extend @EditorImportPlugin@ if the resource type you need exists but Godot is unable to load its format. Choosing one way over another depends on if the format is suitable or not for the final exported game. For example, it's better to import @.png@ textures as @.stex@ (@StreamTexture@) first, so they can be loaded with better efficiency on the graphics card.
 newtype ResourceFormatLoader = ResourceFormatLoader Object
                                  deriving newtype AsVariant
 
 instance HasBaseClass ResourceFormatLoader where
         type BaseClass ResourceFormatLoader = Reference
-        super = coerce
-
-newtype ResourceFormatLoaderCrypto = ResourceFormatLoaderCrypto Object
-                                       deriving newtype AsVariant
-
-instance HasBaseClass ResourceFormatLoaderCrypto where
-        type BaseClass ResourceFormatLoaderCrypto = ResourceFormatLoader
         super = coerce
 
 -- | Saves a specific resource type to a file.
@@ -4269,13 +4464,6 @@ newtype ResourceFormatSaver = ResourceFormatSaver Object
 
 instance HasBaseClass ResourceFormatSaver where
         type BaseClass ResourceFormatSaver = Reference
-        super = coerce
-
-newtype ResourceFormatSaverCrypto = ResourceFormatSaverCrypto Object
-                                      deriving newtype AsVariant
-
-instance HasBaseClass ResourceFormatSaverCrypto where
-        type BaseClass ResourceFormatSaverCrypto = ResourceFormatSaver
         super = coerce
 
 newtype ResourceImporter = ResourceImporter Object
@@ -4326,6 +4514,7 @@ instance HasBaseClass RichTextEffect where
 -- | Label that displays rich text.
 --   Rich text can contain custom text, fonts, images and some basic formatting. The label manages these as an internal tag stack. It also adapts itself to given width/heights.
 --   		__Note:__ Assignments to @bbcode_text@ clear the tag stack and reconstruct it from the property's contents. Any edits made to @bbcode_text@ will erase previous edits made from other manual sources such as @method append_bbcode@ and the @push_*@ / @method pop@ methods.
+--   		__Note:__ RichTextLabel doesn't support entangled BBCode tags. For example, instead of using @__bold@i@bold italic__italic@/i@@, use @__bold@i@bold italic@/i@__@i@italic@/i@@.
 --   		__Note:__ Unlike @Label@, RichTextLabel doesn't have a @i@property@/i@ to horizontally align text to the center. Instead, enable @bbcode_enabled@ and surround the text in a @@center@@ tag as follows: @@center@Example@/center@@. There is currently no built-in way to vertically align text either, but this can be emulated by relying on anchors/containers and the @fit_content_height@ property.
 newtype RichTextLabel = RichTextLabel Object
                           deriving newtype AsVariant
@@ -4348,7 +4537,7 @@ instance HasBaseClass RigidBody where
         super = coerce
 
 -- | A body that is controlled by the 2D physics engine.
---   This node implements simulated 2D physics. You do not control a RigidBody2D directly. Instead you apply forces to it (gravity, impulses, etc.) and the physics simulation calculates the resulting movement based on its mass, friction, and other physical properties.
+--   This node implements simulated 2D physics. You do not control a RigidBody2D directly. Instead, you apply forces to it (gravity, impulses, etc.) and the physics simulation calculates the resulting movement based on its mass, friction, and other physical properties.
 --   		A RigidBody2D has 4 behavior @mode@s: Rigid, Static, Character, and Kinematic.
 --   		__Note:__ You should not change a RigidBody2D's @position@ or @linear_velocity@ every frame or even very often. If you need to directly affect the body's state, use @method _integrate_forces@, which allows you to directly access the physics state.
 --   		Please also keep in mind that physics bodies manage their own transform which overwrites the ones you set. So any direct or indirect transformation (including scaling of the node or its parent) will be visible in the editor only, and immediately reset at runtime.
@@ -4380,7 +4569,7 @@ instance HasBaseClass SceneState where
 
 -- | Manages the game loop via a hierarchy of nodes.
 --   As one of the most important classes, the @SceneTree@ manages the hierarchy of nodes in a scene as well as scenes themselves. Nodes can be added, retrieved and removed. The whole scene tree (and thus the current scene) can be paused. Scenes can be loaded, switched and reloaded.
---   		You can also use the @SceneTree@ to organize your nodes into groups: every node can be assigned as many groups as you want to create, e.g. a "enemy" group. You can then iterate these groups or even call methods and set properties on all the group's members at once.
+--   		You can also use the @SceneTree@ to organize your nodes into groups: every node can be assigned as many groups as you want to create, e.g. an "enemy" group. You can then iterate these groups or even call methods and set properties on all the group's members at once.
 --   		@SceneTree@ is the default @MainLoop@ implementation used by scenes, and is thus in charge of the game loop.
 newtype SceneTree = SceneTree Object
                       deriving newtype AsVariant
@@ -4492,6 +4681,7 @@ instance HasBaseClass Shader where
 
 -- | A material that uses a custom @Shader@ program.
 --   A material that uses a custom @Shader@ program to render either items to screen or process particles. You can create multiple materials for the same shader but configure different values for the uniforms defined in the shader.
+--   		__Note:__ Due to a renderer limitation, emissive @ShaderMaterial@s cannot emit light when used in a @GIProbe@. Only emissive @SpatialMaterial@s can emit light in a @GIProbe@.
 newtype ShaderMaterial = ShaderMaterial Object
                            deriving newtype AsVariant
 
@@ -4547,6 +4737,30 @@ instance HasBaseClass Skeleton2D where
         type BaseClass Skeleton2D = Node2D
         super = coerce
 
+-- | SkeletonIK is used to place the end bone of a @Skeleton@ bone chain at a certain point in 3D by rotating all bones in the chain accordingly.
+--    A typical scenario for IK in games is to place a characters feet on the ground or a characters hands on a currently hold object. SkeletonIK uses FabrikInverseKinematic internally to solve the bone chain and applies the results to the @Skeleton@ @bones_global_pose_override@ property for all affected bones in the chain. If fully applied this overwrites any bone transform from @Animation@s or bone custom poses set by users. The applied amount can be controlled with the @interpolation@ property.
+--   		
+--   @
+--   
+--   		# Apply IK effect automatically on every new frame (not the current)
+--   		skeleton_ik_node.start()
+--   
+--   		# Apply IK effect only on the current frame
+--   		skeleton_ik_node.start(true)
+--   
+--   		# Stop IK effect and reset bones_global_pose_override on Skeleton
+--   		skeleton_ik_node.stop()
+--   
+--   		# Apply full IK effect
+--   		skeleton_ik_node.set_interpolation(1.0)
+--   
+--   		# Apply half IK effect
+--   		skeleton_ik_node.set_interpolation(0.5)
+--   
+--   		# Apply zero IK effect (a value at or below 0.01 also removes bones_global_pose_override on Skeleton)
+--   		skeleton_ik_node.set_interpolation(0.0)
+--   		
+--   @
 newtype SkeletonIK = SkeletonIK Object
                        deriving newtype AsVariant
 
@@ -4586,8 +4800,8 @@ instance HasBaseClass Slider where
         type BaseClass Slider = Range
         super = coerce
 
--- | Piston kind of slider between two bodies in 3D.
---   Slides across the X axis of the pivot object.
+-- | Slider between two PhysicsBodies in 3D.
+--   Slides across the X axis of the pivot object. See also @Generic6DOFJoint@.
 newtype SliderJoint = SliderJoint Object
                         deriving newtype AsVariant
 
@@ -4671,6 +4885,7 @@ instance HasBaseClass SphereShape where
 --   
 --   		The above code will create a @SpinBox@, disable context menu on it and set the text alignment to right.
 --   		See @Range@ class for more options over the @SpinBox@.
+--   		__Note:__ @SpinBox@ relies on an underlying @LineEdit@ node. To theme a @SpinBox@'s background, add theme items for @LineEdit@ and customize them.
 newtype SpinBox = SpinBox Object
                     deriving newtype AsVariant
 
@@ -4689,6 +4904,7 @@ instance HasBaseClass SplitContainer where
 
 -- | A spotlight, such as a reflector spotlight or a lantern.
 --   A Spotlight is a type of @Light@ node that emits lights in a specific direction, in the shape of a cone. The light is attenuated through the distance. This attenuation can be configured by changing the energy, radius and attenuation parameters of @Light@.
+--   		__Note:__ By default, only 32 SpotLights may affect a single mesh @i@resource@/i@ at once. Consider splitting your level into several meshes to decrease the likelihood that more than 32 lights will affect the same mesh resource. Splitting the level mesh will also improve frustum culling effectiveness, leading to greater performance. If you need to use more lights per mesh, you can increase @ProjectSettings.rendering/limits/rendering/max_lights_per_object@ at the cost of shader compilation times.
 newtype SpotLight = SpotLight Object
                       deriving newtype AsVariant
 
@@ -4766,7 +4982,7 @@ instance HasBaseClass StaticBody2D where
         super = coerce
 
 -- | Abstraction and base class for stream-based protocols.
---   StreamPeer is an abstraction and base class for stream-based protocols (such as TCP or UNIX sockets). It provides an API for sending and receiving data through streams as raw data or strings.
+--   StreamPeer is an abstraction and base class for stream-based protocols (such as TCP). It provides an API for sending and receiving data through streams as raw data or strings.
 newtype StreamPeer = StreamPeer Object
                        deriving newtype AsVariant
 
@@ -4817,6 +5033,7 @@ instance HasBaseClass StreamTexture where
 
 -- | Base class for drawing stylized boxes for the UI.
 --   StyleBox is @Resource@ that provides an abstract base class for drawing stylized boxes for the UI. StyleBoxes are used for drawing the styles of buttons, line edit backgrounds, tree backgrounds, etc. and also for testing a transparency mask for pointer signals. If mask test fails on a StyleBox assigned as mask to a control, clicks and motion signals will go through it to the one below.
+--   		__Note:__ For children of @Control@ that have @i@Theme Properties@/i@, the @focus@ @StyleBox@ is displayed over the @normal@, @hover@ or @pressed@ @StyleBox@. This makes the @focus@ @StyleBox@ more reusable across different nodes.
 newtype StyleBox = StyleBox Object
                      deriving newtype AsVariant
 
@@ -4834,12 +5051,12 @@ instance HasBaseClass StyleBoxEmpty where
         super = coerce
 
 -- | Customizable @StyleBox@ with a given set of parameters (no texture required).
---   This @StyleBox@ can be used to achieve all kinds of looks without the need of a texture. Those properties are customizable:
+--   This @StyleBox@ can be used to achieve all kinds of looks without the need of a texture. The following properties are customizable:
 --   		- Color
 --   		- Border width (individual width for each border)
 --   		- Rounded corners (individual radius for each corner)
 --   		- Shadow (with blur and offset)
---   		Setting corner radius to high values is allowed. As soon as corners would overlap, the stylebox will switch to a relative system. Example:
+--   		Setting corner radius to high values is allowed. As soon as corners overlap, the stylebox will switch to a relative system. Example:
 --   		
 --   @
 --   
@@ -4929,7 +5146,7 @@ instance HasBaseClass TabContainer where
         super = coerce
 
 -- | Tabs control.
---   Simple tabs control, similar to @TabContainer@ but is only in charge of drawing tabs, not interact with children.
+--   Simple tabs control, similar to @TabContainer@ but is only in charge of drawing tabs, not interacting with children.
 newtype Tabs = Tabs Object
                  deriving newtype AsVariant
 
@@ -4957,6 +5174,7 @@ instance HasBaseClass TextFile where
 --   A texture works by registering an image in the video hardware, which then can be used in 3D models or 2D @Sprite@ or GUI @Control@.
 --   		Textures are often created by loading them from a file. See @method @GDScript.load@.
 --   		@Texture@ is a base for other resources. It cannot be used directly.
+--   		__Note:__ The maximum texture size is 16384×16384 pixels due to graphics hardware limitations. Larger textures may fail to import.
 newtype Texture = Texture Object
                     deriving newtype AsVariant
 
@@ -4974,7 +5192,23 @@ instance HasBaseClass Texture3D where
         super = coerce
 
 -- | Array of textures stored in a single primitive.
---   @TextureArray@s store an array of images in a single @Texture@ primitive. Each layer of the texture array has its own mipmap chain. This makes it is a good alternative to texture atlases.
+--   @TextureArray@s store an array of @Image@s in a single @Texture@ primitive. Each layer of the texture array has its own mipmap chain. This makes it is a good alternative to texture atlases.
+--   		@TextureArray@s must be displayed using shaders. After importing your file as a @TextureArray@ and setting the appropriate Horizontal and Vertical Slices, display it by setting it as a uniform to a shader, for example:
+--   		
+--   @
+--   
+--   		shader_type canvas_item;
+--   
+--   		uniform sampler2DArray tex;
+--   		uniform int index;
+--   
+--   		void fragment() {
+--   		    COLOR = texture(tex, vec3(UV.x, UV.y, float(index)));
+--   		}
+--   		
+--   @
+--   
+--   		Set the integer uniform "index" to show a particular part of the texture as defined by the Horizontal and Vertical Slices in the importer.
 newtype TextureArray = TextureArray Object
                          deriving newtype AsVariant
 
@@ -4985,6 +5219,7 @@ instance HasBaseClass TextureArray where
 -- | Texture-based button. Supports Pressed, Hover, Disabled and Focused states.
 --   @TextureButton@ has the same functionality as @Button@, except it uses sprites instead of Godot's @Theme@ resource. It is faster to create, but it doesn't support localization like more complex @Control@s.
 --   		The "normal" state must contain a texture (@texture_normal@); other textures are optional.
+--   		See also @BaseButton@ which contains common properties and methods associated with this node.
 newtype TextureButton = TextureButton Object
                           deriving newtype AsVariant
 
@@ -4993,7 +5228,7 @@ instance HasBaseClass TextureButton where
         super = coerce
 
 -- | Base class for 3D texture types.
---   Base class for @Texture3D@ and @TextureArray@. Cannot be used directly, but contains all the functions necessary for accessing and using @Texture3D@ and @TextureArray@. Data is set on a per-layer basis. For @Texture3D@s, the layer sepcifies the depth or Z-index, they can be treated as a bunch of 2D slices. Similarly, for @TextureArray@s, the layer specifies the array layer.
+--   Base class for @Texture3D@ and @TextureArray@. Cannot be used directly, but contains all the functions necessary for accessing and using @Texture3D@ and @TextureArray@. Data is set on a per-layer basis. For @Texture3D@s, the layer specifies the depth or Z-index, they can be treated as a bunch of 2D slices. Similarly, for @TextureArray@s, the layer specifies the array layer.
 newtype TextureLayered = TextureLayered Object
                            deriving newtype AsVariant
 
@@ -5032,6 +5267,7 @@ instance HasBaseClass Theme where
 
 -- | Node for 2D tile-based maps.
 --    Tilemaps use a @TileSet@ which contain a list of tiles (textures plus optional collision, navigation, and/or occluder shapes) which are used to create grid-based maps.
+--   		When doing physics queries against the tilemap, the cell coordinates are encoded as @metadata@ for each detected collision shape returned by methods such as @method Physics2DDirectSpaceState.intersect_shape@, @method Physics2DDirectBodyState.get_contact_collider_shape_metadata@, etc.
 newtype TileMap = TileMap Object
                     deriving newtype AsVariant
 
@@ -5051,7 +5287,7 @@ instance HasBaseClass TileSet where
 
 -- | A countdown timer.
 --   Counts down a specified interval and emits a signal on reaching 0. Can be set to repeat or "one-shot" mode.
---   		__Note:__ To create an one-shot timer without instantiating a node, use @method SceneTree.create_timer@.
+--   		__Note:__ To create a one-shot timer without instantiating a node, use @method SceneTree.create_timer@.
 newtype Timer = Timer Object
                   deriving newtype AsVariant
 
@@ -5076,7 +5312,7 @@ instance HasBaseClass ToolButton where
         super = coerce
 
 -- | Button for touch screen devices for gameplay use.
---   TouchScreenButton allows you to create on-screen buttons for touch devices. It's intended for gameplay use, such as a unit you have to touch to move.
+--   TouchScreenButton allows you to create on-screen buttons for touch devices. It's intended for gameplay use, such as a unit you have to touch to move. Unlike @Button@, TouchScreenButton supports multitouch out of the box. Several TouchScreenButtons can be pressed at the same time with touch input.
 --   		This node inherits from @Node2D@. Unlike with @Control@ nodes, you cannot set anchors on it. If you want to create menus or user interfaces, you may want to use @Button@ nodes instead. To make button nodes react to touch events, you can enable the Emulate Mouse option in the Project Settings.
 --   		You can configure TouchScreenButton to be visible only on touch devices, helping you develop your game both for desktop and mobile devices.
 newtype TouchScreenButton = TouchScreenButton Object
@@ -5163,7 +5399,7 @@ instance HasBaseClass TriangleMesh where
 --   		
 --   @
 --   
---   		Many methods require a property name, such as @"position"@ above. You can find the correct property name by hovering over the property in the Inspector. You can also provide the components of a property directly by using @"property:component"@ (eg. @position:x@), where it would only apply to that particular component.
+--   		Many methods require a property name, such as @"position"@ above. You can find the correct property name by hovering over the property in the Inspector. You can also provide the components of a property directly by using @"property:component"@ (e.g. @position:x@), where it would only apply to that particular component.
 --   		Many of the methods accept @trans_type@ and @ease_type@. The first accepts an @enum TransitionType@ constant, and refers to the way the timing of the animation is handled (see @url=https://easings.net/@easings.net@/url@ for some examples). The second accepts an @enum EaseType@ constant, and controls where the @trans_type@ is applied to the interpolation (in the beginning, the end, or both). If you don't know which transition and easing to pick, you can try different @enum TransitionType@ constants with @EASE_IN_OUT@, and use the one that looks best.
 --   		@url=https://raw.githubusercontent.com/godotengine/godot-docs/master/img/tween_cheatsheet.png@Tween easing and transition types cheatsheet@/url@
 newtype Tween = Tween Object
@@ -5171,6 +5407,68 @@ newtype Tween = Tween Object
 
 instance HasBaseClass Tween where
         type BaseClass Tween = Node
+        super = coerce
+
+-- | Helper class to implement a UDP server.
+--   A simple server that opens a UDP socket and returns connected @PacketPeerUDP@ upon receiving new packets. See also @method PacketPeerUDP.connect_to_host@.
+--   		After starting the server (@method listen@), you will need to @method poll@ it at regular intervals (e.g. inside @method Node._process@) for it to process new packets, delivering them to the appropriate @PacketPeerUDP@, and taking new connections.
+--   		Below a small example of how it can be used:
+--   		
+--   @
+--   
+--   		# server.gd
+--   		extends Node
+--   
+--   		var server := UDPServer.new()
+--   		var peers = @@
+--   
+--   		func _ready():
+--   		    server.listen(4242)
+--   
+--   		func _process(delta):
+--   		    server.poll() # Important!
+--   		    if server.is_connection_available():
+--   		        var peer : PacketPeerUDP = server.take_connection()
+--   		        var pkt = peer.get_packet()
+--   		        print("Accepted peer: %s:%s" % @peer.get_packet_ip(), peer.get_packet_port()@)
+--   		        print("Received data: %s" % @pkt.get_string_from_utf8()@)
+--   		        # Reply so it knows we received the message.
+--   		        peer.put_packet(pkt)
+--   		        # Keep a reference so we can keep contacting the remote peer.
+--   		        peers.append(peer)
+--   
+--   		    for i in range(0, peers.size()):
+--   		        pass # Do something with the connected peers.
+--   
+--   		
+--   @
+--   
+--   		
+--   @
+--   
+--   		# client.gd
+--   		extends Node
+--   
+--   		var udp := PacketPeerUDP.new()
+--   		var connected = false
+--   
+--   		func _ready():
+--   		    udp.connect_to_host("127.0.0.1", 4242)
+--   
+--   		func _process(delta):
+--   		    if !connected:
+--   		        # Try to contact server
+--   		        udp.put_packet("The answer is... 42!".to_utf8())
+--   		    if udp.get_available_packet_count() > 0:
+--   		        print("Connected: %s" % udp.get_packet().get_string_from_utf8())
+--   		        connected = true
+--   		
+--   @
+newtype UDPServer = UDPServer Object
+                      deriving newtype AsVariant
+
+instance HasBaseClass UDPServer where
+        type BaseClass UDPServer = Reference
         super = coerce
 
 newtype UPNP = UPNP Object
@@ -5291,7 +5589,9 @@ instance HasBaseClass VehicleWheel where
 
 -- | Control for playing video streams.
 --   Control node for playing video streams using @VideoStream@ resources.
---   		Supported video formats are @url=https://www.webmproject.org/@WebM@/url@ (@VideoStreamWebm@), @url=https://www.theora.org/@Ogg Theora@/url@ (@VideoStreamTheora@), and any format exposed via a GDNative plugin using @VideoStreamGDNative@.
+--   		Supported video formats are @url=https://www.webmproject.org/@WebM@/url@ (@.webm@, @VideoStreamWebm@), @url=https://www.theora.org/@Ogg Theora@/url@ (@.ogv@, @VideoStreamTheora@), and any format exposed via a GDNative plugin using @VideoStreamGDNative@.
+--   		__Note:__ Due to a bug, VideoPlayer does not support localization remapping yet.
+--   		__Warning:__ On HTML5, video playback @i@will@/i@ perform poorly due to missing architecture-specific assembly optimizations, especially for VP8/VP9.
 newtype VideoPlayer = VideoPlayer Object
                         deriving newtype AsVariant
 
@@ -5390,7 +5690,7 @@ instance HasBaseClass VisibilityEnabler2D where
 -- | Detects approximately when the node is visible on screen.
 --   The VisibilityNotifier detects when it is visible on the screen. It also notifies when its bounding rectangle enters or exits the screen or a @Camera@'s view.
 --   		If you want nodes to be disabled automatically when they exit the screen, use @VisibilityEnabler@ instead.
---   		__Note:__ VisibilityNotifier uses an approximate heuristic for performance reasons. It does't take walls and other occlusion into account. The heuristic is an implementation detail and may change in future versions. If you need precise visibility checking, use another method such as adding an @Area@ node as a child of a @Camera@ node and/or @method Vector3.dot@.
+--   		__Note:__ VisibilityNotifier uses an approximate heuristic for performance reasons. It doesn't take walls and other occlusion into account. The heuristic is an implementation detail and may change in future versions. If you need precise visibility checking, use another method such as adding an @Area@ node as a child of a @Camera@ node and/or @method Vector3.dot@.
 newtype VisibilityNotifier = VisibilityNotifier Object
                                deriving newtype AsVariant
 
@@ -5747,7 +6047,7 @@ instance HasBaseClass VisualScriptYieldSignal where
 --   		Resources are created using the @*_create@ functions.
 --   		All objects are drawn to a viewport. You can use the @Viewport@ attached to the @SceneTree@ or you can create one yourself with @method viewport_create@. When using a custom scenario or canvas, the scenario or canvas needs to be attached to the viewport using @method viewport_set_scenario@ or @method viewport_attach_canvas@.
 --   		In 3D, all visual objects must be associated with a scenario. The scenario is a visual representation of the world. If accessing the visual server from a running game, the scenario can be accessed from the scene tree from any @Spatial@ node with @method Spatial.get_world@. Otherwise, a scenario can be created with @method scenario_create@.
---   		Similarly in 2D, a canvas is needed to draw all canvas items.
+--   		Similarly, in 2D, a canvas is needed to draw all canvas items.
 --   		In 3D, all visible objects are comprised of a resource and an instance. A resource can be a mesh, a particle system, a light, or any other 3D object. In order to be visible resources must be attached to an instance using @method instance_set_base@. The instance must also be attached to the scenario using @method instance_set_scenario@ in order to be visible.
 --   		In 2D, all visible objects are some form of canvas item. In order to be visible, a canvas item needs to be the child of a canvas attached to a viewport, or it needs to be the child of another canvas item that is eventually attached to the canvas.
 newtype VisualServer = VisualServer Object
@@ -5880,7 +6180,7 @@ instance HasBaseClass VisualShaderNodeCustom where
         super = coerce
 
 -- | Calculates the determinant of a @Transform@ within the visual shader graph.
---   Translates to @deteminant(x)@ in the shader language.
+--   Translates to @determinant(x)@ in the shader language.
 newtype VisualShaderNodeDeterminant = VisualShaderNodeDeterminant Object
                                         deriving newtype AsVariant
 
@@ -5899,7 +6199,7 @@ instance HasBaseClass VisualShaderNodeDotProduct where
 
 -- | A custom visual shader graph expression written in Godot Shading Language.
 --   Custom Godot Shading Language expression, with a custom amount of input and output ports.
---   		The provided code is directly injected into the graph's matching shader function (@vertex@, @fragment@, or @light@), so it cannot be used to to declare functions, varyings, uniforms, or global constants. See @VisualShaderNodeGlobalExpression@ for such global definitions.
+--   		The provided code is directly injected into the graph's matching shader function (@vertex@, @fragment@, or @light@), so it cannot be used to declare functions, varyings, uniforms, or global constants. See @VisualShaderNodeGlobalExpression@ for such global definitions.
 newtype VisualShaderNodeExpression = VisualShaderNodeExpression Object
                                        deriving newtype AsVariant
 
@@ -5909,7 +6209,7 @@ instance HasBaseClass VisualShaderNodeExpression where
         super = coerce
 
 -- | Returns the vector that points in the same direction as a reference vector within the visual shader graph.
---   Translates to @faceforward(N, I, Nref)@ in the shader language. The function has three vector parameters: @N@, the vector to orient, @I@, the incident vector, and @Nref@, the reference vector. If the dot product of @I@ and @Nref@ is smaller than zero the return value is @N@. Otherwise @-N@ is returned.
+--   Translates to @faceforward(N, I, Nref)@ in the shader language. The function has three vector parameters: @N@, the vector to orient, @I@, the incident vector, and @Nref@, the reference vector. If the dot product of @I@ and @Nref@ is smaller than zero the return value is @N@. Otherwise, @-N@ is returned.
 newtype VisualShaderNodeFaceForward = VisualShaderNodeFaceForward Object
                                         deriving newtype AsVariant
 
@@ -5978,7 +6278,7 @@ instance HasBaseClass VisualShaderNodeOuterProduct where
         super = coerce
 
 -- | Represents the output shader parameters within the visual shader graph.
---   This visual shader node is present in all shader graphs in form of "Output" block with mutliple output value ports.
+--   This visual shader node is present in all shader graphs in form of "Output" block with multiple output value ports.
 newtype VisualShaderNodeOutput = VisualShaderNodeOutput Object
                                    deriving newtype AsVariant
 
@@ -6175,6 +6475,15 @@ instance HasBaseClass VisualShaderNodeUniform where
         type BaseClass VisualShaderNodeUniform = VisualShaderNode
         super = coerce
 
+-- | A reference to an existing @VisualShaderNodeUniform@.
+--   Creating a reference to a @VisualShaderNodeUniform@ allows you to reuse this uniform in different shaders or shader stages easily.
+newtype VisualShaderNodeUniformRef = VisualShaderNodeUniformRef Object
+                                       deriving newtype AsVariant
+
+instance HasBaseClass VisualShaderNodeUniformRef where
+        type BaseClass VisualShaderNodeUniformRef = VisualShaderNode
+        super = coerce
+
 -- | A @Vector3@ constant to be used within the visual shader graph.
 --   A constant @Vector3@, which can be used as an input node.
 newtype VisualShaderNodeVec3Constant = VisualShaderNodeVec3Constant Object
@@ -6278,7 +6587,7 @@ instance HasBaseClass VisualShaderNodeVectorOp where
         super = coerce
 
 -- | Returns the @Vector3@ that points in the direction of refraction. For use within the visual shader graph.
---   Translated to @refract(I, N, eta)@ in the shader language, where @I@ is the incident vector, @N@ is the normal vector and @eta@ is the ratio of the indicies of the refraction.
+--   Translated to @refract(I, N, eta)@ in the shader language, where @I@ is the incident vector, @N@ is the normal vector and @eta@ is the ratio of the indices of the refraction.
 newtype VisualShaderNodeVectorRefract = VisualShaderNodeVectorRefract Object
                                           deriving newtype AsVariant
 
@@ -6398,6 +6707,13 @@ instance HasBaseClass WebSocketServer where
         type BaseClass WebSocketServer = WebSocketMultiplayerPeer
         super = coerce
 
+newtype WebXRInterface = WebXRInterface Object
+                           deriving newtype AsVariant
+
+instance HasBaseClass WebXRInterface where
+        type BaseClass WebXRInterface = ARVRInterface
+        super = coerce
+
 -- | Base class for window dialogs.
 --   Windowdialog is the base class for all window-based dialogs. It's a by-default toplevel @Control@ that draws a window decoration and allows motion and resizing.
 newtype WindowDialog = WindowDialog Object
@@ -6478,6 +6794,7 @@ instance HasBaseClass ClassDB where
 -- | Type used to handle the filesystem.
 --   Directory type. It is used to manage directories and their content (not restricted to the project folder).
 --   		When creating a new @Directory@, its default opened directory will be @res://@. This may change in the future, so it is advised to always use @method open@ to initialize your @Directory@ where you want to operate, with explicit error checking.
+--   		__Note:__ Many resources types are imported (e.g. textures or sound files), and their source asset will not be included in the exported game, as only the imported version is used. Use @ResourceLoader@ to access imported resources.
 --   		Here is an example on how to iterate through the files of a directory:
 --   		
 --   @
@@ -6534,7 +6851,9 @@ instance HasBaseClass Engine where
 --   		
 --   @
 --   
---   		In the example above, the file will be saved in the user data folder as specified in the @url=https://docs.godotengine.org/en/latest/tutorials/io/data_paths.html@Data paths@/url@ documentation.
+--   		In the example above, the file will be saved in the user data folder as specified in the @url=https://docs.godotengine.org/en/3.3/tutorials/io/data_paths.html@Data paths@/url@ documentation.
+--   		__Note:__ To access project resources once exported, it is recommended to use @ResourceLoader@ instead of the @File@ API, as some files are converted to engine-specific formats and their original source files might not be present in the exported PCK package.
+--   		__Note:__ Files are automatically closed only if the process exits "normally" (such as by clicking the window manager's close button or pressing __Alt + F4__). If you stop the project execution by pressing __F8__ while the project is running, the file won't be closed as the game process will be killed. You can work around this by calling @method flush@ at regular intervals.
 newtype File = File Object
                  deriving newtype AsVariant
 
@@ -6566,7 +6885,7 @@ newtype Marshalls = Marshalls Object
                       deriving newtype AsVariant
 
 instance HasBaseClass Marshalls where
-        type BaseClass Marshalls = Reference
+        type BaseClass Marshalls = Object
         super = coerce
 
 -- | A synchronization mutex (mutual exclusion).
@@ -6590,7 +6909,6 @@ instance HasBaseClass OS where
 -- | Singleton used to load resource files.
 --   Singleton used to load resource files from the filesystem.
 --   		It uses the many @ResourceFormatLoader@ classes registered in the engine (either built-in or from a plugin) to load files into memory and convert them to a format that can be used by the engine.
---   		GDScript has a simplified @method @GDScript.load@ built-in method which can be used in most situations, leaving the use of @ResourceLoader@ for more advanced scenarios.
 newtype ResourceLoader = ResourceLoader Object
                            deriving newtype AsVariant
 
@@ -6716,6 +7034,8 @@ deriveBase ''Area2D
 
 deriveBase ''ArrayMesh
 
+deriveBase ''AspectRatioContainer
+
 deriveBase ''AtlasTexture
 
 deriveBase ''AudioBusLayout
@@ -6727,6 +7047,8 @@ deriveBase ''AudioEffectAmplify
 deriveBase ''AudioEffectBandLimitFilter
 
 deriveBase ''AudioEffectBandPassFilter
+
+deriveBase ''AudioEffectCapture
 
 deriveBase ''AudioEffectChorus
 
@@ -6783,6 +7105,8 @@ deriveBase ''AudioStream
 deriveBase ''AudioStreamGenerator
 
 deriveBase ''AudioStreamGeneratorPlayback
+
+deriveBase ''AudioStreamMP3
 
 deriveBase ''AudioStreamMicrophone
 
@@ -6944,6 +7268,8 @@ deriveBase ''CylinderMesh
 
 deriveBase ''CylinderShape
 
+deriveBase ''DTLSServer
+
 deriveBase ''DampedSpringJoint2D
 
 deriveBase ''DirectionalLight
@@ -6984,7 +7310,7 @@ deriveBase ''EditorResourcePreviewGenerator
 
 deriveBase ''EditorSceneImporter
 
-deriveBase ''EditorSceneImporterAssimp
+deriveBase ''EditorSceneImporterFBX
 
 deriveBase ''EditorScenePostImport
 
@@ -7008,7 +7334,11 @@ deriveBase ''Environment
 
 deriveBase ''Expression
 
+deriveBase ''ExternalTexture
+
 deriveBase ''FileDialog
+
+deriveBase ''FileSystemDock
 
 deriveBase ''Font
 
@@ -7115,6 +7445,8 @@ deriveBase ''InstancePlaceholder
 deriveBase ''InterpolatedCamera
 
 deriveBase ''ItemList
+
+deriveBase ''JNISingleton
 
 deriveBase ''JSONParseResult
 
@@ -7235,6 +7567,8 @@ deriveBase ''PackedDataContainerRef
 deriveBase ''PackedScene
 
 deriveBase ''PacketPeer
+
+deriveBase ''PacketPeerDTLS
 
 deriveBase ''PacketPeerGDNative
 
@@ -7378,11 +7712,7 @@ deriveBase ''Resource
 
 deriveBase ''ResourceFormatLoader
 
-deriveBase ''ResourceFormatLoaderCrypto
-
 deriveBase ''ResourceFormatSaver
-
-deriveBase ''ResourceFormatSaverCrypto
 
 deriveBase ''ResourceImporter
 
@@ -7551,6 +7881,8 @@ deriveBase ''TreeItem
 deriveBase ''TriangleMesh
 
 deriveBase ''Tween
+
+deriveBase ''UDPServer
 
 deriveBase ''UPNP
 
@@ -7782,6 +8114,8 @@ deriveBase ''VisualShaderNodeTransformVecMult
 
 deriveBase ''VisualShaderNodeUniform
 
+deriveBase ''VisualShaderNodeUniformRef
+
 deriveBase ''VisualShaderNodeVec3Constant
 
 deriveBase ''VisualShaderNodeVec3Uniform
@@ -7833,6 +8167,8 @@ deriveBase ''WebSocketMultiplayerPeer
 deriveBase ''WebSocketPeer
 
 deriveBase ''WebSocketServer
+
+deriveBase ''WebXRInterface
 
 deriveBase ''WindowDialog
 

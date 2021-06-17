@@ -2,7 +2,7 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.Joint2D
-       (Godot.Core.Joint2D.get_bias,
+       (Godot.Core.Joint2D._body_exit_tree, Godot.Core.Joint2D.get_bias,
         Godot.Core.Joint2D.get_exclude_nodes_from_collision,
         Godot.Core.Joint2D.get_node_a, Godot.Core.Joint2D.get_node_b,
         Godot.Core.Joint2D.set_bias,
@@ -34,6 +34,29 @@ instance NodeProperty Joint2D "node_a" NodePath 'False where
 
 instance NodeProperty Joint2D "node_b" NodePath 'False where
         nodeProperty = (get_node_b, wrapDroppingSetter set_node_b, Nothing)
+
+{-# NOINLINE bindJoint2D__body_exit_tree #-}
+
+bindJoint2D__body_exit_tree :: MethodBind
+bindJoint2D__body_exit_tree
+  = unsafePerformIO $
+      withCString "Joint2D" $
+        \ clsNamePtr ->
+          withCString "_body_exit_tree" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+_body_exit_tree :: (Joint2D :< cls, Object :< cls) => cls -> IO ()
+_body_exit_tree cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindJoint2D__body_exit_tree (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod Joint2D "_body_exit_tree" '[] (IO ()) where
+        nodeMethod = Godot.Core.Joint2D._body_exit_tree
 
 {-# NOINLINE bindJoint2D_get_bias #-}
 

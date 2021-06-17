@@ -88,6 +88,8 @@ module Godot.Core.Control
         Godot.Core.Control.add_shader_override,
         Godot.Core.Control.add_stylebox_override,
         Godot.Core.Control.can_drop_data, Godot.Core.Control.drop_data,
+        Godot.Core.Control.find_next_valid_focus,
+        Godot.Core.Control.find_prev_valid_focus,
         Godot.Core.Control.force_drag, Godot.Core.Control.get_anchor,
         Godot.Core.Control.get_begin, Godot.Core.Control.get_color,
         Godot.Core.Control.get_combined_minimum_size,
@@ -109,6 +111,7 @@ module Godot.Core.Control
         Godot.Core.Control.get_mouse_filter,
         Godot.Core.Control.get_parent_area_size,
         Godot.Core.Control.get_parent_control,
+        Godot.Core.Control.get_pass_on_modal_close_click,
         Godot.Core.Control.get_pivot_offset,
         Godot.Core.Control.get_position, Godot.Core.Control.get_rect,
         Godot.Core.Control.get_rotation,
@@ -150,6 +153,7 @@ module Godot.Core.Control
         Godot.Core.Control.set_h_size_flags, Godot.Core.Control.set_margin,
         Godot.Core.Control.set_margins_preset,
         Godot.Core.Control.set_mouse_filter,
+        Godot.Core.Control.set_pass_on_modal_close_click,
         Godot.Core.Control.set_pivot_offset,
         Godot.Core.Control.set_position, Godot.Core.Control.set_rotation,
         Godot.Core.Control.set_rotation_degrees,
@@ -490,6 +494,14 @@ instance NodeProperty Control "hint_tooltip" GodotString 'False
         nodeProperty
           = (_get_tooltip, wrapDroppingSetter set_tooltip, Nothing)
 
+instance NodeProperty Control "input_pass_on_modal_close_click"
+           Bool
+           'False
+         where
+        nodeProperty
+          = (get_pass_on_modal_close_click,
+             wrapDroppingSetter set_pass_on_modal_close_click, Nothing)
+
 instance NodeProperty Control "margin_bottom" Float 'False where
         nodeProperty
           = (wrapIndexedGetter 3 get_margin, wrapIndexedSetter 3 set_margin,
@@ -635,6 +647,18 @@ instance NodeMethod Control "_get_minimum_size" '[] (IO Vector2)
 {-# NOINLINE bindControl__get_tooltip #-}
 
 -- | Changes the tooltip text. The tooltip appears when the user's mouse cursor stays idle over this control for a few moments, provided that the @mouse_filter@ property is not @MOUSE_FILTER_IGNORE@. You can change the time required for the tooltip to appear with @gui/timers/tooltip_delay_sec@ option in Project Settings.
+--   			The tooltip popup will use either a default implementation, or a custom one that you can provide by overriding @method _make_custom_tooltip@. The default tooltip includes a @PopupPanel@ and @Label@ whose theme properties can be customized using @Theme@ methods with the @"TooltipPanel"@ and @"TooltipLabel"@ respectively. For example:
+--   			
+--   @
+--   
+--   			var style_box = StyleBoxFlat.new()
+--   			style_box.set_bg_color(Color(1, 1, 0))
+--   			style_box.set_border_width_all(2)
+--   			# We assume here that the `theme` property has been assigned a custom Theme beforehand.
+--   			theme.set_stylebox("panel", "TooltipPanel", style_box)
+--   			theme.set_color("font_color", "TooltipLabel", Color(0, 1, 1))
+--   			
+--   @
 bindControl__get_tooltip :: MethodBind
 bindControl__get_tooltip
   = unsafePerformIO $
@@ -645,6 +669,18 @@ bindControl__get_tooltip
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
 -- | Changes the tooltip text. The tooltip appears when the user's mouse cursor stays idle over this control for a few moments, provided that the @mouse_filter@ property is not @MOUSE_FILTER_IGNORE@. You can change the time required for the tooltip to appear with @gui/timers/tooltip_delay_sec@ option in Project Settings.
+--   			The tooltip popup will use either a default implementation, or a custom one that you can provide by overriding @method _make_custom_tooltip@. The default tooltip includes a @PopupPanel@ and @Label@ whose theme properties can be customized using @Theme@ methods with the @"TooltipPanel"@ and @"TooltipLabel"@ respectively. For example:
+--   			
+--   @
+--   
+--   			var style_box = StyleBoxFlat.new()
+--   			style_box.set_bg_color(Color(1, 1, 0))
+--   			style_box.set_border_width_all(2)
+--   			# We assume here that the `theme` property has been assigned a custom Theme beforehand.
+--   			theme.set_stylebox("panel", "TooltipPanel", style_box)
+--   			theme.set_color("font_color", "TooltipLabel", Color(0, 1, 1))
+--   			
+--   @
 _get_tooltip ::
                (Control :< cls, Object :< cls) => cls -> IO GodotString
 _get_tooltip cls
@@ -720,10 +756,11 @@ instance NodeMethod Control "_gui_input" '[InputEvent] (IO ())
 
 {-# NOINLINE bindControl__make_custom_tooltip #-}
 
--- | Virtual method to be implemented by the user. Returns a @Control@ node that should be used as a tooltip instead of the default one. Use @for_text@ parameter to determine what text the tooltip should contain (likely the contents of @hint_tooltip@).
---   				The returned node must be of type @Control@ or Control-derieved. It can have child nodes of any type. It is freed when the tooltip disappears, so make sure you always provide a new instance, not e.g. a node from scene. When @null@ or non-Control node is returned, the default tooltip will be used instead.
+-- | Virtual method to be implemented by the user. Returns a @Control@ node that should be used as a tooltip instead of the default one. The @for_text@ includes the contents of the @hint_tooltip@ property.
+--   				The returned node must be of type @Control@ or Control-derived. It can have child nodes of any type. It is freed when the tooltip disappears, so make sure you always provide a new instance (if you want to use a pre-existing node from your scene tree, you can duplicate it and pass the duplicated instance).When @null@ or a non-Control node is returned, the default tooltip will be used instead.
+--   				The returned node will be added as child to a @PopupPanel@, so you should only provide the contents of that panel. That @PopupPanel@ can be themed using @method Theme.set_stylebox@ for the type @"TooltipPanel"@ (see @hint_tooltip@ for an example).
 --   				__Note:__ The tooltip is shrunk to minimal size. If you want to ensure it's fully visible, you might want to set its @rect_min_size@ to some non-zero value.
---   				Example of usage with custom-constructed node:
+--   				Example of usage with a custom-constructed node:
 --   				
 --   @
 --   
@@ -734,12 +771,12 @@ instance NodeMethod Control "_gui_input" '[InputEvent] (IO ())
 --   				
 --   @
 --   
---   				Example of usage with custom scene instance:
+--   				Example of usage with a custom scene instance:
 --   				
 --   @
 --   
 --   				func _make_custom_tooltip(for_text):
---   				    var tooltip = preload("SomeTooltipScene.tscn").instance()
+--   				    var tooltip = preload("res://SomeTooltipScene.tscn").instance()
 --   				    tooltip.get_node("Label").text = for_text
 --   				    return tooltip
 --   				
@@ -753,10 +790,11 @@ bindControl__make_custom_tooltip
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Virtual method to be implemented by the user. Returns a @Control@ node that should be used as a tooltip instead of the default one. Use @for_text@ parameter to determine what text the tooltip should contain (likely the contents of @hint_tooltip@).
---   				The returned node must be of type @Control@ or Control-derieved. It can have child nodes of any type. It is freed when the tooltip disappears, so make sure you always provide a new instance, not e.g. a node from scene. When @null@ or non-Control node is returned, the default tooltip will be used instead.
+-- | Virtual method to be implemented by the user. Returns a @Control@ node that should be used as a tooltip instead of the default one. The @for_text@ includes the contents of the @hint_tooltip@ property.
+--   				The returned node must be of type @Control@ or Control-derived. It can have child nodes of any type. It is freed when the tooltip disappears, so make sure you always provide a new instance (if you want to use a pre-existing node from your scene tree, you can duplicate it and pass the duplicated instance).When @null@ or a non-Control node is returned, the default tooltip will be used instead.
+--   				The returned node will be added as child to a @PopupPanel@, so you should only provide the contents of that panel. That @PopupPanel@ can be themed using @method Theme.set_stylebox@ for the type @"TooltipPanel"@ (see @hint_tooltip@ for an example).
 --   				__Note:__ The tooltip is shrunk to minimal size. If you want to ensure it's fully visible, you might want to set its @rect_min_size@ to some non-zero value.
---   				Example of usage with custom-constructed node:
+--   				Example of usage with a custom-constructed node:
 --   				
 --   @
 --   
@@ -767,18 +805,18 @@ bindControl__make_custom_tooltip
 --   				
 --   @
 --   
---   				Example of usage with custom scene instance:
+--   				Example of usage with a custom scene instance:
 --   				
 --   @
 --   
 --   				func _make_custom_tooltip(for_text):
---   				    var tooltip = preload("SomeTooltipScene.tscn").instance()
+--   				    var tooltip = preload("res://SomeTooltipScene.tscn").instance()
 --   				    tooltip.get_node("Label").text = for_text
 --   				    return tooltip
 --   				
 --   @
 _make_custom_tooltip ::
-                       (Control :< cls, Object :< cls) => cls -> GodotString -> IO Object
+                       (Control :< cls, Object :< cls) => cls -> GodotString -> IO Control
 _make_custom_tooltip cls arg1
   = withVariantArray [toVariant arg1]
       (\ (arrPtr, len) ->
@@ -789,7 +827,7 @@ _make_custom_tooltip cls arg1
            >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
 
 instance NodeMethod Control "_make_custom_tooltip" '[GodotString]
-           (IO Object)
+           (IO Control)
          where
         nodeMethod = Godot.Core.Control._make_custom_tooltip
 
@@ -1358,6 +1396,64 @@ instance NodeMethod Control "drop_data" '[Vector2, GodotVariant]
          where
         nodeMethod = Godot.Core.Control.drop_data
 
+{-# NOINLINE bindControl_find_next_valid_focus #-}
+
+-- | Finds the next (below in the tree) @Control@ that can receive the focus.
+bindControl_find_next_valid_focus :: MethodBind
+bindControl_find_next_valid_focus
+  = unsafePerformIO $
+      withCString "Control" $
+        \ clsNamePtr ->
+          withCString "find_next_valid_focus" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Finds the next (below in the tree) @Control@ that can receive the focus.
+find_next_valid_focus ::
+                        (Control :< cls, Object :< cls) => cls -> IO Control
+find_next_valid_focus cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindControl_find_next_valid_focus
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod Control "find_next_valid_focus" '[]
+           (IO Control)
+         where
+        nodeMethod = Godot.Core.Control.find_next_valid_focus
+
+{-# NOINLINE bindControl_find_prev_valid_focus #-}
+
+-- | Finds the previous (above in the tree) @Control@ that can receive the focus.
+bindControl_find_prev_valid_focus :: MethodBind
+bindControl_find_prev_valid_focus
+  = unsafePerformIO $
+      withCString "Control" $
+        \ clsNamePtr ->
+          withCString "find_prev_valid_focus" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Finds the previous (above in the tree) @Control@ that can receive the focus.
+find_prev_valid_focus ::
+                        (Control :< cls, Object :< cls) => cls -> IO Control
+find_prev_valid_focus cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindControl_find_prev_valid_focus
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod Control "find_prev_valid_focus" '[]
+           (IO Control)
+         where
+        nodeMethod = Godot.Core.Control.find_prev_valid_focus
+
 {-# NOINLINE bindControl_force_drag #-}
 
 -- | Forces drag and bypasses @method get_drag_data@ and @method set_drag_preview@ by passing @data@ and @preview@. Drag will start even if the mouse is neither over nor pressed on this control.
@@ -1439,7 +1535,7 @@ instance NodeMethod Control "get_begin" '[] (IO Vector2) where
 
 {-# NOINLINE bindControl_get_color #-}
 
--- | Returns a color from assigned @Theme@ with given @name@ and associated with @Control@ of given @type@.
+-- | Returns a color from assigned @Theme@ with given @name@ and associated with @Control@ of given @node_type@.
 --   				
 --   @
 --   
@@ -1456,7 +1552,7 @@ bindControl_get_color
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Returns a color from assigned @Theme@ with given @name@ and associated with @Control@ of given @type@.
+-- | Returns a color from assigned @Theme@ with given @name@ and associated with @Control@ of given @node_type@.
 --   				
 --   @
 --   
@@ -1512,7 +1608,7 @@ instance NodeMethod Control "get_combined_minimum_size" '[]
 
 {-# NOINLINE bindControl_get_constant #-}
 
--- | Returns a constant from assigned @Theme@ with given @name@ and associated with @Control@ of given @type@.
+-- | Returns a constant from assigned @Theme@ with given @name@ and associated with @Control@ of given @node_type@.
 bindControl_get_constant :: MethodBind
 bindControl_get_constant
   = unsafePerformIO $
@@ -1522,7 +1618,7 @@ bindControl_get_constant
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Returns a constant from assigned @Theme@ with given @name@ and associated with @Control@ of given @type@.
+-- | Returns a constant from assigned @Theme@ with given @name@ and associated with @Control@ of given @node_type@.
 get_constant ::
                (Control :< cls, Object :< cls) =>
                cls -> GodotString -> Maybe GodotString -> IO Int
@@ -1839,7 +1935,7 @@ instance NodeMethod Control "get_focus_previous" '[] (IO NodePath)
 
 {-# NOINLINE bindControl_get_font #-}
 
--- | Returns a font from assigned @Theme@ with given @name@ and associated with @Control@ of given @type@.
+-- | Returns a font from assigned @Theme@ with given @name@ and associated with @Control@ of given @node_type@.
 bindControl_get_font :: MethodBind
 bindControl_get_font
   = unsafePerformIO $
@@ -1849,7 +1945,7 @@ bindControl_get_font
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Returns a font from assigned @Theme@ with given @name@ and associated with @Control@ of given @type@.
+-- | Returns a font from assigned @Theme@ with given @name@ and associated with @Control@ of given @node_type@.
 get_font ::
            (Control :< cls, Object :< cls) =>
            cls -> GodotString -> Maybe GodotString -> IO Font
@@ -1975,7 +2071,7 @@ instance NodeMethod Control "get_h_size_flags" '[] (IO Int) where
 
 {-# NOINLINE bindControl_get_icon #-}
 
--- | Returns an icon from assigned @Theme@ with given @name@ and associated with @Control@ of given @type@.
+-- | Returns an icon from assigned @Theme@ with given @name@ and associated with @Control@ of given @node_type@.
 bindControl_get_icon :: MethodBind
 bindControl_get_icon
   = unsafePerformIO $
@@ -1985,7 +2081,7 @@ bindControl_get_icon
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Returns an icon from assigned @Theme@ with given @name@ and associated with @Control@ of given @type@.
+-- | Returns an icon from assigned @Theme@ with given @name@ and associated with @Control@ of given @node_type@.
 get_icon ::
            (Control :< cls, Object :< cls) =>
            cls -> GodotString -> Maybe GodotString -> IO Texture
@@ -2135,6 +2231,37 @@ instance NodeMethod Control "get_parent_control" '[] (IO Control)
          where
         nodeMethod = Godot.Core.Control.get_parent_control
 
+{-# NOINLINE bindControl_get_pass_on_modal_close_click #-}
+
+-- | Enables whether input should propagate when you close the control as modal.
+--   			If @false@, stops event handling at the viewport input event handling. The viewport first hides the modal and after marks the input as handled.
+bindControl_get_pass_on_modal_close_click :: MethodBind
+bindControl_get_pass_on_modal_close_click
+  = unsafePerformIO $
+      withCString "Control" $
+        \ clsNamePtr ->
+          withCString "get_pass_on_modal_close_click" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Enables whether input should propagate when you close the control as modal.
+--   			If @false@, stops event handling at the viewport input event handling. The viewport first hides the modal and after marks the input as handled.
+get_pass_on_modal_close_click ::
+                                (Control :< cls, Object :< cls) => cls -> IO Bool
+get_pass_on_modal_close_click cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindControl_get_pass_on_modal_close_click
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod Control "get_pass_on_modal_close_click" '[]
+           (IO Bool)
+         where
+        nodeMethod = Godot.Core.Control.get_pass_on_modal_close_click
+
 {-# NOINLINE bindControl_get_pivot_offset #-}
 
 -- | By default, the node's pivot is its top-left corner. When you change its @rect_scale@, it will scale around this pivot. Set this property to @rect_size@ / 2 to center the pivot in the node's rectangle.
@@ -2265,7 +2392,7 @@ instance NodeMethod Control "get_rotation_degrees" '[] (IO Float)
 {-# NOINLINE bindControl_get_scale #-}
 
 -- | The node's scale, relative to its @rect_size@. Change this property to scale the node around its @rect_pivot_offset@. The Control's @hint_tooltip@ will also scale according to this value.
---   			__Note:__ This property is mainly intended to be used for animation purposes. Text inside the Control will look pixelated or blurry when the Control is scaled. To support multiple resolutions in your project, use an appropriate viewport stretch mode as described in the @url=https://docs.godotengine.org/en/latest/tutorials/viewports/multiple_resolutions.html@documentation@/url@ instead of scaling Controls individually.
+--   			__Note:__ This property is mainly intended to be used for animation purposes. Text inside the Control will look pixelated or blurry when the Control is scaled. To support multiple resolutions in your project, use an appropriate viewport stretch mode as described in the @url=https://docs.godotengine.org/en/3.3/tutorials/viewports/multiple_resolutions.html@documentation@/url@ instead of scaling Controls individually.
 --   			__Note:__ If the Control node is a child of a @Container@ node, the scale will be reset to @Vector2(1, 1)@ when the scene is instanced. To set the Control's scale when it's instanced, wait for one frame using @yield(get_tree(), "idle_frame")@ then set its @rect_scale@ property.
 bindControl_get_scale :: MethodBind
 bindControl_get_scale
@@ -2277,7 +2404,7 @@ bindControl_get_scale
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
 -- | The node's scale, relative to its @rect_size@. Change this property to scale the node around its @rect_pivot_offset@. The Control's @hint_tooltip@ will also scale according to this value.
---   			__Note:__ This property is mainly intended to be used for animation purposes. Text inside the Control will look pixelated or blurry when the Control is scaled. To support multiple resolutions in your project, use an appropriate viewport stretch mode as described in the @url=https://docs.godotengine.org/en/latest/tutorials/viewports/multiple_resolutions.html@documentation@/url@ instead of scaling Controls individually.
+--   			__Note:__ This property is mainly intended to be used for animation purposes. Text inside the Control will look pixelated or blurry when the Control is scaled. To support multiple resolutions in your project, use an appropriate viewport stretch mode as described in the @url=https://docs.godotengine.org/en/3.3/tutorials/viewports/multiple_resolutions.html@documentation@/url@ instead of scaling Controls individually.
 --   			__Note:__ If the Control node is a child of a @Container@ node, the scale will be reset to @Vector2(1, 1)@ when the scene is instanced. To set the Control's scale when it's instanced, wait for one frame using @yield(get_tree(), "idle_frame")@ then set its @rect_scale@ property.
 get_scale :: (Control :< cls, Object :< cls) => cls -> IO Vector2
 get_scale cls
@@ -2342,7 +2469,7 @@ instance NodeMethod Control "get_stretch_ratio" '[] (IO Float)
 
 {-# NOINLINE bindControl_get_stylebox #-}
 
--- | Returns a @StyleBox@ from assigned @Theme@ with given @name@ and associated with @Control@ of given @type@.
+-- | Returns a @StyleBox@ from assigned @Theme@ with given @name@ and associated with @Control@ of given @node_type@.
 bindControl_get_stylebox :: MethodBind
 bindControl_get_stylebox
   = unsafePerformIO $
@@ -2352,7 +2479,7 @@ bindControl_get_stylebox
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Returns a @StyleBox@ from assigned @Theme@ with given @name@ and associated with @Control@ of given @type@.
+-- | Returns a @StyleBox@ from assigned @Theme@ with given @name@ and associated with @Control@ of given @node_type@.
 get_stylebox ::
                (Control :< cls, Object :< cls) =>
                cls -> GodotString -> Maybe GodotString -> IO StyleBox
@@ -2541,7 +2668,7 @@ instance NodeMethod Control "grab_focus" '[] (IO ()) where
 
 {-# NOINLINE bindControl_has_color #-}
 
--- | Returns @true@ if @Color@ with given @name@ and associated with @Control@ of given @type@ exists in assigned @Theme@.
+-- | Returns @true@ if @Color@ with given @name@ and associated with @Control@ of given @node_type@ exists in assigned @Theme@.
 bindControl_has_color :: MethodBind
 bindControl_has_color
   = unsafePerformIO $
@@ -2551,7 +2678,7 @@ bindControl_has_color
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Returns @true@ if @Color@ with given @name@ and associated with @Control@ of given @type@ exists in assigned @Theme@.
+-- | Returns @true@ if @Color@ with given @name@ and associated with @Control@ of given @node_type@ exists in assigned @Theme@.
 has_color ::
             (Control :< cls, Object :< cls) =>
             cls -> GodotString -> Maybe GodotString -> IO Bool
@@ -2599,7 +2726,7 @@ instance NodeMethod Control "has_color_override" '[GodotString]
 
 {-# NOINLINE bindControl_has_constant #-}
 
--- | Returns @true@ if constant with given @name@ and associated with @Control@ of given @type@ exists in assigned @Theme@.
+-- | Returns @true@ if constant with given @name@ and associated with @Control@ of given @node_type@ exists in assigned @Theme@.
 bindControl_has_constant :: MethodBind
 bindControl_has_constant
   = unsafePerformIO $
@@ -2609,7 +2736,7 @@ bindControl_has_constant
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Returns @true@ if constant with given @name@ and associated with @Control@ of given @type@ exists in assigned @Theme@.
+-- | Returns @true@ if constant with given @name@ and associated with @Control@ of given @node_type@ exists in assigned @Theme@.
 has_constant ::
                (Control :< cls, Object :< cls) =>
                cls -> GodotString -> Maybe GodotString -> IO Bool
@@ -2682,7 +2809,7 @@ instance NodeMethod Control "has_focus" '[] (IO Bool) where
 
 {-# NOINLINE bindControl_has_font #-}
 
--- | Returns @true@ if font with given @name@ and associated with @Control@ of given @type@ exists in assigned @Theme@.
+-- | Returns @true@ if font with given @name@ and associated with @Control@ of given @node_type@ exists in assigned @Theme@.
 bindControl_has_font :: MethodBind
 bindControl_has_font
   = unsafePerformIO $
@@ -2692,7 +2819,7 @@ bindControl_has_font
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Returns @true@ if font with given @name@ and associated with @Control@ of given @type@ exists in assigned @Theme@.
+-- | Returns @true@ if font with given @name@ and associated with @Control@ of given @node_type@ exists in assigned @Theme@.
 has_font ::
            (Control :< cls, Object :< cls) =>
            cls -> GodotString -> Maybe GodotString -> IO Bool
@@ -2739,7 +2866,7 @@ instance NodeMethod Control "has_font_override" '[GodotString]
 
 {-# NOINLINE bindControl_has_icon #-}
 
--- | Returns @true@ if icon with given @name@ and associated with @Control@ of given @type@ exists in assigned @Theme@.
+-- | Returns @true@ if icon with given @name@ and associated with @Control@ of given @node_type@ exists in assigned @Theme@.
 bindControl_has_icon :: MethodBind
 bindControl_has_icon
   = unsafePerformIO $
@@ -2749,7 +2876,7 @@ bindControl_has_icon
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Returns @true@ if icon with given @name@ and associated with @Control@ of given @type@ exists in assigned @Theme@.
+-- | Returns @true@ if icon with given @name@ and associated with @Control@ of given @node_type@ exists in assigned @Theme@.
 has_icon ::
            (Control :< cls, Object :< cls) =>
            cls -> GodotString -> Maybe GodotString -> IO Bool
@@ -2853,7 +2980,7 @@ instance NodeMethod Control "has_shader_override" '[GodotString]
 
 {-# NOINLINE bindControl_has_stylebox #-}
 
--- | Returns @true@ if @StyleBox@ with given @name@ and associated with @Control@ of given @type@ exists in assigned @Theme@.
+-- | Returns @true@ if @StyleBox@ with given @name@ and associated with @Control@ of given @node_type@ exists in assigned @Theme@.
 bindControl_has_stylebox :: MethodBind
 bindControl_has_stylebox
   = unsafePerformIO $
@@ -2863,7 +2990,7 @@ bindControl_has_stylebox
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Returns @true@ if @StyleBox@ with given @name@ and associated with @Control@ of given @type@ exists in assigned @Theme@.
+-- | Returns @true@ if @StyleBox@ with given @name@ and associated with @Control@ of given @node_type@ exists in assigned @Theme@.
 has_stylebox ::
                (Control :< cls, Object :< cls) =>
                cls -> GodotString -> Maybe GodotString -> IO Bool
@@ -3315,7 +3442,7 @@ instance NodeMethod Control "set_drag_forwarding" '[Control]
 
 {-# NOINLINE bindControl_set_drag_preview #-}
 
--- | Shows the given control at the mouse pointer. A good time to call this method is in @method get_drag_data@. The control must not be in the scene tree.
+-- | Shows the given control at the mouse pointer. A good time to call this method is in @method get_drag_data@. The control must not be in the scene tree. You should not free the control, and you should not keep a reference to the control beyond the duration of the drag. It will be deleted automatically after the drag has ended.
 --   				
 --   @
 --   
@@ -3339,7 +3466,7 @@ bindControl_set_drag_preview
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Shows the given control at the mouse pointer. A good time to call this method is in @method get_drag_data@. The control must not be in the scene tree.
+-- | Shows the given control at the mouse pointer. A good time to call this method is in @method get_drag_data@. The control must not be in the scene tree. You should not free the control, and you should not keep a reference to the control beyond the duration of the drag. It will be deleted automatically after the drag has ended.
 --   				
 --   @
 --   
@@ -3680,6 +3807,37 @@ set_mouse_filter cls arg1
 instance NodeMethod Control "set_mouse_filter" '[Int] (IO ()) where
         nodeMethod = Godot.Core.Control.set_mouse_filter
 
+{-# NOINLINE bindControl_set_pass_on_modal_close_click #-}
+
+-- | Enables whether input should propagate when you close the control as modal.
+--   			If @false@, stops event handling at the viewport input event handling. The viewport first hides the modal and after marks the input as handled.
+bindControl_set_pass_on_modal_close_click :: MethodBind
+bindControl_set_pass_on_modal_close_click
+  = unsafePerformIO $
+      withCString "Control" $
+        \ clsNamePtr ->
+          withCString "set_pass_on_modal_close_click" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Enables whether input should propagate when you close the control as modal.
+--   			If @false@, stops event handling at the viewport input event handling. The viewport first hides the modal and after marks the input as handled.
+set_pass_on_modal_close_click ::
+                                (Control :< cls, Object :< cls) => cls -> Bool -> IO ()
+set_pass_on_modal_close_click cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindControl_set_pass_on_modal_close_click
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod Control "set_pass_on_modal_close_click" '[Bool]
+           (IO ())
+         where
+        nodeMethod = Godot.Core.Control.set_pass_on_modal_close_click
+
 {-# NOINLINE bindControl_set_pivot_offset #-}
 
 -- | By default, the node's pivot is its top-left corner. When you change its @rect_scale@, it will scale around this pivot. Set this property to @rect_size@ / 2 to center the pivot in the node's rectangle.
@@ -3794,7 +3952,7 @@ instance NodeMethod Control "set_rotation_degrees" '[Float] (IO ())
 {-# NOINLINE bindControl_set_scale #-}
 
 -- | The node's scale, relative to its @rect_size@. Change this property to scale the node around its @rect_pivot_offset@. The Control's @hint_tooltip@ will also scale according to this value.
---   			__Note:__ This property is mainly intended to be used for animation purposes. Text inside the Control will look pixelated or blurry when the Control is scaled. To support multiple resolutions in your project, use an appropriate viewport stretch mode as described in the @url=https://docs.godotengine.org/en/latest/tutorials/viewports/multiple_resolutions.html@documentation@/url@ instead of scaling Controls individually.
+--   			__Note:__ This property is mainly intended to be used for animation purposes. Text inside the Control will look pixelated or blurry when the Control is scaled. To support multiple resolutions in your project, use an appropriate viewport stretch mode as described in the @url=https://docs.godotengine.org/en/3.3/tutorials/viewports/multiple_resolutions.html@documentation@/url@ instead of scaling Controls individually.
 --   			__Note:__ If the Control node is a child of a @Container@ node, the scale will be reset to @Vector2(1, 1)@ when the scene is instanced. To set the Control's scale when it's instanced, wait for one frame using @yield(get_tree(), "idle_frame")@ then set its @rect_scale@ property.
 bindControl_set_scale :: MethodBind
 bindControl_set_scale
@@ -3806,7 +3964,7 @@ bindControl_set_scale
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
 -- | The node's scale, relative to its @rect_size@. Change this property to scale the node around its @rect_pivot_offset@. The Control's @hint_tooltip@ will also scale according to this value.
---   			__Note:__ This property is mainly intended to be used for animation purposes. Text inside the Control will look pixelated or blurry when the Control is scaled. To support multiple resolutions in your project, use an appropriate viewport stretch mode as described in the @url=https://docs.godotengine.org/en/latest/tutorials/viewports/multiple_resolutions.html@documentation@/url@ instead of scaling Controls individually.
+--   			__Note:__ This property is mainly intended to be used for animation purposes. Text inside the Control will look pixelated or blurry when the Control is scaled. To support multiple resolutions in your project, use an appropriate viewport stretch mode as described in the @url=https://docs.godotengine.org/en/3.3/tutorials/viewports/multiple_resolutions.html@documentation@/url@ instead of scaling Controls individually.
 --   			__Note:__ If the Control node is a child of a @Container@ node, the scale will be reset to @Vector2(1, 1)@ when the scene is instanced. To set the Control's scale when it's instanced, wait for one frame using @yield(get_tree(), "idle_frame")@ then set its @rect_scale@ property.
 set_scale ::
             (Control :< cls, Object :< cls) => cls -> Vector2 -> IO ()
@@ -3905,6 +4063,18 @@ instance NodeMethod Control "set_theme" '[Theme] (IO ()) where
 {-# NOINLINE bindControl_set_tooltip #-}
 
 -- | Changes the tooltip text. The tooltip appears when the user's mouse cursor stays idle over this control for a few moments, provided that the @mouse_filter@ property is not @MOUSE_FILTER_IGNORE@. You can change the time required for the tooltip to appear with @gui/timers/tooltip_delay_sec@ option in Project Settings.
+--   			The tooltip popup will use either a default implementation, or a custom one that you can provide by overriding @method _make_custom_tooltip@. The default tooltip includes a @PopupPanel@ and @Label@ whose theme properties can be customized using @Theme@ methods with the @"TooltipPanel"@ and @"TooltipLabel"@ respectively. For example:
+--   			
+--   @
+--   
+--   			var style_box = StyleBoxFlat.new()
+--   			style_box.set_bg_color(Color(1, 1, 0))
+--   			style_box.set_border_width_all(2)
+--   			# We assume here that the `theme` property has been assigned a custom Theme beforehand.
+--   			theme.set_stylebox("panel", "TooltipPanel", style_box)
+--   			theme.set_color("font_color", "TooltipLabel", Color(0, 1, 1))
+--   			
+--   @
 bindControl_set_tooltip :: MethodBind
 bindControl_set_tooltip
   = unsafePerformIO $
@@ -3915,6 +4085,18 @@ bindControl_set_tooltip
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
 -- | Changes the tooltip text. The tooltip appears when the user's mouse cursor stays idle over this control for a few moments, provided that the @mouse_filter@ property is not @MOUSE_FILTER_IGNORE@. You can change the time required for the tooltip to appear with @gui/timers/tooltip_delay_sec@ option in Project Settings.
+--   			The tooltip popup will use either a default implementation, or a custom one that you can provide by overriding @method _make_custom_tooltip@. The default tooltip includes a @PopupPanel@ and @Label@ whose theme properties can be customized using @Theme@ methods with the @"TooltipPanel"@ and @"TooltipLabel"@ respectively. For example:
+--   			
+--   @
+--   
+--   			var style_box = StyleBoxFlat.new()
+--   			style_box.set_bg_color(Color(1, 1, 0))
+--   			style_box.set_border_width_all(2)
+--   			# We assume here that the `theme` property has been assigned a custom Theme beforehand.
+--   			theme.set_stylebox("panel", "TooltipPanel", style_box)
+--   			theme.set_color("font_color", "TooltipLabel", Color(0, 1, 1))
+--   			
+--   @
 set_tooltip ::
               (Control :< cls, Object :< cls) => cls -> GodotString -> IO ()
 set_tooltip cls arg1

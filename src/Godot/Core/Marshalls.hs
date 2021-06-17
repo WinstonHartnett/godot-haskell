@@ -19,7 +19,7 @@ import Data.Colour.SRGB(sRGB)
 import System.IO.Unsafe
 import Godot.Gdnative.Internal
 import Godot.Api.Types
-import Godot.Core.Reference()
+import Godot.Core.Object()
 
 {-# NOINLINE bindMarshalls_base64_to_raw #-}
 

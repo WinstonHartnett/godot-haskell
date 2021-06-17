@@ -24,7 +24,8 @@ module Godot.Core.Object
         Godot.Core.Object.get_property_list, Godot.Core.Object.get_script,
         Godot.Core.Object.get_signal_connection_list,
         Godot.Core.Object.get_signal_list, Godot.Core.Object.has_meta,
-        Godot.Core.Object.has_method, Godot.Core.Object.has_user_signal,
+        Godot.Core.Object.has_method, Godot.Core.Object.has_signal,
+        Godot.Core.Object.has_user_signal,
         Godot.Core.Object.is_blocking_signals, Godot.Core.Object.is_class,
         Godot.Core.Object.is_connected,
         Godot.Core.Object.is_queued_for_deletion,
@@ -576,7 +577,8 @@ instance NodeMethod Object "emit_signal"
 
 {-# NOINLINE bindObject_free #-}
 
--- | Deletes the object from memory. Any pre-existing reference to the freed object will become invalid, e.g. @is_instance_valid(object)@ will return @false@.
+-- | Deletes the object from memory immediately. For @Node@s, you may want to use @method Node.queue_free@ to queue the node for safe deletion at the end of the current frame.
+--   				__Important:__ If you have a variable pointing to an object, it will @i@not@/i@ be assigned to @null@ once the object is freed. Instead, it will point to a @i@previously freed instance@/i@ and you should validate it with @method @GDScript.is_instance_valid@ before attempting to call its methods or access its properties.
 bindObject_free :: MethodBind
 bindObject_free
   = unsafePerformIO $
@@ -586,7 +588,8 @@ bindObject_free
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Deletes the object from memory. Any pre-existing reference to the freed object will become invalid, e.g. @is_instance_valid(object)@ will return @false@.
+-- | Deletes the object from memory immediately. For @Node@s, you may want to use @method Node.queue_free@ to queue the node for safe deletion at the end of the current frame.
+--   				__Important:__ If you have a variable pointing to an object, it will @i@not@/i@ be assigned to @null@ once the object is freed. Instead, it will point to a @i@previously freed instance@/i@ and you should validate it with @method @GDScript.is_instance_valid@ before attempting to call its methods or access its properties.
 free :: (Object :< cls, Object :< cls) => cls -> IO ()
 free cls
   = withVariantArray []
@@ -978,6 +981,32 @@ has_method cls arg1
 instance NodeMethod Object "has_method" '[GodotString] (IO Bool)
          where
         nodeMethod = Godot.Core.Object.has_method
+
+{-# NOINLINE bindObject_has_signal #-}
+
+-- | Returns @true@ if the given @signal@ exists.
+bindObject_has_signal :: MethodBind
+bindObject_has_signal
+  = unsafePerformIO $
+      withCString "Object" $
+        \ clsNamePtr ->
+          withCString "has_signal" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Returns @true@ if the given @signal@ exists.
+has_signal ::
+             (Object :< cls, Object :< cls) => cls -> GodotString -> IO Bool
+has_signal cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindObject_has_signal (upcast cls) arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod Object "has_signal" '[GodotString] (IO Bool)
+         where
+        nodeMethod = Godot.Core.Object.has_signal
 
 {-# NOINLINE bindObject_has_user_signal #-}
 

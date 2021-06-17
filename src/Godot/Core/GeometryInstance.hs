@@ -4,14 +4,21 @@
 module Godot.Core.GeometryInstance
        (Godot.Core.GeometryInstance._SHADOW_CASTING_SETTING_SHADOWS_ONLY,
         Godot.Core.GeometryInstance._FLAG_USE_BAKED_LIGHT,
+        Godot.Core.GeometryInstance._LIGHTMAP_SCALE_MAX,
+        Godot.Core.GeometryInstance._LIGHTMAP_SCALE_4X,
         Godot.Core.GeometryInstance._FLAG_MAX,
         Godot.Core.GeometryInstance._SHADOW_CASTING_SETTING_DOUBLE_SIDED,
+        Godot.Core.GeometryInstance._LIGHTMAP_SCALE_8X,
         Godot.Core.GeometryInstance._SHADOW_CASTING_SETTING_OFF,
+        Godot.Core.GeometryInstance._LIGHTMAP_SCALE_2X,
         Godot.Core.GeometryInstance._FLAG_DRAW_NEXT_FRAME_IF_VISIBLE,
+        Godot.Core.GeometryInstance._LIGHTMAP_SCALE_1X,
         Godot.Core.GeometryInstance._SHADOW_CASTING_SETTING_ON,
         Godot.Core.GeometryInstance.get_cast_shadows_setting,
         Godot.Core.GeometryInstance.get_extra_cull_margin,
         Godot.Core.GeometryInstance.get_flag,
+        Godot.Core.GeometryInstance.get_generate_lightmap,
+        Godot.Core.GeometryInstance.get_lightmap_scale,
         Godot.Core.GeometryInstance.get_lod_max_distance,
         Godot.Core.GeometryInstance.get_lod_max_hysteresis,
         Godot.Core.GeometryInstance.get_lod_min_distance,
@@ -21,6 +28,8 @@ module Godot.Core.GeometryInstance
         Godot.Core.GeometryInstance.set_custom_aabb,
         Godot.Core.GeometryInstance.set_extra_cull_margin,
         Godot.Core.GeometryInstance.set_flag,
+        Godot.Core.GeometryInstance.set_generate_lightmap,
+        Godot.Core.GeometryInstance.set_lightmap_scale,
         Godot.Core.GeometryInstance.set_lod_max_distance,
         Godot.Core.GeometryInstance.set_lod_max_hysteresis,
         Godot.Core.GeometryInstance.set_lod_min_distance,
@@ -45,17 +54,32 @@ _SHADOW_CASTING_SETTING_SHADOWS_ONLY = 3
 _FLAG_USE_BAKED_LIGHT :: Int
 _FLAG_USE_BAKED_LIGHT = 0
 
+_LIGHTMAP_SCALE_MAX :: Int
+_LIGHTMAP_SCALE_MAX = 4
+
+_LIGHTMAP_SCALE_4X :: Int
+_LIGHTMAP_SCALE_4X = 2
+
 _FLAG_MAX :: Int
 _FLAG_MAX = 2
 
 _SHADOW_CASTING_SETTING_DOUBLE_SIDED :: Int
 _SHADOW_CASTING_SETTING_DOUBLE_SIDED = 2
 
+_LIGHTMAP_SCALE_8X :: Int
+_LIGHTMAP_SCALE_8X = 3
+
 _SHADOW_CASTING_SETTING_OFF :: Int
 _SHADOW_CASTING_SETTING_OFF = 0
 
+_LIGHTMAP_SCALE_2X :: Int
+_LIGHTMAP_SCALE_2X = 1
+
 _FLAG_DRAW_NEXT_FRAME_IF_VISIBLE :: Int
 _FLAG_DRAW_NEXT_FRAME_IF_VISIBLE = 1
+
+_LIGHTMAP_SCALE_1X :: Int
+_LIGHTMAP_SCALE_1X = 0
 
 _SHADOW_CASTING_SETTING_ON :: Int
 _SHADOW_CASTING_SETTING_ON = 1
@@ -71,6 +95,19 @@ instance NodeProperty GeometryInstance "extra_cull_margin" Float
          where
         nodeProperty
           = (get_extra_cull_margin, wrapDroppingSetter set_extra_cull_margin,
+             Nothing)
+
+instance NodeProperty GeometryInstance "generate_lightmap" Bool
+           'False
+         where
+        nodeProperty
+          = (get_generate_lightmap, wrapDroppingSetter set_generate_lightmap,
+             Nothing)
+
+instance NodeProperty GeometryInstance "lightmap_scale" Int 'False
+         where
+        nodeProperty
+          = (get_lightmap_scale, wrapDroppingSetter set_lightmap_scale,
              Nothing)
 
 instance NodeProperty GeometryInstance "lod_max_distance" Float
@@ -200,6 +237,64 @@ get_flag cls arg1
 instance NodeMethod GeometryInstance "get_flag" '[Int] (IO Bool)
          where
         nodeMethod = Godot.Core.GeometryInstance.get_flag
+
+{-# NOINLINE bindGeometryInstance_get_generate_lightmap #-}
+
+-- | When disabled, the mesh will be taken into account when computing indirect lighting, but the resulting lightmap will not be saved. Useful for emissive only materials or shadow casters.
+bindGeometryInstance_get_generate_lightmap :: MethodBind
+bindGeometryInstance_get_generate_lightmap
+  = unsafePerformIO $
+      withCString "GeometryInstance" $
+        \ clsNamePtr ->
+          withCString "get_generate_lightmap" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | When disabled, the mesh will be taken into account when computing indirect lighting, but the resulting lightmap will not be saved. Useful for emissive only materials or shadow casters.
+get_generate_lightmap ::
+                        (GeometryInstance :< cls, Object :< cls) => cls -> IO Bool
+get_generate_lightmap cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindGeometryInstance_get_generate_lightmap
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod GeometryInstance "get_generate_lightmap" '[]
+           (IO Bool)
+         where
+        nodeMethod = Godot.Core.GeometryInstance.get_generate_lightmap
+
+{-# NOINLINE bindGeometryInstance_get_lightmap_scale #-}
+
+-- | Scale factor for the generated baked lightmap. Useful for adding detail to certain mesh instances.
+bindGeometryInstance_get_lightmap_scale :: MethodBind
+bindGeometryInstance_get_lightmap_scale
+  = unsafePerformIO $
+      withCString "GeometryInstance" $
+        \ clsNamePtr ->
+          withCString "get_lightmap_scale" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Scale factor for the generated baked lightmap. Useful for adding detail to certain mesh instances.
+get_lightmap_scale ::
+                     (GeometryInstance :< cls, Object :< cls) => cls -> IO Int
+get_lightmap_scale cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindGeometryInstance_get_lightmap_scale
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod GeometryInstance "get_lightmap_scale" '[]
+           (IO Int)
+         where
+        nodeMethod = Godot.Core.GeometryInstance.get_lightmap_scale
 
 {-# NOINLINE bindGeometryInstance_get_lod_max_distance #-}
 
@@ -474,6 +569,65 @@ instance NodeMethod GeometryInstance "set_flag" '[Int, Bool]
            (IO ())
          where
         nodeMethod = Godot.Core.GeometryInstance.set_flag
+
+{-# NOINLINE bindGeometryInstance_set_generate_lightmap #-}
+
+-- | When disabled, the mesh will be taken into account when computing indirect lighting, but the resulting lightmap will not be saved. Useful for emissive only materials or shadow casters.
+bindGeometryInstance_set_generate_lightmap :: MethodBind
+bindGeometryInstance_set_generate_lightmap
+  = unsafePerformIO $
+      withCString "GeometryInstance" $
+        \ clsNamePtr ->
+          withCString "set_generate_lightmap" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | When disabled, the mesh will be taken into account when computing indirect lighting, but the resulting lightmap will not be saved. Useful for emissive only materials or shadow casters.
+set_generate_lightmap ::
+                        (GeometryInstance :< cls, Object :< cls) => cls -> Bool -> IO ()
+set_generate_lightmap cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindGeometryInstance_set_generate_lightmap
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod GeometryInstance "set_generate_lightmap"
+           '[Bool]
+           (IO ())
+         where
+        nodeMethod = Godot.Core.GeometryInstance.set_generate_lightmap
+
+{-# NOINLINE bindGeometryInstance_set_lightmap_scale #-}
+
+-- | Scale factor for the generated baked lightmap. Useful for adding detail to certain mesh instances.
+bindGeometryInstance_set_lightmap_scale :: MethodBind
+bindGeometryInstance_set_lightmap_scale
+  = unsafePerformIO $
+      withCString "GeometryInstance" $
+        \ clsNamePtr ->
+          withCString "set_lightmap_scale" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Scale factor for the generated baked lightmap. Useful for adding detail to certain mesh instances.
+set_lightmap_scale ::
+                     (GeometryInstance :< cls, Object :< cls) => cls -> Int -> IO ()
+set_lightmap_scale cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindGeometryInstance_set_lightmap_scale
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod GeometryInstance "set_lightmap_scale" '[Int]
+           (IO ())
+         where
+        nodeMethod = Godot.Core.GeometryInstance.set_lightmap_scale
 
 {-# NOINLINE bindGeometryInstance_set_lod_max_distance #-}
 

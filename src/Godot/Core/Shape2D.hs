@@ -6,7 +6,7 @@ module Godot.Core.Shape2D
         Godot.Core.Shape2D.collide_and_get_contacts,
         Godot.Core.Shape2D.collide_with_motion,
         Godot.Core.Shape2D.collide_with_motion_and_get_contacts,
-        Godot.Core.Shape2D.get_custom_solver_bias,
+        Godot.Core.Shape2D.draw, Godot.Core.Shape2D.get_custom_solver_bias,
         Godot.Core.Shape2D.set_custom_solver_bias)
        where
 import Data.Coerce
@@ -164,6 +164,30 @@ instance NodeMethod Shape2D "collide_with_motion_and_get_contacts"
          where
         nodeMethod
           = Godot.Core.Shape2D.collide_with_motion_and_get_contacts
+
+{-# NOINLINE bindShape2D_draw #-}
+
+-- | Draws a solid shape onto a @CanvasItem@ with the @VisualServer@ API filled with the specified @color@. The exact drawing method is specific for each shape and cannot be configured.
+bindShape2D_draw :: MethodBind
+bindShape2D_draw
+  = unsafePerformIO $
+      withCString "Shape2D" $
+        \ clsNamePtr ->
+          withCString "draw" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Draws a solid shape onto a @CanvasItem@ with the @VisualServer@ API filled with the specified @color@. The exact drawing method is specific for each shape and cannot be configured.
+draw ::
+       (Shape2D :< cls, Object :< cls) => cls -> Rid -> Color -> IO ()
+draw cls arg1 arg2
+  = withVariantArray [toVariant arg1, toVariant arg2]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindShape2D_draw (upcast cls) arrPtr len >>=
+           \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod Shape2D "draw" '[Rid, Color] (IO ()) where
+        nodeMethod = Godot.Core.Shape2D.draw
 
 {-# NOINLINE bindShape2D_get_custom_solver_bias #-}
 

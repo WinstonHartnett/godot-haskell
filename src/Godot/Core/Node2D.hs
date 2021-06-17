@@ -439,7 +439,7 @@ instance NodeMethod Node2D "get_scale" '[] (IO Vector2) where
 
 {-# NOINLINE bindNode2D_get_z_index #-}
 
--- | Z index. Controls the order in which the nodes render. A node with a higher Z index will display in front of others.
+-- | Z index. Controls the order in which the nodes render. A node with a higher Z index will display in front of others. Must be between @VisualServer.CANVAS_ITEM_Z_MIN@ and @VisualServer.CANVAS_ITEM_Z_MAX@ (inclusive).
 bindNode2D_get_z_index :: MethodBind
 bindNode2D_get_z_index
   = unsafePerformIO $
@@ -449,7 +449,7 @@ bindNode2D_get_z_index
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Z index. Controls the order in which the nodes render. A node with a higher Z index will display in front of others.
+-- | Z index. Controls the order in which the nodes render. A node with a higher Z index will display in front of others. Must be between @VisualServer.CANVAS_ITEM_Z_MIN@ and @VisualServer.CANVAS_ITEM_Z_MAX@ (inclusive).
 get_z_index :: (Node2D :< cls, Object :< cls) => cls -> IO Int
 get_z_index cls
   = withVariantArray []
@@ -911,7 +911,7 @@ instance NodeMethod Node2D "set_z_as_relative" '[Bool] (IO ())
 
 {-# NOINLINE bindNode2D_set_z_index #-}
 
--- | Z index. Controls the order in which the nodes render. A node with a higher Z index will display in front of others.
+-- | Z index. Controls the order in which the nodes render. A node with a higher Z index will display in front of others. Must be between @VisualServer.CANVAS_ITEM_Z_MIN@ and @VisualServer.CANVAS_ITEM_Z_MAX@ (inclusive).
 bindNode2D_set_z_index :: MethodBind
 bindNode2D_set_z_index
   = unsafePerformIO $
@@ -921,7 +921,7 @@ bindNode2D_set_z_index
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Z index. Controls the order in which the nodes render. A node with a higher Z index will display in front of others.
+-- | Z index. Controls the order in which the nodes render. A node with a higher Z index will display in front of others. Must be between @VisualServer.CANVAS_ITEM_Z_MIN@ and @VisualServer.CANVAS_ITEM_Z_MAX@ (inclusive).
 set_z_index ::
               (Node2D :< cls, Object :< cls) => cls -> Int -> IO ()
 set_z_index cls arg1

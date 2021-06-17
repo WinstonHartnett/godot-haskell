@@ -4,10 +4,12 @@
 module Godot.Core.CollisionPolygon
        (Godot.Core.CollisionPolygon._is_editable_3d_polygon,
         Godot.Core.CollisionPolygon.get_depth,
+        Godot.Core.CollisionPolygon.get_margin,
         Godot.Core.CollisionPolygon.get_polygon,
         Godot.Core.CollisionPolygon.is_disabled,
         Godot.Core.CollisionPolygon.set_depth,
         Godot.Core.CollisionPolygon.set_disabled,
+        Godot.Core.CollisionPolygon.set_margin,
         Godot.Core.CollisionPolygon.set_polygon)
        where
 import Data.Coerce
@@ -28,6 +30,9 @@ instance NodeProperty CollisionPolygon "depth" Float 'False where
 instance NodeProperty CollisionPolygon "disabled" Bool 'False where
         nodeProperty
           = (is_disabled, wrapDroppingSetter set_disabled, Nothing)
+
+instance NodeProperty CollisionPolygon "margin" Float 'False where
+        nodeProperty = (get_margin, wrapDroppingSetter set_margin, Nothing)
 
 instance NodeProperty CollisionPolygon "polygon" PoolVector2Array
            'False
@@ -88,6 +93,33 @@ get_depth cls
 instance NodeMethod CollisionPolygon "get_depth" '[] (IO Float)
          where
         nodeMethod = Godot.Core.CollisionPolygon.get_depth
+
+{-# NOINLINE bindCollisionPolygon_get_margin #-}
+
+-- | The collision margin for the generated @Shape@. See @Shape.margin@ for more details.
+bindCollisionPolygon_get_margin :: MethodBind
+bindCollisionPolygon_get_margin
+  = unsafePerformIO $
+      withCString "CollisionPolygon" $
+        \ clsNamePtr ->
+          withCString "get_margin" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | The collision margin for the generated @Shape@. See @Shape.margin@ for more details.
+get_margin ::
+             (CollisionPolygon :< cls, Object :< cls) => cls -> IO Float
+get_margin cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindCollisionPolygon_get_margin (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod CollisionPolygon "get_margin" '[] (IO Float)
+         where
+        nodeMethod = Godot.Core.CollisionPolygon.get_margin
 
 {-# NOINLINE bindCollisionPolygon_get_polygon #-}
 
@@ -203,6 +235,33 @@ set_disabled cls arg1
 instance NodeMethod CollisionPolygon "set_disabled" '[Bool] (IO ())
          where
         nodeMethod = Godot.Core.CollisionPolygon.set_disabled
+
+{-# NOINLINE bindCollisionPolygon_set_margin #-}
+
+-- | The collision margin for the generated @Shape@. See @Shape.margin@ for more details.
+bindCollisionPolygon_set_margin :: MethodBind
+bindCollisionPolygon_set_margin
+  = unsafePerformIO $
+      withCString "CollisionPolygon" $
+        \ clsNamePtr ->
+          withCString "set_margin" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | The collision margin for the generated @Shape@. See @Shape.margin@ for more details.
+set_margin ::
+             (CollisionPolygon :< cls, Object :< cls) => cls -> Float -> IO ()
+set_margin cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindCollisionPolygon_set_margin (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod CollisionPolygon "set_margin" '[Float] (IO ())
+         where
+        nodeMethod = Godot.Core.CollisionPolygon.set_margin
 
 {-# NOINLINE bindCollisionPolygon_set_polygon #-}
 

@@ -342,9 +342,11 @@ bindEditorSpatialGizmoPlugin_get_material
 -- | Gets material from the internal list of materials. If an @EditorSpatialGizmo@ is provided, it will try to get the corresponding variant (selected and/or editable).
 get_material ::
                (EditorSpatialGizmoPlugin :< cls, Object :< cls) =>
-               cls -> GodotString -> EditorSpatialGizmo -> IO SpatialMaterial
+               cls ->
+                 GodotString -> Maybe EditorSpatialGizmo -> IO SpatialMaterial
 get_material cls arg1 arg2
-  = withVariantArray [toVariant arg1, toVariant arg2]
+  = withVariantArray
+      [toVariant arg1, maybe VariantNil toVariant arg2]
       (\ (arrPtr, len) ->
          godot_method_bind_call bindEditorSpatialGizmoPlugin_get_material
            (upcast cls)
@@ -353,7 +355,7 @@ get_material cls arg1 arg2
            >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
 
 instance NodeMethod EditorSpatialGizmoPlugin "get_material"
-           '[GodotString, EditorSpatialGizmo]
+           '[GodotString, Maybe EditorSpatialGizmo]
            (IO SpatialMaterial)
          where
         nodeMethod = Godot.Tools.EditorSpatialGizmoPlugin.get_material
@@ -404,8 +406,7 @@ bindEditorSpatialGizmoPlugin_get_priority
 -- | Override this method to set the gizmo's priority. Higher values correspond to higher priority. If a gizmo with higher priority conflicts with another gizmo, only the gizmo with higher priority will be used.
 --   				All built-in editor gizmos return a priority of @-1@. If not overridden, this method will return @0@, which means custom gizmos will automatically override built-in gizmos.
 get_priority ::
-               (EditorSpatialGizmoPlugin :< cls, Object :< cls) =>
-               cls -> IO GodotString
+               (EditorSpatialGizmoPlugin :< cls, Object :< cls) => cls -> IO Int
 get_priority cls
   = withVariantArray []
       (\ (arrPtr, len) ->
@@ -416,7 +417,7 @@ get_priority cls
            >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
 
 instance NodeMethod EditorSpatialGizmoPlugin "get_priority" '[]
-           (IO GodotString)
+           (IO Int)
          where
         nodeMethod = Godot.Tools.EditorSpatialGizmoPlugin.get_priority
 
@@ -487,7 +488,7 @@ instance NodeMethod EditorSpatialGizmoPlugin
 {-# NOINLINE bindEditorSpatialGizmoPlugin_is_selectable_when_hidden
              #-}
 
--- | Override this method to define whether Spatial with this gizmo should be selecteble even when the gizmo is hidden.
+-- | Override this method to define whether a Spatial with this gizmo should be selectable even when the gizmo is hidden.
 bindEditorSpatialGizmoPlugin_is_selectable_when_hidden ::
                                                        MethodBind
 bindEditorSpatialGizmoPlugin_is_selectable_when_hidden
@@ -498,7 +499,7 @@ bindEditorSpatialGizmoPlugin_is_selectable_when_hidden
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Override this method to define whether Spatial with this gizmo should be selecteble even when the gizmo is hidden.
+-- | Override this method to define whether a Spatial with this gizmo should be selectable even when the gizmo is hidden.
 is_selectable_when_hidden ::
                             (EditorSpatialGizmoPlugin :< cls, Object :< cls) => cls -> IO Bool
 is_selectable_when_hidden cls

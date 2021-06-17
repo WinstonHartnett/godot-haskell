@@ -3,17 +3,21 @@
   MultiParamTypeClasses #-}
 module Godot.Core.MeshInstance
        (Godot.Core.MeshInstance._mesh_changed,
+        Godot.Core.MeshInstance._update_skinning,
         Godot.Core.MeshInstance.create_convex_collision,
         Godot.Core.MeshInstance.create_debug_tangents,
         Godot.Core.MeshInstance.create_trimesh_collision,
+        Godot.Core.MeshInstance.get_active_material,
         Godot.Core.MeshInstance.get_mesh,
         Godot.Core.MeshInstance.get_skeleton_path,
         Godot.Core.MeshInstance.get_skin,
         Godot.Core.MeshInstance.get_surface_material,
         Godot.Core.MeshInstance.get_surface_material_count,
+        Godot.Core.MeshInstance.is_software_skinning_transform_normals_enabled,
         Godot.Core.MeshInstance.set_mesh,
         Godot.Core.MeshInstance.set_skeleton_path,
         Godot.Core.MeshInstance.set_skin,
+        Godot.Core.MeshInstance.set_software_skinning_transform_normals,
         Godot.Core.MeshInstance.set_surface_material)
        where
 import Data.Coerce
@@ -39,6 +43,16 @@ instance NodeProperty MeshInstance "skeleton" NodePath 'False where
 instance NodeProperty MeshInstance "skin" Skin 'False where
         nodeProperty = (get_skin, wrapDroppingSetter set_skin, Nothing)
 
+instance NodeProperty MeshInstance
+           "software_skinning_transform_normals"
+           Bool
+           'False
+         where
+        nodeProperty
+          = (is_software_skinning_transform_normals_enabled,
+             wrapDroppingSetter set_software_skinning_transform_normals,
+             Nothing)
+
 {-# NOINLINE bindMeshInstance__mesh_changed #-}
 
 bindMeshInstance__mesh_changed :: MethodBind
@@ -62,6 +76,32 @@ _mesh_changed cls
 
 instance NodeMethod MeshInstance "_mesh_changed" '[] (IO ()) where
         nodeMethod = Godot.Core.MeshInstance._mesh_changed
+
+{-# NOINLINE bindMeshInstance__update_skinning #-}
+
+bindMeshInstance__update_skinning :: MethodBind
+bindMeshInstance__update_skinning
+  = unsafePerformIO $
+      withCString "MeshInstance" $
+        \ clsNamePtr ->
+          withCString "_update_skinning" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+_update_skinning ::
+                   (MeshInstance :< cls, Object :< cls) => cls -> IO ()
+_update_skinning cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindMeshInstance__update_skinning
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod MeshInstance "_update_skinning" '[] (IO ())
+         where
+        nodeMethod = Godot.Core.MeshInstance._update_skinning
 
 {-# NOINLINE bindMeshInstance_create_convex_collision #-}
 
@@ -149,6 +189,35 @@ instance NodeMethod MeshInstance "create_trimesh_collision" '[]
            (IO ())
          where
         nodeMethod = Godot.Core.MeshInstance.create_trimesh_collision
+
+{-# NOINLINE bindMeshInstance_get_active_material #-}
+
+-- | Returns the @Material@ that will be used by the @Mesh@ when drawing. This can return the @GeometryInstance.material_override@, the surface override @Material@ defined in this @MeshInstance@, or the surface @Material@ defined in the @Mesh@. For example, if @GeometryInstance.material_override@ is used, all surfaces will return the override material.
+bindMeshInstance_get_active_material :: MethodBind
+bindMeshInstance_get_active_material
+  = unsafePerformIO $
+      withCString "MeshInstance" $
+        \ clsNamePtr ->
+          withCString "get_active_material" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Returns the @Material@ that will be used by the @Mesh@ when drawing. This can return the @GeometryInstance.material_override@, the surface override @Material@ defined in this @MeshInstance@, or the surface @Material@ defined in the @Mesh@. For example, if @GeometryInstance.material_override@ is used, all surfaces will return the override material.
+get_active_material ::
+                      (MeshInstance :< cls, Object :< cls) => cls -> Int -> IO Material
+get_active_material cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindMeshInstance_get_active_material
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod MeshInstance "get_active_material" '[Int]
+           (IO Material)
+         where
+        nodeMethod = Godot.Core.MeshInstance.get_active_material
 
 {-# NOINLINE bindMeshInstance_get_mesh #-}
 
@@ -287,6 +356,44 @@ instance NodeMethod MeshInstance "get_surface_material_count" '[]
          where
         nodeMethod = Godot.Core.MeshInstance.get_surface_material_count
 
+{-# NOINLINE bindMeshInstance_is_software_skinning_transform_normals_enabled
+             #-}
+
+-- | If @true@, normals are transformed when software skinning is used. Set to @false@ when normals are not needed for better performance.
+--   			See @ProjectSettings.rendering/quality/skinning/software_skinning_fallback@ for details about how software skinning is enabled.
+bindMeshInstance_is_software_skinning_transform_normals_enabled ::
+                                                                MethodBind
+bindMeshInstance_is_software_skinning_transform_normals_enabled
+  = unsafePerformIO $
+      withCString "MeshInstance" $
+        \ clsNamePtr ->
+          withCString "is_software_skinning_transform_normals_enabled" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | If @true@, normals are transformed when software skinning is used. Set to @false@ when normals are not needed for better performance.
+--   			See @ProjectSettings.rendering/quality/skinning/software_skinning_fallback@ for details about how software skinning is enabled.
+is_software_skinning_transform_normals_enabled ::
+                                                 (MeshInstance :< cls, Object :< cls) =>
+                                                 cls -> IO Bool
+is_software_skinning_transform_normals_enabled cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call
+           bindMeshInstance_is_software_skinning_transform_normals_enabled
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod MeshInstance
+           "is_software_skinning_transform_normals_enabled"
+           '[]
+           (IO Bool)
+         where
+        nodeMethod
+          = Godot.Core.MeshInstance.is_software_skinning_transform_normals_enabled
+
 {-# NOINLINE bindMeshInstance_set_mesh #-}
 
 -- | The @Mesh@ resource for the instance.
@@ -367,6 +474,44 @@ set_skin cls arg1
 
 instance NodeMethod MeshInstance "set_skin" '[Skin] (IO ()) where
         nodeMethod = Godot.Core.MeshInstance.set_skin
+
+{-# NOINLINE bindMeshInstance_set_software_skinning_transform_normals
+             #-}
+
+-- | If @true@, normals are transformed when software skinning is used. Set to @false@ when normals are not needed for better performance.
+--   			See @ProjectSettings.rendering/quality/skinning/software_skinning_fallback@ for details about how software skinning is enabled.
+bindMeshInstance_set_software_skinning_transform_normals ::
+                                                         MethodBind
+bindMeshInstance_set_software_skinning_transform_normals
+  = unsafePerformIO $
+      withCString "MeshInstance" $
+        \ clsNamePtr ->
+          withCString "set_software_skinning_transform_normals" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | If @true@, normals are transformed when software skinning is used. Set to @false@ when normals are not needed for better performance.
+--   			See @ProjectSettings.rendering/quality/skinning/software_skinning_fallback@ for details about how software skinning is enabled.
+set_software_skinning_transform_normals ::
+                                          (MeshInstance :< cls, Object :< cls) =>
+                                          cls -> Bool -> IO ()
+set_software_skinning_transform_normals cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call
+           bindMeshInstance_set_software_skinning_transform_normals
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod MeshInstance
+           "set_software_skinning_transform_normals"
+           '[Bool]
+           (IO ())
+         where
+        nodeMethod
+          = Godot.Core.MeshInstance.set_software_skinning_transform_normals
 
 {-# NOINLINE bindMeshInstance_set_surface_material #-}
 

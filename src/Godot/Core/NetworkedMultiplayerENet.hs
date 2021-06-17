@@ -19,11 +19,18 @@ module Godot.Core.NetworkedMultiplayerENet
         Godot.Core.NetworkedMultiplayerENet.get_peer_port,
         Godot.Core.NetworkedMultiplayerENet.get_transfer_channel,
         Godot.Core.NetworkedMultiplayerENet.is_always_ordered,
+        Godot.Core.NetworkedMultiplayerENet.is_dtls_enabled,
+        Godot.Core.NetworkedMultiplayerENet.is_dtls_verify_enabled,
         Godot.Core.NetworkedMultiplayerENet.is_server_relay_enabled,
         Godot.Core.NetworkedMultiplayerENet.set_always_ordered,
         Godot.Core.NetworkedMultiplayerENet.set_bind_ip,
         Godot.Core.NetworkedMultiplayerENet.set_channel_count,
         Godot.Core.NetworkedMultiplayerENet.set_compression_mode,
+        Godot.Core.NetworkedMultiplayerENet.set_dtls_certificate,
+        Godot.Core.NetworkedMultiplayerENet.set_dtls_enabled,
+        Godot.Core.NetworkedMultiplayerENet.set_dtls_key,
+        Godot.Core.NetworkedMultiplayerENet.set_dtls_verify_enabled,
+        Godot.Core.NetworkedMultiplayerENet.set_peer_timeout,
         Godot.Core.NetworkedMultiplayerENet.set_server_relay_enabled,
         Godot.Core.NetworkedMultiplayerENet.set_transfer_channel)
        where
@@ -77,6 +84,13 @@ instance NodeProperty NetworkedMultiplayerENet "compression_mode"
           = (get_compression_mode, wrapDroppingSetter set_compression_mode,
              Nothing)
 
+instance NodeProperty NetworkedMultiplayerENet "dtls_verify" Bool
+           'False
+         where
+        nodeProperty
+          = (is_dtls_verify_enabled,
+             wrapDroppingSetter set_dtls_verify_enabled, Nothing)
+
 instance NodeProperty NetworkedMultiplayerENet "server_relay" Bool
            'False
          where
@@ -91,6 +105,12 @@ instance NodeProperty NetworkedMultiplayerENet "transfer_channel"
         nodeProperty
           = (get_transfer_channel, wrapDroppingSetter set_transfer_channel,
              Nothing)
+
+instance NodeProperty NetworkedMultiplayerENet "use_dtls" Bool
+           'False
+         where
+        nodeProperty
+          = (is_dtls_enabled, wrapDroppingSetter set_dtls_enabled, Nothing)
 
 {-# NOINLINE bindNetworkedMultiplayerENet_close_connection #-}
 
@@ -455,6 +475,65 @@ instance NodeMethod NetworkedMultiplayerENet "is_always_ordered"
          where
         nodeMethod = Godot.Core.NetworkedMultiplayerENet.is_always_ordered
 
+{-# NOINLINE bindNetworkedMultiplayerENet_is_dtls_enabled #-}
+
+bindNetworkedMultiplayerENet_is_dtls_enabled :: MethodBind
+bindNetworkedMultiplayerENet_is_dtls_enabled
+  = unsafePerformIO $
+      withCString "NetworkedMultiplayerENet" $
+        \ clsNamePtr ->
+          withCString "is_dtls_enabled" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+is_dtls_enabled ::
+                  (NetworkedMultiplayerENet :< cls, Object :< cls) => cls -> IO Bool
+is_dtls_enabled cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindNetworkedMultiplayerENet_is_dtls_enabled
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod NetworkedMultiplayerENet "is_dtls_enabled" '[]
+           (IO Bool)
+         where
+        nodeMethod = Godot.Core.NetworkedMultiplayerENet.is_dtls_enabled
+
+{-# NOINLINE bindNetworkedMultiplayerENet_is_dtls_verify_enabled
+             #-}
+
+bindNetworkedMultiplayerENet_is_dtls_verify_enabled :: MethodBind
+bindNetworkedMultiplayerENet_is_dtls_verify_enabled
+  = unsafePerformIO $
+      withCString "NetworkedMultiplayerENet" $
+        \ clsNamePtr ->
+          withCString "is_dtls_verify_enabled" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+is_dtls_verify_enabled ::
+                         (NetworkedMultiplayerENet :< cls, Object :< cls) => cls -> IO Bool
+is_dtls_verify_enabled cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call
+           bindNetworkedMultiplayerENet_is_dtls_verify_enabled
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod NetworkedMultiplayerENet
+           "is_dtls_verify_enabled"
+           '[]
+           (IO Bool)
+         where
+        nodeMethod
+          = Godot.Core.NetworkedMultiplayerENet.is_dtls_verify_enabled
+
 {-# NOINLINE bindNetworkedMultiplayerENet_is_server_relay_enabled
              #-}
 
@@ -606,6 +685,160 @@ instance NodeMethod NetworkedMultiplayerENet "set_compression_mode"
          where
         nodeMethod
           = Godot.Core.NetworkedMultiplayerENet.set_compression_mode
+
+{-# NOINLINE bindNetworkedMultiplayerENet_set_dtls_certificate #-}
+
+bindNetworkedMultiplayerENet_set_dtls_certificate :: MethodBind
+bindNetworkedMultiplayerENet_set_dtls_certificate
+  = unsafePerformIO $
+      withCString "NetworkedMultiplayerENet" $
+        \ clsNamePtr ->
+          withCString "set_dtls_certificate" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+set_dtls_certificate ::
+                       (NetworkedMultiplayerENet :< cls, Object :< cls) =>
+                       cls -> X509Certificate -> IO ()
+set_dtls_certificate cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call
+           bindNetworkedMultiplayerENet_set_dtls_certificate
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod NetworkedMultiplayerENet "set_dtls_certificate"
+           '[X509Certificate]
+           (IO ())
+         where
+        nodeMethod
+          = Godot.Core.NetworkedMultiplayerENet.set_dtls_certificate
+
+{-# NOINLINE bindNetworkedMultiplayerENet_set_dtls_enabled #-}
+
+bindNetworkedMultiplayerENet_set_dtls_enabled :: MethodBind
+bindNetworkedMultiplayerENet_set_dtls_enabled
+  = unsafePerformIO $
+      withCString "NetworkedMultiplayerENet" $
+        \ clsNamePtr ->
+          withCString "set_dtls_enabled" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+set_dtls_enabled ::
+                   (NetworkedMultiplayerENet :< cls, Object :< cls) =>
+                   cls -> Bool -> IO ()
+set_dtls_enabled cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call
+           bindNetworkedMultiplayerENet_set_dtls_enabled
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod NetworkedMultiplayerENet "set_dtls_enabled"
+           '[Bool]
+           (IO ())
+         where
+        nodeMethod = Godot.Core.NetworkedMultiplayerENet.set_dtls_enabled
+
+{-# NOINLINE bindNetworkedMultiplayerENet_set_dtls_key #-}
+
+bindNetworkedMultiplayerENet_set_dtls_key :: MethodBind
+bindNetworkedMultiplayerENet_set_dtls_key
+  = unsafePerformIO $
+      withCString "NetworkedMultiplayerENet" $
+        \ clsNamePtr ->
+          withCString "set_dtls_key" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+set_dtls_key ::
+               (NetworkedMultiplayerENet :< cls, Object :< cls) =>
+               cls -> CryptoKey -> IO ()
+set_dtls_key cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindNetworkedMultiplayerENet_set_dtls_key
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod NetworkedMultiplayerENet "set_dtls_key"
+           '[CryptoKey]
+           (IO ())
+         where
+        nodeMethod = Godot.Core.NetworkedMultiplayerENet.set_dtls_key
+
+{-# NOINLINE bindNetworkedMultiplayerENet_set_dtls_verify_enabled
+             #-}
+
+bindNetworkedMultiplayerENet_set_dtls_verify_enabled :: MethodBind
+bindNetworkedMultiplayerENet_set_dtls_verify_enabled
+  = unsafePerformIO $
+      withCString "NetworkedMultiplayerENet" $
+        \ clsNamePtr ->
+          withCString "set_dtls_verify_enabled" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+set_dtls_verify_enabled ::
+                          (NetworkedMultiplayerENet :< cls, Object :< cls) =>
+                          cls -> Bool -> IO ()
+set_dtls_verify_enabled cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call
+           bindNetworkedMultiplayerENet_set_dtls_verify_enabled
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod NetworkedMultiplayerENet
+           "set_dtls_verify_enabled"
+           '[Bool]
+           (IO ())
+         where
+        nodeMethod
+          = Godot.Core.NetworkedMultiplayerENet.set_dtls_verify_enabled
+
+{-# NOINLINE bindNetworkedMultiplayerENet_set_peer_timeout #-}
+
+bindNetworkedMultiplayerENet_set_peer_timeout :: MethodBind
+bindNetworkedMultiplayerENet_set_peer_timeout
+  = unsafePerformIO $
+      withCString "NetworkedMultiplayerENet" $
+        \ clsNamePtr ->
+          withCString "set_peer_timeout" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+set_peer_timeout ::
+                   (NetworkedMultiplayerENet :< cls, Object :< cls) =>
+                   cls -> Int -> Int -> Int -> Int -> IO ()
+set_peer_timeout cls arg1 arg2 arg3 arg4
+  = withVariantArray
+      [toVariant arg1, toVariant arg2, toVariant arg3, toVariant arg4]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call
+           bindNetworkedMultiplayerENet_set_peer_timeout
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod NetworkedMultiplayerENet "set_peer_timeout"
+           '[Int, Int, Int, Int]
+           (IO ())
+         where
+        nodeMethod = Godot.Core.NetworkedMultiplayerENet.set_peer_timeout
 
 {-# NOINLINE bindNetworkedMultiplayerENet_set_server_relay_enabled
              #-}

@@ -14,7 +14,10 @@ module Godot.Core.VisualShaderNodeCustom
         Godot.Core.VisualShaderNodeCustom._get_output_port_name,
         Godot.Core.VisualShaderNodeCustom._get_output_port_type,
         Godot.Core.VisualShaderNodeCustom._get_return_icon_type,
-        Godot.Core.VisualShaderNodeCustom._get_subcategory)
+        Godot.Core.VisualShaderNodeCustom._get_subcategory,
+        Godot.Core.VisualShaderNodeCustom._is_initialized,
+        Godot.Core.VisualShaderNodeCustom._set_initialized,
+        Godot.Core.VisualShaderNodeCustom._set_input_port_default_value)
        where
 import Data.Coerce
 import Foreign.C
@@ -28,9 +31,15 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.VisualShaderNode()
 
+instance NodeProperty VisualShaderNodeCustom "initialized" Bool
+           'False
+         where
+        nodeProperty
+          = (_is_initialized, wrapDroppingSetter _set_initialized, Nothing)
+
 {-# NOINLINE bindVisualShaderNodeCustom__get_category #-}
 
--- | Override this method to define the category of the associated custom node in the Visual Shader Editor's members dialog.
+-- | Override this method to define the category of the associated custom node in the Visual Shader Editor's members dialog. The path may look like @"MyGame/MyFunctions/Noise"@.
 --   				Defining this method is __optional__. If not overridden, the node will be filed under the "Custom" category.
 bindVisualShaderNodeCustom__get_category :: MethodBind
 bindVisualShaderNodeCustom__get_category
@@ -41,7 +50,7 @@ bindVisualShaderNodeCustom__get_category
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Override this method to define the category of the associated custom node in the Visual Shader Editor's members dialog.
+-- | Override this method to define the category of the associated custom node in the Visual Shader Editor's members dialog. The path may look like @"MyGame/MyFunctions/Noise"@.
 --   				Defining this method is __optional__. If not overridden, the node will be filed under the "Custom" category.
 _get_category ::
                 (VisualShaderNodeCustom :< cls, Object :< cls) =>
@@ -472,3 +481,93 @@ instance NodeMethod VisualShaderNodeCustom "_get_subcategory" '[]
            (IO GodotString)
          where
         nodeMethod = Godot.Core.VisualShaderNodeCustom._get_subcategory
+
+{-# NOINLINE bindVisualShaderNodeCustom__is_initialized #-}
+
+bindVisualShaderNodeCustom__is_initialized :: MethodBind
+bindVisualShaderNodeCustom__is_initialized
+  = unsafePerformIO $
+      withCString "VisualShaderNodeCustom" $
+        \ clsNamePtr ->
+          withCString "_is_initialized" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+_is_initialized ::
+                  (VisualShaderNodeCustom :< cls, Object :< cls) => cls -> IO Bool
+_is_initialized cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindVisualShaderNodeCustom__is_initialized
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod VisualShaderNodeCustom "_is_initialized" '[]
+           (IO Bool)
+         where
+        nodeMethod = Godot.Core.VisualShaderNodeCustom._is_initialized
+
+{-# NOINLINE bindVisualShaderNodeCustom__set_initialized #-}
+
+bindVisualShaderNodeCustom__set_initialized :: MethodBind
+bindVisualShaderNodeCustom__set_initialized
+  = unsafePerformIO $
+      withCString "VisualShaderNodeCustom" $
+        \ clsNamePtr ->
+          withCString "_set_initialized" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+_set_initialized ::
+                   (VisualShaderNodeCustom :< cls, Object :< cls) =>
+                   cls -> Bool -> IO ()
+_set_initialized cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindVisualShaderNodeCustom__set_initialized
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod VisualShaderNodeCustom "_set_initialized"
+           '[Bool]
+           (IO ())
+         where
+        nodeMethod = Godot.Core.VisualShaderNodeCustom._set_initialized
+
+{-# NOINLINE bindVisualShaderNodeCustom__set_input_port_default_value
+             #-}
+
+bindVisualShaderNodeCustom__set_input_port_default_value ::
+                                                         MethodBind
+bindVisualShaderNodeCustom__set_input_port_default_value
+  = unsafePerformIO $
+      withCString "VisualShaderNodeCustom" $
+        \ clsNamePtr ->
+          withCString "_set_input_port_default_value" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+_set_input_port_default_value ::
+                                (VisualShaderNodeCustom :< cls, Object :< cls) =>
+                                cls -> Int -> GodotVariant -> IO ()
+_set_input_port_default_value cls arg1 arg2
+  = withVariantArray [toVariant arg1, toVariant arg2]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call
+           bindVisualShaderNodeCustom__set_input_port_default_value
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod VisualShaderNodeCustom
+           "_set_input_port_default_value"
+           '[Int, GodotVariant]
+           (IO ())
+         where
+        nodeMethod
+          = Godot.Core.VisualShaderNodeCustom._set_input_port_default_value
