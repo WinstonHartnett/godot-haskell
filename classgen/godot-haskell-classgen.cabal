@@ -37,8 +37,8 @@ library
   include-dirs:
       godot_headers
       cbits
-  build-tools:
-      c2hs
+  -- build-tools:
+  --     c2hs
   build-depends:
       aeson
     , base
@@ -66,8 +66,8 @@ executable godot-haskell-classgen
   include-dirs:
       godot_headers
       cbits
-  build-tools:
-      c2hs
+  -- build-tools:
+  --     c2hs
   build-depends:
       aeson
     , base

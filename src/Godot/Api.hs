@@ -1,4 +1,4 @@
-module Godot.Api (module M) where
+module Godot.Api ( module M ) where
 
 import Godot.Api.Types as M
 

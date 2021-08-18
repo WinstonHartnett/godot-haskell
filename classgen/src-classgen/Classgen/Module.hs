@@ -332,6 +332,7 @@ mkMethod cls method doc = do
       where dt = T.unpack d
     mkDefault (CoreType "Color") "1,1,1,1" v = [hs|defaultedVariant VariantColor (withOpacity (sRGB 1 1 1) 1) $v |]
     mkDefault (CoreType "Rect2") "(0, 0, 0, 0)" v = [hs|defaultedVariant VariantRect2 (V2 (V2 0 0) (V2 0 0)) $v |]
+    mkDefault (CoreType "Rect2") "(0, 0, 1, 1)" v = [hs|defaultedVariant VariantRect2 (V2 (V2 0 0) (V2 1 1)) $v |]
     mkDefault (CoreType "PoolStringArray") "[]" v = [hs|defaultedVariant VariantPoolStringArray V.empty $v |]
     mkDefault (CoreType "Dictionary") "{}" v = [hs|defaultedVariant VariantDictionary V.empty $v |]
     mkDefault (CoreType "PoolVector2Array") "[]" v = [hs|defaultedVariant VariantPoolVector2Array V.empty $v |]
