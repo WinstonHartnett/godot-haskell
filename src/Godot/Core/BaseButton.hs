@@ -2,13 +2,13 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.BaseButton
-       (Godot.Core.BaseButton._DRAW_NORMAL,
-        Godot.Core.BaseButton._DRAW_DISABLED,
-        Godot.Core.BaseButton._ACTION_MODE_BUTTON_RELEASE,
-        Godot.Core.BaseButton._DRAW_HOVER_PRESSED,
-        Godot.Core.BaseButton._ACTION_MODE_BUTTON_PRESS,
+       (Godot.Core.BaseButton._DRAW_DISABLED,
+        Godot.Core.BaseButton._DRAW_NORMAL,
         Godot.Core.BaseButton._DRAW_PRESSED,
         Godot.Core.BaseButton._DRAW_HOVER,
+        Godot.Core.BaseButton._ACTION_MODE_BUTTON_PRESS,
+        Godot.Core.BaseButton._DRAW_HOVER_PRESSED,
+        Godot.Core.BaseButton._ACTION_MODE_BUTTON_RELEASE,
         Godot.Core.BaseButton.sig_button_down,
         Godot.Core.BaseButton.sig_button_up,
         Godot.Core.BaseButton.sig_pressed,
@@ -51,26 +51,26 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.Control()
 
-_DRAW_NORMAL :: Int
-_DRAW_NORMAL = 0
-
 _DRAW_DISABLED :: Int
 _DRAW_DISABLED = 3
 
-_ACTION_MODE_BUTTON_RELEASE :: Int
-_ACTION_MODE_BUTTON_RELEASE = 1
-
-_DRAW_HOVER_PRESSED :: Int
-_DRAW_HOVER_PRESSED = 4
-
-_ACTION_MODE_BUTTON_PRESS :: Int
-_ACTION_MODE_BUTTON_PRESS = 0
+_DRAW_NORMAL :: Int
+_DRAW_NORMAL = 0
 
 _DRAW_PRESSED :: Int
 _DRAW_PRESSED = 1
 
 _DRAW_HOVER :: Int
 _DRAW_HOVER = 2
+
+_ACTION_MODE_BUTTON_PRESS :: Int
+_ACTION_MODE_BUTTON_PRESS = 0
+
+_DRAW_HOVER_PRESSED :: Int
+_DRAW_HOVER_PRESSED = 4
+
+_ACTION_MODE_BUTTON_RELEASE :: Int
+_ACTION_MODE_BUTTON_RELEASE = 1
 
 -- | Emitted when the button starts being held down.
 sig_button_down :: Godot.Internal.Dispatch.Signal BaseButton

@@ -3,10 +3,10 @@
   MultiParamTypeClasses #-}
 module Godot.Core.Area
        (Godot.Core.Area._SPACE_OVERRIDE_REPLACE,
-        Godot.Core.Area._SPACE_OVERRIDE_DISABLED,
-        Godot.Core.Area._SPACE_OVERRIDE_COMBINE_REPLACE,
-        Godot.Core.Area._SPACE_OVERRIDE_REPLACE_COMBINE,
         Godot.Core.Area._SPACE_OVERRIDE_COMBINE,
+        Godot.Core.Area._SPACE_OVERRIDE_DISABLED,
+        Godot.Core.Area._SPACE_OVERRIDE_REPLACE_COMBINE,
+        Godot.Core.Area._SPACE_OVERRIDE_COMBINE_REPLACE,
         Godot.Core.Area.sig_area_entered, Godot.Core.Area.sig_area_exited,
         Godot.Core.Area.sig_area_shape_entered,
         Godot.Core.Area.sig_area_shape_exited,
@@ -68,17 +68,17 @@ import Godot.Core.CollisionObject()
 _SPACE_OVERRIDE_REPLACE :: Int
 _SPACE_OVERRIDE_REPLACE = 3
 
+_SPACE_OVERRIDE_COMBINE :: Int
+_SPACE_OVERRIDE_COMBINE = 1
+
 _SPACE_OVERRIDE_DISABLED :: Int
 _SPACE_OVERRIDE_DISABLED = 0
-
-_SPACE_OVERRIDE_COMBINE_REPLACE :: Int
-_SPACE_OVERRIDE_COMBINE_REPLACE = 2
 
 _SPACE_OVERRIDE_REPLACE_COMBINE :: Int
 _SPACE_OVERRIDE_REPLACE_COMBINE = 4
 
-_SPACE_OVERRIDE_COMBINE :: Int
-_SPACE_OVERRIDE_COMBINE = 1
+_SPACE_OVERRIDE_COMBINE_REPLACE :: Int
+_SPACE_OVERRIDE_COMBINE_REPLACE = 2
 
 -- | Emitted when another Area enters this Area. Requires @monitoring@ to be set to @true@.
 --   				@area@ the other Area.

@@ -3,26 +3,26 @@
   MultiParamTypeClasses #-}
 module Godot.Tools.EditorPlugin
        (Godot.Tools.EditorPlugin._CONTAINER_SPATIAL_EDITOR_SIDE_LEFT,
-        Godot.Tools.EditorPlugin._CONTAINER_SPATIAL_EDITOR_BOTTOM,
-        Godot.Tools.EditorPlugin._DOCK_SLOT_LEFT_UR,
-        Godot.Tools.EditorPlugin._CONTAINER_SPATIAL_EDITOR_SIDE_RIGHT,
-        Godot.Tools.EditorPlugin._DOCK_SLOT_LEFT_BL,
+        Godot.Tools.EditorPlugin._DOCK_SLOT_RIGHT_UL,
+        Godot.Tools.EditorPlugin._CONTAINER_PROPERTY_EDITOR_BOTTOM,
+        Godot.Tools.EditorPlugin._CONTAINER_CANVAS_EDITOR_SIDE_LEFT,
+        Godot.Tools.EditorPlugin._DOCK_SLOT_MAX,
+        Godot.Tools.EditorPlugin._DOCK_SLOT_LEFT_BR,
         Godot.Tools.EditorPlugin._CONTAINER_PROJECT_SETTING_TAB_LEFT,
-        Godot.Tools.EditorPlugin._CONTAINER_SPATIAL_EDITOR_MENU,
         Godot.Tools.EditorPlugin._DOCK_SLOT_RIGHT_BR,
-        Godot.Tools.EditorPlugin._CONTAINER_PROJECT_SETTING_TAB_RIGHT,
+        Godot.Tools.EditorPlugin._DOCK_SLOT_LEFT_BL,
+        Godot.Tools.EditorPlugin._CONTAINER_CANVAS_EDITOR_SIDE_RIGHT,
+        Godot.Tools.EditorPlugin._DOCK_SLOT_LEFT_UL,
+        Godot.Tools.EditorPlugin._DOCK_SLOT_RIGHT_UR,
+        Godot.Tools.EditorPlugin._CONTAINER_SPATIAL_EDITOR_SIDE_RIGHT,
+        Godot.Tools.EditorPlugin._DOCK_SLOT_LEFT_UR,
+        Godot.Tools.EditorPlugin._CONTAINER_SPATIAL_EDITOR_BOTTOM,
+        Godot.Tools.EditorPlugin._CONTAINER_TOOLBAR,
         Godot.Tools.EditorPlugin._DOCK_SLOT_RIGHT_BL,
         Godot.Tools.EditorPlugin._CONTAINER_CANVAS_EDITOR_BOTTOM,
-        Godot.Tools.EditorPlugin._CONTAINER_CANVAS_EDITOR_SIDE_LEFT,
-        Godot.Tools.EditorPlugin._CONTAINER_PROPERTY_EDITOR_BOTTOM,
-        Godot.Tools.EditorPlugin._CONTAINER_TOOLBAR,
-        Godot.Tools.EditorPlugin._DOCK_SLOT_RIGHT_UL,
-        Godot.Tools.EditorPlugin._DOCK_SLOT_RIGHT_UR,
-        Godot.Tools.EditorPlugin._DOCK_SLOT_LEFT_UL,
+        Godot.Tools.EditorPlugin._CONTAINER_PROJECT_SETTING_TAB_RIGHT,
+        Godot.Tools.EditorPlugin._CONTAINER_SPATIAL_EDITOR_MENU,
         Godot.Tools.EditorPlugin._CONTAINER_CANVAS_EDITOR_MENU,
-        Godot.Tools.EditorPlugin._CONTAINER_CANVAS_EDITOR_SIDE_RIGHT,
-        Godot.Tools.EditorPlugin._DOCK_SLOT_LEFT_BR,
-        Godot.Tools.EditorPlugin._DOCK_SLOT_MAX,
         Godot.Tools.EditorPlugin.sig_main_screen_changed,
         Godot.Tools.EditorPlugin.sig_resource_saved,
         Godot.Tools.EditorPlugin.sig_scene_changed,
@@ -97,29 +97,50 @@ import Godot.Core.Node()
 _CONTAINER_SPATIAL_EDITOR_SIDE_LEFT :: Int
 _CONTAINER_SPATIAL_EDITOR_SIDE_LEFT = 2
 
-_CONTAINER_SPATIAL_EDITOR_BOTTOM :: Int
-_CONTAINER_SPATIAL_EDITOR_BOTTOM = 4
+_DOCK_SLOT_RIGHT_UL :: Int
+_DOCK_SLOT_RIGHT_UL = 4
 
-_DOCK_SLOT_LEFT_UR :: Int
-_DOCK_SLOT_LEFT_UR = 2
+_CONTAINER_PROPERTY_EDITOR_BOTTOM :: Int
+_CONTAINER_PROPERTY_EDITOR_BOTTOM = 9
 
-_CONTAINER_SPATIAL_EDITOR_SIDE_RIGHT :: Int
-_CONTAINER_SPATIAL_EDITOR_SIDE_RIGHT = 3
+_CONTAINER_CANVAS_EDITOR_SIDE_LEFT :: Int
+_CONTAINER_CANVAS_EDITOR_SIDE_LEFT = 6
 
-_DOCK_SLOT_LEFT_BL :: Int
-_DOCK_SLOT_LEFT_BL = 1
+_DOCK_SLOT_MAX :: Int
+_DOCK_SLOT_MAX = 8
+
+_DOCK_SLOT_LEFT_BR :: Int
+_DOCK_SLOT_LEFT_BR = 3
 
 _CONTAINER_PROJECT_SETTING_TAB_LEFT :: Int
 _CONTAINER_PROJECT_SETTING_TAB_LEFT = 10
 
-_CONTAINER_SPATIAL_EDITOR_MENU :: Int
-_CONTAINER_SPATIAL_EDITOR_MENU = 1
-
 _DOCK_SLOT_RIGHT_BR :: Int
 _DOCK_SLOT_RIGHT_BR = 7
 
-_CONTAINER_PROJECT_SETTING_TAB_RIGHT :: Int
-_CONTAINER_PROJECT_SETTING_TAB_RIGHT = 11
+_DOCK_SLOT_LEFT_BL :: Int
+_DOCK_SLOT_LEFT_BL = 1
+
+_CONTAINER_CANVAS_EDITOR_SIDE_RIGHT :: Int
+_CONTAINER_CANVAS_EDITOR_SIDE_RIGHT = 7
+
+_DOCK_SLOT_LEFT_UL :: Int
+_DOCK_SLOT_LEFT_UL = 0
+
+_DOCK_SLOT_RIGHT_UR :: Int
+_DOCK_SLOT_RIGHT_UR = 6
+
+_CONTAINER_SPATIAL_EDITOR_SIDE_RIGHT :: Int
+_CONTAINER_SPATIAL_EDITOR_SIDE_RIGHT = 3
+
+_DOCK_SLOT_LEFT_UR :: Int
+_DOCK_SLOT_LEFT_UR = 2
+
+_CONTAINER_SPATIAL_EDITOR_BOTTOM :: Int
+_CONTAINER_SPATIAL_EDITOR_BOTTOM = 4
+
+_CONTAINER_TOOLBAR :: Int
+_CONTAINER_TOOLBAR = 0
 
 _DOCK_SLOT_RIGHT_BL :: Int
 _DOCK_SLOT_RIGHT_BL = 5
@@ -127,35 +148,14 @@ _DOCK_SLOT_RIGHT_BL = 5
 _CONTAINER_CANVAS_EDITOR_BOTTOM :: Int
 _CONTAINER_CANVAS_EDITOR_BOTTOM = 8
 
-_CONTAINER_CANVAS_EDITOR_SIDE_LEFT :: Int
-_CONTAINER_CANVAS_EDITOR_SIDE_LEFT = 6
+_CONTAINER_PROJECT_SETTING_TAB_RIGHT :: Int
+_CONTAINER_PROJECT_SETTING_TAB_RIGHT = 11
 
-_CONTAINER_PROPERTY_EDITOR_BOTTOM :: Int
-_CONTAINER_PROPERTY_EDITOR_BOTTOM = 9
-
-_CONTAINER_TOOLBAR :: Int
-_CONTAINER_TOOLBAR = 0
-
-_DOCK_SLOT_RIGHT_UL :: Int
-_DOCK_SLOT_RIGHT_UL = 4
-
-_DOCK_SLOT_RIGHT_UR :: Int
-_DOCK_SLOT_RIGHT_UR = 6
-
-_DOCK_SLOT_LEFT_UL :: Int
-_DOCK_SLOT_LEFT_UL = 0
+_CONTAINER_SPATIAL_EDITOR_MENU :: Int
+_CONTAINER_SPATIAL_EDITOR_MENU = 1
 
 _CONTAINER_CANVAS_EDITOR_MENU :: Int
 _CONTAINER_CANVAS_EDITOR_MENU = 5
-
-_CONTAINER_CANVAS_EDITOR_SIDE_RIGHT :: Int
-_CONTAINER_CANVAS_EDITOR_SIDE_RIGHT = 7
-
-_DOCK_SLOT_LEFT_BR :: Int
-_DOCK_SLOT_LEFT_BR = 3
-
-_DOCK_SLOT_MAX :: Int
-_DOCK_SLOT_MAX = 8
 
 -- | Emitted when user changes the workspace (__2D__, __3D__, __Script__, __AssetLib__). Also works with custom screens defined by plugins.
 sig_main_screen_changed ::
@@ -1430,6 +1430,7 @@ instance NodeMethod EditorPlugin "has_main_screen" '[] (IO Bool)
 
 {-# NOINLINE bindEditorPlugin_hide_bottom_panel #-}
 
+-- | Minimizes the bottom panel.
 bindEditorPlugin_hide_bottom_panel :: MethodBind
 bindEditorPlugin_hide_bottom_panel
   = unsafePerformIO $
@@ -1439,6 +1440,7 @@ bindEditorPlugin_hide_bottom_panel
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
+-- | Minimizes the bottom panel.
 hide_bottom_panel ::
                     (EditorPlugin :< cls, Object :< cls) => cls -> IO ()
 hide_bottom_panel cls
@@ -1456,6 +1458,7 @@ instance NodeMethod EditorPlugin "hide_bottom_panel" '[] (IO ())
 
 {-# NOINLINE bindEditorPlugin_make_bottom_panel_item_visible #-}
 
+-- | Makes a specific item in the bottom panel visible.
 bindEditorPlugin_make_bottom_panel_item_visible :: MethodBind
 bindEditorPlugin_make_bottom_panel_item_visible
   = unsafePerformIO $
@@ -1465,6 +1468,7 @@ bindEditorPlugin_make_bottom_panel_item_visible
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
+-- | Makes a specific item in the bottom panel visible.
 make_bottom_panel_item_visible ::
                                  (EditorPlugin :< cls, Object :< cls) => cls -> Control -> IO ()
 make_bottom_panel_item_visible cls arg1

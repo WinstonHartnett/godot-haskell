@@ -4,10 +4,11 @@
 module Godot.Core.XMLParser
        (Godot.Core.XMLParser._NODE_UNKNOWN,
         Godot.Core.XMLParser._NODE_ELEMENT,
-        Godot.Core.XMLParser._NODE_CDATA,
+        Godot.Core.XMLParser._NODE_TEXT,
         Godot.Core.XMLParser._NODE_COMMENT,
-        Godot.Core.XMLParser._NODE_TEXT, Godot.Core.XMLParser._NODE_NONE,
+        Godot.Core.XMLParser._NODE_CDATA,
         Godot.Core.XMLParser._NODE_ELEMENT_END,
+        Godot.Core.XMLParser._NODE_NONE,
         Godot.Core.XMLParser.get_attribute_count,
         Godot.Core.XMLParser.get_attribute_name,
         Godot.Core.XMLParser.get_attribute_value,
@@ -41,20 +42,20 @@ _NODE_UNKNOWN = 6
 _NODE_ELEMENT :: Int
 _NODE_ELEMENT = 1
 
-_NODE_CDATA :: Int
-_NODE_CDATA = 5
+_NODE_TEXT :: Int
+_NODE_TEXT = 3
 
 _NODE_COMMENT :: Int
 _NODE_COMMENT = 4
 
-_NODE_TEXT :: Int
-_NODE_TEXT = 3
-
-_NODE_NONE :: Int
-_NODE_NONE = 0
+_NODE_CDATA :: Int
+_NODE_CDATA = 5
 
 _NODE_ELEMENT_END :: Int
 _NODE_ELEMENT_END = 2
+
+_NODE_NONE :: Int
+_NODE_NONE = 0
 
 {-# NOINLINE bindXMLParser_get_attribute_count #-}
 

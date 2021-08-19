@@ -4,11 +4,11 @@
 module Godot.Core.AspectRatioContainer
        (Godot.Core.AspectRatioContainer._STRETCH_HEIGHT_CONTROLS_WIDTH,
         Godot.Core.AspectRatioContainer._ALIGN_END,
+        Godot.Core.AspectRatioContainer._ALIGN_CENTER,
         Godot.Core.AspectRatioContainer._STRETCH_FIT,
-        Godot.Core.AspectRatioContainer._STRETCH_WIDTH_CONTROLS_HEIGHT,
         Godot.Core.AspectRatioContainer._ALIGN_BEGIN,
         Godot.Core.AspectRatioContainer._STRETCH_COVER,
-        Godot.Core.AspectRatioContainer._ALIGN_CENTER,
+        Godot.Core.AspectRatioContainer._STRETCH_WIDTH_CONTROLS_HEIGHT,
         Godot.Core.AspectRatioContainer.get_alignment_horizontal,
         Godot.Core.AspectRatioContainer.get_alignment_vertical,
         Godot.Core.AspectRatioContainer.get_ratio,
@@ -36,11 +36,11 @@ _STRETCH_HEIGHT_CONTROLS_WIDTH = 1
 _ALIGN_END :: Int
 _ALIGN_END = 2
 
+_ALIGN_CENTER :: Int
+_ALIGN_CENTER = 1
+
 _STRETCH_FIT :: Int
 _STRETCH_FIT = 2
-
-_STRETCH_WIDTH_CONTROLS_HEIGHT :: Int
-_STRETCH_WIDTH_CONTROLS_HEIGHT = 0
 
 _ALIGN_BEGIN :: Int
 _ALIGN_BEGIN = 0
@@ -48,8 +48,8 @@ _ALIGN_BEGIN = 0
 _STRETCH_COVER :: Int
 _STRETCH_COVER = 3
 
-_ALIGN_CENTER :: Int
-_ALIGN_CENTER = 1
+_STRETCH_WIDTH_CONTROLS_HEIGHT :: Int
+_STRETCH_WIDTH_CONTROLS_HEIGHT = 0
 
 instance NodeProperty AspectRatioContainer "alignment_horizontal"
            Int

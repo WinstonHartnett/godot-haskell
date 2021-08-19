@@ -3,11 +3,11 @@
   MultiParamTypeClasses #-}
 module Godot.Core.ConeTwistJoint
        (Godot.Core.ConeTwistJoint._PARAM_SWING_SPAN,
-        Godot.Core.ConeTwistJoint._PARAM_SOFTNESS,
-        Godot.Core.ConeTwistJoint._PARAM_TWIST_SPAN,
         Godot.Core.ConeTwistJoint._PARAM_MAX,
         Godot.Core.ConeTwistJoint._PARAM_RELAXATION,
         Godot.Core.ConeTwistJoint._PARAM_BIAS,
+        Godot.Core.ConeTwistJoint._PARAM_TWIST_SPAN,
+        Godot.Core.ConeTwistJoint._PARAM_SOFTNESS,
         Godot.Core.ConeTwistJoint._get_swing_span,
         Godot.Core.ConeTwistJoint._get_twist_span,
         Godot.Core.ConeTwistJoint._set_swing_span,
@@ -30,12 +30,6 @@ import Godot.Core.Joint()
 _PARAM_SWING_SPAN :: Int
 _PARAM_SWING_SPAN = 0
 
-_PARAM_SOFTNESS :: Int
-_PARAM_SOFTNESS = 3
-
-_PARAM_TWIST_SPAN :: Int
-_PARAM_TWIST_SPAN = 1
-
 _PARAM_MAX :: Int
 _PARAM_MAX = 5
 
@@ -44,6 +38,12 @@ _PARAM_RELAXATION = 4
 
 _PARAM_BIAS :: Int
 _PARAM_BIAS = 2
+
+_PARAM_TWIST_SPAN :: Int
+_PARAM_TWIST_SPAN = 1
+
+_PARAM_SOFTNESS :: Int
+_PARAM_SOFTNESS = 3
 
 instance NodeProperty ConeTwistJoint "bias" Float 'False where
         nodeProperty

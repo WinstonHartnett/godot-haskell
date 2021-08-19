@@ -3,15 +3,15 @@
   MultiParamTypeClasses #-}
 module Godot.Core.VisualScriptFunctionCall
        (Godot.Core.VisualScriptFunctionCall._CALL_MODE_BASIC_TYPE,
+        Godot.Core.VisualScriptFunctionCall._RPC_RELIABLE,
+        Godot.Core.VisualScriptFunctionCall._RPC_DISABLED,
         Godot.Core.VisualScriptFunctionCall._RPC_UNRELIABLE_TO_ID,
-        Godot.Core.VisualScriptFunctionCall._CALL_MODE_NODE_PATH,
         Godot.Core.VisualScriptFunctionCall._RPC_UNRELIABLE,
         Godot.Core.VisualScriptFunctionCall._CALL_MODE_SELF,
+        Godot.Core.VisualScriptFunctionCall._CALL_MODE_SINGLETON,
+        Godot.Core.VisualScriptFunctionCall._CALL_MODE_NODE_PATH,
         Godot.Core.VisualScriptFunctionCall._RPC_RELIABLE_TO_ID,
         Godot.Core.VisualScriptFunctionCall._CALL_MODE_INSTANCE,
-        Godot.Core.VisualScriptFunctionCall._CALL_MODE_SINGLETON,
-        Godot.Core.VisualScriptFunctionCall._RPC_DISABLED,
-        Godot.Core.VisualScriptFunctionCall._RPC_RELIABLE,
         Godot.Core.VisualScriptFunctionCall._get_argument_cache,
         Godot.Core.VisualScriptFunctionCall._set_argument_cache,
         Godot.Core.VisualScriptFunctionCall.get_base_path,
@@ -50,11 +50,14 @@ import Godot.Core.VisualScriptNode()
 _CALL_MODE_BASIC_TYPE :: Int
 _CALL_MODE_BASIC_TYPE = 3
 
+_RPC_RELIABLE :: Int
+_RPC_RELIABLE = 1
+
+_RPC_DISABLED :: Int
+_RPC_DISABLED = 0
+
 _RPC_UNRELIABLE_TO_ID :: Int
 _RPC_UNRELIABLE_TO_ID = 4
-
-_CALL_MODE_NODE_PATH :: Int
-_CALL_MODE_NODE_PATH = 1
 
 _RPC_UNRELIABLE :: Int
 _RPC_UNRELIABLE = 2
@@ -62,20 +65,17 @@ _RPC_UNRELIABLE = 2
 _CALL_MODE_SELF :: Int
 _CALL_MODE_SELF = 0
 
+_CALL_MODE_SINGLETON :: Int
+_CALL_MODE_SINGLETON = 4
+
+_CALL_MODE_NODE_PATH :: Int
+_CALL_MODE_NODE_PATH = 1
+
 _RPC_RELIABLE_TO_ID :: Int
 _RPC_RELIABLE_TO_ID = 3
 
 _CALL_MODE_INSTANCE :: Int
 _CALL_MODE_INSTANCE = 2
-
-_CALL_MODE_SINGLETON :: Int
-_CALL_MODE_SINGLETON = 4
-
-_RPC_DISABLED :: Int
-_RPC_DISABLED = 0
-
-_RPC_RELIABLE :: Int
-_RPC_RELIABLE = 1
 
 instance NodeProperty VisualScriptFunctionCall "argument_cache"
            Dictionary

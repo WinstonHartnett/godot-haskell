@@ -2,12 +2,12 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.VisualShader
-       (Godot.Core.VisualShader._NODE_ID_INVALID,
-        Godot.Core.VisualShader._TYPE_VERTEX,
+       (Godot.Core.VisualShader._NODE_ID_OUTPUT,
         Godot.Core.VisualShader._TYPE_FRAGMENT,
-        Godot.Core.VisualShader._NODE_ID_OUTPUT,
-        Godot.Core.VisualShader._TYPE_MAX,
+        Godot.Core.VisualShader._TYPE_VERTEX,
+        Godot.Core.VisualShader._NODE_ID_INVALID,
         Godot.Core.VisualShader._TYPE_LIGHT,
+        Godot.Core.VisualShader._TYPE_MAX,
         Godot.Core.VisualShader._input_type_changed,
         Godot.Core.VisualShader._queue_update,
         Godot.Core.VisualShader._update_shader,
@@ -40,23 +40,23 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.Shader()
 
-_NODE_ID_INVALID :: Int
-_NODE_ID_INVALID = -1
-
-_TYPE_VERTEX :: Int
-_TYPE_VERTEX = 0
+_NODE_ID_OUTPUT :: Int
+_NODE_ID_OUTPUT = 0
 
 _TYPE_FRAGMENT :: Int
 _TYPE_FRAGMENT = 1
 
-_NODE_ID_OUTPUT :: Int
-_NODE_ID_OUTPUT = 0
+_TYPE_VERTEX :: Int
+_TYPE_VERTEX = 0
 
-_TYPE_MAX :: Int
-_TYPE_MAX = 3
+_NODE_ID_INVALID :: Int
+_NODE_ID_INVALID = -1
 
 _TYPE_LIGHT :: Int
 _TYPE_LIGHT = 2
+
+_TYPE_MAX :: Int
+_TYPE_MAX = 3
 
 instance NodeProperty VisualShader "graph_offset" Vector2 'False
          where

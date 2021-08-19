@@ -2,14 +2,14 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.TreeItem
-       (Godot.Core.TreeItem._ALIGN_RIGHT,
-        Godot.Core.TreeItem._CELL_MODE_CUSTOM,
-        Godot.Core.TreeItem._CELL_MODE_ICON,
+       (Godot.Core.TreeItem._CELL_MODE_CHECK,
         Godot.Core.TreeItem._CELL_MODE_RANGE,
+        Godot.Core.TreeItem._ALIGN_CENTER, Godot.Core.TreeItem._ALIGN_LEFT,
+        Godot.Core.TreeItem._CELL_MODE_ICON,
+        Godot.Core.TreeItem._CELL_MODE_CUSTOM,
         Godot.Core.TreeItem._CELL_MODE_STRING,
-        Godot.Core.TreeItem._CELL_MODE_CHECK,
-        Godot.Core.TreeItem._ALIGN_LEFT, Godot.Core.TreeItem._ALIGN_CENTER,
-        Godot.Core.TreeItem.add_button, Godot.Core.TreeItem.call_recursive,
+        Godot.Core.TreeItem._ALIGN_RIGHT, Godot.Core.TreeItem.add_button,
+        Godot.Core.TreeItem.call_recursive,
         Godot.Core.TreeItem.clear_custom_bg_color,
         Godot.Core.TreeItem.clear_custom_color,
         Godot.Core.TreeItem.deselect, Godot.Core.TreeItem.erase_button,
@@ -75,29 +75,29 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.Object()
 
-_ALIGN_RIGHT :: Int
-_ALIGN_RIGHT = 2
-
-_CELL_MODE_CUSTOM :: Int
-_CELL_MODE_CUSTOM = 4
-
-_CELL_MODE_ICON :: Int
-_CELL_MODE_ICON = 3
+_CELL_MODE_CHECK :: Int
+_CELL_MODE_CHECK = 1
 
 _CELL_MODE_RANGE :: Int
 _CELL_MODE_RANGE = 2
 
-_CELL_MODE_STRING :: Int
-_CELL_MODE_STRING = 0
-
-_CELL_MODE_CHECK :: Int
-_CELL_MODE_CHECK = 1
+_ALIGN_CENTER :: Int
+_ALIGN_CENTER = 1
 
 _ALIGN_LEFT :: Int
 _ALIGN_LEFT = 0
 
-_ALIGN_CENTER :: Int
-_ALIGN_CENTER = 1
+_CELL_MODE_ICON :: Int
+_CELL_MODE_ICON = 3
+
+_CELL_MODE_CUSTOM :: Int
+_CELL_MODE_CUSTOM = 4
+
+_CELL_MODE_STRING :: Int
+_CELL_MODE_STRING = 0
+
+_ALIGN_RIGHT :: Int
+_ALIGN_RIGHT = 2
 
 instance NodeProperty TreeItem "collapsed" Bool 'False where
         nodeProperty

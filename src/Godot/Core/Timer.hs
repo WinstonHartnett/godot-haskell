@@ -2,9 +2,9 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.Timer
-       (Godot.Core.Timer._TIMER_PROCESS_PHYSICS,
-        Godot.Core.Timer._TIMER_PROCESS_IDLE, Godot.Core.Timer.sig_timeout,
-        Godot.Core.Timer.get_time_left,
+       (Godot.Core.Timer._TIMER_PROCESS_IDLE,
+        Godot.Core.Timer._TIMER_PROCESS_PHYSICS,
+        Godot.Core.Timer.sig_timeout, Godot.Core.Timer.get_time_left,
         Godot.Core.Timer.get_timer_process_mode,
         Godot.Core.Timer.get_wait_time, Godot.Core.Timer.has_autostart,
         Godot.Core.Timer.is_one_shot, Godot.Core.Timer.is_paused,
@@ -26,11 +26,11 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.Node()
 
-_TIMER_PROCESS_PHYSICS :: Int
-_TIMER_PROCESS_PHYSICS = 0
-
 _TIMER_PROCESS_IDLE :: Int
 _TIMER_PROCESS_IDLE = 1
+
+_TIMER_PROCESS_PHYSICS :: Int
+_TIMER_PROCESS_PHYSICS = 0
 
 -- | Emitted when the timer reaches 0.
 sig_timeout :: Godot.Internal.Dispatch.Signal Timer

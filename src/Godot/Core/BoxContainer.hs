@@ -3,8 +3,8 @@
   MultiParamTypeClasses #-}
 module Godot.Core.BoxContainer
        (Godot.Core.BoxContainer._ALIGN_END,
-        Godot.Core.BoxContainer._ALIGN_BEGIN,
         Godot.Core.BoxContainer._ALIGN_CENTER,
+        Godot.Core.BoxContainer._ALIGN_BEGIN,
         Godot.Core.BoxContainer.add_spacer,
         Godot.Core.BoxContainer.get_alignment,
         Godot.Core.BoxContainer.set_alignment)
@@ -24,11 +24,11 @@ import Godot.Core.Container()
 _ALIGN_END :: Int
 _ALIGN_END = 2
 
-_ALIGN_BEGIN :: Int
-_ALIGN_BEGIN = 0
-
 _ALIGN_CENTER :: Int
 _ALIGN_CENTER = 1
+
+_ALIGN_BEGIN :: Int
+_ALIGN_BEGIN = 0
 
 instance NodeProperty BoxContainer "alignment" Int 'False where
         nodeProperty

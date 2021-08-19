@@ -2,9 +2,9 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.SplitContainer
-       (Godot.Core.SplitContainer._DRAGGER_HIDDEN,
+       (Godot.Core.SplitContainer._DRAGGER_VISIBLE,
         Godot.Core.SplitContainer._DRAGGER_HIDDEN_COLLAPSED,
-        Godot.Core.SplitContainer._DRAGGER_VISIBLE,
+        Godot.Core.SplitContainer._DRAGGER_HIDDEN,
         Godot.Core.SplitContainer.sig_dragged,
         Godot.Core.SplitContainer._gui_input,
         Godot.Core.SplitContainer.clamp_split_offset,
@@ -27,14 +27,14 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.Container()
 
-_DRAGGER_HIDDEN :: Int
-_DRAGGER_HIDDEN = 1
+_DRAGGER_VISIBLE :: Int
+_DRAGGER_VISIBLE = 0
 
 _DRAGGER_HIDDEN_COLLAPSED :: Int
 _DRAGGER_HIDDEN_COLLAPSED = 2
 
-_DRAGGER_VISIBLE :: Int
-_DRAGGER_VISIBLE = 0
+_DRAGGER_HIDDEN :: Int
+_DRAGGER_HIDDEN = 1
 
 -- | Emitted when the dragger is dragged by user.
 sig_dragged :: Godot.Internal.Dispatch.Signal SplitContainer

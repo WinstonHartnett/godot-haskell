@@ -5,8 +5,8 @@ module Godot.Core.StreamPeerSSL
        (Godot.Core.StreamPeerSSL._STATUS_CONNECTED,
         Godot.Core.StreamPeerSSL._STATUS_ERROR,
         Godot.Core.StreamPeerSSL._STATUS_DISCONNECTED,
-        Godot.Core.StreamPeerSSL._STATUS_ERROR_HOSTNAME_MISMATCH,
         Godot.Core.StreamPeerSSL._STATUS_HANDSHAKING,
+        Godot.Core.StreamPeerSSL._STATUS_ERROR_HOSTNAME_MISMATCH,
         Godot.Core.StreamPeerSSL.accept_stream,
         Godot.Core.StreamPeerSSL.connect_to_stream,
         Godot.Core.StreamPeerSSL.disconnect_from_stream,
@@ -36,11 +36,11 @@ _STATUS_ERROR = 3
 _STATUS_DISCONNECTED :: Int
 _STATUS_DISCONNECTED = 0
 
-_STATUS_ERROR_HOSTNAME_MISMATCH :: Int
-_STATUS_ERROR_HOSTNAME_MISMATCH = 4
-
 _STATUS_HANDSHAKING :: Int
 _STATUS_HANDSHAKING = 1
+
+_STATUS_ERROR_HOSTNAME_MISMATCH :: Int
+_STATUS_ERROR_HOSTNAME_MISMATCH = 4
 
 instance NodeProperty StreamPeerSSL "blocking_handshake" Bool
            'False

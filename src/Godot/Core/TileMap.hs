@@ -2,18 +2,18 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.TileMap
-       (Godot.Core.TileMap._MODE_CUSTOM,
-        Godot.Core.TileMap._HALF_OFFSET_Y,
-        Godot.Core.TileMap._HALF_OFFSET_NEGATIVE_X,
-        Godot.Core.TileMap._MODE_SQUARE,
-        Godot.Core.TileMap._HALF_OFFSET_NEGATIVE_Y,
-        Godot.Core.TileMap._TILE_ORIGIN_BOTTOM_LEFT,
+       (Godot.Core.TileMap._HALF_OFFSET_NEGATIVE_Y,
         Godot.Core.TileMap._TILE_ORIGIN_CENTER,
-        Godot.Core.TileMap._HALF_OFFSET_DISABLED,
-        Godot.Core.TileMap._TILE_ORIGIN_TOP_LEFT,
+        Godot.Core.TileMap._MODE_SQUARE,
         Godot.Core.TileMap._MODE_ISOMETRIC,
-        Godot.Core.TileMap._INVALID_CELL,
+        Godot.Core.TileMap._HALF_OFFSET_NEGATIVE_X,
+        Godot.Core.TileMap._MODE_CUSTOM,
+        Godot.Core.TileMap._TILE_ORIGIN_TOP_LEFT,
+        Godot.Core.TileMap._HALF_OFFSET_Y,
+        Godot.Core.TileMap._HALF_OFFSET_DISABLED,
         Godot.Core.TileMap._HALF_OFFSET_X,
+        Godot.Core.TileMap._TILE_ORIGIN_BOTTOM_LEFT,
+        Godot.Core.TileMap._INVALID_CELL,
         Godot.Core.TileMap.sig_settings_changed,
         Godot.Core.TileMap._clear_quadrants,
         Godot.Core.TileMap._get_old_cell_size,
@@ -86,41 +86,41 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.Node2D()
 
-_MODE_CUSTOM :: Int
-_MODE_CUSTOM = 2
-
-_HALF_OFFSET_Y :: Int
-_HALF_OFFSET_Y = 1
-
-_HALF_OFFSET_NEGATIVE_X :: Int
-_HALF_OFFSET_NEGATIVE_X = 3
-
-_MODE_SQUARE :: Int
-_MODE_SQUARE = 0
-
 _HALF_OFFSET_NEGATIVE_Y :: Int
 _HALF_OFFSET_NEGATIVE_Y = 4
-
-_TILE_ORIGIN_BOTTOM_LEFT :: Int
-_TILE_ORIGIN_BOTTOM_LEFT = 2
 
 _TILE_ORIGIN_CENTER :: Int
 _TILE_ORIGIN_CENTER = 1
 
-_HALF_OFFSET_DISABLED :: Int
-_HALF_OFFSET_DISABLED = 2
-
-_TILE_ORIGIN_TOP_LEFT :: Int
-_TILE_ORIGIN_TOP_LEFT = 0
+_MODE_SQUARE :: Int
+_MODE_SQUARE = 0
 
 _MODE_ISOMETRIC :: Int
 _MODE_ISOMETRIC = 1
 
-_INVALID_CELL :: Int
-_INVALID_CELL = -1
+_HALF_OFFSET_NEGATIVE_X :: Int
+_HALF_OFFSET_NEGATIVE_X = 3
+
+_MODE_CUSTOM :: Int
+_MODE_CUSTOM = 2
+
+_TILE_ORIGIN_TOP_LEFT :: Int
+_TILE_ORIGIN_TOP_LEFT = 0
+
+_HALF_OFFSET_Y :: Int
+_HALF_OFFSET_Y = 1
+
+_HALF_OFFSET_DISABLED :: Int
+_HALF_OFFSET_DISABLED = 2
 
 _HALF_OFFSET_X :: Int
 _HALF_OFFSET_X = 0
+
+_TILE_ORIGIN_BOTTOM_LEFT :: Int
+_TILE_ORIGIN_BOTTOM_LEFT = 2
+
+_INVALID_CELL :: Int
+_INVALID_CELL = -1
 
 -- | Emitted when a tilemap setting has changed.
 sig_settings_changed :: Godot.Internal.Dispatch.Signal TileMap

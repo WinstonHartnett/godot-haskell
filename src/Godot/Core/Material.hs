@@ -2,8 +2,8 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.Material
-       (Godot.Core.Material._RENDER_PRIORITY_MAX,
-        Godot.Core.Material._RENDER_PRIORITY_MIN,
+       (Godot.Core.Material._RENDER_PRIORITY_MIN,
+        Godot.Core.Material._RENDER_PRIORITY_MAX,
         Godot.Core.Material.get_next_pass,
         Godot.Core.Material.get_render_priority,
         Godot.Core.Material.set_next_pass,
@@ -21,11 +21,11 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.Resource()
 
-_RENDER_PRIORITY_MAX :: Int
-_RENDER_PRIORITY_MAX = 127
-
 _RENDER_PRIORITY_MIN :: Int
 _RENDER_PRIORITY_MIN = -128
+
+_RENDER_PRIORITY_MAX :: Int
+_RENDER_PRIORITY_MAX = 127
 
 instance NodeProperty Material "next_pass" Material 'False where
         nodeProperty

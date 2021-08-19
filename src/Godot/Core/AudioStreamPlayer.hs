@@ -2,9 +2,9 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.AudioStreamPlayer
-       (Godot.Core.AudioStreamPlayer._MIX_TARGET_SURROUND,
-        Godot.Core.AudioStreamPlayer._MIX_TARGET_STEREO,
+       (Godot.Core.AudioStreamPlayer._MIX_TARGET_STEREO,
         Godot.Core.AudioStreamPlayer._MIX_TARGET_CENTER,
+        Godot.Core.AudioStreamPlayer._MIX_TARGET_SURROUND,
         Godot.Core.AudioStreamPlayer.sig_finished,
         Godot.Core.AudioStreamPlayer._bus_layout_changed,
         Godot.Core.AudioStreamPlayer._is_active,
@@ -42,14 +42,14 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.Node()
 
-_MIX_TARGET_SURROUND :: Int
-_MIX_TARGET_SURROUND = 1
-
 _MIX_TARGET_STEREO :: Int
 _MIX_TARGET_STEREO = 0
 
 _MIX_TARGET_CENTER :: Int
 _MIX_TARGET_CENTER = 2
+
+_MIX_TARGET_SURROUND :: Int
+_MIX_TARGET_SURROUND = 1
 
 -- | Emitted when the audio stops playing.
 sig_finished :: Godot.Internal.Dispatch.Signal AudioStreamPlayer

@@ -2,9 +2,9 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.VisualShaderNodeVectorDerivativeFunc
-       (Godot.Core.VisualShaderNodeVectorDerivativeFunc._FUNC_SUM,
+       (Godot.Core.VisualShaderNodeVectorDerivativeFunc._FUNC_X,
         Godot.Core.VisualShaderNodeVectorDerivativeFunc._FUNC_Y,
-        Godot.Core.VisualShaderNodeVectorDerivativeFunc._FUNC_X,
+        Godot.Core.VisualShaderNodeVectorDerivativeFunc._FUNC_SUM,
         Godot.Core.VisualShaderNodeVectorDerivativeFunc.get_function,
         Godot.Core.VisualShaderNodeVectorDerivativeFunc.set_function)
        where
@@ -20,14 +20,14 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.VisualShaderNode()
 
-_FUNC_SUM :: Int
-_FUNC_SUM = 0
+_FUNC_X :: Int
+_FUNC_X = 1
 
 _FUNC_Y :: Int
 _FUNC_Y = 2
 
-_FUNC_X :: Int
-_FUNC_X = 1
+_FUNC_SUM :: Int
+_FUNC_SUM = 0
 
 instance NodeProperty VisualShaderNodeVectorDerivativeFunc
            "function"

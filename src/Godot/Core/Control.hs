@@ -2,64 +2,65 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.Control
-       (Godot.Core.Control._NOTIFICATION_MOUSE_EXIT,
-        Godot.Core.Control._CURSOR_MOVE,
-        Godot.Core.Control._NOTIFICATION_MOUSE_ENTER,
-        Godot.Core.Control._PRESET_MODE_KEEP_WIDTH,
-        Godot.Core.Control._CURSOR_ARROW,
-        Godot.Core.Control._GROW_DIRECTION_BEGIN,
-        Godot.Core.Control._CURSOR_IBEAM,
-        Godot.Core.Control._NOTIFICATION_SCROLL_END,
-        Godot.Core.Control._CURSOR_HSPLIT, Godot.Core.Control._FOCUS_ALL,
-        Godot.Core.Control._PRESET_BOTTOM_RIGHT,
-        Godot.Core.Control._CURSOR_DRAG,
-        Godot.Core.Control._PRESET_TOP_LEFT,
-        Godot.Core.Control._PRESET_CENTER_TOP,
-        Godot.Core.Control._FOCUS_CLICK, Godot.Core.Control._CURSOR_BUSY,
-        Godot.Core.Control._SIZE_SHRINK_CENTER,
-        Godot.Core.Control._CURSOR_CROSS, Godot.Core.Control._CURSOR_WAIT,
-        Godot.Core.Control._PRESET_TOP_RIGHT,
-        Godot.Core.Control._NOTIFICATION_THEME_CHANGED,
-        Godot.Core.Control._CURSOR_BDIAGSIZE,
-        Godot.Core.Control._PRESET_HCENTER_WIDE,
-        Godot.Core.Control._GROW_DIRECTION_BOTH,
-        Godot.Core.Control._ANCHOR_BEGIN,
-        Godot.Core.Control._MOUSE_FILTER_IGNORE,
-        Godot.Core.Control._PRESET_TOP_WIDE,
-        Godot.Core.Control._PRESET_MODE_MINSIZE,
-        Godot.Core.Control._NOTIFICATION_FOCUS_ENTER,
-        Godot.Core.Control._SIZE_EXPAND_FILL,
-        Godot.Core.Control._CURSOR_HELP,
-        Godot.Core.Control._NOTIFICATION_RESIZED,
-        Godot.Core.Control._SIZE_EXPAND,
-        Godot.Core.Control._CURSOR_CAN_DROP,
+       (Godot.Core.Control._PRESET_VCENTER_WIDE,
         Godot.Core.Control._NOTIFICATION_SCROLL_BEGIN,
-        Godot.Core.Control._PRESET_MODE_KEEP_SIZE,
-        Godot.Core.Control._GROW_DIRECTION_END,
-        Godot.Core.Control._PRESET_VCENTER_WIDE,
+        Godot.Core.Control._GROW_DIRECTION_BEGIN,
+        Godot.Core.Control._CURSOR_CAN_DROP,
         Godot.Core.Control._SIZE_SHRINK_END,
-        Godot.Core.Control._PRESET_RIGHT_WIDE,
-        Godot.Core.Control._SIZE_FILL,
-        Godot.Core.Control._PRESET_BOTTOM_WIDE,
-        Godot.Core.Control._CURSOR_POINTING_HAND,
-        Godot.Core.Control._PRESET_MODE_KEEP_HEIGHT,
-        Godot.Core.Control._CURSOR_FDIAGSIZE,
-        Godot.Core.Control._PRESET_WIDE,
-        Godot.Core.Control._PRESET_CENTER_LEFT,
-        Godot.Core.Control._MOUSE_FILTER_PASS,
-        Godot.Core.Control._NOTIFICATION_MODAL_CLOSE,
-        Godot.Core.Control._CURSOR_HSIZE,
-        Godot.Core.Control._PRESET_CENTER_RIGHT,
-        Godot.Core.Control._CURSOR_FORBIDDEN,
-        Godot.Core.Control._CURSOR_VSIZE,
-        Godot.Core.Control._PRESET_CENTER_BOTTOM,
-        Godot.Core.Control._NOTIFICATION_FOCUS_EXIT,
-        Godot.Core.Control._PRESET_LEFT_WIDE,
-        Godot.Core.Control._ANCHOR_END,
+        Godot.Core.Control._PRESET_MODE_KEEP_SIZE,
+        Godot.Core.Control._CURSOR_IBEAM, Godot.Core.Control._SIZE_EXPAND,
+        Godot.Core.Control._CURSOR_HELP,
+        Godot.Core.Control._NOTIFICATION_MOUSE_ENTER,
+        Godot.Core.Control._CURSOR_ARROW,
+        Godot.Core.Control._PRESET_MODE_KEEP_WIDTH,
         Godot.Core.Control._MOUSE_FILTER_STOP,
-        Godot.Core.Control._PRESET_BOTTOM_LEFT,
         Godot.Core.Control._PRESET_CENTER,
-        Godot.Core.Control._CURSOR_VSPLIT, Godot.Core.Control._FOCUS_NONE,
+        Godot.Core.Control._CURSOR_VSPLIT,
+        Godot.Core.Control._NOTIFICATION_FOCUS_EXIT,
+        Godot.Core.Control._ANCHOR_BEGIN,
+        Godot.Core.Control._CURSOR_BDIAGSIZE,
+        Godot.Core.Control._NOTIFICATION_FOCUS_ENTER,
+        Godot.Core.Control._CURSOR_WAIT, Godot.Core.Control._CURSOR_VSIZE,
+        Godot.Core.Control._CURSOR_FORBIDDEN,
+        Godot.Core.Control._CURSOR_CROSS,
+        Godot.Core.Control._SIZE_SHRINK_CENTER,
+        Godot.Core.Control._MOUSE_FILTER_PASS,
+        Godot.Core.Control._PRESET_TOP_LEFT,
+        Godot.Core.Control._CURSOR_POINTING_HAND,
+        Godot.Core.Control._CURSOR_FDIAGSIZE,
+        Godot.Core.Control._PRESET_CENTER_TOP,
+        Godot.Core.Control._CURSOR_DRAG,
+        Godot.Core.Control._PRESET_BOTTOM_WIDE,
+        Godot.Core.Control._PRESET_CENTER_LEFT,
+        Godot.Core.Control._FOCUS_CLICK,
+        Godot.Core.Control._PRESET_RIGHT_WIDE,
+        Godot.Core.Control._GROW_DIRECTION_END,
+        Godot.Core.Control._NOTIFICATION_SCROLL_END,
+        Godot.Core.Control._CURSOR_HSPLIT,
+        Godot.Core.Control._NOTIFICATION_RESIZED,
+        Godot.Core.Control._NOTIFICATION_MOUSE_EXIT,
+        Godot.Core.Control._CURSOR_MOVE,
+        Godot.Core.Control._SIZE_EXPAND_FILL,
+        Godot.Core.Control._PRESET_MODE_MINSIZE,
+        Godot.Core.Control._FOCUS_NONE,
+        Godot.Core.Control._PRESET_HCENTER_WIDE,
+        Godot.Core.Control._MOUSE_FILTER_IGNORE,
+        Godot.Core.Control._PRESET_BOTTOM_LEFT,
+        Godot.Core.Control._PRESET_LEFT_WIDE,
+        Godot.Core.Control._PRESET_TOP_WIDE,
+        Godot.Core.Control._GROW_DIRECTION_BOTH,
+        Godot.Core.Control._PRESET_CENTER_BOTTOM,
+        Godot.Core.Control._ANCHOR_END,
+        Godot.Core.Control._NOTIFICATION_THEME_CHANGED,
+        Godot.Core.Control._PRESET_TOP_RIGHT,
+        Godot.Core.Control._PRESET_CENTER_RIGHT,
+        Godot.Core.Control._NOTIFICATION_MODAL_CLOSE,
+        Godot.Core.Control._CURSOR_HSIZE, Godot.Core.Control._CURSOR_BUSY,
+        Godot.Core.Control._SIZE_FILL,
+        Godot.Core.Control._PRESET_MODE_KEEP_HEIGHT,
+        Godot.Core.Control._PRESET_WIDE,
+        Godot.Core.Control._PRESET_BOTTOM_RIGHT,
+        Godot.Core.Control._FOCUS_ALL,
         Godot.Core.Control.sig_focus_entered,
         Godot.Core.Control.sig_focus_exited,
         Godot.Core.Control.sig_gui_input,
@@ -176,182 +177,44 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.CanvasItem()
 
-_NOTIFICATION_MOUSE_EXIT :: Int
-_NOTIFICATION_MOUSE_EXIT = 42
-
-_CURSOR_MOVE :: Int
-_CURSOR_MOVE = 13
-
-_NOTIFICATION_MOUSE_ENTER :: Int
-_NOTIFICATION_MOUSE_ENTER = 41
-
-_PRESET_MODE_KEEP_WIDTH :: Int
-_PRESET_MODE_KEEP_WIDTH = 1
-
-_CURSOR_ARROW :: Int
-_CURSOR_ARROW = 0
-
-_GROW_DIRECTION_BEGIN :: Int
-_GROW_DIRECTION_BEGIN = 0
-
-_CURSOR_IBEAM :: Int
-_CURSOR_IBEAM = 1
-
-_NOTIFICATION_SCROLL_END :: Int
-_NOTIFICATION_SCROLL_END = 48
-
-_CURSOR_HSPLIT :: Int
-_CURSOR_HSPLIT = 15
-
-_FOCUS_ALL :: Int
-_FOCUS_ALL = 2
-
-_PRESET_BOTTOM_RIGHT :: Int
-_PRESET_BOTTOM_RIGHT = 3
-
-_CURSOR_DRAG :: Int
-_CURSOR_DRAG = 6
-
-_PRESET_TOP_LEFT :: Int
-_PRESET_TOP_LEFT = 0
-
-_PRESET_CENTER_TOP :: Int
-_PRESET_CENTER_TOP = 5
-
-_FOCUS_CLICK :: Int
-_FOCUS_CLICK = 1
-
-_CURSOR_BUSY :: Int
-_CURSOR_BUSY = 5
-
-_SIZE_SHRINK_CENTER :: Int
-_SIZE_SHRINK_CENTER = 4
-
-_CURSOR_CROSS :: Int
-_CURSOR_CROSS = 3
-
-_CURSOR_WAIT :: Int
-_CURSOR_WAIT = 4
-
-_PRESET_TOP_RIGHT :: Int
-_PRESET_TOP_RIGHT = 1
-
-_NOTIFICATION_THEME_CHANGED :: Int
-_NOTIFICATION_THEME_CHANGED = 45
-
-_CURSOR_BDIAGSIZE :: Int
-_CURSOR_BDIAGSIZE = 11
-
-_PRESET_HCENTER_WIDE :: Int
-_PRESET_HCENTER_WIDE = 14
-
-_GROW_DIRECTION_BOTH :: Int
-_GROW_DIRECTION_BOTH = 2
-
-_ANCHOR_BEGIN :: Int
-_ANCHOR_BEGIN = 0
-
-_MOUSE_FILTER_IGNORE :: Int
-_MOUSE_FILTER_IGNORE = 2
-
-_PRESET_TOP_WIDE :: Int
-_PRESET_TOP_WIDE = 10
-
-_PRESET_MODE_MINSIZE :: Int
-_PRESET_MODE_MINSIZE = 0
-
-_NOTIFICATION_FOCUS_ENTER :: Int
-_NOTIFICATION_FOCUS_ENTER = 43
-
-_SIZE_EXPAND_FILL :: Int
-_SIZE_EXPAND_FILL = 3
-
-_CURSOR_HELP :: Int
-_CURSOR_HELP = 16
-
-_NOTIFICATION_RESIZED :: Int
-_NOTIFICATION_RESIZED = 40
-
-_SIZE_EXPAND :: Int
-_SIZE_EXPAND = 2
-
-_CURSOR_CAN_DROP :: Int
-_CURSOR_CAN_DROP = 7
+_PRESET_VCENTER_WIDE :: Int
+_PRESET_VCENTER_WIDE = 13
 
 _NOTIFICATION_SCROLL_BEGIN :: Int
 _NOTIFICATION_SCROLL_BEGIN = 47
 
-_PRESET_MODE_KEEP_SIZE :: Int
-_PRESET_MODE_KEEP_SIZE = 3
+_GROW_DIRECTION_BEGIN :: Int
+_GROW_DIRECTION_BEGIN = 0
 
-_GROW_DIRECTION_END :: Int
-_GROW_DIRECTION_END = 1
-
-_PRESET_VCENTER_WIDE :: Int
-_PRESET_VCENTER_WIDE = 13
+_CURSOR_CAN_DROP :: Int
+_CURSOR_CAN_DROP = 7
 
 _SIZE_SHRINK_END :: Int
 _SIZE_SHRINK_END = 8
 
-_PRESET_RIGHT_WIDE :: Int
-_PRESET_RIGHT_WIDE = 11
+_PRESET_MODE_KEEP_SIZE :: Int
+_PRESET_MODE_KEEP_SIZE = 3
 
-_SIZE_FILL :: Int
-_SIZE_FILL = 1
+_CURSOR_IBEAM :: Int
+_CURSOR_IBEAM = 1
 
-_PRESET_BOTTOM_WIDE :: Int
-_PRESET_BOTTOM_WIDE = 12
+_SIZE_EXPAND :: Int
+_SIZE_EXPAND = 2
 
-_CURSOR_POINTING_HAND :: Int
-_CURSOR_POINTING_HAND = 2
+_CURSOR_HELP :: Int
+_CURSOR_HELP = 16
 
-_PRESET_MODE_KEEP_HEIGHT :: Int
-_PRESET_MODE_KEEP_HEIGHT = 2
+_NOTIFICATION_MOUSE_ENTER :: Int
+_NOTIFICATION_MOUSE_ENTER = 41
 
-_CURSOR_FDIAGSIZE :: Int
-_CURSOR_FDIAGSIZE = 12
+_CURSOR_ARROW :: Int
+_CURSOR_ARROW = 0
 
-_PRESET_WIDE :: Int
-_PRESET_WIDE = 15
-
-_PRESET_CENTER_LEFT :: Int
-_PRESET_CENTER_LEFT = 4
-
-_MOUSE_FILTER_PASS :: Int
-_MOUSE_FILTER_PASS = 1
-
-_NOTIFICATION_MODAL_CLOSE :: Int
-_NOTIFICATION_MODAL_CLOSE = 46
-
-_CURSOR_HSIZE :: Int
-_CURSOR_HSIZE = 10
-
-_PRESET_CENTER_RIGHT :: Int
-_PRESET_CENTER_RIGHT = 6
-
-_CURSOR_FORBIDDEN :: Int
-_CURSOR_FORBIDDEN = 8
-
-_CURSOR_VSIZE :: Int
-_CURSOR_VSIZE = 9
-
-_PRESET_CENTER_BOTTOM :: Int
-_PRESET_CENTER_BOTTOM = 7
-
-_NOTIFICATION_FOCUS_EXIT :: Int
-_NOTIFICATION_FOCUS_EXIT = 44
-
-_PRESET_LEFT_WIDE :: Int
-_PRESET_LEFT_WIDE = 9
-
-_ANCHOR_END :: Int
-_ANCHOR_END = 1
+_PRESET_MODE_KEEP_WIDTH :: Int
+_PRESET_MODE_KEEP_WIDTH = 1
 
 _MOUSE_FILTER_STOP :: Int
 _MOUSE_FILTER_STOP = 0
-
-_PRESET_BOTTOM_LEFT :: Int
-_PRESET_BOTTOM_LEFT = 2
 
 _PRESET_CENTER :: Int
 _PRESET_CENTER = 8
@@ -359,8 +222,146 @@ _PRESET_CENTER = 8
 _CURSOR_VSPLIT :: Int
 _CURSOR_VSPLIT = 14
 
+_NOTIFICATION_FOCUS_EXIT :: Int
+_NOTIFICATION_FOCUS_EXIT = 44
+
+_ANCHOR_BEGIN :: Int
+_ANCHOR_BEGIN = 0
+
+_CURSOR_BDIAGSIZE :: Int
+_CURSOR_BDIAGSIZE = 11
+
+_NOTIFICATION_FOCUS_ENTER :: Int
+_NOTIFICATION_FOCUS_ENTER = 43
+
+_CURSOR_WAIT :: Int
+_CURSOR_WAIT = 4
+
+_CURSOR_VSIZE :: Int
+_CURSOR_VSIZE = 9
+
+_CURSOR_FORBIDDEN :: Int
+_CURSOR_FORBIDDEN = 8
+
+_CURSOR_CROSS :: Int
+_CURSOR_CROSS = 3
+
+_SIZE_SHRINK_CENTER :: Int
+_SIZE_SHRINK_CENTER = 4
+
+_MOUSE_FILTER_PASS :: Int
+_MOUSE_FILTER_PASS = 1
+
+_PRESET_TOP_LEFT :: Int
+_PRESET_TOP_LEFT = 0
+
+_CURSOR_POINTING_HAND :: Int
+_CURSOR_POINTING_HAND = 2
+
+_CURSOR_FDIAGSIZE :: Int
+_CURSOR_FDIAGSIZE = 12
+
+_PRESET_CENTER_TOP :: Int
+_PRESET_CENTER_TOP = 5
+
+_CURSOR_DRAG :: Int
+_CURSOR_DRAG = 6
+
+_PRESET_BOTTOM_WIDE :: Int
+_PRESET_BOTTOM_WIDE = 12
+
+_PRESET_CENTER_LEFT :: Int
+_PRESET_CENTER_LEFT = 4
+
+_FOCUS_CLICK :: Int
+_FOCUS_CLICK = 1
+
+_PRESET_RIGHT_WIDE :: Int
+_PRESET_RIGHT_WIDE = 11
+
+_GROW_DIRECTION_END :: Int
+_GROW_DIRECTION_END = 1
+
+_NOTIFICATION_SCROLL_END :: Int
+_NOTIFICATION_SCROLL_END = 48
+
+_CURSOR_HSPLIT :: Int
+_CURSOR_HSPLIT = 15
+
+_NOTIFICATION_RESIZED :: Int
+_NOTIFICATION_RESIZED = 40
+
+_NOTIFICATION_MOUSE_EXIT :: Int
+_NOTIFICATION_MOUSE_EXIT = 42
+
+_CURSOR_MOVE :: Int
+_CURSOR_MOVE = 13
+
+_SIZE_EXPAND_FILL :: Int
+_SIZE_EXPAND_FILL = 3
+
+_PRESET_MODE_MINSIZE :: Int
+_PRESET_MODE_MINSIZE = 0
+
 _FOCUS_NONE :: Int
 _FOCUS_NONE = 0
+
+_PRESET_HCENTER_WIDE :: Int
+_PRESET_HCENTER_WIDE = 14
+
+_MOUSE_FILTER_IGNORE :: Int
+_MOUSE_FILTER_IGNORE = 2
+
+_PRESET_BOTTOM_LEFT :: Int
+_PRESET_BOTTOM_LEFT = 2
+
+_PRESET_LEFT_WIDE :: Int
+_PRESET_LEFT_WIDE = 9
+
+_PRESET_TOP_WIDE :: Int
+_PRESET_TOP_WIDE = 10
+
+_GROW_DIRECTION_BOTH :: Int
+_GROW_DIRECTION_BOTH = 2
+
+_PRESET_CENTER_BOTTOM :: Int
+_PRESET_CENTER_BOTTOM = 7
+
+_ANCHOR_END :: Int
+_ANCHOR_END = 1
+
+_NOTIFICATION_THEME_CHANGED :: Int
+_NOTIFICATION_THEME_CHANGED = 45
+
+_PRESET_TOP_RIGHT :: Int
+_PRESET_TOP_RIGHT = 1
+
+_PRESET_CENTER_RIGHT :: Int
+_PRESET_CENTER_RIGHT = 6
+
+_NOTIFICATION_MODAL_CLOSE :: Int
+_NOTIFICATION_MODAL_CLOSE = 46
+
+_CURSOR_HSIZE :: Int
+_CURSOR_HSIZE = 10
+
+_CURSOR_BUSY :: Int
+_CURSOR_BUSY = 5
+
+_SIZE_FILL :: Int
+_SIZE_FILL = 1
+
+_PRESET_MODE_KEEP_HEIGHT :: Int
+_PRESET_MODE_KEEP_HEIGHT = 2
+
+_PRESET_WIDE :: Int
+_PRESET_WIDE = 15
+
+_PRESET_BOTTOM_RIGHT :: Int
+_PRESET_BOTTOM_RIGHT = 3
+
+_FOCUS_ALL :: Int
+_FOCUS_ALL = 2
 
 -- | Emitted when the node gains keyboard focus.
 sig_focus_entered :: Godot.Internal.Dispatch.Signal Control
@@ -394,12 +395,14 @@ sig_modal_closed = Godot.Internal.Dispatch.Signal "modal_closed"
 instance NodeSignal Control "modal_closed" '[]
 
 -- | Emitted when the mouse enters the control's @Rect@ area, provided its @mouse_filter@ lets the event reach it.
+--   				__Note:__ @signal mouse_entered@ will not be emitted if the mouse enters a child @Control@ node before entering the parent's @Rect@ area, at least until the mouse is moved to reach the parent's @Rect@ area.
 sig_mouse_entered :: Godot.Internal.Dispatch.Signal Control
 sig_mouse_entered = Godot.Internal.Dispatch.Signal "mouse_entered"
 
 instance NodeSignal Control "mouse_entered" '[]
 
 -- | Emitted when the mouse leaves the control's @Rect@ area, provided its @mouse_filter@ lets the event reach it.
+--   				__Note:__ @signal mouse_exited@ will be emitted if the mouse enters a child @Control@ node, even if the mouse cursor is still inside the parent's @Rect@ area.
 sig_mouse_exited :: Godot.Internal.Dispatch.Signal Control
 sig_mouse_exited = Godot.Internal.Dispatch.Signal "mouse_exited"
 
@@ -713,7 +716,7 @@ instance NodeMethod Control "_get_tooltip" '[] (IO GodotString)
 --   				* control has @mouse_filter@ set to @MOUSE_FILTER_IGNORE@;
 --   				* control is obstructed by another @Control@ on top of it, which doesn't have @mouse_filter@ set to @MOUSE_FILTER_IGNORE@;
 --   				* control's parent has @mouse_filter@ set to @MOUSE_FILTER_STOP@ or has accepted the event;
---   				* it happens outside parent's rectangle and the parent has either @rect_clip_content@ or @method _clips_input@ enabled.
+--   				* it happens outside the parent's rectangle and the parent has either @rect_clip_content@ or @method _clips_input@ enabled.
 bindControl__gui_input :: MethodBind
 bindControl__gui_input
   = unsafePerformIO $
@@ -740,7 +743,7 @@ bindControl__gui_input
 --   				* control has @mouse_filter@ set to @MOUSE_FILTER_IGNORE@;
 --   				* control is obstructed by another @Control@ on top of it, which doesn't have @mouse_filter@ set to @MOUSE_FILTER_IGNORE@;
 --   				* control's parent has @mouse_filter@ set to @MOUSE_FILTER_STOP@ or has accepted the event;
---   				* it happens outside parent's rectangle and the parent has either @rect_clip_content@ or @method _clips_input@ enabled.
+--   				* it happens outside the parent's rectangle and the parent has either @rect_clip_content@ or @method _clips_input@ enabled.
 _gui_input ::
              (Control :< cls, Object :< cls) => cls -> InputEvent -> IO ()
 _gui_input cls arg1
@@ -757,7 +760,7 @@ instance NodeMethod Control "_gui_input" '[InputEvent] (IO ())
 {-# NOINLINE bindControl__make_custom_tooltip #-}
 
 -- | Virtual method to be implemented by the user. Returns a @Control@ node that should be used as a tooltip instead of the default one. The @for_text@ includes the contents of the @hint_tooltip@ property.
---   				The returned node must be of type @Control@ or Control-derived. It can have child nodes of any type. It is freed when the tooltip disappears, so make sure you always provide a new instance (if you want to use a pre-existing node from your scene tree, you can duplicate it and pass the duplicated instance).When @null@ or a non-Control node is returned, the default tooltip will be used instead.
+--   				The returned node must be of type @Control@ or Control-derived. It can have child nodes of any type. It is freed when the tooltip disappears, so make sure you always provide a new instance (if you want to use a pre-existing node from your scene tree, you can duplicate it and pass the duplicated instance). When @null@ or a non-Control node is returned, the default tooltip will be used instead.
 --   				The returned node will be added as child to a @PopupPanel@, so you should only provide the contents of that panel. That @PopupPanel@ can be themed using @method Theme.set_stylebox@ for the type @"TooltipPanel"@ (see @hint_tooltip@ for an example).
 --   				__Note:__ The tooltip is shrunk to minimal size. If you want to ensure it's fully visible, you might want to set its @rect_min_size@ to some non-zero value.
 --   				Example of usage with a custom-constructed node:
@@ -791,7 +794,7 @@ bindControl__make_custom_tooltip
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
 -- | Virtual method to be implemented by the user. Returns a @Control@ node that should be used as a tooltip instead of the default one. The @for_text@ includes the contents of the @hint_tooltip@ property.
---   				The returned node must be of type @Control@ or Control-derived. It can have child nodes of any type. It is freed when the tooltip disappears, so make sure you always provide a new instance (if you want to use a pre-existing node from your scene tree, you can duplicate it and pass the duplicated instance).When @null@ or a non-Control node is returned, the default tooltip will be used instead.
+--   				The returned node must be of type @Control@ or Control-derived. It can have child nodes of any type. It is freed when the tooltip disappears, so make sure you always provide a new instance (if you want to use a pre-existing node from your scene tree, you can duplicate it and pass the duplicated instance). When @null@ or a non-Control node is returned, the default tooltip will be used instead.
 --   				The returned node will be added as child to a @PopupPanel@, so you should only provide the contents of that panel. That @PopupPanel@ can be themed using @method Theme.set_stylebox@ for the type @"TooltipPanel"@ (see @hint_tooltip@ for an example).
 --   				__Note:__ The tooltip is shrunk to minimal size. If you want to ensure it's fully visible, you might want to set its @rect_min_size@ to some non-zero value.
 --   				Example of usage with a custom-constructed node:
@@ -3222,7 +3225,7 @@ instance NodeMethod Control "set_anchors_and_margins_preset"
 
 {-# NOINLINE bindControl_set_anchors_preset #-}
 
--- | Sets the anchors to a @preset@ from @enum Control.LayoutPreset@ enum. This is code equivalent of using the Layout menu in 2D editor.
+-- | Sets the anchors to a @preset@ from @enum Control.LayoutPreset@ enum. This is the code equivalent to using the Layout menu in the 2D editor.
 --   				If @keep_margins@ is @true@, control's position will also be updated.
 bindControl_set_anchors_preset :: MethodBind
 bindControl_set_anchors_preset
@@ -3233,7 +3236,7 @@ bindControl_set_anchors_preset
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Sets the anchors to a @preset@ from @enum Control.LayoutPreset@ enum. This is code equivalent of using the Layout menu in 2D editor.
+-- | Sets the anchors to a @preset@ from @enum Control.LayoutPreset@ enum. This is the code equivalent to using the Layout menu in the 2D editor.
 --   				If @keep_margins@ is @true@, control's position will also be updated.
 set_anchors_preset ::
                      (Control :< cls, Object :< cls) =>
@@ -3747,7 +3750,7 @@ instance NodeMethod Control "set_margin" '[Int, Float] (IO ())
 
 {-# NOINLINE bindControl_set_margins_preset #-}
 
--- | Sets the margins to a @preset@ from @enum Control.LayoutPreset@ enum. This is code equivalent of using the Layout menu in 2D editor.
+-- | Sets the margins to a @preset@ from @enum Control.LayoutPreset@ enum. This is the code equivalent to using the Layout menu in the 2D editor.
 --   				Use parameter @resize_mode@ with constants from @enum Control.LayoutPresetMode@ to better determine the resulting size of the @Control@. Constant size will be ignored if used with presets that change size, e.g. @PRESET_LEFT_WIDE@.
 --   				Use parameter @margin@ to determine the gap between the @Control@ and the edges.
 bindControl_set_margins_preset :: MethodBind
@@ -3759,7 +3762,7 @@ bindControl_set_margins_preset
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Sets the margins to a @preset@ from @enum Control.LayoutPreset@ enum. This is code equivalent of using the Layout menu in 2D editor.
+-- | Sets the margins to a @preset@ from @enum Control.LayoutPreset@ enum. This is the code equivalent to using the Layout menu in the 2D editor.
 --   				Use parameter @resize_mode@ with constants from @enum Control.LayoutPresetMode@ to better determine the resulting size of the @Control@. Constant size will be ignored if used with presets that change size, e.g. @PRESET_LEFT_WIDE@.
 --   				Use parameter @margin@ to determine the gap between the @Control@ and the edges.
 set_margins_preset ::

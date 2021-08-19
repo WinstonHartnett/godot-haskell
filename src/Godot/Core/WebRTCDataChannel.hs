@@ -2,12 +2,12 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.WebRTCDataChannel
-       (Godot.Core.WebRTCDataChannel._STATE_CLOSED,
-        Godot.Core.WebRTCDataChannel._WRITE_MODE_TEXT,
-        Godot.Core.WebRTCDataChannel._STATE_CLOSING,
-        Godot.Core.WebRTCDataChannel._STATE_CONNECTING,
+       (Godot.Core.WebRTCDataChannel._WRITE_MODE_BINARY,
+        Godot.Core.WebRTCDataChannel._STATE_CLOSED,
         Godot.Core.WebRTCDataChannel._STATE_OPEN,
-        Godot.Core.WebRTCDataChannel._WRITE_MODE_BINARY,
+        Godot.Core.WebRTCDataChannel._STATE_CONNECTING,
+        Godot.Core.WebRTCDataChannel._STATE_CLOSING,
+        Godot.Core.WebRTCDataChannel._WRITE_MODE_TEXT,
         Godot.Core.WebRTCDataChannel.close,
         Godot.Core.WebRTCDataChannel.get_id,
         Godot.Core.WebRTCDataChannel.get_label,
@@ -34,23 +34,23 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.PacketPeer()
 
+_WRITE_MODE_BINARY :: Int
+_WRITE_MODE_BINARY = 1
+
 _STATE_CLOSED :: Int
 _STATE_CLOSED = 3
-
-_WRITE_MODE_TEXT :: Int
-_WRITE_MODE_TEXT = 0
-
-_STATE_CLOSING :: Int
-_STATE_CLOSING = 2
-
-_STATE_CONNECTING :: Int
-_STATE_CONNECTING = 0
 
 _STATE_OPEN :: Int
 _STATE_OPEN = 1
 
-_WRITE_MODE_BINARY :: Int
-_WRITE_MODE_BINARY = 1
+_STATE_CONNECTING :: Int
+_STATE_CONNECTING = 0
+
+_STATE_CLOSING :: Int
+_STATE_CLOSING = 2
+
+_WRITE_MODE_TEXT :: Int
+_WRITE_MODE_TEXT = 0
 
 instance NodeProperty WebRTCDataChannel "write_mode" Int 'False
          where

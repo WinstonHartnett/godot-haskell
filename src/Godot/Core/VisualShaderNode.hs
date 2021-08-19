@@ -2,12 +2,12 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.VisualShaderNode
-       (Godot.Core.VisualShaderNode._PORT_TYPE_MAX,
+       (Godot.Core.VisualShaderNode._PORT_TYPE_VECTOR,
         Godot.Core.VisualShaderNode._PORT_TYPE_TRANSFORM,
-        Godot.Core.VisualShaderNode._PORT_TYPE_VECTOR,
+        Godot.Core.VisualShaderNode._PORT_TYPE_MAX,
         Godot.Core.VisualShaderNode._PORT_TYPE_SCALAR,
-        Godot.Core.VisualShaderNode._PORT_TYPE_SAMPLER,
         Godot.Core.VisualShaderNode._PORT_TYPE_BOOLEAN,
+        Godot.Core.VisualShaderNode._PORT_TYPE_SAMPLER,
         Godot.Core.VisualShaderNode.sig_editor_refresh_request,
         Godot.Core.VisualShaderNode.get_default_input_values,
         Godot.Core.VisualShaderNode.get_input_port_default_value,
@@ -28,23 +28,23 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.Resource()
 
-_PORT_TYPE_MAX :: Int
-_PORT_TYPE_MAX = 5
+_PORT_TYPE_VECTOR :: Int
+_PORT_TYPE_VECTOR = 1
 
 _PORT_TYPE_TRANSFORM :: Int
 _PORT_TYPE_TRANSFORM = 3
 
-_PORT_TYPE_VECTOR :: Int
-_PORT_TYPE_VECTOR = 1
+_PORT_TYPE_MAX :: Int
+_PORT_TYPE_MAX = 5
 
 _PORT_TYPE_SCALAR :: Int
 _PORT_TYPE_SCALAR = 0
 
-_PORT_TYPE_SAMPLER :: Int
-_PORT_TYPE_SAMPLER = 4
-
 _PORT_TYPE_BOOLEAN :: Int
 _PORT_TYPE_BOOLEAN = 2
+
+_PORT_TYPE_SAMPLER :: Int
+_PORT_TYPE_SAMPLER = 4
 
 -- | Emitted when the node requests an editor refresh. Currently called only in setter of @VisualShaderNodeTexture.source@, @VisualShaderNodeTexture@, and @VisualShaderNodeCubeMap@ (and their derivatives).
 sig_editor_refresh_request ::

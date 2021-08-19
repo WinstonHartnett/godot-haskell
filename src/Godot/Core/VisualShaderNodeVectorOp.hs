@@ -3,17 +3,17 @@
   MultiParamTypeClasses #-}
 module Godot.Core.VisualShaderNodeVectorOp
        (Godot.Core.VisualShaderNodeVectorOp._OP_MUL,
-        Godot.Core.VisualShaderNodeVectorOp._OP_SUB,
         Godot.Core.VisualShaderNodeVectorOp._OP_MAX,
-        Godot.Core.VisualShaderNodeVectorOp._OP_POW,
-        Godot.Core.VisualShaderNodeVectorOp._OP_MOD,
+        Godot.Core.VisualShaderNodeVectorOp._OP_SUB,
         Godot.Core.VisualShaderNodeVectorOp._OP_ADD,
-        Godot.Core.VisualShaderNodeVectorOp._OP_REFLECT,
-        Godot.Core.VisualShaderNodeVectorOp._OP_STEP,
-        Godot.Core.VisualShaderNodeVectorOp._OP_MIN,
-        Godot.Core.VisualShaderNodeVectorOp._OP_ATAN2,
-        Godot.Core.VisualShaderNodeVectorOp._OP_DIV,
         Godot.Core.VisualShaderNodeVectorOp._OP_CROSS,
+        Godot.Core.VisualShaderNodeVectorOp._OP_POW,
+        Godot.Core.VisualShaderNodeVectorOp._OP_STEP,
+        Godot.Core.VisualShaderNodeVectorOp._OP_REFLECT,
+        Godot.Core.VisualShaderNodeVectorOp._OP_MOD,
+        Godot.Core.VisualShaderNodeVectorOp._OP_DIV,
+        Godot.Core.VisualShaderNodeVectorOp._OP_ATAN2,
+        Godot.Core.VisualShaderNodeVectorOp._OP_MIN,
         Godot.Core.VisualShaderNodeVectorOp.get_operator,
         Godot.Core.VisualShaderNodeVectorOp.set_operator)
        where
@@ -32,38 +32,38 @@ import Godot.Core.VisualShaderNode()
 _OP_MUL :: Int
 _OP_MUL = 2
 
-_OP_SUB :: Int
-_OP_SUB = 1
-
 _OP_MAX :: Int
 _OP_MAX = 6
 
-_OP_POW :: Int
-_OP_POW = 5
-
-_OP_MOD :: Int
-_OP_MOD = 4
+_OP_SUB :: Int
+_OP_SUB = 1
 
 _OP_ADD :: Int
 _OP_ADD = 0
 
-_OP_REFLECT :: Int
-_OP_REFLECT = 10
+_OP_CROSS :: Int
+_OP_CROSS = 8
+
+_OP_POW :: Int
+_OP_POW = 5
 
 _OP_STEP :: Int
 _OP_STEP = 11
 
-_OP_MIN :: Int
-_OP_MIN = 7
+_OP_REFLECT :: Int
+_OP_REFLECT = 10
 
-_OP_ATAN2 :: Int
-_OP_ATAN2 = 9
+_OP_MOD :: Int
+_OP_MOD = 4
 
 _OP_DIV :: Int
 _OP_DIV = 3
 
-_OP_CROSS :: Int
-_OP_CROSS = 8
+_OP_ATAN2 :: Int
+_OP_ATAN2 = 9
+
+_OP_MIN :: Int
+_OP_MIN = 7
 
 instance NodeProperty VisualShaderNodeVectorOp "operator" Int
            'False

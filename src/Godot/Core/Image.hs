@@ -2,44 +2,42 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.Image
-       (Godot.Core.Image._FORMAT_RGBAF, Godot.Core.Image._FORMAT_PVRTC2A,
-        Godot.Core.Image._FORMAT_ETC2_RGB8, Godot.Core.Image._FORMAT_RGF,
-        Godot.Core.Image._FORMAT_DXT3,
-        Godot.Core.Image._COMPRESS_SOURCE_GENERIC,
+       (Godot.Core.Image._FORMAT_RGF, Godot.Core.Image._FORMAT_RGBAF,
+        Godot.Core.Image._ALPHA_BIT, Godot.Core.Image._FORMAT_PVRTC2A,
+        Godot.Core.Image._FORMAT_ETC2_RGB8, Godot.Core.Image._FORMAT_LA8,
+        Godot.Core.Image._ALPHA_NONE, Godot.Core.Image._COMPRESS_S3TC,
+        Godot.Core.Image._INTERPOLATE_BILINEAR,
+        Godot.Core.Image._COMPRESS_PVRTC4,
+        Godot.Core.Image._FORMAT_RGBA5551, Godot.Core.Image._FORMAT_RGB8,
+        Godot.Core.Image._FORMAT_PVRTC4, Godot.Core.Image._FORMAT_RGBH,
+        Godot.Core.Image._COMPRESS_ETC,
+        Godot.Core.Image._COMPRESS_SOURCE_NORMAL,
+        Godot.Core.Image._COMPRESS_PVRTC2, Godot.Core.Image._FORMAT_MAX,
+        Godot.Core.Image._FORMAT_RF, Godot.Core.Image._FORMAT_L8,
+        Godot.Core.Image._FORMAT_ETC2_RG11S, Godot.Core.Image._FORMAT_RGBF,
+        Godot.Core.Image._FORMAT_BPTC_RGBFU, Godot.Core.Image._ALPHA_BLEND,
         Godot.Core.Image._FORMAT_ETC2_R11S,
         Godot.Core.Image._FORMAT_PVRTC4A,
-        Godot.Core.Image._FORMAT_RGBA4444,
-        Godot.Core.Image._FORMAT_ETC2_RG11S, Godot.Core.Image._FORMAT_RGBF,
-        Godot.Core.Image._FORMAT_MAX,
-        Godot.Core.Image._COMPRESS_SOURCE_NORMAL,
-        Godot.Core.Image._COMPRESS_ETC, Godot.Core.Image._FORMAT_RGTC_R,
-        Godot.Core.Image._COMPRESS_S3TC, Godot.Core.Image._COMPRESS_PVRTC4,
-        Godot.Core.Image._FORMAT_ETC2_RG11, Godot.Core.Image._FORMAT_ETC,
-        Godot.Core.Image._FORMAT_RGBA5551, Godot.Core.Image._COMPRESS_ETC2,
-        Godot.Core.Image._FORMAT_ETC2_R11, Godot.Core.Image._FORMAT_LA8,
-        Godot.Core.Image._FORMAT_DXT5, Godot.Core.Image._ALPHA_NONE,
-        Godot.Core.Image._MAX_HEIGHT, Godot.Core.Image._ALPHA_BIT,
-        Godot.Core.Image._FORMAT_ETC2_RGB8A1,
-        Godot.Core.Image._FORMAT_RGTC_RG,
-        Godot.Core.Image._FORMAT_BPTC_RGBF,
-        Godot.Core.Image._COMPRESS_SOURCE_SRGB,
-        Godot.Core.Image._FORMAT_RGBA8,
         Godot.Core.Image._INTERPOLATE_NEAREST,
-        Godot.Core.Image._FORMAT_RGBAH, Godot.Core.Image._FORMAT_RGBE9995,
-        Godot.Core.Image._FORMAT_BPTC_RGBFU,
+        Godot.Core.Image._FORMAT_RGBE9995,
         Godot.Core.Image._INTERPOLATE_TRILINEAR,
-        Godot.Core.Image._ALPHA_BLEND, Godot.Core.Image._FORMAT_PVRTC2,
-        Godot.Core.Image._FORMAT_DXT1, Godot.Core.Image._MAX_WIDTH,
+        Godot.Core.Image._COMPRESS_SOURCE_SRGB,
+        Godot.Core.Image._FORMAT_DXT3, Godot.Core.Image._FORMAT_BPTC_RGBF,
+        Godot.Core.Image._MAX_HEIGHT, Godot.Core.Image._FORMAT_RGTC_RG,
+        Godot.Core.Image._FORMAT_ETC2_RGB8A1,
+        Godot.Core.Image._COMPRESS_ETC2, Godot.Core.Image._FORMAT_RG8,
+        Godot.Core.Image._FORMAT_DXT5, Godot.Core.Image._FORMAT_ETC2_R11,
+        Godot.Core.Image._FORMAT_RGH,
+        Godot.Core.Image._INTERPOLATE_LANCZOS, Godot.Core.Image._FORMAT_R8,
+        Godot.Core.Image._FORMAT_ETC, Godot.Core.Image._INTERPOLATE_CUBIC,
+        Godot.Core.Image._FORMAT_ETC2_RG11, Godot.Core.Image._FORMAT_RH,
+        Godot.Core.Image._FORMAT_RGTC_R,
+        Godot.Core.Image._FORMAT_BPTC_RGBA, Godot.Core.Image._FORMAT_DXT1,
         Godot.Core.Image._FORMAT_ETC2_RGBA8,
-        Godot.Core.Image._FORMAT_BPTC_RGBA,
-        Godot.Core.Image._COMPRESS_PVRTC2, Godot.Core.Image._FORMAT_RF,
-        Godot.Core.Image._FORMAT_L8, Godot.Core.Image._FORMAT_RGB8,
-        Godot.Core.Image._FORMAT_RGBH, Godot.Core.Image._FORMAT_PVRTC4,
-        Godot.Core.Image._FORMAT_RH, Godot.Core.Image._FORMAT_R8,
-        Godot.Core.Image._INTERPOLATE_BILINEAR,
-        Godot.Core.Image._INTERPOLATE_CUBIC,
-        Godot.Core.Image._INTERPOLATE_LANCZOS,
-        Godot.Core.Image._FORMAT_RG8, Godot.Core.Image._FORMAT_RGH,
+        Godot.Core.Image._FORMAT_PVRTC2, Godot.Core.Image._MAX_WIDTH,
+        Godot.Core.Image._FORMAT_RGBA8,
+        Godot.Core.Image._COMPRESS_SOURCE_GENERIC,
+        Godot.Core.Image._FORMAT_RGBAH, Godot.Core.Image._FORMAT_RGBA4444,
         Godot.Core.Image._get_data, Godot.Core.Image._set_data,
         Godot.Core.Image.blend_rect, Godot.Core.Image.blend_rect_mask,
         Godot.Core.Image.blit_rect, Godot.Core.Image.blit_rect_mask,
@@ -84,8 +82,14 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.Resource()
 
+_FORMAT_RGF :: Int
+_FORMAT_RGF = 9
+
 _FORMAT_RGBAF :: Int
 _FORMAT_RGBAF = 11
+
+_ALPHA_BIT :: Int
+_ALPHA_BIT = 1
 
 _FORMAT_PVRTC2A :: Int
 _FORMAT_PVRTC2A = 26
@@ -93,128 +97,44 @@ _FORMAT_PVRTC2A = 26
 _FORMAT_ETC2_RGB8 :: Int
 _FORMAT_ETC2_RGB8 = 34
 
-_FORMAT_RGF :: Int
-_FORMAT_RGF = 9
-
-_FORMAT_DXT3 :: Int
-_FORMAT_DXT3 = 18
-
-_COMPRESS_SOURCE_GENERIC :: Int
-_COMPRESS_SOURCE_GENERIC = 0
-
-_FORMAT_ETC2_R11S :: Int
-_FORMAT_ETC2_R11S = 31
-
-_FORMAT_PVRTC4A :: Int
-_FORMAT_PVRTC4A = 28
-
-_FORMAT_RGBA4444 :: Int
-_FORMAT_RGBA4444 = 6
-
-_FORMAT_ETC2_RG11S :: Int
-_FORMAT_ETC2_RG11S = 33
-
-_FORMAT_RGBF :: Int
-_FORMAT_RGBF = 10
-
-_FORMAT_MAX :: Int
-_FORMAT_MAX = 37
-
-_COMPRESS_SOURCE_NORMAL :: Int
-_COMPRESS_SOURCE_NORMAL = 2
-
-_COMPRESS_ETC :: Int
-_COMPRESS_ETC = 3
-
-_FORMAT_RGTC_R :: Int
-_FORMAT_RGTC_R = 20
-
-_COMPRESS_S3TC :: Int
-_COMPRESS_S3TC = 0
-
-_COMPRESS_PVRTC4 :: Int
-_COMPRESS_PVRTC4 = 2
-
-_FORMAT_ETC2_RG11 :: Int
-_FORMAT_ETC2_RG11 = 32
-
-_FORMAT_ETC :: Int
-_FORMAT_ETC = 29
-
-_FORMAT_RGBA5551 :: Int
-_FORMAT_RGBA5551 = 7
-
-_COMPRESS_ETC2 :: Int
-_COMPRESS_ETC2 = 4
-
-_FORMAT_ETC2_R11 :: Int
-_FORMAT_ETC2_R11 = 30
-
 _FORMAT_LA8 :: Int
 _FORMAT_LA8 = 1
-
-_FORMAT_DXT5 :: Int
-_FORMAT_DXT5 = 19
 
 _ALPHA_NONE :: Int
 _ALPHA_NONE = 0
 
-_MAX_HEIGHT :: Int
-_MAX_HEIGHT = 16384
+_COMPRESS_S3TC :: Int
+_COMPRESS_S3TC = 0
 
-_ALPHA_BIT :: Int
-_ALPHA_BIT = 1
+_INTERPOLATE_BILINEAR :: Int
+_INTERPOLATE_BILINEAR = 1
 
-_FORMAT_ETC2_RGB8A1 :: Int
-_FORMAT_ETC2_RGB8A1 = 36
+_COMPRESS_PVRTC4 :: Int
+_COMPRESS_PVRTC4 = 2
 
-_FORMAT_RGTC_RG :: Int
-_FORMAT_RGTC_RG = 21
+_FORMAT_RGBA5551 :: Int
+_FORMAT_RGBA5551 = 7
 
-_FORMAT_BPTC_RGBF :: Int
-_FORMAT_BPTC_RGBF = 23
+_FORMAT_RGB8 :: Int
+_FORMAT_RGB8 = 4
 
-_COMPRESS_SOURCE_SRGB :: Int
-_COMPRESS_SOURCE_SRGB = 1
+_FORMAT_PVRTC4 :: Int
+_FORMAT_PVRTC4 = 27
 
-_FORMAT_RGBA8 :: Int
-_FORMAT_RGBA8 = 5
+_FORMAT_RGBH :: Int
+_FORMAT_RGBH = 14
 
-_INTERPOLATE_NEAREST :: Int
-_INTERPOLATE_NEAREST = 0
+_COMPRESS_ETC :: Int
+_COMPRESS_ETC = 3
 
-_FORMAT_RGBAH :: Int
-_FORMAT_RGBAH = 15
-
-_FORMAT_RGBE9995 :: Int
-_FORMAT_RGBE9995 = 16
-
-_FORMAT_BPTC_RGBFU :: Int
-_FORMAT_BPTC_RGBFU = 24
-
-_INTERPOLATE_TRILINEAR :: Int
-_INTERPOLATE_TRILINEAR = 3
-
-_ALPHA_BLEND :: Int
-_ALPHA_BLEND = 2
-
-_FORMAT_PVRTC2 :: Int
-_FORMAT_PVRTC2 = 25
-
-_FORMAT_DXT1 :: Int
-_FORMAT_DXT1 = 17
-
-_MAX_WIDTH :: Int
-_MAX_WIDTH = 16384
-
-_FORMAT_ETC2_RGBA8 :: Int
-_FORMAT_ETC2_RGBA8 = 35
-
-_FORMAT_BPTC_RGBA :: Int
-_FORMAT_BPTC_RGBA = 22
+_COMPRESS_SOURCE_NORMAL :: Int
+_COMPRESS_SOURCE_NORMAL = 2
 
 _COMPRESS_PVRTC2 :: Int
 _COMPRESS_PVRTC2 = 1
+
+_FORMAT_MAX :: Int
+_FORMAT_MAX = 37
 
 _FORMAT_RF :: Int
 _FORMAT_RF = 8
@@ -222,35 +142,113 @@ _FORMAT_RF = 8
 _FORMAT_L8 :: Int
 _FORMAT_L8 = 0
 
-_FORMAT_RGB8 :: Int
-_FORMAT_RGB8 = 4
+_FORMAT_ETC2_RG11S :: Int
+_FORMAT_ETC2_RG11S = 33
 
-_FORMAT_RGBH :: Int
-_FORMAT_RGBH = 14
+_FORMAT_RGBF :: Int
+_FORMAT_RGBF = 10
 
-_FORMAT_PVRTC4 :: Int
-_FORMAT_PVRTC4 = 27
+_FORMAT_BPTC_RGBFU :: Int
+_FORMAT_BPTC_RGBFU = 24
 
-_FORMAT_RH :: Int
-_FORMAT_RH = 12
+_ALPHA_BLEND :: Int
+_ALPHA_BLEND = 2
 
-_FORMAT_R8 :: Int
-_FORMAT_R8 = 2
+_FORMAT_ETC2_R11S :: Int
+_FORMAT_ETC2_R11S = 31
 
-_INTERPOLATE_BILINEAR :: Int
-_INTERPOLATE_BILINEAR = 1
+_FORMAT_PVRTC4A :: Int
+_FORMAT_PVRTC4A = 28
 
-_INTERPOLATE_CUBIC :: Int
-_INTERPOLATE_CUBIC = 2
+_INTERPOLATE_NEAREST :: Int
+_INTERPOLATE_NEAREST = 0
 
-_INTERPOLATE_LANCZOS :: Int
-_INTERPOLATE_LANCZOS = 4
+_FORMAT_RGBE9995 :: Int
+_FORMAT_RGBE9995 = 16
+
+_INTERPOLATE_TRILINEAR :: Int
+_INTERPOLATE_TRILINEAR = 3
+
+_COMPRESS_SOURCE_SRGB :: Int
+_COMPRESS_SOURCE_SRGB = 1
+
+_FORMAT_DXT3 :: Int
+_FORMAT_DXT3 = 18
+
+_FORMAT_BPTC_RGBF :: Int
+_FORMAT_BPTC_RGBF = 23
+
+_MAX_HEIGHT :: Int
+_MAX_HEIGHT = 16384
+
+_FORMAT_RGTC_RG :: Int
+_FORMAT_RGTC_RG = 21
+
+_FORMAT_ETC2_RGB8A1 :: Int
+_FORMAT_ETC2_RGB8A1 = 36
+
+_COMPRESS_ETC2 :: Int
+_COMPRESS_ETC2 = 4
 
 _FORMAT_RG8 :: Int
 _FORMAT_RG8 = 3
 
+_FORMAT_DXT5 :: Int
+_FORMAT_DXT5 = 19
+
+_FORMAT_ETC2_R11 :: Int
+_FORMAT_ETC2_R11 = 30
+
 _FORMAT_RGH :: Int
 _FORMAT_RGH = 13
+
+_INTERPOLATE_LANCZOS :: Int
+_INTERPOLATE_LANCZOS = 4
+
+_FORMAT_R8 :: Int
+_FORMAT_R8 = 2
+
+_FORMAT_ETC :: Int
+_FORMAT_ETC = 29
+
+_INTERPOLATE_CUBIC :: Int
+_INTERPOLATE_CUBIC = 2
+
+_FORMAT_ETC2_RG11 :: Int
+_FORMAT_ETC2_RG11 = 32
+
+_FORMAT_RH :: Int
+_FORMAT_RH = 12
+
+_FORMAT_RGTC_R :: Int
+_FORMAT_RGTC_R = 20
+
+_FORMAT_BPTC_RGBA :: Int
+_FORMAT_BPTC_RGBA = 22
+
+_FORMAT_DXT1 :: Int
+_FORMAT_DXT1 = 17
+
+_FORMAT_ETC2_RGBA8 :: Int
+_FORMAT_ETC2_RGBA8 = 35
+
+_FORMAT_PVRTC2 :: Int
+_FORMAT_PVRTC2 = 25
+
+_MAX_WIDTH :: Int
+_MAX_WIDTH = 16384
+
+_FORMAT_RGBA8 :: Int
+_FORMAT_RGBA8 = 5
+
+_COMPRESS_SOURCE_GENERIC :: Int
+_COMPRESS_SOURCE_GENERIC = 0
+
+_FORMAT_RGBAH :: Int
+_FORMAT_RGBAH = 15
+
+_FORMAT_RGBA4444 :: Int
+_FORMAT_RGBA4444 = 6
 
 instance NodeProperty Image "data" Dictionary 'False where
         nodeProperty = (_get_data, wrapDroppingSetter _set_data, Nothing)
@@ -790,7 +788,7 @@ instance NodeMethod Image "flip_y" '[] (IO ()) where
 
 {-# NOINLINE bindImage_generate_mipmaps #-}
 
--- | Generates mipmaps for the image. Mipmaps are precalculated and lower resolution copies of the image. Mipmaps are automatically used if the image needs to be scaled down when rendered. This improves image quality and the performance of the rendering. Returns an error if the image is compressed, in a custom format or if the image's width/height is 0.
+-- | Generates mipmaps for the image. Mipmaps are precalculated lower-resolution copies of the image that are automatically used if the image needs to be scaled down when rendered. They help improve image quality and performance when rendering. This method returns an error if the image is compressed, in a custom format, or if the image's width/height is @0@.
 bindImage_generate_mipmaps :: MethodBind
 bindImage_generate_mipmaps
   = unsafePerformIO $
@@ -800,7 +798,7 @@ bindImage_generate_mipmaps
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Generates mipmaps for the image. Mipmaps are precalculated and lower resolution copies of the image. Mipmaps are automatically used if the image needs to be scaled down when rendered. This improves image quality and the performance of the rendering. Returns an error if the image is compressed, in a custom format or if the image's width/height is 0.
+-- | Generates mipmaps for the image. Mipmaps are precalculated lower-resolution copies of the image that are automatically used if the image needs to be scaled down when rendered. They help improve image quality and performance when rendering. This method returns an error if the image is compressed, in a custom format, or if the image's width/height is @0@.
 generate_mipmaps ::
                    (Image :< cls, Object :< cls) => cls -> Maybe Bool -> IO Int
 generate_mipmaps cls arg1
@@ -1476,6 +1474,7 @@ instance NodeMethod Image "rgbe_to_srgb" '[] (IO Image) where
 {-# NOINLINE bindImage_save_exr #-}
 
 -- | Saves the image as an EXR file to @path@. If @grayscale@ is @true@ and the image has only one channel, it will be saved explicitly as monochrome rather than one red channel. This function will return @ERR_UNAVAILABLE@ if Godot was compiled without the TinyEXR module.
+--   				__Note:__ The TinyEXR module is disabled in non-editor builds, which means @method save_exr@ will return @ERR_UNAVAILABLE@ when it is called from an exported project.
 bindImage_save_exr :: MethodBind
 bindImage_save_exr
   = unsafePerformIO $
@@ -1486,6 +1485,7 @@ bindImage_save_exr
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
 -- | Saves the image as an EXR file to @path@. If @grayscale@ is @true@ and the image has only one channel, it will be saved explicitly as monochrome rather than one red channel. This function will return @ERR_UNAVAILABLE@ if Godot was compiled without the TinyEXR module.
+--   				__Note:__ The TinyEXR module is disabled in non-editor builds, which means @method save_exr@ will return @ERR_UNAVAILABLE@ when it is called from an exported project.
 save_exr ::
            (Image :< cls, Object :< cls) =>
            cls -> GodotString -> Maybe Bool -> IO Int

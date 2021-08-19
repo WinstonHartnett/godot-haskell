@@ -3,9 +3,9 @@
   MultiParamTypeClasses #-}
 module Godot.Core.Spatial
        (Godot.Core.Spatial._NOTIFICATION_ENTER_WORLD,
-        Godot.Core.Spatial._NOTIFICATION_EXIT_WORLD,
-        Godot.Core.Spatial._NOTIFICATION_TRANSFORM_CHANGED,
         Godot.Core.Spatial._NOTIFICATION_VISIBILITY_CHANGED,
+        Godot.Core.Spatial._NOTIFICATION_TRANSFORM_CHANGED,
+        Godot.Core.Spatial._NOTIFICATION_EXIT_WORLD,
         Godot.Core.Spatial.sig_visibility_changed,
         Godot.Core.Spatial._update_gizmo,
         Godot.Core.Spatial.force_update_transform,
@@ -60,14 +60,14 @@ import Godot.Core.Node()
 _NOTIFICATION_ENTER_WORLD :: Int
 _NOTIFICATION_ENTER_WORLD = 41
 
-_NOTIFICATION_EXIT_WORLD :: Int
-_NOTIFICATION_EXIT_WORLD = 42
+_NOTIFICATION_VISIBILITY_CHANGED :: Int
+_NOTIFICATION_VISIBILITY_CHANGED = 43
 
 _NOTIFICATION_TRANSFORM_CHANGED :: Int
 _NOTIFICATION_TRANSFORM_CHANGED = 2000
 
-_NOTIFICATION_VISIBILITY_CHANGED :: Int
-_NOTIFICATION_VISIBILITY_CHANGED = 43
+_NOTIFICATION_EXIT_WORLD :: Int
+_NOTIFICATION_EXIT_WORLD = 42
 
 -- | Emitted when node visibility changes.
 sig_visibility_changed :: Godot.Internal.Dispatch.Signal Spatial

@@ -3,10 +3,10 @@
   MultiParamTypeClasses #-}
 module Godot.Core.AnimationPlayer
        (Godot.Core.AnimationPlayer._ANIMATION_METHOD_CALL_IMMEDIATE,
-        Godot.Core.AnimationPlayer._ANIMATION_METHOD_CALL_DEFERRED,
         Godot.Core.AnimationPlayer._ANIMATION_PROCESS_MANUAL,
-        Godot.Core.AnimationPlayer._ANIMATION_PROCESS_PHYSICS,
+        Godot.Core.AnimationPlayer._ANIMATION_METHOD_CALL_DEFERRED,
         Godot.Core.AnimationPlayer._ANIMATION_PROCESS_IDLE,
+        Godot.Core.AnimationPlayer._ANIMATION_PROCESS_PHYSICS,
         Godot.Core.AnimationPlayer.sig_animation_changed,
         Godot.Core.AnimationPlayer.sig_animation_finished,
         Godot.Core.AnimationPlayer.sig_animation_started,
@@ -71,17 +71,17 @@ import Godot.Core.Node()
 _ANIMATION_METHOD_CALL_IMMEDIATE :: Int
 _ANIMATION_METHOD_CALL_IMMEDIATE = 1
 
-_ANIMATION_METHOD_CALL_DEFERRED :: Int
-_ANIMATION_METHOD_CALL_DEFERRED = 0
-
 _ANIMATION_PROCESS_MANUAL :: Int
 _ANIMATION_PROCESS_MANUAL = 2
 
-_ANIMATION_PROCESS_PHYSICS :: Int
-_ANIMATION_PROCESS_PHYSICS = 0
+_ANIMATION_METHOD_CALL_DEFERRED :: Int
+_ANIMATION_METHOD_CALL_DEFERRED = 0
 
 _ANIMATION_PROCESS_IDLE :: Int
 _ANIMATION_PROCESS_IDLE = 1
+
+_ANIMATION_PROCESS_PHYSICS :: Int
+_ANIMATION_PROCESS_PHYSICS = 0
 
 -- | If the currently being played animation changes, this signal will notify of such change.
 sig_animation_changed ::

@@ -2,9 +2,9 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.VisibilityEnabler
-       (Godot.Core.VisibilityEnabler._ENABLER_MAX,
-        Godot.Core.VisibilityEnabler._ENABLER_PAUSE_ANIMATIONS,
+       (Godot.Core.VisibilityEnabler._ENABLER_PAUSE_ANIMATIONS,
         Godot.Core.VisibilityEnabler._ENABLER_FREEZE_BODIES,
+        Godot.Core.VisibilityEnabler._ENABLER_MAX,
         Godot.Core.VisibilityEnabler._node_removed,
         Godot.Core.VisibilityEnabler.is_enabler_enabled,
         Godot.Core.VisibilityEnabler.set_enabler)
@@ -21,14 +21,14 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.VisibilityNotifier()
 
-_ENABLER_MAX :: Int
-_ENABLER_MAX = 2
-
 _ENABLER_PAUSE_ANIMATIONS :: Int
 _ENABLER_PAUSE_ANIMATIONS = 0
 
 _ENABLER_FREEZE_BODIES :: Int
 _ENABLER_FREEZE_BODIES = 1
+
+_ENABLER_MAX :: Int
+_ENABLER_MAX = 2
 
 instance NodeProperty VisibilityEnabler "freeze_bodies" Bool 'False
          where

@@ -2,8 +2,8 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.TouchScreenButton
-       (Godot.Core.TouchScreenButton._VISIBILITY_ALWAYS,
-        Godot.Core.TouchScreenButton._VISIBILITY_TOUCHSCREEN_ONLY,
+       (Godot.Core.TouchScreenButton._VISIBILITY_TOUCHSCREEN_ONLY,
+        Godot.Core.TouchScreenButton._VISIBILITY_ALWAYS,
         Godot.Core.TouchScreenButton.sig_pressed,
         Godot.Core.TouchScreenButton.sig_released,
         Godot.Core.TouchScreenButton._input,
@@ -39,11 +39,11 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.Node2D()
 
-_VISIBILITY_ALWAYS :: Int
-_VISIBILITY_ALWAYS = 0
-
 _VISIBILITY_TOUCHSCREEN_ONLY :: Int
 _VISIBILITY_TOUCHSCREEN_ONLY = 1
+
+_VISIBILITY_ALWAYS :: Int
+_VISIBILITY_ALWAYS = 0
 
 -- | Emitted when the button is pressed (down).
 sig_pressed :: Godot.Internal.Dispatch.Signal TouchScreenButton

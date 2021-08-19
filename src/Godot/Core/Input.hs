@@ -2,20 +2,21 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.Input
-       (Godot.Core.Input._CURSOR_MOVE, Godot.Core.Input._CURSOR_ARROW,
-        Godot.Core.Input._CURSOR_IBEAM, Godot.Core.Input._CURSOR_HSPLIT,
-        Godot.Core.Input._CURSOR_DRAG, Godot.Core.Input._CURSOR_BUSY,
-        Godot.Core.Input._MOUSE_MODE_CONFINED,
-        Godot.Core.Input._CURSOR_CROSS, Godot.Core.Input._CURSOR_WAIT,
-        Godot.Core.Input._CURSOR_BDIAGSIZE, Godot.Core.Input._CURSOR_HELP,
-        Godot.Core.Input._MOUSE_MODE_VISIBLE,
-        Godot.Core.Input._CURSOR_CAN_DROP,
-        Godot.Core.Input._MOUSE_MODE_CAPTURED,
-        Godot.Core.Input._CURSOR_POINTING_HAND,
-        Godot.Core.Input._CURSOR_FDIAGSIZE, Godot.Core.Input._CURSOR_HSIZE,
-        Godot.Core.Input._MOUSE_MODE_HIDDEN,
-        Godot.Core.Input._CURSOR_FORBIDDEN, Godot.Core.Input._CURSOR_VSIZE,
+       (Godot.Core.Input._CURSOR_CAN_DROP, Godot.Core.Input._CURSOR_IBEAM,
+        Godot.Core.Input._CURSOR_HELP, Godot.Core.Input._CURSOR_ARROW,
         Godot.Core.Input._CURSOR_VSPLIT,
+        Godot.Core.Input._CURSOR_BDIAGSIZE, Godot.Core.Input._CURSOR_WAIT,
+        Godot.Core.Input._CURSOR_VSIZE, Godot.Core.Input._CURSOR_FORBIDDEN,
+        Godot.Core.Input._CURSOR_CROSS,
+        Godot.Core.Input._MOUSE_MODE_HIDDEN,
+        Godot.Core.Input._CURSOR_POINTING_HAND,
+        Godot.Core.Input._CURSOR_FDIAGSIZE, Godot.Core.Input._CURSOR_DRAG,
+        Godot.Core.Input._MOUSE_MODE_CAPTURED,
+        Godot.Core.Input._CURSOR_HSPLIT,
+        Godot.Core.Input._MOUSE_MODE_VISIBLE,
+        Godot.Core.Input._CURSOR_MOVE,
+        Godot.Core.Input._MOUSE_MODE_CONFINED,
+        Godot.Core.Input._CURSOR_HSIZE, Godot.Core.Input._CURSOR_BUSY,
         Godot.Core.Input.sig_joy_connection_changed,
         Godot.Core.Input.action_press, Godot.Core.Input.action_release,
         Godot.Core.Input.add_joy_mapping,
@@ -66,47 +67,38 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.Object()
 
-_CURSOR_MOVE :: Int
-_CURSOR_MOVE = 13
-
-_CURSOR_ARROW :: Int
-_CURSOR_ARROW = 0
+_CURSOR_CAN_DROP :: Int
+_CURSOR_CAN_DROP = 7
 
 _CURSOR_IBEAM :: Int
 _CURSOR_IBEAM = 1
 
-_CURSOR_HSPLIT :: Int
-_CURSOR_HSPLIT = 15
+_CURSOR_HELP :: Int
+_CURSOR_HELP = 16
 
-_CURSOR_DRAG :: Int
-_CURSOR_DRAG = 6
+_CURSOR_ARROW :: Int
+_CURSOR_ARROW = 0
 
-_CURSOR_BUSY :: Int
-_CURSOR_BUSY = 5
-
-_MOUSE_MODE_CONFINED :: Int
-_MOUSE_MODE_CONFINED = 3
-
-_CURSOR_CROSS :: Int
-_CURSOR_CROSS = 3
-
-_CURSOR_WAIT :: Int
-_CURSOR_WAIT = 4
+_CURSOR_VSPLIT :: Int
+_CURSOR_VSPLIT = 14
 
 _CURSOR_BDIAGSIZE :: Int
 _CURSOR_BDIAGSIZE = 11
 
-_CURSOR_HELP :: Int
-_CURSOR_HELP = 16
+_CURSOR_WAIT :: Int
+_CURSOR_WAIT = 4
 
-_MOUSE_MODE_VISIBLE :: Int
-_MOUSE_MODE_VISIBLE = 0
+_CURSOR_VSIZE :: Int
+_CURSOR_VSIZE = 9
 
-_CURSOR_CAN_DROP :: Int
-_CURSOR_CAN_DROP = 7
+_CURSOR_FORBIDDEN :: Int
+_CURSOR_FORBIDDEN = 8
 
-_MOUSE_MODE_CAPTURED :: Int
-_MOUSE_MODE_CAPTURED = 2
+_CURSOR_CROSS :: Int
+_CURSOR_CROSS = 3
+
+_MOUSE_MODE_HIDDEN :: Int
+_MOUSE_MODE_HIDDEN = 1
 
 _CURSOR_POINTING_HAND :: Int
 _CURSOR_POINTING_HAND = 2
@@ -114,20 +106,29 @@ _CURSOR_POINTING_HAND = 2
 _CURSOR_FDIAGSIZE :: Int
 _CURSOR_FDIAGSIZE = 12
 
+_CURSOR_DRAG :: Int
+_CURSOR_DRAG = 6
+
+_MOUSE_MODE_CAPTURED :: Int
+_MOUSE_MODE_CAPTURED = 2
+
+_CURSOR_HSPLIT :: Int
+_CURSOR_HSPLIT = 15
+
+_MOUSE_MODE_VISIBLE :: Int
+_MOUSE_MODE_VISIBLE = 0
+
+_CURSOR_MOVE :: Int
+_CURSOR_MOVE = 13
+
+_MOUSE_MODE_CONFINED :: Int
+_MOUSE_MODE_CONFINED = 3
+
 _CURSOR_HSIZE :: Int
 _CURSOR_HSIZE = 10
 
-_MOUSE_MODE_HIDDEN :: Int
-_MOUSE_MODE_HIDDEN = 1
-
-_CURSOR_FORBIDDEN :: Int
-_CURSOR_FORBIDDEN = 8
-
-_CURSOR_VSIZE :: Int
-_CURSOR_VSIZE = 9
-
-_CURSOR_VSPLIT :: Int
-_CURSOR_VSPLIT = 14
+_CURSOR_BUSY :: Int
+_CURSOR_BUSY = 5
 
 -- | Emitted when a joypad device has been connected or disconnected.
 sig_joy_connection_changed :: Godot.Internal.Dispatch.Signal Input

@@ -2,9 +2,9 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.LinkButton
-       (Godot.Core.LinkButton._UNDERLINE_MODE_ALWAYS,
-        Godot.Core.LinkButton._UNDERLINE_MODE_NEVER,
+       (Godot.Core.LinkButton._UNDERLINE_MODE_NEVER,
         Godot.Core.LinkButton._UNDERLINE_MODE_ON_HOVER,
+        Godot.Core.LinkButton._UNDERLINE_MODE_ALWAYS,
         Godot.Core.LinkButton.get_text,
         Godot.Core.LinkButton.get_underline_mode,
         Godot.Core.LinkButton.set_text,
@@ -22,14 +22,14 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.BaseButton()
 
-_UNDERLINE_MODE_ALWAYS :: Int
-_UNDERLINE_MODE_ALWAYS = 0
-
 _UNDERLINE_MODE_NEVER :: Int
 _UNDERLINE_MODE_NEVER = 2
 
 _UNDERLINE_MODE_ON_HOVER :: Int
 _UNDERLINE_MODE_ON_HOVER = 1
+
+_UNDERLINE_MODE_ALWAYS :: Int
+_UNDERLINE_MODE_ALWAYS = 0
 
 instance NodeProperty LinkButton "text" GodotString 'False where
         nodeProperty = (get_text, wrapDroppingSetter set_text, Nothing)

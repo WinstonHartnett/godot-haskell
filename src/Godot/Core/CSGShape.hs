@@ -3,8 +3,8 @@
   MultiParamTypeClasses #-}
 module Godot.Core.CSGShape
        (Godot.Core.CSGShape._OPERATION_SUBTRACTION,
-        Godot.Core.CSGShape._OPERATION_UNION,
         Godot.Core.CSGShape._OPERATION_INTERSECTION,
+        Godot.Core.CSGShape._OPERATION_UNION,
         Godot.Core.CSGShape._update_shape,
         Godot.Core.CSGShape.get_collision_layer,
         Godot.Core.CSGShape.get_collision_layer_bit,
@@ -38,11 +38,11 @@ import Godot.Core.GeometryInstance()
 _OPERATION_SUBTRACTION :: Int
 _OPERATION_SUBTRACTION = 2
 
-_OPERATION_UNION :: Int
-_OPERATION_UNION = 0
-
 _OPERATION_INTERSECTION :: Int
 _OPERATION_INTERSECTION = 1
+
+_OPERATION_UNION :: Int
+_OPERATION_UNION = 0
 
 instance NodeProperty CSGShape "calculate_tangents" Bool 'False
          where

@@ -2,14 +2,14 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.FileDialog
-       (Godot.Core.FileDialog._ACCESS_RESOURCES,
-        Godot.Core.FileDialog._MODE_OPEN_FILES,
+       (Godot.Core.FileDialog._MODE_OPEN_ANY,
         Godot.Core.FileDialog._MODE_OPEN_FILE,
-        Godot.Core.FileDialog._MODE_SAVE_FILE,
-        Godot.Core.FileDialog._ACCESS_USERDATA,
         Godot.Core.FileDialog._ACCESS_FILESYSTEM,
         Godot.Core.FileDialog._MODE_OPEN_DIR,
-        Godot.Core.FileDialog._MODE_OPEN_ANY,
+        Godot.Core.FileDialog._ACCESS_USERDATA,
+        Godot.Core.FileDialog._ACCESS_RESOURCES,
+        Godot.Core.FileDialog._MODE_SAVE_FILE,
+        Godot.Core.FileDialog._MODE_OPEN_FILES,
         Godot.Core.FileDialog.sig_dir_selected,
         Godot.Core.FileDialog.sig_file_selected,
         Godot.Core.FileDialog.sig_files_selected,
@@ -62,20 +62,11 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.ConfirmationDialog()
 
-_ACCESS_RESOURCES :: Int
-_ACCESS_RESOURCES = 0
-
-_MODE_OPEN_FILES :: Int
-_MODE_OPEN_FILES = 1
+_MODE_OPEN_ANY :: Int
+_MODE_OPEN_ANY = 3
 
 _MODE_OPEN_FILE :: Int
 _MODE_OPEN_FILE = 0
-
-_MODE_SAVE_FILE :: Int
-_MODE_SAVE_FILE = 4
-
-_ACCESS_USERDATA :: Int
-_ACCESS_USERDATA = 1
 
 _ACCESS_FILESYSTEM :: Int
 _ACCESS_FILESYSTEM = 2
@@ -83,8 +74,17 @@ _ACCESS_FILESYSTEM = 2
 _MODE_OPEN_DIR :: Int
 _MODE_OPEN_DIR = 2
 
-_MODE_OPEN_ANY :: Int
-_MODE_OPEN_ANY = 3
+_ACCESS_USERDATA :: Int
+_ACCESS_USERDATA = 1
+
+_ACCESS_RESOURCES :: Int
+_ACCESS_RESOURCES = 0
+
+_MODE_SAVE_FILE :: Int
+_MODE_SAVE_FILE = 4
+
+_MODE_OPEN_FILES :: Int
+_MODE_OPEN_FILES = 1
 
 -- | Emitted when the user selects a directory.
 sig_dir_selected :: Godot.Internal.Dispatch.Signal FileDialog

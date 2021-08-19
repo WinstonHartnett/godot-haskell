@@ -2,15 +2,15 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.Line2D
-       (Godot.Core.Line2D._LINE_JOINT_ROUND,
+       (Godot.Core.Line2D._LINE_CAP_NONE,
+        Godot.Core.Line2D._LINE_TEXTURE_STRETCH,
+        Godot.Core.Line2D._LINE_JOINT_ROUND,
+        Godot.Core.Line2D._LINE_CAP_BOX, Godot.Core.Line2D._LINE_CAP_ROUND,
         Godot.Core.Line2D._LINE_TEXTURE_NONE,
-        Godot.Core.Line2D._LINE_CAP_ROUND,
-        Godot.Core.Line2D._LINE_CAP_NONE,
-        Godot.Core.Line2D._LINE_TEXTURE_TILE,
         Godot.Core.Line2D._LINE_JOINT_BEVEL,
         Godot.Core.Line2D._LINE_JOINT_SHARP,
-        Godot.Core.Line2D._LINE_TEXTURE_STRETCH,
-        Godot.Core.Line2D._LINE_CAP_BOX, Godot.Core.Line2D._curve_changed,
+        Godot.Core.Line2D._LINE_TEXTURE_TILE,
+        Godot.Core.Line2D._curve_changed,
         Godot.Core.Line2D._gradient_changed, Godot.Core.Line2D.add_point,
         Godot.Core.Line2D.clear_points, Godot.Core.Line2D.get_antialiased,
         Godot.Core.Line2D.get_begin_cap_mode, Godot.Core.Line2D.get_curve,
@@ -44,20 +44,23 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.Node2D()
 
+_LINE_CAP_NONE :: Int
+_LINE_CAP_NONE = 0
+
+_LINE_TEXTURE_STRETCH :: Int
+_LINE_TEXTURE_STRETCH = 2
+
 _LINE_JOINT_ROUND :: Int
 _LINE_JOINT_ROUND = 2
 
-_LINE_TEXTURE_NONE :: Int
-_LINE_TEXTURE_NONE = 0
+_LINE_CAP_BOX :: Int
+_LINE_CAP_BOX = 1
 
 _LINE_CAP_ROUND :: Int
 _LINE_CAP_ROUND = 2
 
-_LINE_CAP_NONE :: Int
-_LINE_CAP_NONE = 0
-
-_LINE_TEXTURE_TILE :: Int
-_LINE_TEXTURE_TILE = 1
+_LINE_TEXTURE_NONE :: Int
+_LINE_TEXTURE_NONE = 0
 
 _LINE_JOINT_BEVEL :: Int
 _LINE_JOINT_BEVEL = 1
@@ -65,11 +68,8 @@ _LINE_JOINT_BEVEL = 1
 _LINE_JOINT_SHARP :: Int
 _LINE_JOINT_SHARP = 0
 
-_LINE_TEXTURE_STRETCH :: Int
-_LINE_TEXTURE_STRETCH = 2
-
-_LINE_CAP_BOX :: Int
-_LINE_CAP_BOX = 1
+_LINE_TEXTURE_TILE :: Int
+_LINE_TEXTURE_TILE = 1
 
 instance NodeProperty Line2D "antialiased" Bool 'False where
         nodeProperty

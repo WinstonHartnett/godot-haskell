@@ -2,18 +2,18 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.GeometryInstance
-       (Godot.Core.GeometryInstance._SHADOW_CASTING_SETTING_SHADOWS_ONLY,
+       (Godot.Core.GeometryInstance._SHADOW_CASTING_SETTING_DOUBLE_SIDED,
         Godot.Core.GeometryInstance._FLAG_USE_BAKED_LIGHT,
-        Godot.Core.GeometryInstance._LIGHTMAP_SCALE_MAX,
         Godot.Core.GeometryInstance._LIGHTMAP_SCALE_4X,
-        Godot.Core.GeometryInstance._FLAG_MAX,
-        Godot.Core.GeometryInstance._SHADOW_CASTING_SETTING_DOUBLE_SIDED,
-        Godot.Core.GeometryInstance._LIGHTMAP_SCALE_8X,
-        Godot.Core.GeometryInstance._SHADOW_CASTING_SETTING_OFF,
-        Godot.Core.GeometryInstance._LIGHTMAP_SCALE_2X,
-        Godot.Core.GeometryInstance._FLAG_DRAW_NEXT_FRAME_IF_VISIBLE,
         Godot.Core.GeometryInstance._LIGHTMAP_SCALE_1X,
         Godot.Core.GeometryInstance._SHADOW_CASTING_SETTING_ON,
+        Godot.Core.GeometryInstance._FLAG_DRAW_NEXT_FRAME_IF_VISIBLE,
+        Godot.Core.GeometryInstance._LIGHTMAP_SCALE_2X,
+        Godot.Core.GeometryInstance._SHADOW_CASTING_SETTING_OFF,
+        Godot.Core.GeometryInstance._LIGHTMAP_SCALE_8X,
+        Godot.Core.GeometryInstance._FLAG_MAX,
+        Godot.Core.GeometryInstance._SHADOW_CASTING_SETTING_SHADOWS_ONLY,
+        Godot.Core.GeometryInstance._LIGHTMAP_SCALE_MAX,
         Godot.Core.GeometryInstance.get_cast_shadows_setting,
         Godot.Core.GeometryInstance.get_extra_cull_margin,
         Godot.Core.GeometryInstance.get_flag,
@@ -48,41 +48,41 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.VisualInstance()
 
-_SHADOW_CASTING_SETTING_SHADOWS_ONLY :: Int
-_SHADOW_CASTING_SETTING_SHADOWS_ONLY = 3
+_SHADOW_CASTING_SETTING_DOUBLE_SIDED :: Int
+_SHADOW_CASTING_SETTING_DOUBLE_SIDED = 2
 
 _FLAG_USE_BAKED_LIGHT :: Int
 _FLAG_USE_BAKED_LIGHT = 0
 
-_LIGHTMAP_SCALE_MAX :: Int
-_LIGHTMAP_SCALE_MAX = 4
-
 _LIGHTMAP_SCALE_4X :: Int
 _LIGHTMAP_SCALE_4X = 2
-
-_FLAG_MAX :: Int
-_FLAG_MAX = 2
-
-_SHADOW_CASTING_SETTING_DOUBLE_SIDED :: Int
-_SHADOW_CASTING_SETTING_DOUBLE_SIDED = 2
-
-_LIGHTMAP_SCALE_8X :: Int
-_LIGHTMAP_SCALE_8X = 3
-
-_SHADOW_CASTING_SETTING_OFF :: Int
-_SHADOW_CASTING_SETTING_OFF = 0
-
-_LIGHTMAP_SCALE_2X :: Int
-_LIGHTMAP_SCALE_2X = 1
-
-_FLAG_DRAW_NEXT_FRAME_IF_VISIBLE :: Int
-_FLAG_DRAW_NEXT_FRAME_IF_VISIBLE = 1
 
 _LIGHTMAP_SCALE_1X :: Int
 _LIGHTMAP_SCALE_1X = 0
 
 _SHADOW_CASTING_SETTING_ON :: Int
 _SHADOW_CASTING_SETTING_ON = 1
+
+_FLAG_DRAW_NEXT_FRAME_IF_VISIBLE :: Int
+_FLAG_DRAW_NEXT_FRAME_IF_VISIBLE = 1
+
+_LIGHTMAP_SCALE_2X :: Int
+_LIGHTMAP_SCALE_2X = 1
+
+_SHADOW_CASTING_SETTING_OFF :: Int
+_SHADOW_CASTING_SETTING_OFF = 0
+
+_LIGHTMAP_SCALE_8X :: Int
+_LIGHTMAP_SCALE_8X = 3
+
+_FLAG_MAX :: Int
+_FLAG_MAX = 2
+
+_SHADOW_CASTING_SETTING_SHADOWS_ONLY :: Int
+_SHADOW_CASTING_SETTING_SHADOWS_ONLY = 3
+
+_LIGHTMAP_SCALE_MAX :: Int
+_LIGHTMAP_SCALE_MAX = 4
 
 instance NodeProperty GeometryInstance "cast_shadow" Int 'False
          where

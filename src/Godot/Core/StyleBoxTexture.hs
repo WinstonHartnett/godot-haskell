@@ -2,9 +2,9 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.StyleBoxTexture
-       (Godot.Core.StyleBoxTexture._AXIS_STRETCH_MODE_TILE_FIT,
+       (Godot.Core.StyleBoxTexture._AXIS_STRETCH_MODE_STRETCH,
+        Godot.Core.StyleBoxTexture._AXIS_STRETCH_MODE_TILE_FIT,
         Godot.Core.StyleBoxTexture._AXIS_STRETCH_MODE_TILE,
-        Godot.Core.StyleBoxTexture._AXIS_STRETCH_MODE_STRETCH,
         Godot.Core.StyleBoxTexture.sig_texture_changed,
         Godot.Core.StyleBoxTexture.get_expand_margin_size,
         Godot.Core.StyleBoxTexture.get_h_axis_stretch_mode,
@@ -39,14 +39,14 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.StyleBox()
 
+_AXIS_STRETCH_MODE_STRETCH :: Int
+_AXIS_STRETCH_MODE_STRETCH = 0
+
 _AXIS_STRETCH_MODE_TILE_FIT :: Int
 _AXIS_STRETCH_MODE_TILE_FIT = 2
 
 _AXIS_STRETCH_MODE_TILE :: Int
 _AXIS_STRETCH_MODE_TILE = 1
-
-_AXIS_STRETCH_MODE_STRETCH :: Int
-_AXIS_STRETCH_MODE_STRETCH = 0
 
 -- | Emitted when the stylebox's texture is changed.
 sig_texture_changed ::

@@ -4,11 +4,11 @@
 module Godot.Core.MultiMesh
        (Godot.Core.MultiMesh._CUSTOM_DATA_8BIT,
         Godot.Core.MultiMesh._TRANSFORM_3D,
+        Godot.Core.MultiMesh._CUSTOM_DATA_FLOAT,
         Godot.Core.MultiMesh._COLOR_NONE,
-        Godot.Core.MultiMesh._COLOR_FLOAT,
         Godot.Core.MultiMesh._TRANSFORM_2D,
         Godot.Core.MultiMesh._COLOR_8BIT,
-        Godot.Core.MultiMesh._CUSTOM_DATA_FLOAT,
+        Godot.Core.MultiMesh._COLOR_FLOAT,
         Godot.Core.MultiMesh._CUSTOM_DATA_NONE,
         Godot.Core.MultiMesh._get_color_array,
         Godot.Core.MultiMesh._get_custom_data_array,
@@ -59,11 +59,11 @@ _CUSTOM_DATA_8BIT = 1
 _TRANSFORM_3D :: Int
 _TRANSFORM_3D = 1
 
+_CUSTOM_DATA_FLOAT :: Int
+_CUSTOM_DATA_FLOAT = 2
+
 _COLOR_NONE :: Int
 _COLOR_NONE = 0
-
-_COLOR_FLOAT :: Int
-_COLOR_FLOAT = 2
 
 _TRANSFORM_2D :: Int
 _TRANSFORM_2D = 0
@@ -71,8 +71,8 @@ _TRANSFORM_2D = 0
 _COLOR_8BIT :: Int
 _COLOR_8BIT = 1
 
-_CUSTOM_DATA_FLOAT :: Int
-_CUSTOM_DATA_FLOAT = 2
+_COLOR_FLOAT :: Int
+_COLOR_FLOAT = 2
 
 _CUSTOM_DATA_NONE :: Int
 _CUSTOM_DATA_NONE = 0

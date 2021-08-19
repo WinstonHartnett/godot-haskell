@@ -2,10 +2,10 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.Label
-       (Godot.Core.Label._VALIGN_TOP, Godot.Core.Label._ALIGN_RIGHT,
-        Godot.Core.Label._ALIGN_FILL, Godot.Core.Label._VALIGN_FILL,
-        Godot.Core.Label._VALIGN_CENTER, Godot.Core.Label._VALIGN_BOTTOM,
-        Godot.Core.Label._ALIGN_LEFT, Godot.Core.Label._ALIGN_CENTER,
+       (Godot.Core.Label._VALIGN_CENTER, Godot.Core.Label._VALIGN_TOP,
+        Godot.Core.Label._VALIGN_BOTTOM, Godot.Core.Label._ALIGN_CENTER,
+        Godot.Core.Label._ALIGN_LEFT, Godot.Core.Label._VALIGN_FILL,
+        Godot.Core.Label._ALIGN_FILL, Godot.Core.Label._ALIGN_RIGHT,
         Godot.Core.Label.get_align, Godot.Core.Label.get_line_count,
         Godot.Core.Label.get_line_height,
         Godot.Core.Label.get_lines_skipped,
@@ -36,29 +36,29 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.Control()
 
-_VALIGN_TOP :: Int
-_VALIGN_TOP = 0
-
-_ALIGN_RIGHT :: Int
-_ALIGN_RIGHT = 2
-
-_ALIGN_FILL :: Int
-_ALIGN_FILL = 3
-
-_VALIGN_FILL :: Int
-_VALIGN_FILL = 3
-
 _VALIGN_CENTER :: Int
 _VALIGN_CENTER = 1
+
+_VALIGN_TOP :: Int
+_VALIGN_TOP = 0
 
 _VALIGN_BOTTOM :: Int
 _VALIGN_BOTTOM = 2
 
+_ALIGN_CENTER :: Int
+_ALIGN_CENTER = 1
+
 _ALIGN_LEFT :: Int
 _ALIGN_LEFT = 0
 
-_ALIGN_CENTER :: Int
-_ALIGN_CENTER = 1
+_VALIGN_FILL :: Int
+_VALIGN_FILL = 3
+
+_ALIGN_FILL :: Int
+_ALIGN_FILL = 3
+
+_ALIGN_RIGHT :: Int
+_ALIGN_RIGHT = 2
 
 instance NodeProperty Label "align" Int 'False where
         nodeProperty = (get_align, wrapDroppingSetter set_align, Nothing)
@@ -408,7 +408,7 @@ instance NodeMethod Label "has_autowrap" '[] (IO Bool) where
 
 {-# NOINLINE bindLabel_is_clipping_text #-}
 
--- | If @true@, the Label only shows the text that fits inside its bounding rectangle. It also lets you scale the node down freely.
+-- | If @true@, the Label only shows the text that fits inside its bounding rectangle and will clip text horizontally.
 bindLabel_is_clipping_text :: MethodBind
 bindLabel_is_clipping_text
   = unsafePerformIO $
@@ -418,7 +418,7 @@ bindLabel_is_clipping_text
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | If @true@, the Label only shows the text that fits inside its bounding rectangle. It also lets you scale the node down freely.
+-- | If @true@, the Label only shows the text that fits inside its bounding rectangle and will clip text horizontally.
 is_clipping_text :: (Label :< cls, Object :< cls) => cls -> IO Bool
 is_clipping_text cls
   = withVariantArray []
@@ -505,7 +505,7 @@ instance NodeMethod Label "set_autowrap" '[Bool] (IO ()) where
 
 {-# NOINLINE bindLabel_set_clip_text #-}
 
--- | If @true@, the Label only shows the text that fits inside its bounding rectangle. It also lets you scale the node down freely.
+-- | If @true@, the Label only shows the text that fits inside its bounding rectangle and will clip text horizontally.
 bindLabel_set_clip_text :: MethodBind
 bindLabel_set_clip_text
   = unsafePerformIO $
@@ -515,7 +515,7 @@ bindLabel_set_clip_text
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | If @true@, the Label only shows the text that fits inside its bounding rectangle. It also lets you scale the node down freely.
+-- | If @true@, the Label only shows the text that fits inside its bounding rectangle and will clip text horizontally.
 set_clip_text ::
                 (Label :< cls, Object :< cls) => cls -> Bool -> IO ()
 set_clip_text cls arg1

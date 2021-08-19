@@ -2,39 +2,39 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.OS
-       (Godot.Core.OS._POWERSTATE_NO_BATTERY,
+       (Godot.Core.OS._OPENGL_CONTEXT, Godot.Core.OS._DAY_THURSDAY,
+        Godot.Core.OS._POWERSTATE_UNKNOWN,
+        Godot.Core.OS._POWERSTATE_ON_BATTERY,
         Godot.Core.OS._SCREEN_ORIENTATION_SENSOR_PORTRAIT,
-        Godot.Core.OS._SCREEN_ORIENTATION_SENSOR,
-        Godot.Core.OS._DAY_THURSDAY, Godot.Core.OS._POWERSTATE_UNKNOWN,
-        Godot.Core.OS._OPENGL_CONTEXT, Godot.Core.OS._MONTH_MARCH,
-        Godot.Core.OS._DAY_FRIDAY, Godot.Core.OS._SYSTEM_DIR_DOWNLOADS,
-        Godot.Core.OS._MONTH_NOVEMBER, Godot.Core.OS._MONTH_JULY,
-        Godot.Core.OS._SYSTEM_DIR_PICTURES, Godot.Core.OS._MONTH_DECEMBER,
-        Godot.Core.OS._DAY_TUESDAY, Godot.Core.OS._SYSTEM_DIR_DESKTOP,
-        Godot.Core.OS._DAY_MONDAY, Godot.Core.OS._SYSTEM_DIR_MUSIC,
-        Godot.Core.OS._SYSTEM_DIR_RINGTONES, Godot.Core.OS._MONTH_AUGUST,
-        Godot.Core.OS._SYSTEM_DIR_DOCUMENTS,
-        Godot.Core.OS._SYSTEM_DIR_MOVIES, Godot.Core.OS._SYSTEM_DIR_DCIM,
-        Godot.Core.OS._POWERSTATE_CHARGED, Godot.Core.OS._MONTH_APRIL,
-        Godot.Core.OS._POWERSTATE_ON_BATTERY, Godot.Core.OS._DAY_SUNDAY,
-        Godot.Core.OS._DISPLAY_HANDLE, Godot.Core.OS._APPLICATION_HANDLE,
+        Godot.Core.OS._DAY_WEDNESDAY, Godot.Core.OS._POWERSTATE_CHARGED,
+        Godot.Core.OS._WINDOW_HANDLE, Godot.Core.OS._DAY_SATURDAY,
+        Godot.Core.OS._SCREEN_ORIENTATION_REVERSE_LANDSCAPE,
+        Godot.Core.OS._SYSTEM_DIR_RINGTONES, Godot.Core.OS._DAY_MONDAY,
+        Godot.Core.OS._SYSTEM_DIR_MUSIC, Godot.Core.OS._SYSTEM_DIR_DESKTOP,
+        Godot.Core.OS._SCREEN_ORIENTATION_SENSOR_LANDSCAPE,
+        Godot.Core.OS._MONTH_SEPTEMBER, Godot.Core.OS._POWERSTATE_CHARGING,
+        Godot.Core.OS._MONTH_DECEMBER, Godot.Core.OS._SYSTEM_DIR_PICTURES,
         Godot.Core.OS._MONTH_MAY,
         Godot.Core.OS._SCREEN_ORIENTATION_REVERSE_PORTRAIT,
-        Godot.Core.OS._MONTH_JANUARY, Godot.Core.OS._MONTH_OCTOBER,
-        Godot.Core.OS._SCREEN_ORIENTATION_PORTRAIT,
-        Godot.Core.OS._SCREEN_ORIENTATION_SENSOR_LANDSCAPE,
-        Godot.Core.OS._MONTH_SEPTEMBER, Godot.Core.OS._VIDEO_DRIVER_GLES2,
-        Godot.Core.OS._POWERSTATE_CHARGING, Godot.Core.OS._MONTH_FEBRUARY,
-        Godot.Core.OS._MONTH_JUNE,
-        Godot.Core.OS._SCREEN_ORIENTATION_REVERSE_LANDSCAPE,
-        Godot.Core.OS._DAY_SATURDAY, Godot.Core.OS._WINDOW_VIEW,
-        Godot.Core.OS._WINDOW_HANDLE,
+        Godot.Core.OS._DAY_FRIDAY, Godot.Core.OS._DISPLAY_HANDLE,
+        Godot.Core.OS._APPLICATION_HANDLE, Godot.Core.OS._DAY_SUNDAY,
+        Godot.Core.OS._SCREEN_ORIENTATION_SENSOR,
+        Godot.Core.OS._POWERSTATE_NO_BATTERY,
         Godot.Core.OS._SCREEN_ORIENTATION_LANDSCAPE,
-        Godot.Core.OS._DAY_WEDNESDAY, Godot.Core.OS._VIDEO_DRIVER_GLES3,
-        Godot.Core.OS.get_clipboard, Godot.Core.OS.set_clipboard,
-        Godot.Core.OS.get_current_screen, Godot.Core.OS.set_current_screen,
-        Godot.Core.OS.get_exit_code, Godot.Core.OS.set_exit_code,
-        Godot.Core.OS.is_keep_screen_on, Godot.Core.OS.set_keep_screen_on,
+        Godot.Core.OS._VIDEO_DRIVER_GLES3, Godot.Core.OS._MONTH_APRIL,
+        Godot.Core.OS._SYSTEM_DIR_MOVIES, Godot.Core.OS._SYSTEM_DIR_DCIM,
+        Godot.Core.OS._MONTH_AUGUST, Godot.Core.OS._WINDOW_VIEW,
+        Godot.Core.OS._SYSTEM_DIR_DOCUMENTS, Godot.Core.OS._MONTH_JUNE,
+        Godot.Core.OS._MONTH_FEBRUARY, Godot.Core.OS._VIDEO_DRIVER_GLES2,
+        Godot.Core.OS._DAY_TUESDAY, Godot.Core.OS._MONTH_OCTOBER,
+        Godot.Core.OS._SCREEN_ORIENTATION_PORTRAIT,
+        Godot.Core.OS._MONTH_NOVEMBER, Godot.Core.OS._MONTH_JULY,
+        Godot.Core.OS._SYSTEM_DIR_DOWNLOADS, Godot.Core.OS._MONTH_JANUARY,
+        Godot.Core.OS._MONTH_MARCH, Godot.Core.OS.get_clipboard,
+        Godot.Core.OS.set_clipboard, Godot.Core.OS.get_current_screen,
+        Godot.Core.OS.set_current_screen, Godot.Core.OS.get_exit_code,
+        Godot.Core.OS.set_exit_code, Godot.Core.OS.is_keep_screen_on,
+        Godot.Core.OS.set_keep_screen_on,
         Godot.Core.OS.is_in_low_processor_usage_mode,
         Godot.Core.OS.set_low_processor_usage_mode,
         Godot.Core.OS.get_low_processor_usage_mode_sleep_usec,
@@ -160,14 +160,8 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.Object()
 
-_POWERSTATE_NO_BATTERY :: Int
-_POWERSTATE_NO_BATTERY = 2
-
-_SCREEN_ORIENTATION_SENSOR_PORTRAIT :: Int
-_SCREEN_ORIENTATION_SENSOR_PORTRAIT = 5
-
-_SCREEN_ORIENTATION_SENSOR :: Int
-_SCREEN_ORIENTATION_SENSOR = 6
+_OPENGL_CONTEXT :: Int
+_OPENGL_CONTEXT = 4
 
 _DAY_THURSDAY :: Int
 _DAY_THURSDAY = 4
@@ -175,35 +169,29 @@ _DAY_THURSDAY = 4
 _POWERSTATE_UNKNOWN :: Int
 _POWERSTATE_UNKNOWN = 0
 
-_OPENGL_CONTEXT :: Int
-_OPENGL_CONTEXT = 4
+_POWERSTATE_ON_BATTERY :: Int
+_POWERSTATE_ON_BATTERY = 1
 
-_MONTH_MARCH :: Int
-_MONTH_MARCH = 3
+_SCREEN_ORIENTATION_SENSOR_PORTRAIT :: Int
+_SCREEN_ORIENTATION_SENSOR_PORTRAIT = 5
 
-_DAY_FRIDAY :: Int
-_DAY_FRIDAY = 5
+_DAY_WEDNESDAY :: Int
+_DAY_WEDNESDAY = 3
 
-_SYSTEM_DIR_DOWNLOADS :: Int
-_SYSTEM_DIR_DOWNLOADS = 3
+_POWERSTATE_CHARGED :: Int
+_POWERSTATE_CHARGED = 4
 
-_MONTH_NOVEMBER :: Int
-_MONTH_NOVEMBER = 11
+_WINDOW_HANDLE :: Int
+_WINDOW_HANDLE = 2
 
-_MONTH_JULY :: Int
-_MONTH_JULY = 7
+_DAY_SATURDAY :: Int
+_DAY_SATURDAY = 6
 
-_SYSTEM_DIR_PICTURES :: Int
-_SYSTEM_DIR_PICTURES = 6
+_SCREEN_ORIENTATION_REVERSE_LANDSCAPE :: Int
+_SCREEN_ORIENTATION_REVERSE_LANDSCAPE = 2
 
-_MONTH_DECEMBER :: Int
-_MONTH_DECEMBER = 12
-
-_DAY_TUESDAY :: Int
-_DAY_TUESDAY = 2
-
-_SYSTEM_DIR_DESKTOP :: Int
-_SYSTEM_DIR_DESKTOP = 0
+_SYSTEM_DIR_RINGTONES :: Int
+_SYSTEM_DIR_RINGTONES = 7
 
 _DAY_MONDAY :: Int
 _DAY_MONDAY = 1
@@ -211,53 +199,8 @@ _DAY_MONDAY = 1
 _SYSTEM_DIR_MUSIC :: Int
 _SYSTEM_DIR_MUSIC = 5
 
-_SYSTEM_DIR_RINGTONES :: Int
-_SYSTEM_DIR_RINGTONES = 7
-
-_MONTH_AUGUST :: Int
-_MONTH_AUGUST = 8
-
-_SYSTEM_DIR_DOCUMENTS :: Int
-_SYSTEM_DIR_DOCUMENTS = 2
-
-_SYSTEM_DIR_MOVIES :: Int
-_SYSTEM_DIR_MOVIES = 4
-
-_SYSTEM_DIR_DCIM :: Int
-_SYSTEM_DIR_DCIM = 1
-
-_POWERSTATE_CHARGED :: Int
-_POWERSTATE_CHARGED = 4
-
-_MONTH_APRIL :: Int
-_MONTH_APRIL = 4
-
-_POWERSTATE_ON_BATTERY :: Int
-_POWERSTATE_ON_BATTERY = 1
-
-_DAY_SUNDAY :: Int
-_DAY_SUNDAY = 0
-
-_DISPLAY_HANDLE :: Int
-_DISPLAY_HANDLE = 1
-
-_APPLICATION_HANDLE :: Int
-_APPLICATION_HANDLE = 0
-
-_MONTH_MAY :: Int
-_MONTH_MAY = 5
-
-_SCREEN_ORIENTATION_REVERSE_PORTRAIT :: Int
-_SCREEN_ORIENTATION_REVERSE_PORTRAIT = 3
-
-_MONTH_JANUARY :: Int
-_MONTH_JANUARY = 1
-
-_MONTH_OCTOBER :: Int
-_MONTH_OCTOBER = 10
-
-_SCREEN_ORIENTATION_PORTRAIT :: Int
-_SCREEN_ORIENTATION_PORTRAIT = 1
+_SYSTEM_DIR_DESKTOP :: Int
+_SYSTEM_DIR_DESKTOP = 0
 
 _SCREEN_ORIENTATION_SENSOR_LANDSCAPE :: Int
 _SCREEN_ORIENTATION_SENSOR_LANDSCAPE = 4
@@ -265,38 +208,95 @@ _SCREEN_ORIENTATION_SENSOR_LANDSCAPE = 4
 _MONTH_SEPTEMBER :: Int
 _MONTH_SEPTEMBER = 9
 
-_VIDEO_DRIVER_GLES2 :: Int
-_VIDEO_DRIVER_GLES2 = 1
-
 _POWERSTATE_CHARGING :: Int
 _POWERSTATE_CHARGING = 3
 
-_MONTH_FEBRUARY :: Int
-_MONTH_FEBRUARY = 2
+_MONTH_DECEMBER :: Int
+_MONTH_DECEMBER = 12
 
-_MONTH_JUNE :: Int
-_MONTH_JUNE = 6
+_SYSTEM_DIR_PICTURES :: Int
+_SYSTEM_DIR_PICTURES = 6
 
-_SCREEN_ORIENTATION_REVERSE_LANDSCAPE :: Int
-_SCREEN_ORIENTATION_REVERSE_LANDSCAPE = 2
+_MONTH_MAY :: Int
+_MONTH_MAY = 5
 
-_DAY_SATURDAY :: Int
-_DAY_SATURDAY = 6
+_SCREEN_ORIENTATION_REVERSE_PORTRAIT :: Int
+_SCREEN_ORIENTATION_REVERSE_PORTRAIT = 3
 
-_WINDOW_VIEW :: Int
-_WINDOW_VIEW = 3
+_DAY_FRIDAY :: Int
+_DAY_FRIDAY = 5
 
-_WINDOW_HANDLE :: Int
-_WINDOW_HANDLE = 2
+_DISPLAY_HANDLE :: Int
+_DISPLAY_HANDLE = 1
+
+_APPLICATION_HANDLE :: Int
+_APPLICATION_HANDLE = 0
+
+_DAY_SUNDAY :: Int
+_DAY_SUNDAY = 0
+
+_SCREEN_ORIENTATION_SENSOR :: Int
+_SCREEN_ORIENTATION_SENSOR = 6
+
+_POWERSTATE_NO_BATTERY :: Int
+_POWERSTATE_NO_BATTERY = 2
 
 _SCREEN_ORIENTATION_LANDSCAPE :: Int
 _SCREEN_ORIENTATION_LANDSCAPE = 0
 
-_DAY_WEDNESDAY :: Int
-_DAY_WEDNESDAY = 3
-
 _VIDEO_DRIVER_GLES3 :: Int
 _VIDEO_DRIVER_GLES3 = 0
+
+_MONTH_APRIL :: Int
+_MONTH_APRIL = 4
+
+_SYSTEM_DIR_MOVIES :: Int
+_SYSTEM_DIR_MOVIES = 4
+
+_SYSTEM_DIR_DCIM :: Int
+_SYSTEM_DIR_DCIM = 1
+
+_MONTH_AUGUST :: Int
+_MONTH_AUGUST = 8
+
+_WINDOW_VIEW :: Int
+_WINDOW_VIEW = 3
+
+_SYSTEM_DIR_DOCUMENTS :: Int
+_SYSTEM_DIR_DOCUMENTS = 2
+
+_MONTH_JUNE :: Int
+_MONTH_JUNE = 6
+
+_MONTH_FEBRUARY :: Int
+_MONTH_FEBRUARY = 2
+
+_VIDEO_DRIVER_GLES2 :: Int
+_VIDEO_DRIVER_GLES2 = 1
+
+_DAY_TUESDAY :: Int
+_DAY_TUESDAY = 2
+
+_MONTH_OCTOBER :: Int
+_MONTH_OCTOBER = 10
+
+_SCREEN_ORIENTATION_PORTRAIT :: Int
+_SCREEN_ORIENTATION_PORTRAIT = 1
+
+_MONTH_NOVEMBER :: Int
+_MONTH_NOVEMBER = 11
+
+_MONTH_JULY :: Int
+_MONTH_JULY = 7
+
+_SYSTEM_DIR_DOWNLOADS :: Int
+_SYSTEM_DIR_DOWNLOADS = 3
+
+_MONTH_JANUARY :: Int
+_MONTH_JANUARY = 1
+
+_MONTH_MARCH :: Int
+_MONTH_MARCH = 3
 
 {-# NOINLINE bindOS_get_clipboard #-}
 
@@ -1616,7 +1616,7 @@ instance NodeMethod OS "close_midi_inputs" '[] (IO ()) where
 
 {-# NOINLINE bindOS_delay_msec #-}
 
--- | Delay execution of the current thread by @msec@ milliseconds. @usec@ must be greater than or equal to @0@. Otherwise, @method delay_msec@ will do nothing and will print an error message.
+-- | Delay execution of the current thread by @msec@ milliseconds. @msec@ must be greater than or equal to @0@. Otherwise, @method delay_msec@ will do nothing and will print an error message.
 bindOS_delay_msec :: MethodBind
 bindOS_delay_msec
   = unsafePerformIO $
@@ -1626,7 +1626,7 @@ bindOS_delay_msec
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Delay execution of the current thread by @msec@ milliseconds. @usec@ must be greater than or equal to @0@. Otherwise, @method delay_msec@ will do nothing and will print an error message.
+-- | Delay execution of the current thread by @msec@ milliseconds. @msec@ must be greater than or equal to @0@. Otherwise, @method delay_msec@ will do nothing and will print an error message.
 delay_msec :: (OS :< cls, Object :< cls) => cls -> Int -> IO ()
 delay_msec cls arg1
   = withVariantArray [toVariant arg1]
@@ -2182,7 +2182,7 @@ instance NodeMethod OS "get_executable_path" '[] (IO GodotString)
 
 {-# NOINLINE bindOS_get_granted_permissions #-}
 
--- | With this function you can get the list of dangerous permissions that have been granted to the Android application.
+-- | With this function, you can get the list of dangerous permissions that have been granted to the Android application.
 --   				__Note:__ This method is implemented on Android.
 bindOS_get_granted_permissions :: MethodBind
 bindOS_get_granted_permissions
@@ -2193,7 +2193,7 @@ bindOS_get_granted_permissions
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | With this function you can get the list of dangerous permissions that have been granted to the Android application.
+-- | With this function, you can get the list of dangerous permissions that have been granted to the Android application.
 --   				__Note:__ This method is implemented on Android.
 get_granted_permissions ::
                           (OS :< cls, Object :< cls) => cls -> IO PoolStringArray
@@ -2865,6 +2865,7 @@ instance NodeMethod OS "get_static_memory_usage" '[] (IO Int) where
 
 -- | Returns the actual path to commonly used folders across different platforms. Available locations are specified in @enum SystemDir@.
 --   				__Note:__ This method is implemented on Android, Linux, macOS and Windows.
+--   				__Note:__ Shared storage is implemented on Android and allows to differentiate between app specific and shared directories. Shared directories have additional restrictions on Android.
 bindOS_get_system_dir :: MethodBind
 bindOS_get_system_dir
   = unsafePerformIO $
@@ -2876,6 +2877,7 @@ bindOS_get_system_dir
 
 -- | Returns the actual path to commonly used folders across different platforms. Available locations are specified in @enum SystemDir@.
 --   				__Note:__ This method is implemented on Android, Linux, macOS and Windows.
+--   				__Note:__ Shared storage is implemented on Android and allows to differentiate between app specific and shared directories. Shared directories have additional restrictions on Android.
 get_system_dir ::
                  (OS :< cls, Object :< cls) => cls -> Int -> IO GodotString
 get_system_dir cls arg1
@@ -3128,7 +3130,7 @@ instance NodeMethod OS "get_time_zone_info" '[] (IO Dictionary)
 {-# NOINLINE bindOS_get_unique_id #-}
 
 -- | Returns a string that is unique to the device.
---   				__Note:__ This string may change without notice if the user reinstalls/upgrades their operating system or changes their hardware. This means it should generally not be used to encrypt persistent data as the data saved prior to an unexpected ID change would become inaccessible. The returned string may also be falsified using external programs, so do not rely on the string returned by @method get_unique_id@ for security purposes.
+--   				__Note:__ This string may change without notice if the user reinstalls/upgrades their operating system or changes their hardware. This means it should generally not be used to encrypt persistent data as the data saved before an unexpected ID change would become inaccessible. The returned string may also be falsified using external programs, so do not rely on the string returned by @method get_unique_id@ for security purposes.
 --   				__Note:__ Returns an empty string on HTML5 and UWP, as this method isn't implemented on those platforms yet.
 bindOS_get_unique_id :: MethodBind
 bindOS_get_unique_id
@@ -3140,7 +3142,7 @@ bindOS_get_unique_id
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
 -- | Returns a string that is unique to the device.
---   				__Note:__ This string may change without notice if the user reinstalls/upgrades their operating system or changes their hardware. This means it should generally not be used to encrypt persistent data as the data saved prior to an unexpected ID change would become inaccessible. The returned string may also be falsified using external programs, so do not rely on the string returned by @method get_unique_id@ for security purposes.
+--   				__Note:__ This string may change without notice if the user reinstalls/upgrades their operating system or changes their hardware. This means it should generally not be used to encrypt persistent data as the data saved before an unexpected ID change would become inaccessible. The returned string may also be falsified using external programs, so do not rely on the string returned by @method get_unique_id@ for security purposes.
 --   				__Note:__ Returns an empty string on HTML5 and UWP, as this method isn't implemented on those platforms yet.
 get_unique_id ::
                 (OS :< cls, Object :< cls) => cls -> IO GodotString
@@ -3509,7 +3511,7 @@ instance NodeMethod OS "has_environment" '[GodotString] (IO Bool)
 
 {-# NOINLINE bindOS_has_feature #-}
 
--- | Returns @true@ if the feature for the given feature tag is supported in the currently running instance, depending on platform, build etc. Can be used to check whether you're currently running a debug build, on a certain platform or arch, etc. Refer to the @url=https://docs.godotengine.org/en/3.3/getting_started/workflow/export/feature_tags.html@Feature Tags@/url@ documentation for more details.
+-- | Returns @true@ if the feature for the given feature tag is supported in the currently running instance, depending on the platform, build etc. Can be used to check whether you're currently running a debug build, on a certain platform or arch, etc. Refer to the @url=https://docs.godotengine.org/en/3.3/getting_started/workflow/export/feature_tags.html@Feature Tags@/url@ documentation for more details.
 --   				__Note:__ Tag names are case-sensitive.
 bindOS_has_feature :: MethodBind
 bindOS_has_feature
@@ -3520,7 +3522,7 @@ bindOS_has_feature
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Returns @true@ if the feature for the given feature tag is supported in the currently running instance, depending on platform, build etc. Can be used to check whether you're currently running a debug build, on a certain platform or arch, etc. Refer to the @url=https://docs.godotengine.org/en/3.3/getting_started/workflow/export/feature_tags.html@Feature Tags@/url@ documentation for more details.
+-- | Returns @true@ if the feature for the given feature tag is supported in the currently running instance, depending on the platform, build etc. Can be used to check whether you're currently running a debug build, on a certain platform or arch, etc. Refer to the @url=https://docs.godotengine.org/en/3.3/getting_started/workflow/export/feature_tags.html@Feature Tags@/url@ documentation for more details.
 --   				__Note:__ Tag names are case-sensitive.
 has_feature ::
               (OS :< cls, Object :< cls) => cls -> GodotString -> IO Bool
@@ -4339,7 +4341,7 @@ instance NodeMethod OS "request_permission" '[GodotString]
 
 {-# NOINLINE bindOS_request_permissions #-}
 
--- | With this function you can request dangerous permissions since normal permissions are automatically granted at install time in Android application.
+-- | With this function, you can request dangerous permissions since normal permissions are automatically granted at install time in Android applications.
 --   				__Note:__ This method is implemented on Android.
 bindOS_request_permissions :: MethodBind
 bindOS_request_permissions
@@ -4350,7 +4352,7 @@ bindOS_request_permissions
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | With this function you can request dangerous permissions since normal permissions are automatically granted at install time in Android application.
+-- | With this function, you can request dangerous permissions since normal permissions are automatically granted at install time in Android applications.
 --   				__Note:__ This method is implemented on Android.
 request_permissions :: (OS :< cls, Object :< cls) => cls -> IO Bool
 request_permissions cls

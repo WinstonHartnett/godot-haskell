@@ -3,14 +3,14 @@
   MultiParamTypeClasses #-}
 module Godot.Core.VisualShaderNodeTexture
        (Godot.Core.VisualShaderNodeTexture._SOURCE_DEPTH,
-        Godot.Core.VisualShaderNodeTexture._TYPE_DATA,
-        Godot.Core.VisualShaderNodeTexture._SOURCE_2D_NORMAL,
-        Godot.Core.VisualShaderNodeTexture._SOURCE_PORT,
-        Godot.Core.VisualShaderNodeTexture._SOURCE_SCREEN,
         Godot.Core.VisualShaderNodeTexture._SOURCE_2D_TEXTURE,
-        Godot.Core.VisualShaderNodeTexture._TYPE_COLOR,
+        Godot.Core.VisualShaderNodeTexture._SOURCE_SCREEN,
+        Godot.Core.VisualShaderNodeTexture._SOURCE_2D_NORMAL,
         Godot.Core.VisualShaderNodeTexture._SOURCE_TEXTURE,
+        Godot.Core.VisualShaderNodeTexture._TYPE_DATA,
+        Godot.Core.VisualShaderNodeTexture._SOURCE_PORT,
         Godot.Core.VisualShaderNodeTexture._TYPE_NORMALMAP,
+        Godot.Core.VisualShaderNodeTexture._TYPE_COLOR,
         Godot.Core.VisualShaderNodeTexture.get_source,
         Godot.Core.VisualShaderNodeTexture.get_texture,
         Godot.Core.VisualShaderNodeTexture.get_texture_type,
@@ -33,29 +33,29 @@ import Godot.Core.VisualShaderNode()
 _SOURCE_DEPTH :: Int
 _SOURCE_DEPTH = 4
 
-_TYPE_DATA :: Int
-_TYPE_DATA = 0
-
-_SOURCE_2D_NORMAL :: Int
-_SOURCE_2D_NORMAL = 3
-
-_SOURCE_PORT :: Int
-_SOURCE_PORT = 5
+_SOURCE_2D_TEXTURE :: Int
+_SOURCE_2D_TEXTURE = 2
 
 _SOURCE_SCREEN :: Int
 _SOURCE_SCREEN = 1
 
-_SOURCE_2D_TEXTURE :: Int
-_SOURCE_2D_TEXTURE = 2
-
-_TYPE_COLOR :: Int
-_TYPE_COLOR = 1
+_SOURCE_2D_NORMAL :: Int
+_SOURCE_2D_NORMAL = 3
 
 _SOURCE_TEXTURE :: Int
 _SOURCE_TEXTURE = 0
 
+_TYPE_DATA :: Int
+_TYPE_DATA = 0
+
+_SOURCE_PORT :: Int
+_SOURCE_PORT = 5
+
 _TYPE_NORMALMAP :: Int
 _TYPE_NORMALMAP = 2
+
+_TYPE_COLOR :: Int
+_TYPE_COLOR = 1
 
 instance NodeProperty VisualShaderNodeTexture "source" Int 'False
          where

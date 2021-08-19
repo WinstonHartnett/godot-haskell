@@ -3,8 +3,8 @@
   MultiParamTypeClasses #-}
 module Godot.Core.VisualScriptPropertyGet
        (Godot.Core.VisualScriptPropertyGet._CALL_MODE_BASIC_TYPE,
-        Godot.Core.VisualScriptPropertyGet._CALL_MODE_NODE_PATH,
         Godot.Core.VisualScriptPropertyGet._CALL_MODE_SELF,
+        Godot.Core.VisualScriptPropertyGet._CALL_MODE_NODE_PATH,
         Godot.Core.VisualScriptPropertyGet._CALL_MODE_INSTANCE,
         Godot.Core.VisualScriptPropertyGet._get_type_cache,
         Godot.Core.VisualScriptPropertyGet._set_type_cache,
@@ -38,11 +38,11 @@ import Godot.Core.VisualScriptNode()
 _CALL_MODE_BASIC_TYPE :: Int
 _CALL_MODE_BASIC_TYPE = 3
 
-_CALL_MODE_NODE_PATH :: Int
-_CALL_MODE_NODE_PATH = 1
-
 _CALL_MODE_SELF :: Int
 _CALL_MODE_SELF = 0
+
+_CALL_MODE_NODE_PATH :: Int
+_CALL_MODE_NODE_PATH = 1
 
 _CALL_MODE_INSTANCE :: Int
 _CALL_MODE_INSTANCE = 2

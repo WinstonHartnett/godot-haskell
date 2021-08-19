@@ -2,8 +2,8 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.VisualScriptYieldSignal
-       (Godot.Core.VisualScriptYieldSignal._CALL_MODE_NODE_PATH,
-        Godot.Core.VisualScriptYieldSignal._CALL_MODE_SELF,
+       (Godot.Core.VisualScriptYieldSignal._CALL_MODE_SELF,
+        Godot.Core.VisualScriptYieldSignal._CALL_MODE_NODE_PATH,
         Godot.Core.VisualScriptYieldSignal._CALL_MODE_INSTANCE,
         Godot.Core.VisualScriptYieldSignal.get_base_path,
         Godot.Core.VisualScriptYieldSignal.get_base_type,
@@ -26,11 +26,11 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.VisualScriptNode()
 
-_CALL_MODE_NODE_PATH :: Int
-_CALL_MODE_NODE_PATH = 1
-
 _CALL_MODE_SELF :: Int
 _CALL_MODE_SELF = 0
+
+_CALL_MODE_NODE_PATH :: Int
+_CALL_MODE_NODE_PATH = 1
 
 _CALL_MODE_INSTANCE :: Int
 _CALL_MODE_INSTANCE = 2

@@ -3,12 +3,12 @@
   MultiParamTypeClasses #-}
 module Godot.Core.CameraFeed
        (Godot.Core.CameraFeed._FEED_FRONT,
-        Godot.Core.CameraFeed._FEED_YCBCR_SEP,
-        Godot.Core.CameraFeed._FEED_YCBCR,
         Godot.Core.CameraFeed._FEED_UNSPECIFIED,
-        Godot.Core.CameraFeed._FEED_RGB,
-        Godot.Core.CameraFeed._FEED_NOIMAGE,
+        Godot.Core.CameraFeed._FEED_YCBCR,
         Godot.Core.CameraFeed._FEED_BACK,
+        Godot.Core.CameraFeed._FEED_NOIMAGE,
+        Godot.Core.CameraFeed._FEED_YCBCR_SEP,
+        Godot.Core.CameraFeed._FEED_RGB,
         Godot.Core.CameraFeed._allocate_texture,
         Godot.Core.CameraFeed._set_RGB_img,
         Godot.Core.CameraFeed._set_YCbCr_img,
@@ -35,23 +35,23 @@ import Godot.Core.Reference()
 _FEED_FRONT :: Int
 _FEED_FRONT = 1
 
-_FEED_YCBCR_SEP :: Int
-_FEED_YCBCR_SEP = 3
+_FEED_UNSPECIFIED :: Int
+_FEED_UNSPECIFIED = 0
 
 _FEED_YCBCR :: Int
 _FEED_YCBCR = 2
 
-_FEED_UNSPECIFIED :: Int
-_FEED_UNSPECIFIED = 0
-
-_FEED_RGB :: Int
-_FEED_RGB = 1
+_FEED_BACK :: Int
+_FEED_BACK = 2
 
 _FEED_NOIMAGE :: Int
 _FEED_NOIMAGE = 0
 
-_FEED_BACK :: Int
-_FEED_BACK = 2
+_FEED_YCBCR_SEP :: Int
+_FEED_YCBCR_SEP = 3
+
+_FEED_RGB :: Int
+_FEED_RGB = 1
 
 instance NodeProperty CameraFeed "feed_is_active" Bool 'False where
         nodeProperty = (is_active, wrapDroppingSetter set_active, Nothing)

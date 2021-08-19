@@ -2,13 +2,13 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.RigidBody2D
-       (Godot.Core.RigidBody2D._MODE_STATIC,
-        Godot.Core.RigidBody2D._CCD_MODE_DISABLED,
-        Godot.Core.RigidBody2D._CCD_MODE_CAST_RAY,
-        Godot.Core.RigidBody2D._MODE_KINEMATIC,
-        Godot.Core.RigidBody2D._CCD_MODE_CAST_SHAPE,
-        Godot.Core.RigidBody2D._MODE_RIGID,
+       (Godot.Core.RigidBody2D._MODE_KINEMATIC,
         Godot.Core.RigidBody2D._MODE_CHARACTER,
+        Godot.Core.RigidBody2D._CCD_MODE_CAST_RAY,
+        Godot.Core.RigidBody2D._CCD_MODE_DISABLED,
+        Godot.Core.RigidBody2D._MODE_STATIC,
+        Godot.Core.RigidBody2D._MODE_RIGID,
+        Godot.Core.RigidBody2D._CCD_MODE_CAST_SHAPE,
         Godot.Core.RigidBody2D.sig_body_entered,
         Godot.Core.RigidBody2D.sig_body_exited,
         Godot.Core.RigidBody2D.sig_body_shape_entered,
@@ -81,26 +81,26 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.PhysicsBody2D()
 
-_MODE_STATIC :: Int
-_MODE_STATIC = 1
+_MODE_KINEMATIC :: Int
+_MODE_KINEMATIC = 3
 
-_CCD_MODE_DISABLED :: Int
-_CCD_MODE_DISABLED = 0
+_MODE_CHARACTER :: Int
+_MODE_CHARACTER = 2
 
 _CCD_MODE_CAST_RAY :: Int
 _CCD_MODE_CAST_RAY = 1
 
-_MODE_KINEMATIC :: Int
-_MODE_KINEMATIC = 3
+_CCD_MODE_DISABLED :: Int
+_CCD_MODE_DISABLED = 0
 
-_CCD_MODE_CAST_SHAPE :: Int
-_CCD_MODE_CAST_SHAPE = 2
+_MODE_STATIC :: Int
+_MODE_STATIC = 1
 
 _MODE_RIGID :: Int
 _MODE_RIGID = 0
 
-_MODE_CHARACTER :: Int
-_MODE_CHARACTER = 2
+_CCD_MODE_CAST_SHAPE :: Int
+_CCD_MODE_CAST_SHAPE = 2
 
 -- | Emitted when a collision with another @PhysicsBody2D@ or @TileMap@ occurs. Requires @contact_monitor@ to be set to @true@ and @contacts_reported@ to be set high enough to detect all the collisions. @TileMap@s are detected if the @TileSet@ has Collision @Shape2D@s.
 --   				@body@ the @Node@, if it exists in the tree, of the other @PhysicsBody2D@ or @TileMap@.

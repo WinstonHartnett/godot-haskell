@@ -2,14 +2,13 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.Camera
-       (Godot.Core.Camera._PROJECTION_FRUSTUM,
-        Godot.Core.Camera._PROJECTION_ORTHOGONAL,
-        Godot.Core.Camera._KEEP_HEIGHT,
-        Godot.Core.Camera._DOPPLER_TRACKING_PHYSICS_STEP,
-        Godot.Core.Camera._DOPPLER_TRACKING_DISABLED,
-        Godot.Core.Camera._KEEP_WIDTH,
-        Godot.Core.Camera._DOPPLER_TRACKING_IDLE_STEP,
+       (Godot.Core.Camera._DOPPLER_TRACKING_DISABLED,
+        Godot.Core.Camera._PROJECTION_FRUSTUM,
         Godot.Core.Camera._PROJECTION_PERSPECTIVE,
+        Godot.Core.Camera._DOPPLER_TRACKING_IDLE_STEP,
+        Godot.Core.Camera._PROJECTION_ORTHOGONAL,
+        Godot.Core.Camera._DOPPLER_TRACKING_PHYSICS_STEP,
+        Godot.Core.Camera._KEEP_HEIGHT, Godot.Core.Camera._KEEP_WIDTH,
         Godot.Core.Camera.clear_current, Godot.Core.Camera.get_camera_rid,
         Godot.Core.Camera.get_camera_transform,
         Godot.Core.Camera.get_cull_mask,
@@ -55,29 +54,29 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.Spatial()
 
-_PROJECTION_FRUSTUM :: Int
-_PROJECTION_FRUSTUM = 2
-
-_PROJECTION_ORTHOGONAL :: Int
-_PROJECTION_ORTHOGONAL = 1
-
-_KEEP_HEIGHT :: Int
-_KEEP_HEIGHT = 1
-
-_DOPPLER_TRACKING_PHYSICS_STEP :: Int
-_DOPPLER_TRACKING_PHYSICS_STEP = 2
-
 _DOPPLER_TRACKING_DISABLED :: Int
 _DOPPLER_TRACKING_DISABLED = 0
 
-_KEEP_WIDTH :: Int
-_KEEP_WIDTH = 0
+_PROJECTION_FRUSTUM :: Int
+_PROJECTION_FRUSTUM = 2
+
+_PROJECTION_PERSPECTIVE :: Int
+_PROJECTION_PERSPECTIVE = 0
 
 _DOPPLER_TRACKING_IDLE_STEP :: Int
 _DOPPLER_TRACKING_IDLE_STEP = 1
 
-_PROJECTION_PERSPECTIVE :: Int
-_PROJECTION_PERSPECTIVE = 0
+_PROJECTION_ORTHOGONAL :: Int
+_PROJECTION_ORTHOGONAL = 1
+
+_DOPPLER_TRACKING_PHYSICS_STEP :: Int
+_DOPPLER_TRACKING_PHYSICS_STEP = 2
+
+_KEEP_HEIGHT :: Int
+_KEEP_HEIGHT = 1
+
+_KEEP_WIDTH :: Int
+_KEEP_WIDTH = 0
 
 instance NodeProperty Camera "cull_mask" Int 'False where
         nodeProperty
@@ -349,7 +348,7 @@ instance NodeMethod Camera "get_fov" '[] (IO Float) where
 
 {-# NOINLINE bindCamera_get_frustum #-}
 
--- | Returns the camera's frustum planes in world-space units as an array of @Plane@s in the following order: near, far, left, top, right, bottom. Not to be confused with @frustum_offset@.
+-- | Returns the camera's frustum planes in world space units as an array of @Plane@s in the following order: near, far, left, top, right, bottom. Not to be confused with @frustum_offset@.
 bindCamera_get_frustum :: MethodBind
 bindCamera_get_frustum
   = unsafePerformIO $
@@ -359,7 +358,7 @@ bindCamera_get_frustum
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Returns the camera's frustum planes in world-space units as an array of @Plane@s in the following order: near, far, left, top, right, bottom. Not to be confused with @frustum_offset@.
+-- | Returns the camera's frustum planes in world space units as an array of @Plane@s in the following order: near, far, left, top, right, bottom. Not to be confused with @frustum_offset@.
 get_frustum :: (Camera :< cls, Object :< cls) => cls -> IO Array
 get_frustum cls
   = withVariantArray []
@@ -676,7 +675,7 @@ instance NodeMethod Camera "project_local_ray_normal" '[Vector2]
 
 {-# NOINLINE bindCamera_project_position #-}
 
--- | Returns the 3D point in worldspace that maps to the given 2D coordinate in the @Viewport@ rectangle on a plane that is the given @z_depth@ distance into the scene away from the camera.
+-- | Returns the 3D point in world space that maps to the given 2D coordinate in the @Viewport@ rectangle on a plane that is the given @z_depth@ distance into the scene away from the camera.
 bindCamera_project_position :: MethodBind
 bindCamera_project_position
   = unsafePerformIO $
@@ -686,7 +685,7 @@ bindCamera_project_position
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Returns the 3D point in worldspace that maps to the given 2D coordinate in the @Viewport@ rectangle on a plane that is the given @z_depth@ distance into the scene away from the camera.
+-- | Returns the 3D point in world space that maps to the given 2D coordinate in the @Viewport@ rectangle on a plane that is the given @z_depth@ distance into the scene away from the camera.
 project_position ::
                    (Camera :< cls, Object :< cls) =>
                    cls -> Vector2 -> Float -> IO Vector3
@@ -705,7 +704,7 @@ instance NodeMethod Camera "project_position" '[Vector2, Float]
 
 {-# NOINLINE bindCamera_project_ray_normal #-}
 
--- | Returns a normal vector in worldspace, that is the result of projecting a point on the @Viewport@ rectangle by the camera projection. This is useful for casting rays in the form of (origin, normal) for object intersection or picking.
+-- | Returns a normal vector in world space, that is the result of projecting a point on the @Viewport@ rectangle by the camera projection. This is useful for casting rays in the form of (origin, normal) for object intersection or picking.
 bindCamera_project_ray_normal :: MethodBind
 bindCamera_project_ray_normal
   = unsafePerformIO $
@@ -715,7 +714,7 @@ bindCamera_project_ray_normal
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Returns a normal vector in worldspace, that is the result of projecting a point on the @Viewport@ rectangle by the camera projection. This is useful for casting rays in the form of (origin, normal) for object intersection or picking.
+-- | Returns a normal vector in world space, that is the result of projecting a point on the @Viewport@ rectangle by the camera projection. This is useful for casting rays in the form of (origin, normal) for object intersection or picking.
 project_ray_normal ::
                      (Camera :< cls, Object :< cls) => cls -> Vector2 -> IO Vector3
 project_ray_normal cls arg1
@@ -733,7 +732,7 @@ instance NodeMethod Camera "project_ray_normal" '[Vector2]
 
 {-# NOINLINE bindCamera_project_ray_origin #-}
 
--- | Returns a 3D position in worldspace, that is the result of projecting a point on the @Viewport@ rectangle by the camera projection. This is useful for casting rays in the form of (origin, normal) for object intersection or picking.
+-- | Returns a 3D position in world space, that is the result of projecting a point on the @Viewport@ rectangle by the camera projection. This is useful for casting rays in the form of (origin, normal) for object intersection or picking.
 bindCamera_project_ray_origin :: MethodBind
 bindCamera_project_ray_origin
   = unsafePerformIO $
@@ -743,7 +742,7 @@ bindCamera_project_ray_origin
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Returns a 3D position in worldspace, that is the result of projecting a point on the @Viewport@ rectangle by the camera projection. This is useful for casting rays in the form of (origin, normal) for object intersection or picking.
+-- | Returns a 3D position in world space, that is the result of projecting a point on the @Viewport@ rectangle by the camera projection. This is useful for casting rays in the form of (origin, normal) for object intersection or picking.
 project_ray_origin ::
                      (Camera :< cls, Object :< cls) => cls -> Vector2 -> IO Vector3
 project_ray_origin cls arg1
@@ -925,7 +924,7 @@ instance NodeMethod Camera "set_fov" '[Float] (IO ()) where
 
 {-# NOINLINE bindCamera_set_frustum #-}
 
--- | Sets the camera projection to frustum mode (see @PROJECTION_FRUSTUM@), by specifying a @size@, an @offset@, and the @z_near@ and @z_far@ clip planes in world-space units.
+-- | Sets the camera projection to frustum mode (see @PROJECTION_FRUSTUM@), by specifying a @size@, an @offset@, and the @z_near@ and @z_far@ clip planes in world space units.
 bindCamera_set_frustum :: MethodBind
 bindCamera_set_frustum
   = unsafePerformIO $
@@ -935,7 +934,7 @@ bindCamera_set_frustum
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Sets the camera projection to frustum mode (see @PROJECTION_FRUSTUM@), by specifying a @size@, an @offset@, and the @z_near@ and @z_far@ clip planes in world-space units.
+-- | Sets the camera projection to frustum mode (see @PROJECTION_FRUSTUM@), by specifying a @size@, an @offset@, and the @z_near@ and @z_far@ clip planes in world space units.
 set_frustum ::
               (Camera :< cls, Object :< cls) =>
               cls -> Float -> Vector2 -> Float -> Float -> IO ()
@@ -1034,7 +1033,7 @@ instance NodeMethod Camera "set_keep_aspect_mode" '[Int] (IO ())
 
 {-# NOINLINE bindCamera_set_orthogonal #-}
 
--- | Sets the camera projection to orthogonal mode (see @PROJECTION_ORTHOGONAL@), by specifying a @size@, and the @z_near@ and @z_far@ clip planes in world-space units. (As a hint, 2D games often use this projection, with values specified in pixels.)
+-- | Sets the camera projection to orthogonal mode (see @PROJECTION_ORTHOGONAL@), by specifying a @size@, and the @z_near@ and @z_far@ clip planes in world space units. (As a hint, 2D games often use this projection, with values specified in pixels.)
 bindCamera_set_orthogonal :: MethodBind
 bindCamera_set_orthogonal
   = unsafePerformIO $
@@ -1044,7 +1043,7 @@ bindCamera_set_orthogonal
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Sets the camera projection to orthogonal mode (see @PROJECTION_ORTHOGONAL@), by specifying a @size@, and the @z_near@ and @z_far@ clip planes in world-space units. (As a hint, 2D games often use this projection, with values specified in pixels.)
+-- | Sets the camera projection to orthogonal mode (see @PROJECTION_ORTHOGONAL@), by specifying a @size@, and the @z_near@ and @z_far@ clip planes in world space units. (As a hint, 2D games often use this projection, with values specified in pixels.)
 set_orthogonal ::
                  (Camera :< cls, Object :< cls) =>
                  cls -> Float -> Float -> Float -> IO ()
@@ -1063,7 +1062,7 @@ instance NodeMethod Camera "set_orthogonal" '[Float, Float, Float]
 
 {-# NOINLINE bindCamera_set_perspective #-}
 
--- | Sets the camera projection to perspective mode (see @PROJECTION_PERSPECTIVE@), by specifying a @fov@ (field of view) angle in degrees, and the @z_near@ and @z_far@ clip planes in world-space units.
+-- | Sets the camera projection to perspective mode (see @PROJECTION_PERSPECTIVE@), by specifying a @fov@ (field of view) angle in degrees, and the @z_near@ and @z_far@ clip planes in world space units.
 bindCamera_set_perspective :: MethodBind
 bindCamera_set_perspective
   = unsafePerformIO $
@@ -1073,7 +1072,7 @@ bindCamera_set_perspective
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Sets the camera projection to perspective mode (see @PROJECTION_PERSPECTIVE@), by specifying a @fov@ (field of view) angle in degrees, and the @z_near@ and @z_far@ clip planes in world-space units.
+-- | Sets the camera projection to perspective mode (see @PROJECTION_PERSPECTIVE@), by specifying a @fov@ (field of view) angle in degrees, and the @z_near@ and @z_far@ clip planes in world space units.
 set_perspective ::
                   (Camera :< cls, Object :< cls) =>
                   cls -> Float -> Float -> Float -> IO ()
@@ -1213,7 +1212,7 @@ instance NodeMethod Camera "set_znear" '[Float] (IO ()) where
 
 {-# NOINLINE bindCamera_unproject_position #-}
 
--- | Returns the 2D coordinate in the @Viewport@ rectangle that maps to the given 3D point in worldspace.
+-- | Returns the 2D coordinate in the @Viewport@ rectangle that maps to the given 3D point in world space.
 --   				__Note:__ When using this to position GUI elements over a 3D viewport, use @method is_position_behind@ to prevent them from appearing if the 3D point is behind the camera:
 --   				
 --   @
@@ -1233,7 +1232,7 @@ bindCamera_unproject_position
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Returns the 2D coordinate in the @Viewport@ rectangle that maps to the given 3D point in worldspace.
+-- | Returns the 2D coordinate in the @Viewport@ rectangle that maps to the given 3D point in world space.
 --   				__Note:__ When using this to position GUI elements over a 3D viewport, use @method is_position_behind@ to prevent them from appearing if the 3D point is behind the camera:
 --   				
 --   @

@@ -3,10 +3,10 @@
   MultiParamTypeClasses #-}
 module Godot.Core.Area2D
        (Godot.Core.Area2D._SPACE_OVERRIDE_REPLACE,
-        Godot.Core.Area2D._SPACE_OVERRIDE_DISABLED,
-        Godot.Core.Area2D._SPACE_OVERRIDE_COMBINE_REPLACE,
-        Godot.Core.Area2D._SPACE_OVERRIDE_REPLACE_COMBINE,
         Godot.Core.Area2D._SPACE_OVERRIDE_COMBINE,
+        Godot.Core.Area2D._SPACE_OVERRIDE_DISABLED,
+        Godot.Core.Area2D._SPACE_OVERRIDE_REPLACE_COMBINE,
+        Godot.Core.Area2D._SPACE_OVERRIDE_COMBINE_REPLACE,
         Godot.Core.Area2D.sig_area_entered,
         Godot.Core.Area2D.sig_area_exited,
         Godot.Core.Area2D.sig_area_shape_entered,
@@ -68,17 +68,17 @@ import Godot.Core.CollisionObject2D()
 _SPACE_OVERRIDE_REPLACE :: Int
 _SPACE_OVERRIDE_REPLACE = 3
 
+_SPACE_OVERRIDE_COMBINE :: Int
+_SPACE_OVERRIDE_COMBINE = 1
+
 _SPACE_OVERRIDE_DISABLED :: Int
 _SPACE_OVERRIDE_DISABLED = 0
-
-_SPACE_OVERRIDE_COMBINE_REPLACE :: Int
-_SPACE_OVERRIDE_COMBINE_REPLACE = 2
 
 _SPACE_OVERRIDE_REPLACE_COMBINE :: Int
 _SPACE_OVERRIDE_REPLACE_COMBINE = 4
 
-_SPACE_OVERRIDE_COMBINE :: Int
-_SPACE_OVERRIDE_COMBINE = 1
+_SPACE_OVERRIDE_COMBINE_REPLACE :: Int
+_SPACE_OVERRIDE_COMBINE_REPLACE = 2
 
 -- | Emitted when another Area2D enters this Area2D. Requires @monitoring@ to be set to @true@.
 --   				@area@ the other Area2D.
@@ -862,7 +862,7 @@ instance NodeMethod Area2D "is_overriding_audio_bus" '[] (IO Bool)
 {-# NOINLINE bindArea2D_overlaps_area #-}
 
 -- | If @true@, the given area overlaps the Area2D.
---   				__Note:__ The result of this test is not immediate after moving objects. For performance, list of overlaps is updated once per frame and before the physics step. Consider using signals instead.
+--   				__Note:__ The result of this test is not immediate after moving objects. For performance, the list of overlaps is updated once per frame and before the physics step. Consider using signals instead.
 bindArea2D_overlaps_area :: MethodBind
 bindArea2D_overlaps_area
   = unsafePerformIO $
@@ -873,7 +873,7 @@ bindArea2D_overlaps_area
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
 -- | If @true@, the given area overlaps the Area2D.
---   				__Note:__ The result of this test is not immediate after moving objects. For performance, list of overlaps is updated once per frame and before the physics step. Consider using signals instead.
+--   				__Note:__ The result of this test is not immediate after moving objects. For performance, the list of overlaps is updated once per frame and before the physics step. Consider using signals instead.
 overlaps_area ::
                 (Area2D :< cls, Object :< cls) => cls -> Node -> IO Bool
 overlaps_area cls arg1
@@ -890,7 +890,7 @@ instance NodeMethod Area2D "overlaps_area" '[Node] (IO Bool) where
 
 -- | If @true@, the given physics body overlaps the Area2D.
 --   				__Note:__ The result of this test is not immediate after moving objects. For performance, list of overlaps is updated once per frame and before the physics step. Consider using signals instead.
---   				The @body@ argument can either be a @PhysicsBody2D@ or a @TileMap@ instance (while TileMaps are not physics body themselves, they register their tiles with collision shapes as a virtual physics body).
+--   				The @body@ argument can either be a @PhysicsBody2D@ or a @TileMap@ instance (while TileMaps are not physics bodies themselves, they register their tiles with collision shapes as a virtual physics body).
 bindArea2D_overlaps_body :: MethodBind
 bindArea2D_overlaps_body
   = unsafePerformIO $
@@ -902,7 +902,7 @@ bindArea2D_overlaps_body
 
 -- | If @true@, the given physics body overlaps the Area2D.
 --   				__Note:__ The result of this test is not immediate after moving objects. For performance, list of overlaps is updated once per frame and before the physics step. Consider using signals instead.
---   				The @body@ argument can either be a @PhysicsBody2D@ or a @TileMap@ instance (while TileMaps are not physics body themselves, they register their tiles with collision shapes as a virtual physics body).
+--   				The @body@ argument can either be a @PhysicsBody2D@ or a @TileMap@ instance (while TileMaps are not physics bodies themselves, they register their tiles with collision shapes as a virtual physics body).
 overlaps_body ::
                 (Area2D :< cls, Object :< cls) => cls -> Node -> IO Bool
 overlaps_body cls arg1

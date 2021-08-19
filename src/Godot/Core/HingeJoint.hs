@@ -2,17 +2,18 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.HingeJoint
-       (Godot.Core.HingeJoint._PARAM_MOTOR_MAX_IMPULSE,
-        Godot.Core.HingeJoint._FLAG_USE_LIMIT,
-        Godot.Core.HingeJoint._PARAM_LIMIT_RELAXATION,
-        Godot.Core.HingeJoint._PARAM_LIMIT_UPPER,
-        Godot.Core.HingeJoint._PARAM_LIMIT_BIAS,
-        Godot.Core.HingeJoint._PARAM_MAX, Godot.Core.HingeJoint._FLAG_MAX,
-        Godot.Core.HingeJoint._PARAM_LIMIT_SOFTNESS,
-        Godot.Core.HingeJoint._PARAM_MOTOR_TARGET_VELOCITY,
-        Godot.Core.HingeJoint._FLAG_ENABLE_MOTOR,
+       (Godot.Core.HingeJoint._PARAM_MAX,
         Godot.Core.HingeJoint._PARAM_LIMIT_LOWER,
+        Godot.Core.HingeJoint._PARAM_LIMIT_BIAS,
+        Godot.Core.HingeJoint._FLAG_USE_LIMIT,
+        Godot.Core.HingeJoint._PARAM_LIMIT_SOFTNESS,
+        Godot.Core.HingeJoint._FLAG_MAX,
+        Godot.Core.HingeJoint._PARAM_MOTOR_MAX_IMPULSE,
         Godot.Core.HingeJoint._PARAM_BIAS,
+        Godot.Core.HingeJoint._FLAG_ENABLE_MOTOR,
+        Godot.Core.HingeJoint._PARAM_LIMIT_UPPER,
+        Godot.Core.HingeJoint._PARAM_MOTOR_TARGET_VELOCITY,
+        Godot.Core.HingeJoint._PARAM_LIMIT_RELAXATION,
         Godot.Core.HingeJoint._get_lower_limit,
         Godot.Core.HingeJoint._get_upper_limit,
         Godot.Core.HingeJoint._set_lower_limit,
@@ -32,41 +33,41 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.Joint()
 
-_PARAM_MOTOR_MAX_IMPULSE :: Int
-_PARAM_MOTOR_MAX_IMPULSE = 7
-
-_FLAG_USE_LIMIT :: Int
-_FLAG_USE_LIMIT = 0
-
-_PARAM_LIMIT_RELAXATION :: Int
-_PARAM_LIMIT_RELAXATION = 5
-
-_PARAM_LIMIT_UPPER :: Int
-_PARAM_LIMIT_UPPER = 1
-
-_PARAM_LIMIT_BIAS :: Int
-_PARAM_LIMIT_BIAS = 3
-
 _PARAM_MAX :: Int
 _PARAM_MAX = 8
-
-_FLAG_MAX :: Int
-_FLAG_MAX = 2
-
-_PARAM_LIMIT_SOFTNESS :: Int
-_PARAM_LIMIT_SOFTNESS = 4
-
-_PARAM_MOTOR_TARGET_VELOCITY :: Int
-_PARAM_MOTOR_TARGET_VELOCITY = 6
-
-_FLAG_ENABLE_MOTOR :: Int
-_FLAG_ENABLE_MOTOR = 1
 
 _PARAM_LIMIT_LOWER :: Int
 _PARAM_LIMIT_LOWER = 2
 
+_PARAM_LIMIT_BIAS :: Int
+_PARAM_LIMIT_BIAS = 3
+
+_FLAG_USE_LIMIT :: Int
+_FLAG_USE_LIMIT = 0
+
+_PARAM_LIMIT_SOFTNESS :: Int
+_PARAM_LIMIT_SOFTNESS = 4
+
+_FLAG_MAX :: Int
+_FLAG_MAX = 2
+
+_PARAM_MOTOR_MAX_IMPULSE :: Int
+_PARAM_MOTOR_MAX_IMPULSE = 7
+
 _PARAM_BIAS :: Int
 _PARAM_BIAS = 0
+
+_FLAG_ENABLE_MOTOR :: Int
+_FLAG_ENABLE_MOTOR = 1
+
+_PARAM_LIMIT_UPPER :: Int
+_PARAM_LIMIT_UPPER = 1
+
+_PARAM_MOTOR_TARGET_VELOCITY :: Int
+_PARAM_MOTOR_TARGET_VELOCITY = 6
+
+_PARAM_LIMIT_RELAXATION :: Int
+_PARAM_LIMIT_RELAXATION = 5
 
 instance NodeProperty HingeJoint "angular_limit/bias" Float 'False
          where

@@ -2,8 +2,9 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.UndoRedo
-       (Godot.Core.UndoRedo._MERGE_DISABLE,
-        Godot.Core.UndoRedo._MERGE_ALL, Godot.Core.UndoRedo._MERGE_ENDS,
+       (Godot.Core.UndoRedo._MERGE_ALL,
+        Godot.Core.UndoRedo._MERGE_DISABLE,
+        Godot.Core.UndoRedo._MERGE_ENDS,
         Godot.Core.UndoRedo.sig_version_changed,
         Godot.Core.UndoRedo.add_do_method,
         Godot.Core.UndoRedo.add_do_property,
@@ -32,11 +33,11 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.Object()
 
-_MERGE_DISABLE :: Int
-_MERGE_DISABLE = 0
-
 _MERGE_ALL :: Int
 _MERGE_ALL = 2
+
+_MERGE_DISABLE :: Int
+_MERGE_DISABLE = 0
 
 _MERGE_ENDS :: Int
 _MERGE_ENDS = 1

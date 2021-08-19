@@ -2,8 +2,8 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.ReflectionProbe
-       (Godot.Core.ReflectionProbe._UPDATE_ALWAYS,
-        Godot.Core.ReflectionProbe._UPDATE_ONCE,
+       (Godot.Core.ReflectionProbe._UPDATE_ONCE,
+        Godot.Core.ReflectionProbe._UPDATE_ALWAYS,
         Godot.Core.ReflectionProbe.are_shadows_enabled,
         Godot.Core.ReflectionProbe.get_cull_mask,
         Godot.Core.ReflectionProbe.get_extents,
@@ -41,11 +41,11 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.VisualInstance()
 
-_UPDATE_ALWAYS :: Int
-_UPDATE_ALWAYS = 1
-
 _UPDATE_ONCE :: Int
 _UPDATE_ONCE = 0
+
+_UPDATE_ALWAYS :: Int
+_UPDATE_ALWAYS = 1
 
 instance NodeProperty ReflectionProbe "box_projection" Bool 'False
          where

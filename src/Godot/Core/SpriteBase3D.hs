@@ -2,13 +2,13 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.SpriteBase3D
-       (Godot.Core.SpriteBase3D._FLAG_SHADED,
-        Godot.Core.SpriteBase3D._ALPHA_CUT_OPAQUE_PREPASS,
+       (Godot.Core.SpriteBase3D._ALPHA_CUT_DISCARD,
         Godot.Core.SpriteBase3D._FLAG_DOUBLE_SIDED,
-        Godot.Core.SpriteBase3D._ALPHA_CUT_DISABLED,
-        Godot.Core.SpriteBase3D._ALPHA_CUT_DISCARD,
-        Godot.Core.SpriteBase3D._FLAG_MAX,
+        Godot.Core.SpriteBase3D._ALPHA_CUT_OPAQUE_PREPASS,
         Godot.Core.SpriteBase3D._FLAG_TRANSPARENT,
+        Godot.Core.SpriteBase3D._FLAG_MAX,
+        Godot.Core.SpriteBase3D._FLAG_SHADED,
+        Godot.Core.SpriteBase3D._ALPHA_CUT_DISABLED,
         Godot.Core.SpriteBase3D._im_update,
         Godot.Core.SpriteBase3D._queue_update,
         Godot.Core.SpriteBase3D.generate_triangle_mesh,
@@ -48,26 +48,26 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.GeometryInstance()
 
-_FLAG_SHADED :: Int
-_FLAG_SHADED = 1
-
-_ALPHA_CUT_OPAQUE_PREPASS :: Int
-_ALPHA_CUT_OPAQUE_PREPASS = 2
+_ALPHA_CUT_DISCARD :: Int
+_ALPHA_CUT_DISCARD = 1
 
 _FLAG_DOUBLE_SIDED :: Int
 _FLAG_DOUBLE_SIDED = 2
 
-_ALPHA_CUT_DISABLED :: Int
-_ALPHA_CUT_DISABLED = 0
+_ALPHA_CUT_OPAQUE_PREPASS :: Int
+_ALPHA_CUT_OPAQUE_PREPASS = 2
 
-_ALPHA_CUT_DISCARD :: Int
-_ALPHA_CUT_DISCARD = 1
+_FLAG_TRANSPARENT :: Int
+_FLAG_TRANSPARENT = 0
 
 _FLAG_MAX :: Int
 _FLAG_MAX = 3
 
-_FLAG_TRANSPARENT :: Int
-_FLAG_TRANSPARENT = 0
+_FLAG_SHADED :: Int
+_FLAG_SHADED = 1
+
+_ALPHA_CUT_DISABLED :: Int
+_ALPHA_CUT_DISABLED = 0
 
 instance NodeProperty SpriteBase3D "alpha_cut" Int 'False where
         nodeProperty

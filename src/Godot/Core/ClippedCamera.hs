@@ -2,8 +2,8 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.ClippedCamera
-       (Godot.Core.ClippedCamera._CLIP_PROCESS_PHYSICS,
-        Godot.Core.ClippedCamera._CLIP_PROCESS_IDLE,
+       (Godot.Core.ClippedCamera._CLIP_PROCESS_IDLE,
+        Godot.Core.ClippedCamera._CLIP_PROCESS_PHYSICS,
         Godot.Core.ClippedCamera.add_exception,
         Godot.Core.ClippedCamera.add_exception_rid,
         Godot.Core.ClippedCamera.clear_exceptions,
@@ -35,11 +35,11 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.Camera()
 
-_CLIP_PROCESS_PHYSICS :: Int
-_CLIP_PROCESS_PHYSICS = 0
-
 _CLIP_PROCESS_IDLE :: Int
 _CLIP_PROCESS_IDLE = 1
+
+_CLIP_PROCESS_PHYSICS :: Int
+_CLIP_PROCESS_PHYSICS = 0
 
 instance NodeProperty ClippedCamera "clip_to_areas" Bool 'False
          where

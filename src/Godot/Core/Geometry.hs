@@ -2,14 +2,14 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.Geometry
-       (Godot.Core.Geometry._END_POLYGON, Godot.Core.Geometry._JOIN_ROUND,
-        Godot.Core.Geometry._OPERATION_XOR,
-        Godot.Core.Geometry._JOIN_MITER, Godot.Core.Geometry._END_JOINED,
-        Godot.Core.Geometry._OPERATION_UNION,
-        Godot.Core.Geometry._JOIN_SQUARE,
-        Godot.Core.Geometry._OPERATION_INTERSECTION,
-        Godot.Core.Geometry._END_BUTT, Godot.Core.Geometry._END_ROUND,
+       (Godot.Core.Geometry._JOIN_ROUND, Godot.Core.Geometry._JOIN_SQUARE,
+        Godot.Core.Geometry._END_JOINED,
         Godot.Core.Geometry._OPERATION_DIFFERENCE,
+        Godot.Core.Geometry._END_ROUND, Godot.Core.Geometry._JOIN_MITER,
+        Godot.Core.Geometry._OPERATION_INTERSECTION,
+        Godot.Core.Geometry._OPERATION_XOR, Godot.Core.Geometry._END_BUTT,
+        Godot.Core.Geometry._END_POLYGON,
+        Godot.Core.Geometry._OPERATION_UNION,
         Godot.Core.Geometry._END_SQUARE,
         Godot.Core.Geometry.build_box_planes,
         Godot.Core.Geometry.build_capsule_planes,
@@ -59,38 +59,38 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.Object()
 
-_END_POLYGON :: Int
-_END_POLYGON = 0
-
 _JOIN_ROUND :: Int
 _JOIN_ROUND = 1
-
-_OPERATION_XOR :: Int
-_OPERATION_XOR = 3
-
-_JOIN_MITER :: Int
-_JOIN_MITER = 2
-
-_END_JOINED :: Int
-_END_JOINED = 1
-
-_OPERATION_UNION :: Int
-_OPERATION_UNION = 0
 
 _JOIN_SQUARE :: Int
 _JOIN_SQUARE = 0
 
-_OPERATION_INTERSECTION :: Int
-_OPERATION_INTERSECTION = 2
+_END_JOINED :: Int
+_END_JOINED = 1
 
-_END_BUTT :: Int
-_END_BUTT = 2
+_OPERATION_DIFFERENCE :: Int
+_OPERATION_DIFFERENCE = 1
 
 _END_ROUND :: Int
 _END_ROUND = 4
 
-_OPERATION_DIFFERENCE :: Int
-_OPERATION_DIFFERENCE = 1
+_JOIN_MITER :: Int
+_JOIN_MITER = 2
+
+_OPERATION_INTERSECTION :: Int
+_OPERATION_INTERSECTION = 2
+
+_OPERATION_XOR :: Int
+_OPERATION_XOR = 3
+
+_END_BUTT :: Int
+_END_BUTT = 2
+
+_END_POLYGON :: Int
+_END_POLYGON = 0
+
+_OPERATION_UNION :: Int
+_OPERATION_UNION = 0
 
 _END_SQUARE :: Int
 _END_SQUARE = 3

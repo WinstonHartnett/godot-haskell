@@ -2,17 +2,17 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.CanvasItem
-       (Godot.Core.CanvasItem._BLEND_MODE_DISABLED,
-        Godot.Core.CanvasItem._NOTIFICATION_EXIT_CANVAS,
-        Godot.Core.CanvasItem._NOTIFICATION_ENTER_CANVAS,
-        Godot.Core.CanvasItem._NOTIFICATION_TRANSFORM_CHANGED,
-        Godot.Core.CanvasItem._BLEND_MODE_ADD,
-        Godot.Core.CanvasItem._BLEND_MODE_MIX,
-        Godot.Core.CanvasItem._NOTIFICATION_DRAW,
+       (Godot.Core.CanvasItem._NOTIFICATION_VISIBILITY_CHANGED,
+        Godot.Core.CanvasItem._BLEND_MODE_SUB,
         Godot.Core.CanvasItem._BLEND_MODE_MUL,
         Godot.Core.CanvasItem._BLEND_MODE_PREMULT_ALPHA,
-        Godot.Core.CanvasItem._BLEND_MODE_SUB,
-        Godot.Core.CanvasItem._NOTIFICATION_VISIBILITY_CHANGED,
+        Godot.Core.CanvasItem._BLEND_MODE_ADD,
+        Godot.Core.CanvasItem._NOTIFICATION_TRANSFORM_CHANGED,
+        Godot.Core.CanvasItem._NOTIFICATION_ENTER_CANVAS,
+        Godot.Core.CanvasItem._NOTIFICATION_DRAW,
+        Godot.Core.CanvasItem._BLEND_MODE_MIX,
+        Godot.Core.CanvasItem._NOTIFICATION_EXIT_CANVAS,
+        Godot.Core.CanvasItem._BLEND_MODE_DISABLED,
         Godot.Core.CanvasItem.sig_draw, Godot.Core.CanvasItem.sig_hide,
         Godot.Core.CanvasItem.sig_item_rect_changed,
         Godot.Core.CanvasItem.sig_visibility_changed,
@@ -104,26 +104,11 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.Node()
 
-_BLEND_MODE_DISABLED :: Int
-_BLEND_MODE_DISABLED = 5
+_NOTIFICATION_VISIBILITY_CHANGED :: Int
+_NOTIFICATION_VISIBILITY_CHANGED = 31
 
-_NOTIFICATION_EXIT_CANVAS :: Int
-_NOTIFICATION_EXIT_CANVAS = 33
-
-_NOTIFICATION_ENTER_CANVAS :: Int
-_NOTIFICATION_ENTER_CANVAS = 32
-
-_NOTIFICATION_TRANSFORM_CHANGED :: Int
-_NOTIFICATION_TRANSFORM_CHANGED = 2000
-
-_BLEND_MODE_ADD :: Int
-_BLEND_MODE_ADD = 1
-
-_BLEND_MODE_MIX :: Int
-_BLEND_MODE_MIX = 0
-
-_NOTIFICATION_DRAW :: Int
-_NOTIFICATION_DRAW = 30
+_BLEND_MODE_SUB :: Int
+_BLEND_MODE_SUB = 2
 
 _BLEND_MODE_MUL :: Int
 _BLEND_MODE_MUL = 3
@@ -131,11 +116,26 @@ _BLEND_MODE_MUL = 3
 _BLEND_MODE_PREMULT_ALPHA :: Int
 _BLEND_MODE_PREMULT_ALPHA = 4
 
-_BLEND_MODE_SUB :: Int
-_BLEND_MODE_SUB = 2
+_BLEND_MODE_ADD :: Int
+_BLEND_MODE_ADD = 1
 
-_NOTIFICATION_VISIBILITY_CHANGED :: Int
-_NOTIFICATION_VISIBILITY_CHANGED = 31
+_NOTIFICATION_TRANSFORM_CHANGED :: Int
+_NOTIFICATION_TRANSFORM_CHANGED = 2000
+
+_NOTIFICATION_ENTER_CANVAS :: Int
+_NOTIFICATION_ENTER_CANVAS = 32
+
+_NOTIFICATION_DRAW :: Int
+_NOTIFICATION_DRAW = 30
+
+_BLEND_MODE_MIX :: Int
+_BLEND_MODE_MIX = 0
+
+_NOTIFICATION_EXIT_CANVAS :: Int
+_NOTIFICATION_EXIT_CANVAS = 33
+
+_BLEND_MODE_DISABLED :: Int
+_BLEND_MODE_DISABLED = 5
 
 -- | Emitted when the @CanvasItem@ must redraw. This can only be connected realtime, as deferred will not allow drawing.
 sig_draw :: Godot.Internal.Dispatch.Signal CanvasItem

@@ -5,8 +5,8 @@ module Godot.Core.PacketPeerDTLS
        (Godot.Core.PacketPeerDTLS._STATUS_CONNECTED,
         Godot.Core.PacketPeerDTLS._STATUS_ERROR,
         Godot.Core.PacketPeerDTLS._STATUS_DISCONNECTED,
-        Godot.Core.PacketPeerDTLS._STATUS_ERROR_HOSTNAME_MISMATCH,
         Godot.Core.PacketPeerDTLS._STATUS_HANDSHAKING,
+        Godot.Core.PacketPeerDTLS._STATUS_ERROR_HOSTNAME_MISMATCH,
         Godot.Core.PacketPeerDTLS.connect_to_peer,
         Godot.Core.PacketPeerDTLS.disconnect_from_peer,
         Godot.Core.PacketPeerDTLS.get_status,
@@ -33,11 +33,11 @@ _STATUS_ERROR = 3
 _STATUS_DISCONNECTED :: Int
 _STATUS_DISCONNECTED = 0
 
-_STATUS_ERROR_HOSTNAME_MISMATCH :: Int
-_STATUS_ERROR_HOSTNAME_MISMATCH = 4
-
 _STATUS_HANDSHAKING :: Int
 _STATUS_HANDSHAKING = 1
+
+_STATUS_ERROR_HOSTNAME_MISMATCH :: Int
+_STATUS_ERROR_HOSTNAME_MISMATCH = 4
 
 {-# NOINLINE bindPacketPeerDTLS_connect_to_peer #-}
 

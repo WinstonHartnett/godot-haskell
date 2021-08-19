@@ -2,10 +2,10 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.VisualScriptInputAction
-       (Godot.Core.VisualScriptInputAction._MODE_PRESSED,
-        Godot.Core.VisualScriptInputAction._MODE_JUST_PRESSED,
-        Godot.Core.VisualScriptInputAction._MODE_JUST_RELEASED,
+       (Godot.Core.VisualScriptInputAction._MODE_JUST_PRESSED,
+        Godot.Core.VisualScriptInputAction._MODE_PRESSED,
         Godot.Core.VisualScriptInputAction._MODE_RELEASED,
+        Godot.Core.VisualScriptInputAction._MODE_JUST_RELEASED,
         Godot.Core.VisualScriptInputAction.get_action_mode,
         Godot.Core.VisualScriptInputAction.get_action_name,
         Godot.Core.VisualScriptInputAction.set_action_mode,
@@ -23,17 +23,17 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.VisualScriptNode()
 
-_MODE_PRESSED :: Int
-_MODE_PRESSED = 0
-
 _MODE_JUST_PRESSED :: Int
 _MODE_JUST_PRESSED = 2
 
-_MODE_JUST_RELEASED :: Int
-_MODE_JUST_RELEASED = 3
+_MODE_PRESSED :: Int
+_MODE_PRESSED = 0
 
 _MODE_RELEASED :: Int
 _MODE_RELEASED = 1
+
+_MODE_JUST_RELEASED :: Int
+_MODE_JUST_RELEASED = 3
 
 instance NodeProperty VisualScriptInputAction "action" GodotString
            'False

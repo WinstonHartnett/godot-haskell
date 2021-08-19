@@ -2,10 +2,11 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.Thread
-       (Godot.Core.Thread._PRIORITY_NORMAL,
-        Godot.Core.Thread._PRIORITY_LOW, Godot.Core.Thread._PRIORITY_HIGH,
-        Godot.Core.Thread.get_id, Godot.Core.Thread.is_active,
-        Godot.Core.Thread.start, Godot.Core.Thread.wait_to_finish)
+       (Godot.Core.Thread._PRIORITY_LOW,
+        Godot.Core.Thread._PRIORITY_NORMAL,
+        Godot.Core.Thread._PRIORITY_HIGH, Godot.Core.Thread.get_id,
+        Godot.Core.Thread.is_active, Godot.Core.Thread.start,
+        Godot.Core.Thread.wait_to_finish)
        where
 import Data.Coerce
 import Foreign.C
@@ -19,11 +20,11 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.Reference()
 
-_PRIORITY_NORMAL :: Int
-_PRIORITY_NORMAL = 1
-
 _PRIORITY_LOW :: Int
 _PRIORITY_LOW = 0
+
+_PRIORITY_NORMAL :: Int
+_PRIORITY_NORMAL = 1
 
 _PRIORITY_HIGH :: Int
 _PRIORITY_HIGH = 2

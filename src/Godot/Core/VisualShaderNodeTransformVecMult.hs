@@ -2,10 +2,10 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.VisualShaderNodeTransformVecMult
-       (Godot.Core.VisualShaderNodeTransformVecMult._OP_AxB,
-        Godot.Core.VisualShaderNodeTransformVecMult._OP_BxA,
-        Godot.Core.VisualShaderNodeTransformVecMult._OP_3x3_BxA,
+       (Godot.Core.VisualShaderNodeTransformVecMult._OP_BxA,
+        Godot.Core.VisualShaderNodeTransformVecMult._OP_AxB,
         Godot.Core.VisualShaderNodeTransformVecMult._OP_3x3_AxB,
+        Godot.Core.VisualShaderNodeTransformVecMult._OP_3x3_BxA,
         Godot.Core.VisualShaderNodeTransformVecMult.get_operator,
         Godot.Core.VisualShaderNodeTransformVecMult.set_operator)
        where
@@ -21,17 +21,17 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.VisualShaderNode()
 
-_OP_AxB :: Int
-_OP_AxB = 0
-
 _OP_BxA :: Int
 _OP_BxA = 1
 
-_OP_3x3_BxA :: Int
-_OP_3x3_BxA = 3
+_OP_AxB :: Int
+_OP_AxB = 0
 
 _OP_3x3_AxB :: Int
 _OP_3x3_AxB = 2
+
+_OP_3x3_BxA :: Int
+_OP_3x3_BxA = 3
 
 instance NodeProperty VisualShaderNodeTransformVecMult "operator"
            Int

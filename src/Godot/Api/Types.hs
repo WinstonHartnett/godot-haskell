@@ -354,7 +354,7 @@ instance HasBaseClass ARVRServer where
 --   @
 --   
 --   		@method _estimate_cost@ should return a lower bound of the distance, i.e. @_estimate_cost(u, v) <= _compute_cost(u, v)@. This serves as a hint to the algorithm because the custom @_compute_cost@ might be computation-heavy. If this is not the case, make @method _estimate_cost@ return the same value as @method _compute_cost@ to provide the algorithm with the most accurate information.
---   		If the default @method _estimate_cost@ and @method _compute_cost@ methods are used, or if the supplied @method _estimate_cost@ method returns a lower bound of the cost, then the paths returned by A* will be the lowest cost paths. Here, the cost of a path equals to the sum of the @method _compute_cost@ results of all segments in the path multiplied by the @weight_scale@s of the end points of the respective segments. If the default methods are used and the @weight_scale@s of all points are set to @1.0@, then this equals to the sum of Euclidean distances of all segments in the path.
+--   		If the default @method _estimate_cost@ and @method _compute_cost@ methods are used, or if the supplied @method _estimate_cost@ method returns a lower bound of the cost, then the paths returned by A* will be the lowest-cost paths. Here, the cost of a path equals the sum of the @method _compute_cost@ results of all segments in the path multiplied by the @weight_scale@s of the endpoints of the respective segments. If the default methods are used and the @weight_scale@s of all points are set to @1.0@, then this equals the sum of Euclidean distances of all segments in the path.
 newtype AStar = AStar Object
                   deriving newtype AsVariant
 
@@ -1426,7 +1426,7 @@ instance HasBaseClass Camera where
 
 -- | Camera node for 2D scenes.
 --    It forces the screen (current layer) to scroll following this node. This makes it easier (and faster) to program scrollable scenes than manually changing the position of @CanvasItem@-based nodes.
---   		This node is intended to be a simple helper to get things going quickly and it may happen that more functionality is desired to change how the camera works. To make your own custom camera node, inherit from @Node2D@ and change the transform of the canvas by setting @Viewport.canvas_transform@ in @Viewport@ (you can obtain the current @Viewport@ by using @method Node.get_viewport@).
+--   		This node is intended to be a simple helper to get things going quickly, but more functionality may be desired to change how the camera works. To make your own custom camera node, inherit it from @Node2D@ and change the transform of the canvas by setting @Viewport.canvas_transform@ in @Viewport@ (you can obtain the current @Viewport@ by using @method Node.get_viewport@).
 --   		Note that the @Camera2D@ node's @position@ doesn't represent the actual position of the screen, which may differ due to applied smoothing or limits. You can use @method get_camera_screen_center@ to get the real position.
 newtype Camera2D = Camera2D Object
                      deriving newtype AsVariant
@@ -1712,20 +1712,44 @@ instance HasBaseClass ConeTwistJoint where
 --   @
 --   
 --   		The stored data can be saved to or parsed from a file, though ConfigFile objects can also be used directly without accessing the filesystem.
---   		The following example shows how to parse an INI-style file from the system, read its contents and store new values in it:
+--   		The following example shows how to create a simple @ConfigFile@ and save it on disk:
 --   		
 --   @
 --   
+--   		# Create new ConfigFile object.
 --   		var config = ConfigFile.new()
---   		var err = config.load("user://settings.cfg")
---   		if err == OK: # If not, something went wrong with the file loading
---   		    # Look for the display/width pair, and default to 1024 if missing
---   		    var screen_width = config.get_value("display", "width", 1024)
---   		    # Store a variable if and only if it hasn't been defined yet
---   		    if not config.has_section_key("audio", "mute"):
---   		        config.set_value("audio", "mute", false)
---   		    # Save the changes by overwriting the previous file
---   		    config.save("user://settings.cfg")
+--   
+--   		# Store some values.
+--   		config.set_value("Player1", "player_name", "Steve")
+--   		config.set_value("Player1", "best_score", 10)
+--   		config.set_value("Player2", "player_name", "V3geta")
+--   		config.set_value("Player2", "best_score", 9001)
+--   
+--   		# Save it to a file (overwrite if already exists).
+--   		config.save("user://scores.cfg")
+--   		
+--   @
+--   
+--   		This example shows how the above file could be loaded:
+--   		
+--   @
+--   
+--   		var score_data = {}
+--   		var config = ConfigFile.new()
+--   
+--   		# Load data from a file.
+--   		var err = config.load("user://scores.cfg")
+--   
+--   		# If the file didn't load, ignore it.
+--   		if err != OK:
+--   		    return
+--   
+--   		# Iterate over all sections.
+--   		for player in config.get_sections():
+--   		    # Fetch the data for each section.
+--   		    var player_name = config.get_value(player, "player_name")
+--   		    var player_score = config.get_value(player, "best_score")
+--   		    score_data@player_name@ = player_score
 --   		
 --   @
 --   
@@ -1769,7 +1793,7 @@ instance HasBaseClass Container where
 --   Base class for all UI-related nodes. @Control@ features a bounding rectangle that defines its extents, an anchor position relative to its parent control or the current viewport, and margins that represent an offset to the anchor. The margins update automatically when the node, any of its parents, or the screen size change.
 --   		For more information on Godot's UI system, anchors, margins, and containers, see the related tutorials in the manual. To build flexible UIs, you'll need a mix of UI elements that inherit from @Control@ and @Container@ nodes.
 --   		__User Interface nodes and input__
---   		Godot sends input events to the scene's root node first, by calling @method Node._input@. @method Node._input@ forwards the event down the node tree to the nodes under the mouse cursor, or on keyboard focus. To do so, it calls @method MainLoop._input_event@. Call @method accept_event@ so no other node receives the event. Once you accepted an input, it becomes handled so @method Node._unhandled_input@ will not process it.
+--   		Godot sends input events to the scene's root node first, by calling @method Node._input@. @method Node._input@ forwards the event down the node tree to the nodes under the mouse cursor, or on keyboard focus. To do so, it calls @method MainLoop._input_event@. Call @method accept_event@ so no other node receives the event. Once you accept an input, it becomes handled so @method Node._unhandled_input@ will not process it.
 --   		Only one @Control@ node can be in keyboard focus. Only the node in focus will receive keyboard events. To get the focus, call @method grab_focus@. @Control@ nodes lose focus when another node grabs it, or if you hide the node in focus.
 --   		Sets @mouse_filter@ to @MOUSE_FILTER_IGNORE@ to tell a @Control@ node to ignore mouse or touch events. You'll need it if you place an icon on top of a button.
 --   		@Theme@ resources change the Control's appearance. If you change the @Theme@ on a @Control@ node, it affects all of its children. To override some of the theme's parameters, call one of the @add_*_override@ methods, like @method add_font_override@. You can override the theme with the inspector.
@@ -2640,6 +2664,7 @@ instance HasBaseClass HSplitContainer where
 --   		For more information on HTTP, see https://developer.mozilla.org/en-US/docs/Web/HTTP (or read RFC 2616 to get it straight from the source: https://tools.ietf.org/html/rfc2616).
 --   		__Note:__ When performing HTTP requests from a project exported to HTML5, keep in mind the remote server may not allow requests from foreign origins due to @url=https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS@CORS@/url@. If you host the server in question, you should modify its backend to allow requests from foreign origins by adding the @Access-Control-Allow-Origin: *@ HTTP header.
 --   		__Note:__ SSL/TLS support is currently limited to TLS 1.0, TLS 1.1, and TLS 1.2. Attempting to connect to a TLS 1.3-only server will return an error.
+--   		__Warning:__ SSL/TLS certificate revocation and certificate pinning are currently not supported. Revoked certificates are accepted as long as they are otherwise valid. If this is a concern, you may want to use automatically managed certificates with a short validity period.
 newtype HTTPClient = HTTPClient Object
                        deriving newtype AsVariant
 
@@ -2650,6 +2675,7 @@ instance HasBaseClass HTTPClient where
 -- | A node with the ability to send HTTP(S) requests.
 --   A node with the ability to send HTTP requests. Uses @HTTPClient@ internally.
 --   		Can be used to make HTTP requests, i.e. download or upload files or web content via HTTP.
+--   		__Warning:__ See the notes and warnings on @HTTPClient@ for limitations, especially regarding SSL security.
 --   		__Example of contacting a REST API and printing one of its returned fields:__
 --   		
 --   @
@@ -2715,9 +2741,6 @@ instance HasBaseClass HTTPClient where
 --   		    texture_rect.texture = texture
 --   		
 --   @
---   
---   		__Note:__ When performing HTTP requests from a project exported to HTML5, keep in mind the remote server may not allow requests from foreign origins due to @url=https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS@CORS@/url@. If you host the server in question, you should modify its backend to allow requests from foreign origins by adding the @Access-Control-Allow-Origin: *@ HTTP header.
---   		__Note:__ SSL/TLS support is currently limited to TLS 1.0, TLS 1.1, and TLS 1.2. Attempting to connect to a TLS 1.3-only server will return an error.
 newtype HTTPRequest = HTTPRequest Object
                         deriving newtype AsVariant
 
@@ -3063,6 +3086,8 @@ instance HasBaseClass JSONParseResult where
         type BaseClass JSONParseResult = Reference
         super = coerce
 
+-- | A helper to handle dictionaries which look like JSONRPC documents.
+--   @url=https://www.jsonrpc.org/@JSON-RPC@/url@ is a standard which wraps a method call in a @JSON@ object. The object has a particular structure and identifies which method is called, the parameters to that function, and carries an ID to keep track of responses. This class implements that standard on top of @Dictionary@; you will have to convert between a @Dictionary@ and @JSON@ with other functions.
 newtype JSONRPC = JSONRPC Object
                     deriving newtype AsVariant
 
@@ -3155,7 +3180,7 @@ instance HasBaseClass KinematicCollision2D where
         super = coerce
 
 -- | Displays plain text in a line or wrapped inside a rectangle. For formatted text, use @RichTextLabel@.
---   Label displays plain text on the screen. It gives you control over the horizontal and vertical alignment, and can wrap the text inside the node's bounding rectangle. It doesn't support bold, italics or other formatting. For that, use @RichTextLabel@ instead.
+--   Label displays plain text on the screen. It gives you control over the horizontal and vertical alignment and can wrap the text inside the node's bounding rectangle. It doesn't support bold, italics, or other formatting. For that, use @RichTextLabel@ instead.
 --   		__Note:__ Contrarily to most other @Control@s, Label's @Control.mouse_filter@ defaults to @Control.MOUSE_FILTER_IGNORE@ (i.e. it doesn't react to mouse input events). This implies that a label won't display any configured @Control.hint_tooltip@, unless you change its mouse filter.
 newtype Label = Label Object
                   deriving newtype AsVariant
@@ -3445,7 +3470,7 @@ instance HasBaseClass MobileVRInterface where
 -- | Provides high-performance mesh instancing.
 --   MultiMesh provides low-level mesh instancing. Drawing thousands of @MeshInstance@ nodes can be slow, since each object is submitted to the GPU then drawn individually.
 --   		MultiMesh is much faster as it can draw thousands of instances with a single draw call, resulting in less API overhead.
---   		As a drawback, if the instances are too far away of each other, performance may be reduced as every single instance will always render (they are spatially indexed as one, for the whole object).
+--   		As a drawback, if the instances are too far away from each other, performance may be reduced as every single instance will always render (they are spatially indexed as one, for the whole object).
 --   		Since instances may have any behavior, the AABB used for visibility must be provided by the user.
 newtype MultiMesh = MultiMesh Object
                       deriving newtype AsVariant
@@ -3773,6 +3798,7 @@ instance HasBaseClass PacketPeer where
 
 -- | DTLS packet peer.
 --   This class represents a DTLS peer connection. It can be used to connect to a DTLS server, and is returned by @method DTLSServer.take_connection@.
+--   		__Warning:__ SSL/TLS certificate revocation and certificate pinning are currently not supported. Revoked certificates are accepted as long as they are otherwise valid. If this is a concern, you may want to use automatically managed certificates with a short validity period.
 newtype PacketPeerDTLS = PacketPeerDTLS Object
                            deriving newtype AsVariant
 
@@ -4550,6 +4576,9 @@ instance HasBaseClass RigidBody2D where
         type BaseClass RigidBody2D = PhysicsBody2D
         super = coerce
 
+-- | Editor-only helper for setting up root motion in @AnimationTree@.
+--   @i@Root motion@/i@ refers to an animation technique where a mesh's skeleton is used to give impulse to a character. When working with 3D animations, a popular technique is for animators to use the root skeleton bone to give motion to the rest of the skeleton. This allows animating characters in a way where steps actually match the floor below. It also allows precise interaction with objects during cinematics. See also @AnimationTree@.
+--   		__Note:__ @RootMotionView@ is only visible in the editor. It will be hidden automatically in the running project, and will also be converted to a plain @Node@ in the running project. This means a script attached to a @RootMotionView@ node @i@must@/i@ have @extends Node@ instead of @extends RootMotionView@. Additionally, it must not be a @@tool@ script.
 newtype RootMotionView = RootMotionView Object
                            deriving newtype AsVariant
 

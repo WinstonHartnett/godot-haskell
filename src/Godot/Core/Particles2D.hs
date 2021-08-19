@@ -2,8 +2,8 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.Particles2D
-       (Godot.Core.Particles2D._DRAW_ORDER_LIFETIME,
-        Godot.Core.Particles2D._DRAW_ORDER_INDEX,
+       (Godot.Core.Particles2D._DRAW_ORDER_INDEX,
+        Godot.Core.Particles2D._DRAW_ORDER_LIFETIME,
         Godot.Core.Particles2D.capture_rect,
         Godot.Core.Particles2D.get_amount,
         Godot.Core.Particles2D.get_draw_order,
@@ -50,11 +50,11 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.Node2D()
 
-_DRAW_ORDER_LIFETIME :: Int
-_DRAW_ORDER_LIFETIME = 1
-
 _DRAW_ORDER_INDEX :: Int
 _DRAW_ORDER_INDEX = 0
+
+_DRAW_ORDER_LIFETIME :: Int
+_DRAW_ORDER_LIFETIME = 1
 
 instance NodeProperty Particles2D "amount" Int 'False where
         nodeProperty = (get_amount, wrapDroppingSetter set_amount, Nothing)

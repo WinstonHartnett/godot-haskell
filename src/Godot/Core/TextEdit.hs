@@ -2,18 +2,16 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.TextEdit
-       (Godot.Core.TextEdit._MENU_PASTE,
-        Godot.Core.TextEdit._SEARCH_WHOLE_WORDS,
-        Godot.Core.TextEdit._MENU_CLEAR, Godot.Core.TextEdit._MENU_MAX,
-        Godot.Core.TextEdit._MENU_REDO,
-        Godot.Core.TextEdit._SEARCH_BACKWARDS,
-        Godot.Core.TextEdit._MENU_COPY,
-        Godot.Core.TextEdit._SEARCH_RESULT_COLUMN,
-        Godot.Core.TextEdit._MENU_UNDO,
-        Godot.Core.TextEdit._MENU_SELECT_ALL,
-        Godot.Core.TextEdit._MENU_CUT,
-        Godot.Core.TextEdit._SEARCH_RESULT_LINE,
+       (Godot.Core.TextEdit._MENU_PASTE, Godot.Core.TextEdit._MENU_UNDO,
         Godot.Core.TextEdit._SEARCH_MATCH_CASE,
+        Godot.Core.TextEdit._SEARCH_RESULT_COLUMN,
+        Godot.Core.TextEdit._SEARCH_BACKWARDS,
+        Godot.Core.TextEdit._MENU_CUT, Godot.Core.TextEdit._MENU_MAX,
+        Godot.Core.TextEdit._SEARCH_WHOLE_WORDS,
+        Godot.Core.TextEdit._MENU_SELECT_ALL,
+        Godot.Core.TextEdit._SEARCH_RESULT_LINE,
+        Godot.Core.TextEdit._MENU_COPY, Godot.Core.TextEdit._MENU_REDO,
+        Godot.Core.TextEdit._MENU_CLEAR,
         Godot.Core.TextEdit.sig_breakpoint_toggled,
         Godot.Core.TextEdit.sig_cursor_changed,
         Godot.Core.TextEdit.sig_info_clicked,
@@ -137,41 +135,41 @@ import Godot.Core.Control()
 _MENU_PASTE :: Int
 _MENU_PASTE = 2
 
-_SEARCH_WHOLE_WORDS :: Int
-_SEARCH_WHOLE_WORDS = 2
+_MENU_UNDO :: Int
+_MENU_UNDO = 5
 
-_MENU_CLEAR :: Int
-_MENU_CLEAR = 3
-
-_MENU_MAX :: Int
-_MENU_MAX = 7
-
-_MENU_REDO :: Int
-_MENU_REDO = 6
-
-_SEARCH_BACKWARDS :: Int
-_SEARCH_BACKWARDS = 4
-
-_MENU_COPY :: Int
-_MENU_COPY = 1
+_SEARCH_MATCH_CASE :: Int
+_SEARCH_MATCH_CASE = 1
 
 _SEARCH_RESULT_COLUMN :: Int
 _SEARCH_RESULT_COLUMN = 0
 
-_MENU_UNDO :: Int
-_MENU_UNDO = 5
-
-_MENU_SELECT_ALL :: Int
-_MENU_SELECT_ALL = 4
+_SEARCH_BACKWARDS :: Int
+_SEARCH_BACKWARDS = 4
 
 _MENU_CUT :: Int
 _MENU_CUT = 0
 
+_MENU_MAX :: Int
+_MENU_MAX = 7
+
+_SEARCH_WHOLE_WORDS :: Int
+_SEARCH_WHOLE_WORDS = 2
+
+_MENU_SELECT_ALL :: Int
+_MENU_SELECT_ALL = 4
+
 _SEARCH_RESULT_LINE :: Int
 _SEARCH_RESULT_LINE = 1
 
-_SEARCH_MATCH_CASE :: Int
-_SEARCH_MATCH_CASE = 1
+_MENU_COPY :: Int
+_MENU_COPY = 1
+
+_MENU_REDO :: Int
+_MENU_REDO = 6
+
+_MENU_CLEAR :: Int
+_MENU_CLEAR = 3
 
 -- | Emitted when a breakpoint is placed via the breakpoint gutter.
 sig_breakpoint_toggled :: Godot.Internal.Dispatch.Signal TextEdit

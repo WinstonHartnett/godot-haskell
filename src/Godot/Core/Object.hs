@@ -2,12 +2,12 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.Object
-       (Godot.Core.Object._CONNECT_REFERENCE_COUNTED,
+       (Godot.Core.Object._CONNECT_ONESHOT,
         Godot.Core.Object._CONNECT_DEFERRED,
-        Godot.Core.Object._NOTIFICATION_POSTINITIALIZE,
-        Godot.Core.Object._CONNECT_ONESHOT,
-        Godot.Core.Object._CONNECT_PERSIST,
+        Godot.Core.Object._CONNECT_REFERENCE_COUNTED,
         Godot.Core.Object._NOTIFICATION_PREDELETE,
+        Godot.Core.Object._CONNECT_PERSIST,
+        Godot.Core.Object._NOTIFICATION_POSTINITIALIZE,
         Godot.Core.Object.sig_script_changed, Godot.Core.Object._get,
         Godot.Core.Object._get_property_list, Godot.Core.Object._init,
         Godot.Core.Object._notification, Godot.Core.Object._set,
@@ -49,23 +49,23 @@ import System.IO.Unsafe
 import Godot.Gdnative.Internal
 import Godot.Api.Types
 
-_CONNECT_REFERENCE_COUNTED :: Int
-_CONNECT_REFERENCE_COUNTED = 8
+_CONNECT_ONESHOT :: Int
+_CONNECT_ONESHOT = 4
 
 _CONNECT_DEFERRED :: Int
 _CONNECT_DEFERRED = 1
 
-_NOTIFICATION_POSTINITIALIZE :: Int
-_NOTIFICATION_POSTINITIALIZE = 0
+_CONNECT_REFERENCE_COUNTED :: Int
+_CONNECT_REFERENCE_COUNTED = 8
 
-_CONNECT_ONESHOT :: Int
-_CONNECT_ONESHOT = 4
+_NOTIFICATION_PREDELETE :: Int
+_NOTIFICATION_PREDELETE = 1
 
 _CONNECT_PERSIST :: Int
 _CONNECT_PERSIST = 2
 
-_NOTIFICATION_PREDELETE :: Int
-_NOTIFICATION_PREDELETE = 1
+_NOTIFICATION_POSTINITIALIZE :: Int
+_NOTIFICATION_POSTINITIALIZE = 0
 
 -- | Emitted whenever the object's script is changed.
 sig_script_changed :: Godot.Internal.Dispatch.Signal Object

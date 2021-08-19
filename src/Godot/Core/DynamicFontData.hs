@@ -2,9 +2,9 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.DynamicFontData
-       (Godot.Core.DynamicFontData._HINTING_NONE,
+       (Godot.Core.DynamicFontData._HINTING_LIGHT,
         Godot.Core.DynamicFontData._HINTING_NORMAL,
-        Godot.Core.DynamicFontData._HINTING_LIGHT,
+        Godot.Core.DynamicFontData._HINTING_NONE,
         Godot.Core.DynamicFontData.get_font_path,
         Godot.Core.DynamicFontData.get_hinting,
         Godot.Core.DynamicFontData.is_antialiased,
@@ -24,14 +24,14 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.Resource()
 
-_HINTING_NONE :: Int
-_HINTING_NONE = 0
+_HINTING_LIGHT :: Int
+_HINTING_LIGHT = 1
 
 _HINTING_NORMAL :: Int
 _HINTING_NORMAL = 2
 
-_HINTING_LIGHT :: Int
-_HINTING_LIGHT = 1
+_HINTING_NONE :: Int
+_HINTING_NONE = 0
 
 instance NodeProperty DynamicFontData "antialiased" Bool 'False
          where

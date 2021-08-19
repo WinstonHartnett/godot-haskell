@@ -2,9 +2,9 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.ImageTexture
-       (Godot.Core.ImageTexture._STORAGE_RAW,
+       (Godot.Core.ImageTexture._STORAGE_COMPRESS_LOSSY,
         Godot.Core.ImageTexture._STORAGE_COMPRESS_LOSSLESS,
-        Godot.Core.ImageTexture._STORAGE_COMPRESS_LOSSY,
+        Godot.Core.ImageTexture._STORAGE_RAW,
         Godot.Core.ImageTexture._reload_hook,
         Godot.Core.ImageTexture.create,
         Godot.Core.ImageTexture.create_from_image,
@@ -28,14 +28,14 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.Texture()
 
-_STORAGE_RAW :: Int
-_STORAGE_RAW = 0
+_STORAGE_COMPRESS_LOSSY :: Int
+_STORAGE_COMPRESS_LOSSY = 1
 
 _STORAGE_COMPRESS_LOSSLESS :: Int
 _STORAGE_COMPRESS_LOSSLESS = 2
 
-_STORAGE_COMPRESS_LOSSY :: Int
-_STORAGE_COMPRESS_LOSSY = 1
+_STORAGE_RAW :: Int
+_STORAGE_RAW = 0
 
 instance NodeProperty ImageTexture "lossy_quality" Float 'False
          where

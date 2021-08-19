@@ -2,12 +2,12 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.AudioStreamSample
-       (Godot.Core.AudioStreamSample._FORMAT_8_BITS,
+       (Godot.Core.AudioStreamSample._FORMAT_IMA_ADPCM,
         Godot.Core.AudioStreamSample._LOOP_PING_PONG,
-        Godot.Core.AudioStreamSample._LOOP_BACKWARD,
+        Godot.Core.AudioStreamSample._FORMAT_8_BITS,
         Godot.Core.AudioStreamSample._LOOP_DISABLED,
-        Godot.Core.AudioStreamSample._FORMAT_IMA_ADPCM,
         Godot.Core.AudioStreamSample._LOOP_FORWARD,
+        Godot.Core.AudioStreamSample._LOOP_BACKWARD,
         Godot.Core.AudioStreamSample._FORMAT_16_BITS,
         Godot.Core.AudioStreamSample.get_data,
         Godot.Core.AudioStreamSample.get_format,
@@ -37,23 +37,23 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.AudioStream()
 
-_FORMAT_8_BITS :: Int
-_FORMAT_8_BITS = 0
+_FORMAT_IMA_ADPCM :: Int
+_FORMAT_IMA_ADPCM = 2
 
 _LOOP_PING_PONG :: Int
 _LOOP_PING_PONG = 2
 
-_LOOP_BACKWARD :: Int
-_LOOP_BACKWARD = 3
+_FORMAT_8_BITS :: Int
+_FORMAT_8_BITS = 0
 
 _LOOP_DISABLED :: Int
 _LOOP_DISABLED = 0
 
-_FORMAT_IMA_ADPCM :: Int
-_FORMAT_IMA_ADPCM = 2
-
 _LOOP_FORWARD :: Int
 _LOOP_FORWARD = 1
+
+_LOOP_BACKWARD :: Int
+_LOOP_BACKWARD = 3
 
 _FORMAT_16_BITS :: Int
 _FORMAT_16_BITS = 1

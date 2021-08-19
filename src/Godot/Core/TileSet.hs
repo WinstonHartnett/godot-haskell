@@ -2,16 +2,16 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.TileSet
-       (Godot.Core.TileSet._BITMASK_2X2, Godot.Core.TileSet._BITMASK_3X3,
-        Godot.Core.TileSet._BIND_BOTTOMLEFT,
-        Godot.Core.TileSet._BIND_CENTER, Godot.Core.TileSet._BIND_LEFT,
-        Godot.Core.TileSet._ATLAS_TILE,
-        Godot.Core.TileSet._BITMASK_3X3_MINIMAL,
-        Godot.Core.TileSet._BIND_RIGHT, Godot.Core.TileSet._BIND_TOPLEFT,
-        Godot.Core.TileSet._BIND_BOTTOM,
+       (Godot.Core.TileSet._AUTO_TILE,
         Godot.Core.TileSet._BIND_BOTTOMRIGHT,
-        Godot.Core.TileSet._AUTO_TILE, Godot.Core.TileSet._BIND_TOP,
-        Godot.Core.TileSet._BIND_TOPRIGHT, Godot.Core.TileSet._SINGLE_TILE,
+        Godot.Core.TileSet._SINGLE_TILE, Godot.Core.TileSet._ATLAS_TILE,
+        Godot.Core.TileSet._BIND_CENTER, Godot.Core.TileSet._BIND_TOP,
+        Godot.Core.TileSet._BIND_LEFT, Godot.Core.TileSet._BITMASK_3X3,
+        Godot.Core.TileSet._BITMASK_2X2, Godot.Core.TileSet._BIND_BOTTOM,
+        Godot.Core.TileSet._BIND_TOPLEFT, Godot.Core.TileSet._BIND_RIGHT,
+        Godot.Core.TileSet._BITMASK_3X3_MINIMAL,
+        Godot.Core.TileSet._BIND_TOPRIGHT,
+        Godot.Core.TileSet._BIND_BOTTOMLEFT,
         Godot.Core.TileSet._forward_atlas_subtile_selection,
         Godot.Core.TileSet._forward_subtile_selection,
         Godot.Core.TileSet._is_tile_bound,
@@ -91,50 +91,50 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.Resource()
 
-_BITMASK_2X2 :: Int
-_BITMASK_2X2 = 0
-
-_BITMASK_3X3 :: Int
-_BITMASK_3X3 = 2
-
-_BIND_BOTTOMLEFT :: Int
-_BIND_BOTTOMLEFT = 64
-
-_BIND_CENTER :: Int
-_BIND_CENTER = 16
-
-_BIND_LEFT :: Int
-_BIND_LEFT = 8
-
-_ATLAS_TILE :: Int
-_ATLAS_TILE = 2
-
-_BITMASK_3X3_MINIMAL :: Int
-_BITMASK_3X3_MINIMAL = 1
-
-_BIND_RIGHT :: Int
-_BIND_RIGHT = 32
-
-_BIND_TOPLEFT :: Int
-_BIND_TOPLEFT = 1
-
-_BIND_BOTTOM :: Int
-_BIND_BOTTOM = 128
+_AUTO_TILE :: Int
+_AUTO_TILE = 1
 
 _BIND_BOTTOMRIGHT :: Int
 _BIND_BOTTOMRIGHT = 256
 
-_AUTO_TILE :: Int
-_AUTO_TILE = 1
+_SINGLE_TILE :: Int
+_SINGLE_TILE = 0
+
+_ATLAS_TILE :: Int
+_ATLAS_TILE = 2
+
+_BIND_CENTER :: Int
+_BIND_CENTER = 16
 
 _BIND_TOP :: Int
 _BIND_TOP = 2
 
+_BIND_LEFT :: Int
+_BIND_LEFT = 8
+
+_BITMASK_3X3 :: Int
+_BITMASK_3X3 = 2
+
+_BITMASK_2X2 :: Int
+_BITMASK_2X2 = 0
+
+_BIND_BOTTOM :: Int
+_BIND_BOTTOM = 128
+
+_BIND_TOPLEFT :: Int
+_BIND_TOPLEFT = 1
+
+_BIND_RIGHT :: Int
+_BIND_RIGHT = 32
+
+_BITMASK_3X3_MINIMAL :: Int
+_BITMASK_3X3_MINIMAL = 1
+
 _BIND_TOPRIGHT :: Int
 _BIND_TOPRIGHT = 4
 
-_SINGLE_TILE :: Int
-_SINGLE_TILE = 0
+_BIND_BOTTOMLEFT :: Int
+_BIND_BOTTOMLEFT = 64
 
 {-# NOINLINE bindTileSet__forward_atlas_subtile_selection #-}
 

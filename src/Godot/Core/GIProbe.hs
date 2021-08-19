@@ -2,9 +2,9 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.GIProbe
-       (Godot.Core.GIProbe._SUBDIV_64, Godot.Core.GIProbe._SUBDIV_256,
+       (Godot.Core.GIProbe._SUBDIV_256, Godot.Core.GIProbe._SUBDIV_512,
         Godot.Core.GIProbe._SUBDIV_MAX, Godot.Core.GIProbe._SUBDIV_128,
-        Godot.Core.GIProbe._SUBDIV_512, Godot.Core.GIProbe.bake,
+        Godot.Core.GIProbe._SUBDIV_64, Godot.Core.GIProbe.bake,
         Godot.Core.GIProbe.debug_bake, Godot.Core.GIProbe.get_bias,
         Godot.Core.GIProbe.get_dynamic_range,
         Godot.Core.GIProbe.get_energy, Godot.Core.GIProbe.get_extents,
@@ -32,11 +32,11 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.VisualInstance()
 
-_SUBDIV_64 :: Int
-_SUBDIV_64 = 0
-
 _SUBDIV_256 :: Int
 _SUBDIV_256 = 2
+
+_SUBDIV_512 :: Int
+_SUBDIV_512 = 3
 
 _SUBDIV_MAX :: Int
 _SUBDIV_MAX = 4
@@ -44,8 +44,8 @@ _SUBDIV_MAX = 4
 _SUBDIV_128 :: Int
 _SUBDIV_128 = 1
 
-_SUBDIV_512 :: Int
-_SUBDIV_512 = 3
+_SUBDIV_64 :: Int
+_SUBDIV_64 = 0
 
 instance NodeProperty GIProbe "bias" Float 'False where
         nodeProperty = (get_bias, wrapDroppingSetter set_bias, Nothing)

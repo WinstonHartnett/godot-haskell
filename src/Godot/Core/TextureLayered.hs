@@ -2,10 +2,10 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.TextureLayered
-       (Godot.Core.TextureLayered._FLAGS_DEFAULT,
-        Godot.Core.TextureLayered._FLAG_REPEAT,
-        Godot.Core.TextureLayered._FLAG_MIPMAPS,
+       (Godot.Core.TextureLayered._FLAG_REPEAT,
         Godot.Core.TextureLayered._FLAG_FILTER,
+        Godot.Core.TextureLayered._FLAGS_DEFAULT,
+        Godot.Core.TextureLayered._FLAG_MIPMAPS,
         Godot.Core.TextureLayered._get_data,
         Godot.Core.TextureLayered._set_data,
         Godot.Core.TextureLayered.create,
@@ -31,17 +31,17 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.Resource()
 
-_FLAGS_DEFAULT :: Int
-_FLAGS_DEFAULT = 4
-
 _FLAG_REPEAT :: Int
 _FLAG_REPEAT = 2
 
-_FLAG_MIPMAPS :: Int
-_FLAG_MIPMAPS = 1
-
 _FLAG_FILTER :: Int
 _FLAG_FILTER = 4
+
+_FLAGS_DEFAULT :: Int
+_FLAGS_DEFAULT = 4
+
+_FLAG_MIPMAPS :: Int
+_FLAG_MIPMAPS = 1
 
 instance NodeProperty TextureLayered "data" Dictionary 'False where
         nodeProperty = (_get_data, wrapDroppingSetter _set_data, Nothing)

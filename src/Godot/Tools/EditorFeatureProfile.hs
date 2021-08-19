@@ -2,14 +2,14 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Tools.EditorFeatureProfile
-       (Godot.Tools.EditorFeatureProfile._FEATURE_FILESYSTEM_DOCK,
+       (Godot.Tools.EditorFeatureProfile._FEATURE_NODE_DOCK,
         Godot.Tools.EditorFeatureProfile._FEATURE_3D,
+        Godot.Tools.EditorFeatureProfile._FEATURE_ASSET_LIB,
+        Godot.Tools.EditorFeatureProfile._FEATURE_IMPORT_DOCK,
         Godot.Tools.EditorFeatureProfile._FEATURE_MAX,
         Godot.Tools.EditorFeatureProfile._FEATURE_SCRIPT,
         Godot.Tools.EditorFeatureProfile._FEATURE_SCENE_TREE,
-        Godot.Tools.EditorFeatureProfile._FEATURE_NODE_DOCK,
-        Godot.Tools.EditorFeatureProfile._FEATURE_IMPORT_DOCK,
-        Godot.Tools.EditorFeatureProfile._FEATURE_ASSET_LIB,
+        Godot.Tools.EditorFeatureProfile._FEATURE_FILESYSTEM_DOCK,
         Godot.Tools.EditorFeatureProfile.get_feature_name,
         Godot.Tools.EditorFeatureProfile.is_class_disabled,
         Godot.Tools.EditorFeatureProfile.is_class_editor_disabled,
@@ -34,11 +34,17 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.Reference()
 
-_FEATURE_FILESYSTEM_DOCK :: Int
-_FEATURE_FILESYSTEM_DOCK = 5
+_FEATURE_NODE_DOCK :: Int
+_FEATURE_NODE_DOCK = 4
 
 _FEATURE_3D :: Int
 _FEATURE_3D = 0
+
+_FEATURE_ASSET_LIB :: Int
+_FEATURE_ASSET_LIB = 2
+
+_FEATURE_IMPORT_DOCK :: Int
+_FEATURE_IMPORT_DOCK = 6
 
 _FEATURE_MAX :: Int
 _FEATURE_MAX = 7
@@ -49,14 +55,8 @@ _FEATURE_SCRIPT = 1
 _FEATURE_SCENE_TREE :: Int
 _FEATURE_SCENE_TREE = 3
 
-_FEATURE_NODE_DOCK :: Int
-_FEATURE_NODE_DOCK = 4
-
-_FEATURE_IMPORT_DOCK :: Int
-_FEATURE_IMPORT_DOCK = 6
-
-_FEATURE_ASSET_LIB :: Int
-_FEATURE_ASSET_LIB = 2
+_FEATURE_FILESYSTEM_DOCK :: Int
+_FEATURE_FILESYSTEM_DOCK = 5
 
 {-# NOINLINE bindEditorFeatureProfile_get_feature_name #-}
 

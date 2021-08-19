@@ -2,10 +2,10 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.RigidBody
-       (Godot.Core.RigidBody._MODE_STATIC,
-        Godot.Core.RigidBody._MODE_KINEMATIC,
-        Godot.Core.RigidBody._MODE_RIGID,
+       (Godot.Core.RigidBody._MODE_KINEMATIC,
         Godot.Core.RigidBody._MODE_CHARACTER,
+        Godot.Core.RigidBody._MODE_STATIC,
+        Godot.Core.RigidBody._MODE_RIGID,
         Godot.Core.RigidBody.sig_body_entered,
         Godot.Core.RigidBody.sig_body_exited,
         Godot.Core.RigidBody.sig_body_shape_entered,
@@ -73,17 +73,17 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.PhysicsBody()
 
-_MODE_STATIC :: Int
-_MODE_STATIC = 1
-
 _MODE_KINEMATIC :: Int
 _MODE_KINEMATIC = 3
 
-_MODE_RIGID :: Int
-_MODE_RIGID = 0
-
 _MODE_CHARACTER :: Int
 _MODE_CHARACTER = 2
+
+_MODE_STATIC :: Int
+_MODE_STATIC = 1
+
+_MODE_RIGID :: Int
+_MODE_RIGID = 0
 
 -- | Emitted when a collision with another @PhysicsBody@ or @GridMap@ occurs. Requires @contact_monitor@ to be set to @true@ and @contacts_reported@ to be set high enough to detect all the collisions. @GridMap@s are detected if the @MeshLibrary@ has Collision @Shape@s.
 --   				@body@ the @Node@, if it exists in the tree, of the other @PhysicsBody@ or @GridMap@.

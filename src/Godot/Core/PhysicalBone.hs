@@ -2,11 +2,11 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.PhysicalBone
-       (Godot.Core.PhysicalBone._JOINT_TYPE_6DOF,
+       (Godot.Core.PhysicalBone._JOINT_TYPE_NONE,
         Godot.Core.PhysicalBone._JOINT_TYPE_PIN,
-        Godot.Core.PhysicalBone._JOINT_TYPE_CONE,
-        Godot.Core.PhysicalBone._JOINT_TYPE_NONE,
         Godot.Core.PhysicalBone._JOINT_TYPE_SLIDER,
+        Godot.Core.PhysicalBone._JOINT_TYPE_6DOF,
+        Godot.Core.PhysicalBone._JOINT_TYPE_CONE,
         Godot.Core.PhysicalBone._JOINT_TYPE_HINGE,
         Godot.Core.PhysicalBone._direct_state_changed,
         Godot.Core.PhysicalBone.apply_central_impulse,
@@ -44,20 +44,20 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.PhysicsBody()
 
-_JOINT_TYPE_6DOF :: Int
-_JOINT_TYPE_6DOF = 5
+_JOINT_TYPE_NONE :: Int
+_JOINT_TYPE_NONE = 0
 
 _JOINT_TYPE_PIN :: Int
 _JOINT_TYPE_PIN = 1
 
-_JOINT_TYPE_CONE :: Int
-_JOINT_TYPE_CONE = 2
-
-_JOINT_TYPE_NONE :: Int
-_JOINT_TYPE_NONE = 0
-
 _JOINT_TYPE_SLIDER :: Int
 _JOINT_TYPE_SLIDER = 4
+
+_JOINT_TYPE_6DOF :: Int
+_JOINT_TYPE_6DOF = 5
+
+_JOINT_TYPE_CONE :: Int
+_JOINT_TYPE_CONE = 2
 
 _JOINT_TYPE_HINGE :: Int
 _JOINT_TYPE_HINGE = 3

@@ -2,21 +2,21 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.File
-       (Godot.Core.File._COMPRESSION_DEFLATE, Godot.Core.File._READ,
-        Godot.Core.File._WRITE, Godot.Core.File._WRITE_READ,
-        Godot.Core.File._READ_WRITE, Godot.Core.File._COMPRESSION_FASTLZ,
-        Godot.Core.File._COMPRESSION_GZIP,
-        Godot.Core.File._COMPRESSION_ZSTD, Godot.Core.File.get_endian_swap,
-        Godot.Core.File.set_endian_swap, Godot.Core.File.close,
-        Godot.Core.File.eof_reached, Godot.Core.File.file_exists,
-        Godot.Core.File.flush, Godot.Core.File.get_16,
-        Godot.Core.File.get_32, Godot.Core.File.get_64,
-        Godot.Core.File.get_8, Godot.Core.File.get_as_text,
-        Godot.Core.File.get_buffer, Godot.Core.File.get_csv_line,
-        Godot.Core.File.get_double, Godot.Core.File.get_error,
-        Godot.Core.File.get_float, Godot.Core.File.get_len,
-        Godot.Core.File.get_line, Godot.Core.File.get_md5,
-        Godot.Core.File.get_modified_time,
+       (Godot.Core.File._READ_WRITE, Godot.Core.File._WRITE_READ,
+        Godot.Core.File._WRITE, Godot.Core.File._COMPRESSION_GZIP,
+        Godot.Core.File._READ, Godot.Core.File._COMPRESSION_FASTLZ,
+        Godot.Core.File._COMPRESSION_ZSTD,
+        Godot.Core.File._COMPRESSION_DEFLATE,
+        Godot.Core.File.get_endian_swap, Godot.Core.File.set_endian_swap,
+        Godot.Core.File.close, Godot.Core.File.eof_reached,
+        Godot.Core.File.file_exists, Godot.Core.File.flush,
+        Godot.Core.File.get_16, Godot.Core.File.get_32,
+        Godot.Core.File.get_64, Godot.Core.File.get_8,
+        Godot.Core.File.get_as_text, Godot.Core.File.get_buffer,
+        Godot.Core.File.get_csv_line, Godot.Core.File.get_double,
+        Godot.Core.File.get_error, Godot.Core.File.get_float,
+        Godot.Core.File.get_len, Godot.Core.File.get_line,
+        Godot.Core.File.get_md5, Godot.Core.File.get_modified_time,
         Godot.Core.File.get_pascal_string, Godot.Core.File.get_path,
         Godot.Core.File.get_path_absolute, Godot.Core.File.get_position,
         Godot.Core.File.get_real, Godot.Core.File.get_sha256,
@@ -44,29 +44,29 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.Reference()
 
-_COMPRESSION_DEFLATE :: Int
-_COMPRESSION_DEFLATE = 1
-
-_READ :: Int
-_READ = 1
-
-_WRITE :: Int
-_WRITE = 2
+_READ_WRITE :: Int
+_READ_WRITE = 3
 
 _WRITE_READ :: Int
 _WRITE_READ = 7
 
-_READ_WRITE :: Int
-_READ_WRITE = 3
-
-_COMPRESSION_FASTLZ :: Int
-_COMPRESSION_FASTLZ = 0
+_WRITE :: Int
+_WRITE = 2
 
 _COMPRESSION_GZIP :: Int
 _COMPRESSION_GZIP = 3
 
+_READ :: Int
+_READ = 1
+
+_COMPRESSION_FASTLZ :: Int
+_COMPRESSION_FASTLZ = 0
+
 _COMPRESSION_ZSTD :: Int
 _COMPRESSION_ZSTD = 2
+
+_COMPRESSION_DEFLATE :: Int
+_COMPRESSION_DEFLATE = 1
 
 {-# NOINLINE bindFile_get_endian_swap #-}
 
@@ -1306,6 +1306,7 @@ instance NodeMethod File "store_string" '[GodotString] (IO ())
 {-# NOINLINE bindFile_store_var #-}
 
 -- | Stores any Variant value in the file. If @full_objects@ is @true@, encoding objects is allowed (and can potentially include code).
+--   				__Note:__ Not all properties are included. Only properties that are configured with the @PROPERTY_USAGE_STORAGE@ flag set will be serialized. You can add a new usage flag to a property by overriding the @method Object._get_property_list@ method in your class. You can also check how property usage is configured by calling @method Object._get_property_list@. See @enum PropertyUsageFlags@ for the possible usage flags.
 bindFile_store_var :: MethodBind
 bindFile_store_var
   = unsafePerformIO $
@@ -1316,6 +1317,7 @@ bindFile_store_var
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
 -- | Stores any Variant value in the file. If @full_objects@ is @true@, encoding objects is allowed (and can potentially include code).
+--   				__Note:__ Not all properties are included. Only properties that are configured with the @PROPERTY_USAGE_STORAGE@ flag set will be serialized. You can add a new usage flag to a property by overriding the @method Object._get_property_list@ method in your class. You can also check how property usage is configured by calling @method Object._get_property_list@. See @enum PropertyUsageFlags@ for the possible usage flags.
 store_var ::
             (File :< cls, Object :< cls) =>
             cls -> GodotVariant -> Maybe Bool -> IO ()

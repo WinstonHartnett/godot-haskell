@@ -817,6 +817,7 @@ instance NodeMethod PopupMenu "get_allow_search" '[] (IO Bool)
 
 {-# NOINLINE bindPopupMenu_get_current_index #-}
 
+-- | Returns the index of the currently focused item. Returns @-1@ if no item is focused.
 bindPopupMenu_get_current_index :: MethodBind
 bindPopupMenu_get_current_index
   = unsafePerformIO $
@@ -826,6 +827,7 @@ bindPopupMenu_get_current_index
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
+-- | Returns the index of the currently focused item. Returns @-1@ if no item is focused.
 get_current_index ::
                     (PopupMenu :< cls, Object :< cls) => cls -> IO Int
 get_current_index cls

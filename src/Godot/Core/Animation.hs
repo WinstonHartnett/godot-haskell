@@ -2,19 +2,19 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.Animation
-       (Godot.Core.Animation._TYPE_BEZIER,
-        Godot.Core.Animation._INTERPOLATION_NEAREST,
-        Godot.Core.Animation._UPDATE_DISCRETE,
-        Godot.Core.Animation._INTERPOLATION_LINEAR,
-        Godot.Core.Animation._TYPE_VALUE,
-        Godot.Core.Animation._UPDATE_CAPTURE,
-        Godot.Core.Animation._TYPE_METHOD,
-        Godot.Core.Animation._UPDATE_CONTINUOUS,
+       (Godot.Core.Animation._UPDATE_TRIGGER,
         Godot.Core.Animation._INTERPOLATION_CUBIC,
-        Godot.Core.Animation._TYPE_TRANSFORM,
-        Godot.Core.Animation._UPDATE_TRIGGER,
-        Godot.Core.Animation._TYPE_AUDIO,
+        Godot.Core.Animation._UPDATE_CONTINUOUS,
+        Godot.Core.Animation._TYPE_METHOD,
+        Godot.Core.Animation._INTERPOLATION_LINEAR,
+        Godot.Core.Animation._UPDATE_DISCRETE,
+        Godot.Core.Animation._INTERPOLATION_NEAREST,
+        Godot.Core.Animation._TYPE_VALUE,
+        Godot.Core.Animation._TYPE_BEZIER,
         Godot.Core.Animation._TYPE_ANIMATION,
+        Godot.Core.Animation._TYPE_AUDIO,
+        Godot.Core.Animation._TYPE_TRANSFORM,
+        Godot.Core.Animation._UPDATE_CAPTURE,
         Godot.Core.Animation.sig_tracks_changed,
         Godot.Core.Animation.add_track,
         Godot.Core.Animation.animation_track_get_key_animation,
@@ -90,44 +90,44 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.Resource()
 
-_TYPE_BEZIER :: Int
-_TYPE_BEZIER = 3
-
-_INTERPOLATION_NEAREST :: Int
-_INTERPOLATION_NEAREST = 0
-
-_UPDATE_DISCRETE :: Int
-_UPDATE_DISCRETE = 1
-
-_INTERPOLATION_LINEAR :: Int
-_INTERPOLATION_LINEAR = 1
-
-_TYPE_VALUE :: Int
-_TYPE_VALUE = 0
-
-_UPDATE_CAPTURE :: Int
-_UPDATE_CAPTURE = 3
-
-_TYPE_METHOD :: Int
-_TYPE_METHOD = 2
-
-_UPDATE_CONTINUOUS :: Int
-_UPDATE_CONTINUOUS = 0
+_UPDATE_TRIGGER :: Int
+_UPDATE_TRIGGER = 2
 
 _INTERPOLATION_CUBIC :: Int
 _INTERPOLATION_CUBIC = 2
 
-_TYPE_TRANSFORM :: Int
-_TYPE_TRANSFORM = 1
+_UPDATE_CONTINUOUS :: Int
+_UPDATE_CONTINUOUS = 0
 
-_UPDATE_TRIGGER :: Int
-_UPDATE_TRIGGER = 2
+_TYPE_METHOD :: Int
+_TYPE_METHOD = 2
+
+_INTERPOLATION_LINEAR :: Int
+_INTERPOLATION_LINEAR = 1
+
+_UPDATE_DISCRETE :: Int
+_UPDATE_DISCRETE = 1
+
+_INTERPOLATION_NEAREST :: Int
+_INTERPOLATION_NEAREST = 0
+
+_TYPE_VALUE :: Int
+_TYPE_VALUE = 0
+
+_TYPE_BEZIER :: Int
+_TYPE_BEZIER = 3
+
+_TYPE_ANIMATION :: Int
+_TYPE_ANIMATION = 5
 
 _TYPE_AUDIO :: Int
 _TYPE_AUDIO = 4
 
-_TYPE_ANIMATION :: Int
-_TYPE_ANIMATION = 5
+_TYPE_TRANSFORM :: Int
+_TYPE_TRANSFORM = 1
+
+_UPDATE_CAPTURE :: Int
+_UPDATE_CAPTURE = 3
 
 -- | Emitted when there's a change in the list of tracks, e.g. tracks are added, moved or have changed paths.
 sig_tracks_changed :: Godot.Internal.Dispatch.Signal Animation
@@ -1822,7 +1822,7 @@ instance NodeMethod Animation "track_set_key_value"
 
 {-# NOINLINE bindAnimation_track_set_path #-}
 
--- | Sets the path of a track. Paths must be valid scene-tree paths to a node, and must be specified starting from the parent node of the node that will reproduce the animation. Tracks that control properties or bones must append their name after the path, separated by @":"@.
+-- | Sets the path of a track. Paths must be valid scene-tree paths to a node and must be specified starting from the parent node of the node that will reproduce the animation. Tracks that control properties or bones must append their name after the path, separated by @":"@.
 --   				For example, @"character/skeleton:ankle"@ or @"character/mesh:transform/local"@.
 bindAnimation_track_set_path :: MethodBind
 bindAnimation_track_set_path
@@ -1833,7 +1833,7 @@ bindAnimation_track_set_path
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
--- | Sets the path of a track. Paths must be valid scene-tree paths to a node, and must be specified starting from the parent node of the node that will reproduce the animation. Tracks that control properties or bones must append their name after the path, separated by @":"@.
+-- | Sets the path of a track. Paths must be valid scene-tree paths to a node and must be specified starting from the parent node of the node that will reproduce the animation. Tracks that control properties or bones must append their name after the path, separated by @":"@.
 --   				For example, @"character/skeleton:ankle"@ or @"character/mesh:transform/local"@.
 track_set_path ::
                  (Animation :< cls, Object :< cls) =>

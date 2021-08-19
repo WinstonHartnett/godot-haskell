@@ -2,8 +2,8 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.AnimationNodeOneShot
-       (Godot.Core.AnimationNodeOneShot._MIX_MODE_ADD,
-        Godot.Core.AnimationNodeOneShot._MIX_MODE_BLEND,
+       (Godot.Core.AnimationNodeOneShot._MIX_MODE_BLEND,
+        Godot.Core.AnimationNodeOneShot._MIX_MODE_ADD,
         Godot.Core.AnimationNodeOneShot.get_autorestart_delay,
         Godot.Core.AnimationNodeOneShot.get_autorestart_random_delay,
         Godot.Core.AnimationNodeOneShot.get_fadein_time,
@@ -31,11 +31,11 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.AnimationNode()
 
-_MIX_MODE_ADD :: Int
-_MIX_MODE_ADD = 1
-
 _MIX_MODE_BLEND :: Int
 _MIX_MODE_BLEND = 0
+
+_MIX_MODE_ADD :: Int
+_MIX_MODE_ADD = 1
 
 instance NodeProperty AnimationNodeOneShot "autorestart" Bool
            'False

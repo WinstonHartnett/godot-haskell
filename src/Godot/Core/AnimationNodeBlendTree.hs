@@ -2,10 +2,10 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.AnimationNodeBlendTree
-       (Godot.Core.AnimationNodeBlendTree._CONNECTION_ERROR_NO_INPUT_INDEX,
-        Godot.Core.AnimationNodeBlendTree._CONNECTION_ERROR_NO_OUTPUT,
-        Godot.Core.AnimationNodeBlendTree._CONNECTION_OK,
+       (Godot.Core.AnimationNodeBlendTree._CONNECTION_ERROR_NO_OUTPUT,
         Godot.Core.AnimationNodeBlendTree._CONNECTION_ERROR_SAME_NODE,
+        Godot.Core.AnimationNodeBlendTree._CONNECTION_OK,
+        Godot.Core.AnimationNodeBlendTree._CONNECTION_ERROR_NO_INPUT_INDEX,
         Godot.Core.AnimationNodeBlendTree._CONNECTION_ERROR_CONNECTION_EXISTS,
         Godot.Core.AnimationNodeBlendTree._CONNECTION_ERROR_NO_INPUT,
         Godot.Core.AnimationNodeBlendTree._node_changed,
@@ -34,17 +34,17 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.AnimationRootNode()
 
-_CONNECTION_ERROR_NO_INPUT_INDEX :: Int
-_CONNECTION_ERROR_NO_INPUT_INDEX = 2
-
 _CONNECTION_ERROR_NO_OUTPUT :: Int
 _CONNECTION_ERROR_NO_OUTPUT = 3
+
+_CONNECTION_ERROR_SAME_NODE :: Int
+_CONNECTION_ERROR_SAME_NODE = 4
 
 _CONNECTION_OK :: Int
 _CONNECTION_OK = 0
 
-_CONNECTION_ERROR_SAME_NODE :: Int
-_CONNECTION_ERROR_SAME_NODE = 4
+_CONNECTION_ERROR_NO_INPUT_INDEX :: Int
+_CONNECTION_ERROR_NO_INPUT_INDEX = 2
 
 _CONNECTION_ERROR_CONNECTION_EXISTS :: Int
 _CONNECTION_ERROR_CONNECTION_EXISTS = 5

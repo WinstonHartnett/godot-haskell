@@ -3,21 +3,21 @@
   MultiParamTypeClasses #-}
 module Godot.Core.BakedLightmap
        (Godot.Core.BakedLightmap._BAKE_QUALITY_LOW,
-        Godot.Core.BakedLightmap._ENVIRONMENT_MODE_CUSTOM_COLOR,
-        Godot.Core.BakedLightmap._BAKE_QUALITY_MEDIUM,
-        Godot.Core.BakedLightmap._ENVIRONMENT_MODE_SCENE,
-        Godot.Core.BakedLightmap._BAKE_QUALITY_ULTRA,
-        Godot.Core.BakedLightmap._BAKE_ERROR_CANT_CREATE_IMAGE,
-        Godot.Core.BakedLightmap._BAKE_ERROR_NO_MESHES,
-        Godot.Core.BakedLightmap._BAKE_ERROR_OK,
-        Godot.Core.BakedLightmap._BAKE_ERROR_LIGHTMAP_SIZE,
-        Godot.Core.BakedLightmap._BAKE_ERROR_INVALID_MESH,
-        Godot.Core.BakedLightmap._BAKE_ERROR_NO_SAVE_PATH,
-        Godot.Core.BakedLightmap._BAKE_ERROR_USER_ABORTED,
         Godot.Core.BakedLightmap._ENVIRONMENT_MODE_CUSTOM_SKY,
+        Godot.Core.BakedLightmap._ENVIRONMENT_MODE_SCENE,
+        Godot.Core.BakedLightmap._BAKE_ERROR_INVALID_MESH,
+        Godot.Core.BakedLightmap._BAKE_ERROR_USER_ABORTED,
+        Godot.Core.BakedLightmap._BAKE_ERROR_NO_SAVE_PATH,
+        Godot.Core.BakedLightmap._BAKE_ERROR_LIGHTMAP_SIZE,
+        Godot.Core.BakedLightmap._BAKE_QUALITY_MEDIUM,
+        Godot.Core.BakedLightmap._ENVIRONMENT_MODE_CUSTOM_COLOR,
+        Godot.Core.BakedLightmap._BAKE_ERROR_OK,
+        Godot.Core.BakedLightmap._BAKE_ERROR_NO_MESHES,
+        Godot.Core.BakedLightmap._ENVIRONMENT_MODE_DISABLED,
         Godot.Core.BakedLightmap._BAKE_ERROR_NO_LIGHTMAPPER,
         Godot.Core.BakedLightmap._BAKE_QUALITY_HIGH,
-        Godot.Core.BakedLightmap._ENVIRONMENT_MODE_DISABLED,
+        Godot.Core.BakedLightmap._BAKE_ERROR_CANT_CREATE_IMAGE,
+        Godot.Core.BakedLightmap._BAKE_QUALITY_ULTRA,
         Godot.Core.BakedLightmap.bake,
         Godot.Core.BakedLightmap.get_bake_quality,
         Godot.Core.BakedLightmap.get_bias,
@@ -79,41 +79,38 @@ import Godot.Core.VisualInstance()
 _BAKE_QUALITY_LOW :: Int
 _BAKE_QUALITY_LOW = 0
 
-_ENVIRONMENT_MODE_CUSTOM_COLOR :: Int
-_ENVIRONMENT_MODE_CUSTOM_COLOR = 3
-
-_BAKE_QUALITY_MEDIUM :: Int
-_BAKE_QUALITY_MEDIUM = 1
+_ENVIRONMENT_MODE_CUSTOM_SKY :: Int
+_ENVIRONMENT_MODE_CUSTOM_SKY = 2
 
 _ENVIRONMENT_MODE_SCENE :: Int
 _ENVIRONMENT_MODE_SCENE = 1
 
-_BAKE_QUALITY_ULTRA :: Int
-_BAKE_QUALITY_ULTRA = 3
-
-_BAKE_ERROR_CANT_CREATE_IMAGE :: Int
-_BAKE_ERROR_CANT_CREATE_IMAGE = 3
-
-_BAKE_ERROR_NO_MESHES :: Int
-_BAKE_ERROR_NO_MESHES = 2
-
-_BAKE_ERROR_OK :: Int
-_BAKE_ERROR_OK = 0
-
-_BAKE_ERROR_LIGHTMAP_SIZE :: Int
-_BAKE_ERROR_LIGHTMAP_SIZE = 4
-
 _BAKE_ERROR_INVALID_MESH :: Int
 _BAKE_ERROR_INVALID_MESH = 5
-
-_BAKE_ERROR_NO_SAVE_PATH :: Int
-_BAKE_ERROR_NO_SAVE_PATH = 1
 
 _BAKE_ERROR_USER_ABORTED :: Int
 _BAKE_ERROR_USER_ABORTED = 6
 
-_ENVIRONMENT_MODE_CUSTOM_SKY :: Int
-_ENVIRONMENT_MODE_CUSTOM_SKY = 2
+_BAKE_ERROR_NO_SAVE_PATH :: Int
+_BAKE_ERROR_NO_SAVE_PATH = 1
+
+_BAKE_ERROR_LIGHTMAP_SIZE :: Int
+_BAKE_ERROR_LIGHTMAP_SIZE = 4
+
+_BAKE_QUALITY_MEDIUM :: Int
+_BAKE_QUALITY_MEDIUM = 1
+
+_ENVIRONMENT_MODE_CUSTOM_COLOR :: Int
+_ENVIRONMENT_MODE_CUSTOM_COLOR = 3
+
+_BAKE_ERROR_OK :: Int
+_BAKE_ERROR_OK = 0
+
+_BAKE_ERROR_NO_MESHES :: Int
+_BAKE_ERROR_NO_MESHES = 2
+
+_ENVIRONMENT_MODE_DISABLED :: Int
+_ENVIRONMENT_MODE_DISABLED = 0
 
 _BAKE_ERROR_NO_LIGHTMAPPER :: Int
 _BAKE_ERROR_NO_LIGHTMAPPER = 7
@@ -121,8 +118,11 @@ _BAKE_ERROR_NO_LIGHTMAPPER = 7
 _BAKE_QUALITY_HIGH :: Int
 _BAKE_QUALITY_HIGH = 2
 
-_ENVIRONMENT_MODE_DISABLED :: Int
-_ENVIRONMENT_MODE_DISABLED = 0
+_BAKE_ERROR_CANT_CREATE_IMAGE :: Int
+_BAKE_ERROR_CANT_CREATE_IMAGE = 3
+
+_BAKE_QUALITY_ULTRA :: Int
+_BAKE_QUALITY_ULTRA = 3
 
 instance NodeProperty BakedLightmap "atlas_generate" Bool 'False
          where

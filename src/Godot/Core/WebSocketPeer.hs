@@ -2,8 +2,8 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.WebSocketPeer
-       (Godot.Core.WebSocketPeer._WRITE_MODE_TEXT,
-        Godot.Core.WebSocketPeer._WRITE_MODE_BINARY,
+       (Godot.Core.WebSocketPeer._WRITE_MODE_BINARY,
+        Godot.Core.WebSocketPeer._WRITE_MODE_TEXT,
         Godot.Core.WebSocketPeer.close,
         Godot.Core.WebSocketPeer.get_connected_host,
         Godot.Core.WebSocketPeer.get_connected_port,
@@ -25,11 +25,11 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.PacketPeer()
 
-_WRITE_MODE_TEXT :: Int
-_WRITE_MODE_TEXT = 0
-
 _WRITE_MODE_BINARY :: Int
 _WRITE_MODE_BINARY = 1
+
+_WRITE_MODE_TEXT :: Int
+_WRITE_MODE_TEXT = 0
 
 {-# NOINLINE bindWebSocketPeer_close #-}
 

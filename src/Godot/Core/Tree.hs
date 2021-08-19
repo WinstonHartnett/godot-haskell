@@ -2,10 +2,11 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.Tree
-       (Godot.Core.Tree._DROP_MODE_DISABLED, Godot.Core.Tree._SELECT_ROW,
-        Godot.Core.Tree._SELECT_MULTI, Godot.Core.Tree._DROP_MODE_ON_ITEM,
-        Godot.Core.Tree._DROP_MODE_INBETWEEN,
-        Godot.Core.Tree._SELECT_SINGLE, Godot.Core.Tree.sig_button_pressed,
+       (Godot.Core.Tree._DROP_MODE_INBETWEEN,
+        Godot.Core.Tree._DROP_MODE_DISABLED,
+        Godot.Core.Tree._DROP_MODE_ON_ITEM, Godot.Core.Tree._SELECT_MULTI,
+        Godot.Core.Tree._SELECT_ROW, Godot.Core.Tree._SELECT_SINGLE,
+        Godot.Core.Tree.sig_button_pressed,
         Godot.Core.Tree.sig_cell_selected,
         Godot.Core.Tree.sig_column_title_pressed,
         Godot.Core.Tree.sig_custom_popup_edited,
@@ -66,20 +67,20 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.Control()
 
+_DROP_MODE_INBETWEEN :: Int
+_DROP_MODE_INBETWEEN = 2
+
 _DROP_MODE_DISABLED :: Int
 _DROP_MODE_DISABLED = 0
-
-_SELECT_ROW :: Int
-_SELECT_ROW = 1
-
-_SELECT_MULTI :: Int
-_SELECT_MULTI = 2
 
 _DROP_MODE_ON_ITEM :: Int
 _DROP_MODE_ON_ITEM = 1
 
-_DROP_MODE_INBETWEEN :: Int
-_DROP_MODE_INBETWEEN = 2
+_SELECT_MULTI :: Int
+_SELECT_MULTI = 2
+
+_SELECT_ROW :: Int
+_SELECT_ROW = 1
 
 _SELECT_SINGLE :: Int
 _SELECT_SINGLE = 0
@@ -1137,6 +1138,7 @@ instance NodeMethod Tree "is_root_hidden" '[] (IO Bool) where
 
 {-# NOINLINE bindTree_scroll_to_item #-}
 
+-- | Causes the @Tree@ to jump to the specified item.
 bindTree_scroll_to_item :: MethodBind
 bindTree_scroll_to_item
   = unsafePerformIO $
@@ -1146,6 +1148,7 @@ bindTree_scroll_to_item
             \ methodNamePtr ->
               godot_method_bind_get_method clsNamePtr methodNamePtr
 
+-- | Causes the @Tree@ to jump to the specified item.
 scroll_to_item ::
                  (Tree :< cls, Object :< cls) => cls -> Object -> IO ()
 scroll_to_item cls arg1

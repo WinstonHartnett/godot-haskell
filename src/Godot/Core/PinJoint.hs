@@ -2,8 +2,8 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.PinJoint
-       (Godot.Core.PinJoint._PARAM_IMPULSE_CLAMP,
-        Godot.Core.PinJoint._PARAM_DAMPING,
+       (Godot.Core.PinJoint._PARAM_DAMPING,
+        Godot.Core.PinJoint._PARAM_IMPULSE_CLAMP,
         Godot.Core.PinJoint._PARAM_BIAS, Godot.Core.PinJoint.get_param,
         Godot.Core.PinJoint.set_param)
        where
@@ -19,11 +19,11 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.Joint()
 
-_PARAM_IMPULSE_CLAMP :: Int
-_PARAM_IMPULSE_CLAMP = 2
-
 _PARAM_DAMPING :: Int
 _PARAM_DAMPING = 1
+
+_PARAM_IMPULSE_CLAMP :: Int
+_PARAM_IMPULSE_CLAMP = 2
 
 _PARAM_BIAS :: Int
 _PARAM_BIAS = 0

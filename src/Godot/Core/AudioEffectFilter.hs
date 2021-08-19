@@ -2,10 +2,10 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.AudioEffectFilter
-       (Godot.Core.AudioEffectFilter._FILTER_24DB,
-        Godot.Core.AudioEffectFilter._FILTER_12DB,
+       (Godot.Core.AudioEffectFilter._FILTER_6DB,
+        Godot.Core.AudioEffectFilter._FILTER_24DB,
         Godot.Core.AudioEffectFilter._FILTER_18DB,
-        Godot.Core.AudioEffectFilter._FILTER_6DB,
+        Godot.Core.AudioEffectFilter._FILTER_12DB,
         Godot.Core.AudioEffectFilter.get_cutoff,
         Godot.Core.AudioEffectFilter.get_db,
         Godot.Core.AudioEffectFilter.get_gain,
@@ -27,17 +27,17 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.AudioEffect()
 
+_FILTER_6DB :: Int
+_FILTER_6DB = 0
+
 _FILTER_24DB :: Int
 _FILTER_24DB = 3
-
-_FILTER_12DB :: Int
-_FILTER_12DB = 1
 
 _FILTER_18DB :: Int
 _FILTER_18DB = 2
 
-_FILTER_6DB :: Int
-_FILTER_6DB = 0
+_FILTER_12DB :: Int
+_FILTER_12DB = 1
 
 instance NodeProperty AudioEffectFilter "cutoff_hz" Float 'False
          where

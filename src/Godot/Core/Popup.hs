@@ -2,8 +2,8 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.Popup
-       (Godot.Core.Popup._NOTIFICATION_POST_POPUP,
-        Godot.Core.Popup._NOTIFICATION_POPUP_HIDE,
+       (Godot.Core.Popup._NOTIFICATION_POPUP_HIDE,
+        Godot.Core.Popup._NOTIFICATION_POST_POPUP,
         Godot.Core.Popup.sig_about_to_show,
         Godot.Core.Popup.sig_popup_hide, Godot.Core.Popup.is_exclusive,
         Godot.Core.Popup.popup, Godot.Core.Popup.popup_centered,
@@ -24,11 +24,11 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.Control()
 
-_NOTIFICATION_POST_POPUP :: Int
-_NOTIFICATION_POST_POPUP = 80
-
 _NOTIFICATION_POPUP_HIDE :: Int
 _NOTIFICATION_POPUP_HIDE = 81
+
+_NOTIFICATION_POST_POPUP :: Int
+_NOTIFICATION_POST_POPUP = 80
 
 -- | Emitted when a popup is about to be shown. This is often used in @PopupMenu@ to clear the list of options then create a new one according to the current context.
 sig_about_to_show :: Godot.Internal.Dispatch.Signal Popup

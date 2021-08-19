@@ -2,8 +2,8 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.VisualShaderNodeTransformFunc
-       (Godot.Core.VisualShaderNodeTransformFunc._FUNC_TRANSPOSE,
-        Godot.Core.VisualShaderNodeTransformFunc._FUNC_INVERSE,
+       (Godot.Core.VisualShaderNodeTransformFunc._FUNC_INVERSE,
+        Godot.Core.VisualShaderNodeTransformFunc._FUNC_TRANSPOSE,
         Godot.Core.VisualShaderNodeTransformFunc.get_function,
         Godot.Core.VisualShaderNodeTransformFunc.set_function)
        where
@@ -19,11 +19,11 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.VisualShaderNode()
 
-_FUNC_TRANSPOSE :: Int
-_FUNC_TRANSPOSE = 1
-
 _FUNC_INVERSE :: Int
 _FUNC_INVERSE = 0
+
+_FUNC_TRANSPOSE :: Int
+_FUNC_TRANSPOSE = 1
 
 instance NodeProperty VisualShaderNodeTransformFunc "function" Int
            'False

@@ -2,10 +2,10 @@
   TypeFamilies, TypeOperators, FlexibleContexts, DataKinds,
   MultiParamTypeClasses #-}
 module Godot.Core.Particles
-       (Godot.Core.Particles._MAX_DRAW_PASSES,
-        Godot.Core.Particles._DRAW_ORDER_LIFETIME,
+       (Godot.Core.Particles._DRAW_ORDER_VIEW_DEPTH,
+        Godot.Core.Particles._MAX_DRAW_PASSES,
         Godot.Core.Particles._DRAW_ORDER_INDEX,
-        Godot.Core.Particles._DRAW_ORDER_VIEW_DEPTH,
+        Godot.Core.Particles._DRAW_ORDER_LIFETIME,
         Godot.Core.Particles.capture_aabb, Godot.Core.Particles.get_amount,
         Godot.Core.Particles.get_draw_order,
         Godot.Core.Particles.get_draw_pass_mesh,
@@ -51,17 +51,17 @@ import Godot.Gdnative.Internal
 import Godot.Api.Types
 import Godot.Core.GeometryInstance()
 
+_DRAW_ORDER_VIEW_DEPTH :: Int
+_DRAW_ORDER_VIEW_DEPTH = 2
+
 _MAX_DRAW_PASSES :: Int
 _MAX_DRAW_PASSES = 4
-
-_DRAW_ORDER_LIFETIME :: Int
-_DRAW_ORDER_LIFETIME = 1
 
 _DRAW_ORDER_INDEX :: Int
 _DRAW_ORDER_INDEX = 0
 
-_DRAW_ORDER_VIEW_DEPTH :: Int
-_DRAW_ORDER_VIEW_DEPTH = 2
+_DRAW_ORDER_LIFETIME :: Int
+_DRAW_ORDER_LIFETIME = 1
 
 instance NodeProperty Particles "amount" Int 'False where
         nodeProperty = (get_amount, wrapDroppingSetter set_amount, Nothing)
