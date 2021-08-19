@@ -52,7 +52,7 @@ main = do
                                                     ,Ident Nothing "TypeFamilies"
                                                     ,Ident Nothing "TemplateHaskell"]]
                             classImports
-                            (decls ++ mapMaybe fromNewtypeDerivingBase decls)
+                            (decls ++ [orderedDeriving])
     classExports decls   = ExportSpecList Nothing $ tcHasBaseClass : mapMaybe fromNewtypeOnly decls
     tcHasBaseClass       = fmap (\_ -> Nothing) $ EThingWith () (EWildcard () 0) (UnQual () (Ident () "HasBaseClass")) []
     fromNewtypeOnly decl = case decl of
@@ -60,12 +60,7 @@ main = do
          Just $ EThingWith Nothing (EWildcard Nothing 0) (UnQual Nothing (Ident Nothing ntName)) []
        _ ->
          Nothing
-    fromNewtypeDerivingBase decl = case decl of
-       DataDecl _ (NewType _) _ (DHead _ (Ident Nothing ntName)) _ _ ->
-         Just $ SpliceDecl Nothing (App Nothing (Var Nothing (UnQual Nothing (Ident Nothing "deriveBase")))
-                                                 (TypQuote Nothing (UnQual Nothing (Ident Nothing ntName))))
-       _ ->
-         Nothing
+    orderedDeriving = SpliceDecl Nothing (Var Nothing (UnQual Nothing (Ident Nothing "deriveOrderedBase")))
     classImports = map (\n -> ImportDecl Nothing (ModuleName Nothing n) False False False Nothing Nothing Nothing)
       [ "Data.Coerce", "Foreign.C", "Godot.Internal.Dispatch", "Godot.Gdnative.Internal"]
 

@@ -1,6 +1,4 @@
-{-# LANGUAGE TemplateHaskell
-             , AllowAmbiguousTypes, TypeFamilies, FunctionalDependencies
-             , MultiParamTypeClasses, DataKinds, TypeOperators, LambdaCase #-}
+{-# LANGUAGE TemplateHaskell, AllowAmbiguousTypes, CPP #-}
 
 module Godot.Internal.Dispatch ( HasBaseClass(..), (:<)(..), Signal(..)
                                , deriveBase, NodeSignal, NodeMethod(..)
@@ -84,15 +82,21 @@ class ( Typeable ty, AsVariant ty )
                             )
                     )
 
+-- | Use this when deriving multiple Godot objects w/ corresponding 'HasBaseClass'
+-- instances.
+-- As of GHC 9.0.1, TH splices split constraint solving, which means you can no longer
+-- reference an instance of a class before declaring it. When using 'deriveBase', you
+-- have to make sure that parents come before children. This automatically orders
+-- uses of 'deriveBase' appropriately.
 deriveOrderedBase :: Q [ Dec ]
 deriveOrderedBase = do
-    -- InstDecs gets all BaseClass typeSyns
     (FamilyI _ instDecs) <- reify ''BaseClass
-    let parentChildren = map (\(TySynInstD (TySynEqn _ (AppT _ child) parent)) -> (child, parent)) instDecs
-        graphItems = [ (parent, parent, [child]) | (child, parent) <- parentChildren ]
-        (graph, nodeFromVertex, vertexFromKey) = graphFromEdges graphItems
+    let parentChildren = map 
+          (\(TySynInstD (TySynEqn _ (AppT _ child) parent)) -> (child, parent)) instDecs
+        (graph, nodeFromVertex, vertexFromKey) = graphFromEdges 
+          [ (parent, parent, [child]) | (child, parent) <- parentChildren]
         topSorted = map nodeFromVertex (topSort graph)
-    concat <$> forM (nub . concat . map (\(ConT n, _, [(ConT c)]) -> [n, c]) $ topSorted) deriveBase
+    concat <$> forM (nub . concatMap (\(ConT n, _, [ConT c]) -> [n, c]) $ topSorted) deriveBase
 
 -- | You should use this as @deriveBase ''Ty@ to create all the required parent
 -- instances of '(:<)' for upcasting your data.
@@ -101,11 +105,14 @@ deriveBase ty = do
     rdt <- reifyDatatype ty
     let appliedTy = appsT (ConT ty)
             [ case typeBinder of
+#if __GLASGOW_HASKELL__ >= 900
                 PlainTV n _ -> VarT n
-                KindedTV n _ _ -> VarT n |
-              -- PlainTV n -> VarT n
-              -- KindedTV n _ -> VarT n
-            typeBinder <- datatypeVars rdt
+                KindedTV n _ _ -> VarT n
+#else
+                PlainTV n -> VarT n
+                KindedTV n _ -> VarT n
+#endif
+            | typeBinder <- datatypeVars rdt
             ]
     r <- reify ''BaseClass
     case r of
@@ -139,7 +146,7 @@ appsT t (x : xs) = appsT (AppT t x) xs
 relevantTySynEqns :: [ TySynEqn ] -> Type -> [ ( Type, Type ) ]
 relevantTySynEqns [] _ = []
 relevantTySynEqns (TySynEqn _ (AppT _ child) parent : ts) ty
-    | isRelevant child ty = ( child, parent ) : relevantTySynEqns ts ty
+    | isRelevant child ty = (child, parent) : relevantTySynEqns ts ty
     | otherwise = relevantTySynEqns ts ty
   where
     isRelevant (AppT t _) ty = isRelevant t ty

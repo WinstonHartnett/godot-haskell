@@ -39,8 +39,6 @@ alt1 _ = Nothing
 
 type GodotDocTable = HashMap Text GodotDocClass
 
-type GodotDocs = Vector GodotDoc
-
 newtype Ref a = Ref Text
   deriving (Show, Eq, FromJSON, ToJSON)
 
@@ -99,20 +97,8 @@ instance FromJSON GType where
                          then pure $ EnumType t
                          else pure $ CustomType t) v
 
-data GodotDoc = GodotDoc {
-  _gdClass :: !GodotDocClass
-  } deriving (Show, Eq)
-
-instance FromJSON GodotDoc where
-  parseJSON (Object x) = GodotDoc <$> x .: "class"
-  parseJSON _ = fail "Expected an Object"
-
 data OptionalArray a = OptionalArray { unOption :: Vector a }
   deriving (Show, Eq)
-
-instance FromJSON a => FromJSON (OptionalArray a) where
-  parseJSON x@(Array _) = OptionalArray <$> parseJSON x
-  parseJSON x = OptionalArray . V.singleton <$> parseJSON x
 
 data GodotDocClass = GodotDocClass
   { _gdName :: !Text
@@ -165,16 +151,6 @@ data GodotMethod = GodotMethod
   , _gmArgument :: !(Maybe (OptionalArray GodotArgument))
   } deriving (Show, Eq)
 
-makeLensesWith fixedTypeFields ''GodotDoc
-makeLensesWith fixedTypeFields ''GodotDocClass
-makeLensesWith fixedTypeFields ''GodotProperty
-makeLensesWith fixedTypeFields ''GodotSignal
-makeLensesWith fixedTypeFields ''GodotArgument
-makeLensesWith fixedTypeFields ''GodotMethod
-
-toTable :: GodotDocs -> GodotDocTable
-toTable = V.foldl' (\hm d -> H.insert (d ^. class' . name) (d ^. class') hm) H.empty 
-
 makePrisms ''GType
 makePrisms ''GPrimType
 
@@ -184,6 +160,30 @@ concat <$> mapM (deriveFromJSON defaultOptions { fieldLabelModifier = quietSnake
   , ''GodotConstant
   , ''GodotSignal
   , ''GodotMethod ]
+
+data GodotDoc = GodotDoc {
+  _gdClass :: !GodotDocClass
+  } deriving (Show, Eq)
+
+type GodotDocs = Vector GodotDoc
+
+instance FromJSON GodotDoc where
+  parseJSON (Object x) = GodotDoc <$> x .: "class"
+  parseJSON _ = fail "Expected an Object"
+
+instance FromJSON a => FromJSON (OptionalArray a) where
+  parseJSON x@(Array _) = OptionalArray <$> parseJSON x
+  parseJSON x = OptionalArray . V.singleton <$> parseJSON x
+
+makeLensesWith fixedTypeFields ''GodotDoc
+makeLensesWith fixedTypeFields ''GodotDocClass
+makeLensesWith fixedTypeFields ''GodotProperty
+makeLensesWith fixedTypeFields ''GodotSignal
+makeLensesWith fixedTypeFields ''GodotArgument
+makeLensesWith fixedTypeFields ''GodotMethod
+
+toTable :: GodotDocs -> GodotDocTable
+toTable = V.foldl' (\hm d -> H.insert (d ^. class' . name) (d ^. class') hm) H.empty 
 
 convertDoc = T.replace "]" "@" . T.replace "[" "@"
            . T.replace "[/code]" "@" . T.replace "[code]" "@"

@@ -78,7 +78,6 @@ import           System.IO.Unsafe
 import qualified Godot.Gdnative.Internal as GNI
 import           Godot.Gdnative
 import           Godot.Internal.Dispatch
-import           Data.Maybe                               ( fromMaybe )
 import qualified Foreign.Marshal as F
 import qualified Foreign.Marshal.Utils as F
 import qualified Foreign.C                     as Foreign
@@ -155,54 +154,54 @@ instance Exception GodotError
 
 getError :: Int -> Maybe GodotError
 getError e | e == _OK                             = Nothing
-           | e == _FAILED                         = Just GFailed                   
-           | e == _ERR_UNAVAILABLE                = Just GUnavailable              
-           | e == _ERR_UNCONFIGURED               = Just GUnconfigured             
-           | e == _ERR_UNAUTHORIZED               = Just GUnauthorized             
-           | e == _ERR_PARAMETER_RANGE_ERROR      = Just GParameterRangeError      
-           | e == _ERR_OUT_OF_MEMORY              = Just GOutOfMemory              
-           | e == _ERR_FILE_NOT_FOUND             = Just GFileNotFound             
-           | e == _ERR_FILE_BAD_DRIVE             = Just GFileBadDrive             
-           | e == _ERR_FILE_BAD_PATH              = Just GFileBadPath              
-           | e == _ERR_FILE_NO_PERMISSION         = Just GFileNoPermission         
-           | e == _ERR_FILE_ALREADY_IN_USE        = Just GFileAlreadyInUse         
-           | e == _ERR_FILE_CANT_OPEN             = Just GFileCantOpen             
-           | e == _ERR_FILE_CANT_WRITE            = Just GFileCantWrite            
-           | e == _ERR_FILE_CANT_READ             = Just GFileCantRead             
-           | e == _ERR_FILE_UNRECOGNIZED          = Just GFileUnrecognized         
-           | e == _ERR_FILE_CORRUPT               = Just GFileCorrupt              
-           | e == _ERR_FILE_MISSING_DEPENDENCIES  = Just GFileMissingDependencies  
-           | e == _ERR_FILE_EOF                   = Just GFileEof                  
-           | e == _ERR_CANT_OPEN                  = Just GCantOpen                 
-           | e == _ERR_CANT_CREATE                = Just GCantCreate               
-           | e == _ERR_QUERY_FAILED               = Just GQueryFailed              
-           | e == _ERR_ALREADY_IN_USE             = Just GAlreadyInUse             
-           | e == _ERR_LOCKED                     = Just GLocked                   
-           | e == _ERR_TIMEOUT                    = Just GTimeout                  
-           | e == _ERR_CANT_CONNECT               = Just GCantConnect              
-           | e == _ERR_CANT_RESOLVE               = Just GCantResolve              
-           | e == _ERR_CONNECTION_ERROR           = Just GConnectionError          
-           | e == _ERR_CANT_ACQUIRE_RESOURCE      = Just GCantAcquireResource      
-           | e == _ERR_CANT_FORK                  = Just GCantFork                 
-           | e == _ERR_INVALID_DATA               = Just GInvalidData              
-           | e == _ERR_INVALID_PARAMETER          = Just GInvalidParameter         
-           | e == _ERR_ALREADY_EXISTS             = Just GAlreadyExists            
-           | e == _ERR_DOES_NOT_EXIST             = Just GDoesNotExist             
-           | e == _ERR_DATABASE_CANT_READ         = Just GDatabaseCantRead         
-           | e == _ERR_DATABASE_CANT_WRITE        = Just GDatabaseCantWrite        
-           | e == _ERR_COMPILATION_FAILED         = Just GCompilationFailed        
-           | e == _ERR_METHOD_NOT_FOUND           = Just GMethodNotFound           
-           | e == _ERR_LINK_FAILED                = Just GLinkFailed               
-           | e == _ERR_SCRIPT_FAILED              = Just GScriptFailed             
-           | e == _ERR_CYCLIC_LINK                = Just GCyclicLink               
-           | e == _ERR_INVALID_DECLARATION        = Just GInvalidDeclaration       
-           | e == _ERR_DUPLICATE_SYMBOL           = Just GDuplicateSymbol          
-           | e == _ERR_PARSE_ERROR                = Just GParseError               
-           | e == _ERR_BUSY                       = Just GBusy                     
-           | e == _ERR_SKIP                       = Just GSkip                     
-           | e == _ERR_HELP                       = Just GHelp                     
-           | e == _ERR_BUG                        = Just GBug                      
-           | e == _ERR_PRINTER_ON_FIRE            = Just GPrinterOnFire            
+           | e == _FAILED                         = Just GFailed
+           | e == _ERR_UNAVAILABLE                = Just GUnavailable
+           | e == _ERR_UNCONFIGURED               = Just GUnconfigured
+           | e == _ERR_UNAUTHORIZED               = Just GUnauthorized
+           | e == _ERR_PARAMETER_RANGE_ERROR      = Just GParameterRangeError
+           | e == _ERR_OUT_OF_MEMORY              = Just GOutOfMemory
+           | e == _ERR_FILE_NOT_FOUND             = Just GFileNotFound
+           | e == _ERR_FILE_BAD_DRIVE             = Just GFileBadDrive
+           | e == _ERR_FILE_BAD_PATH              = Just GFileBadPath
+           | e == _ERR_FILE_NO_PERMISSION         = Just GFileNoPermission
+           | e == _ERR_FILE_ALREADY_IN_USE        = Just GFileAlreadyInUse
+           | e == _ERR_FILE_CANT_OPEN             = Just GFileCantOpen
+           | e == _ERR_FILE_CANT_WRITE            = Just GFileCantWrite
+           | e == _ERR_FILE_CANT_READ             = Just GFileCantRead
+           | e == _ERR_FILE_UNRECOGNIZED          = Just GFileUnrecognized
+           | e == _ERR_FILE_CORRUPT               = Just GFileCorrupt
+           | e == _ERR_FILE_MISSING_DEPENDENCIES  = Just GFileMissingDependencies
+           | e == _ERR_FILE_EOF                   = Just GFileEof
+           | e == _ERR_CANT_OPEN                  = Just GCantOpen
+           | e == _ERR_CANT_CREATE                = Just GCantCreate
+           | e == _ERR_QUERY_FAILED               = Just GQueryFailed
+           | e == _ERR_ALREADY_IN_USE             = Just GAlreadyInUse
+           | e == _ERR_LOCKED                     = Just GLocked
+           | e == _ERR_TIMEOUT                    = Just GTimeout
+           | e == _ERR_CANT_CONNECT               = Just GCantConnect
+           | e == _ERR_CANT_RESOLVE               = Just GCantResolve
+           | e == _ERR_CONNECTION_ERROR           = Just GConnectionError
+           | e == _ERR_CANT_ACQUIRE_RESOURCE      = Just GCantAcquireResource
+           | e == _ERR_CANT_FORK                  = Just GCantFork
+           | e == _ERR_INVALID_DATA               = Just GInvalidData
+           | e == _ERR_INVALID_PARAMETER          = Just GInvalidParameter
+           | e == _ERR_ALREADY_EXISTS             = Just GAlreadyExists
+           | e == _ERR_DOES_NOT_EXIST             = Just GDoesNotExist
+           | e == _ERR_DATABASE_CANT_READ         = Just GDatabaseCantRead
+           | e == _ERR_DATABASE_CANT_WRITE        = Just GDatabaseCantWrite
+           | e == _ERR_COMPILATION_FAILED         = Just GCompilationFailed
+           | e == _ERR_METHOD_NOT_FOUND           = Just GMethodNotFound
+           | e == _ERR_LINK_FAILED                = Just GLinkFailed
+           | e == _ERR_SCRIPT_FAILED              = Just GScriptFailed
+           | e == _ERR_CYCLIC_LINK                = Just GCyclicLink
+           | e == _ERR_INVALID_DECLARATION        = Just GInvalidDeclaration
+           | e == _ERR_DUPLICATE_SYMBOL           = Just GDuplicateSymbol
+           | e == _ERR_PARSE_ERROR                = Just GParseError
+           | e == _ERR_BUSY                       = Just GBusy
+           | e == _ERR_SKIP                       = Just GSkip
+           | e == _ERR_HELP                       = Just GHelp
+           | e == _ERR_BUG                        = Just GBug
+           | e == _ERR_PRINTER_ON_FIRE            = Just GPrinterOnFire
            | otherwise                            = error $ "Unknown Godot error; this is a bug in the Haskell bindings: " ++ show e
 
 guardError :: Int -> ()
@@ -455,7 +454,7 @@ getEngine =
               >>= error
               .   ("Couldn't get Engine singleton :( got: " ++)
               .   T.unpack
-  
+
 tryObjectCast :: forall a . (Typeable a, AsVariant a) => Object -> IO (Maybe a)
 tryObjectCast obj = do
   isCls <- Object.is_class obj =<< toLowLevel (nameOf @a)
