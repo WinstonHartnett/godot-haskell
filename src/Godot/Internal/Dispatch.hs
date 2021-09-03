@@ -5,7 +5,7 @@ module Godot.Internal.Dispatch ( HasBaseClass(..), (:<)(..), Signal(..)
                                , NodeProperty(..), ListToFun(..)
                                , OptionalSetter(..), ClassProperty(..)
                                , PropertyAttributes(..), wrapIndexedGetter
-                               , wrapIndexedSetter, wrapDroppingSetter, deriveOrderedBase ) where
+                               , wrapIndexedSetter, wrapDroppingSetter, deriveOrderedBase) where
 
 import Data.Text ( Text )
 import GHC.TypeLits as T
