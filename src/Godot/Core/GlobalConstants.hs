@@ -230,6 +230,7 @@ module Godot.Core.GlobalConstants
         Godot.Core.GlobalConstants._KEY_F15,
         Godot.Core.GlobalConstants._KEY_KP_6,
         Godot.Core.GlobalConstants._TYPE_INT_ARRAY,
+        Godot.Core.GlobalConstants._JOY_BUTTON_22,
         Godot.Core.GlobalConstants._ERR_DATABASE_CANT_WRITE,
         Godot.Core.GlobalConstants._MARGIN_TOP,
         Godot.Core.GlobalConstants._OP_MODULE,
@@ -327,6 +328,7 @@ module Godot.Core.GlobalConstants
         Godot.Core.GlobalConstants._KEY_F7,
         Godot.Core.GlobalConstants._PROPERTY_HINT_MULTILINE_TEXT,
         Godot.Core.GlobalConstants._JOY_SONY_TRIANGLE,
+        Godot.Core.GlobalConstants._JOY_GUIDE,
         Godot.Core.GlobalConstants._KEY_ASCIITILDE,
         Godot.Core.GlobalConstants._KEY_ECIRCUMFLEX,
         Godot.Core.GlobalConstants._ERR_FILE_CANT_WRITE,
@@ -555,7 +557,7 @@ _TYPE_AABB :: Int
 _TYPE_AABB = 11
 
 _JOY_PADDLE4 :: Int
-_JOY_PADDLE4 = 20
+_JOY_PADDLE4 = 21
 
 _JOY_AXIS_8 :: Int
 _JOY_AXIS_8 = 8
@@ -831,7 +833,7 @@ _OP_ADD :: Int
 _OP_ADD = 6
 
 _JOY_PADDLE2 :: Int
-_JOY_PADDLE2 = 18
+_JOY_PADDLE2 = 19
 
 _KEY_DELETE :: Int
 _KEY_DELETE = 16777224
@@ -1041,7 +1043,7 @@ _KEY_BACK :: Int
 _KEY_BACK = 16777280
 
 _JOY_TOUCHPAD :: Int
-_JOY_TOUCHPAD = 21
+_JOY_TOUCHPAD = 22
 
 _KEY_P :: Int
 _KEY_P = 80
@@ -1056,7 +1058,7 @@ _JOY_XBOX_Y :: Int
 _JOY_XBOX_Y = 3
 
 _JOY_PADDLE3 :: Int
-_JOY_PADDLE3 = 19
+_JOY_PADDLE3 = 20
 
 _KEY_SHIFT :: Int
 _KEY_SHIFT = 16777237
@@ -1216,6 +1218,9 @@ _KEY_KP_6 = 16777356
 
 _TYPE_INT_ARRAY :: Int
 _TYPE_INT_ARRAY = 21
+
+_JOY_BUTTON_22 :: Int
+_JOY_BUTTON_22 = 22
 
 _ERR_DATABASE_CANT_WRITE :: Int
 _ERR_DATABASE_CANT_WRITE = 35
@@ -1508,6 +1513,9 @@ _PROPERTY_HINT_MULTILINE_TEXT = 18
 _JOY_SONY_TRIANGLE :: Int
 _JOY_SONY_TRIANGLE = 3
 
+_JOY_GUIDE :: Int
+_JOY_GUIDE = 16
+
 _KEY_ASCIITILDE :: Int
 _KEY_ASCIITILDE = 126
 
@@ -1662,13 +1670,13 @@ _KEY_EXCLAM :: Int
 _KEY_EXCLAM = 33
 
 _JOY_BUTTON_MAX :: Int
-_JOY_BUTTON_MAX = 22
+_JOY_BUTTON_MAX = 23
 
 _KEY_MASK_META :: Int
 _KEY_MASK_META = 134217728
 
 _JOY_MISC1 :: Int
-_JOY_MISC1 = 16
+_JOY_MISC1 = 17
 
 _BUTTON_WHEEL_LEFT :: Int
 _BUTTON_WHEEL_LEFT = 6
@@ -1983,7 +1991,7 @@ _KEY_B :: Int
 _KEY_B = 66
 
 _JOY_PADDLE1 :: Int
-_JOY_PADDLE1 = 17
+_JOY_PADDLE1 = 18
 
 _METHOD_FLAG_VIRTUAL :: Int
 _METHOD_FLAG_VIRTUAL = 32

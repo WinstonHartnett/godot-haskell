@@ -5,6 +5,7 @@ module Godot.Core.KinematicCollision
        (Godot.Core.KinematicCollision.get_collider,
         Godot.Core.KinematicCollision.get_collider_id,
         Godot.Core.KinematicCollision.get_collider_metadata,
+        Godot.Core.KinematicCollision.get_collider_rid,
         Godot.Core.KinematicCollision.get_collider_shape,
         Godot.Core.KinematicCollision.get_collider_shape_index,
         Godot.Core.KinematicCollision.get_collider_velocity,
@@ -39,6 +40,10 @@ instance NodeProperty KinematicCollision "collider_metadata"
            'True
          where
         nodeProperty = (get_collider_metadata, (), Nothing)
+
+instance NodeProperty KinematicCollision "collider_rid" Rid 'True
+         where
+        nodeProperty = (get_collider_rid, (), Nothing)
 
 instance NodeProperty KinematicCollision "collider_shape" Object
            'True
@@ -163,6 +168,35 @@ instance NodeMethod KinematicCollision "get_collider_metadata" '[]
            (IO GodotVariant)
          where
         nodeMethod = Godot.Core.KinematicCollision.get_collider_metadata
+
+{-# NOINLINE bindKinematicCollision_get_collider_rid #-}
+
+-- | The colliding body's @RID@ used by the @PhysicsServer@.
+bindKinematicCollision_get_collider_rid :: MethodBind
+bindKinematicCollision_get_collider_rid
+  = unsafePerformIO $
+      withCString "KinematicCollision" $
+        \ clsNamePtr ->
+          withCString "get_collider_rid" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | The colliding body's @RID@ used by the @PhysicsServer@.
+get_collider_rid ::
+                   (KinematicCollision :< cls, Object :< cls) => cls -> IO Rid
+get_collider_rid cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindKinematicCollision_get_collider_rid
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod KinematicCollision "get_collider_rid" '[]
+           (IO Rid)
+         where
+        nodeMethod = Godot.Core.KinematicCollision.get_collider_rid
 
 {-# NOINLINE bindKinematicCollision_get_collider_shape #-}
 

@@ -5,6 +5,7 @@ module Godot.Core.InputMap
        (Godot.Core.InputMap.action_add_event,
         Godot.Core.InputMap.action_erase_event,
         Godot.Core.InputMap.action_erase_events,
+        Godot.Core.InputMap.action_get_deadzone,
         Godot.Core.InputMap.action_has_event,
         Godot.Core.InputMap.action_set_deadzone,
         Godot.Core.InputMap.add_action, Godot.Core.InputMap.erase_action,
@@ -113,6 +114,35 @@ instance NodeMethod InputMap "action_erase_events" '[GodotString]
            (IO ())
          where
         nodeMethod = Godot.Core.InputMap.action_erase_events
+
+{-# NOINLINE bindInputMap_action_get_deadzone #-}
+
+-- | Returns a deadzone value for the action.
+bindInputMap_action_get_deadzone :: MethodBind
+bindInputMap_action_get_deadzone
+  = unsafePerformIO $
+      withCString "InputMap" $
+        \ clsNamePtr ->
+          withCString "action_get_deadzone" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+-- | Returns a deadzone value for the action.
+action_get_deadzone ::
+                      (InputMap :< cls, Object :< cls) => cls -> GodotString -> IO Float
+action_get_deadzone cls arg1
+  = withVariantArray [toVariant arg1]
+      (\ (arrPtr, len) ->
+         godot_method_bind_call bindInputMap_action_get_deadzone
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod InputMap "action_get_deadzone" '[GodotString]
+           (IO Float)
+         where
+        nodeMethod = Godot.Core.InputMap.action_get_deadzone
 
 {-# NOINLINE bindInputMap_action_has_event #-}
 

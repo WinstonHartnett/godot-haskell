@@ -7,6 +7,7 @@ module Godot.Core.WebSocketPeer
         Godot.Core.WebSocketPeer.close,
         Godot.Core.WebSocketPeer.get_connected_host,
         Godot.Core.WebSocketPeer.get_connected_port,
+        Godot.Core.WebSocketPeer.get_current_outbound_buffered_amount,
         Godot.Core.WebSocketPeer.get_write_mode,
         Godot.Core.WebSocketPeer.is_connected_to_host,
         Godot.Core.WebSocketPeer.set_no_delay,
@@ -112,6 +113,39 @@ get_connected_port cls
 instance NodeMethod WebSocketPeer "get_connected_port" '[] (IO Int)
          where
         nodeMethod = Godot.Core.WebSocketPeer.get_connected_port
+
+{-# NOINLINE bindWebSocketPeer_get_current_outbound_buffered_amount
+             #-}
+
+bindWebSocketPeer_get_current_outbound_buffered_amount ::
+                                                       MethodBind
+bindWebSocketPeer_get_current_outbound_buffered_amount
+  = unsafePerformIO $
+      withCString "WebSocketPeer" $
+        \ clsNamePtr ->
+          withCString "get_current_outbound_buffered_amount" $
+            \ methodNamePtr ->
+              godot_method_bind_get_method clsNamePtr methodNamePtr
+
+get_current_outbound_buffered_amount ::
+                                       (WebSocketPeer :< cls, Object :< cls) => cls -> IO Int
+get_current_outbound_buffered_amount cls
+  = withVariantArray []
+      (\ (arrPtr, len) ->
+         godot_method_bind_call
+           bindWebSocketPeer_get_current_outbound_buffered_amount
+           (upcast cls)
+           arrPtr
+           len
+           >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
+
+instance NodeMethod WebSocketPeer
+           "get_current_outbound_buffered_amount"
+           '[]
+           (IO Int)
+         where
+        nodeMethod
+          = Godot.Core.WebSocketPeer.get_current_outbound_buffered_amount
 
 {-# NOINLINE bindWebSocketPeer_get_write_mode #-}
 

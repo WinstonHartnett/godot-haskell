@@ -591,6 +591,8 @@ language = [i|
 {-# LANGUAGE FunctionalDependencies #-}
 {-# LANGUAGE ImplicitPrelude #-}
 {-# LANGUAGE UndecidableInstances #-}
+
+{-# OPTIONS_GHC -Wno-unused-imports #-}
 |]
 
 mkModule qualifiedName = T.pack [i|module Project.Scenes.#{qualifiedName} where

@@ -2879,15 +2879,18 @@ bindOS_get_system_dir
 --   				__Note:__ This method is implemented on Android, Linux, macOS and Windows.
 --   				__Note:__ Shared storage is implemented on Android and allows to differentiate between app specific and shared directories. Shared directories have additional restrictions on Android.
 get_system_dir ::
-                 (OS :< cls, Object :< cls) => cls -> Int -> IO GodotString
-get_system_dir cls arg1
-  = withVariantArray [toVariant arg1]
+                 (OS :< cls, Object :< cls) =>
+                 cls -> Int -> Maybe Bool -> IO GodotString
+get_system_dir cls arg1 arg2
+  = withVariantArray
+      [toVariant arg1, maybe (VariantBool True) toVariant arg2]
       (\ (arrPtr, len) ->
          godot_method_bind_call bindOS_get_system_dir (upcast cls) arrPtr
            len
            >>= \ (err, res) -> throwIfErr err >> fromGodotVariant res)
 
-instance NodeMethod OS "get_system_dir" '[Int] (IO GodotString)
+instance NodeMethod OS "get_system_dir" '[Int, Maybe Bool]
+           (IO GodotString)
          where
         nodeMethod = Godot.Core.OS.get_system_dir
 

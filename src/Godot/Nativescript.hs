@@ -66,6 +66,8 @@ import qualified Data.Vector                   as Vec
 import qualified Data.Vector                   as V
 import           Data.Function                            ( (&) )
 
+import qualified Data.HashSet                  as HS
+
 import qualified Data.Set                      as S
 import           Control.Concurrent.MVar
 
@@ -397,6 +399,11 @@ convertClassName name =
     -- TODO Derive these automatically. Don't think we store if a
     -- class is a singleton anywhere.
     "ClassDB" -> "_ClassDB"
+    "Directory" -> "_Directory"
+    "File" -> "_File"
+    "Thread" -> "_Thread"
+    "Mutex" -> "_Mutex"
+    "Semaphore" -> "_Semaphore"
     "Marshalls" -> "_Marshalls"
     "VisualScriptEditor" -> "_VisualScriptEditor"
     "OS" -> "_OS"
@@ -412,6 +419,11 @@ unConvertClassName name =
     -- TODO Derive these automatically. Don't think we store if a
     -- class is a singleton anywhere.
     "_ClassDB" -> "ClassDB"
+    "_Directory" -> "Directory"
+    "_File" -> "File"
+    "_Thread" -> "Thread"
+    "_Mutex" -> "Mutex"
+    "_Semaphore" -> "Semaphore"
     "_Marshalls" -> "Marshalls"
     "_VisualScriptEditor" -> "VisualScriptEditor"
     "_OS" -> "OS"
