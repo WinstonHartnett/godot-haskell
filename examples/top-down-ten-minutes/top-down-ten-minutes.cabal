@@ -1,10 +1,10 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.33.0.
+-- This file has been generated from package.yaml by hpack version 0.34.4.
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 10ec9e894d9fdb50a0b9d9dcb3b406e33d320e82e151cfe5d0ef335c059e3aad
+-- hash: 4ccaed5326680ade07d13e4a6af4c4b8b3af68db8cd5932fee0748dec5a93bb9
 
 name:           top-down-ten-minutes
 version:        0.0.0.0
@@ -52,7 +52,21 @@ library
   hs-source-dirs:
       src
       game
-  default-extensions: FlexibleContexts MultiParamTypeClasses OverloadedStrings TemplateHaskell TypeApplications TypeFamilies DataKinds FlexibleInstances ScopedTypeVariables AllowAmbiguousTypes TupleSections FunctionalDependencies LambdaCase TypeOperators
+  default-extensions:
+      FlexibleContexts
+      MultiParamTypeClasses
+      OverloadedStrings
+      TemplateHaskell
+      TypeApplications
+      TypeFamilies
+      DataKinds
+      FlexibleInstances
+      ScopedTypeVariables
+      AllowAmbiguousTypes
+      TupleSections
+      FunctionalDependencies
+      LambdaCase
+      TypeOperators
   ghc-options: -Wall -Wno-orphans -O0 -Wno-name-shadowing
   build-depends:
       base >=4.12 && <5
