@@ -103,7 +103,7 @@ createAndWriteFile path content = do
 support = [i|
 {-# OPTIONS_GHC -Wno-name-shadowing #-}
 
-module Project.Support where
+module Glue.Support where
 
 import           Control.Lens
 import           Control.Monad
@@ -482,7 +482,7 @@ setupNode ty = do
 
   -- Generate code
   ns <- [d|instance NativeScript $(pure $ PromotedT ty) where
-             classInit       = Project.Support.init
+             classInit       = Glue.Support.init
 
              classMethods    =
                $(ListE
@@ -595,8 +595,8 @@ language = [i|
 {-# OPTIONS_GHC -Wno-unused-imports #-}
 |]
 
-mkModule qualifiedName = T.pack [i|module Project.Scenes.#{qualifiedName} where
-import Project.Support
+mkModule qualifiedName = T.pack [i|module Glue.Scenes.#{qualifiedName} where
+import Glue.Support
 import Godot
 import GHC.TypeLits
 |]
@@ -715,9 +715,9 @@ main = do
             putStrLn "Regenerating ..."
             print =<< allByExtension ".gdns" inDir
             print =<< allByExtension ".tscn" inDir
-            b <- doesDirectoryExist (outDir </> "Project")
-            when b $ removeDirectoryRecursive (outDir </> "Project")
-            createDirectoryIfMissing True (outDir </> "Project" </> "Scenes")
+            b <- doesDirectoryExist (outDir </> "Glue")
+            when b $ removeDirectoryRecursive (outDir </> "Glue")
+            createDirectoryIfMissing True (outDir </> "Glue" </> "Scenes")
             outputSupport outDir
             --
             tscns <- M.fromList <$> (mapM (\f -> let relFile = makeRelative inDir f
@@ -752,7 +752,7 @@ moduleName inDir tscnFilepath =
 
 outputTscn :: [FilePath] -> FilePath -> FilePath -> Tscn -> M.Map T.Text Tscn -> M.Map T.Text Gdns -> IO ()
 outputTscn segmentsTscnName sceneName outDir tscn tscns gdnss = do
-  createAndWriteFile (normalise $ outDir </> "Project" </> "Scenes" </> joinPath segmentsTscnName </> sceneName <> ".hs") $
+  createAndWriteFile (normalise $ outDir </> "Glue" </> "Scenes" </> joinPath segmentsTscnName </> sceneName <> ".hs") $
     T.unlines ([T.pack language, mkModule (intercalate "." (segmentsTscnName <> [sceneName]))]
                ++ nub (map fst sceneNodes)
                ++ [mkScenePath (_tscnSceneName tscn) (tscn ^. filepath)
@@ -812,18 +812,20 @@ rootNodeTscn :: Tscn -> Maybe (Name, TscnNode)
 rootNodeTscn tscn = find (\(name,node) -> isNothing (node^.parent)) $ M.toList $ tscn ^. nodes
 
 outputCombined inDir outDir tscns =
-  createAndWriteFile (outDir </> "Project" </> "Scenes.hs")
-    $ T.pack [i|module Project.Scenes #{exports} where
+  createAndWriteFile (outDir </> "Glue" </> "Scenes.hs")
+    $ T.pack [i|module Glue.Scenes #{exports} where
 #{imports}
 |]
       where imports = unlines $ map (\(fn,t) -> let f = intercalate "." $ segmentsName inDir fn <> [moduleName inDir fn]
-                                               in [i|import qualified Project.Scenes.#{f} as M|]) $ M.toList tscns
+                                               in [i|import qualified Glue.Scenes.#{f} as M|]) $ M.toList tscns
             exports = if null imports then "" else "(module M)"
 
-outputSupport dir = createAndWriteFile (dir </> "Project" </> "Support.hs") (T.pack $ language ++ support)
+outputSupport dir = createAndWriteFile (dir </> "Glue" </> "Support.hs") (T.pack $ language ++ support)
 
-mkRequirementsModule inDir gdnss = T.pack [i|module Project.Requirements where
-import Project.Support
+-- TODO Allow for custom module paths.
+mkRequirementsModule :: Foldable t => FilePath -> t (T.Text, Gdns) -> T.Text
+mkRequirementsModule inDir gdnss = T.pack [i|module Glue.Requirements where
+import Glue.Support
 
 type Nodes = '[#{reqs}]
 |]
@@ -831,7 +833,7 @@ type Nodes = '[#{reqs}]
         one (resource, name) = [i|OneResourceNode "#{resource}" "#{name}"|]
 
 outputGdnss :: FilePath -> FilePath -> M.Map T.Text Gdns -> IO ()
-outputGdnss inDir dir gdnss = createAndWriteFile (dir </> "Project" </> "Requirements.hs") $ mkRequirementsModule inDir $ M.toList gdnss
+outputGdnss inDir dir gdnss = createAndWriteFile (dir </> "Glue" </> "Requirements.hs") $ mkRequirementsModule inDir $ M.toList gdnss
 
 mkRequirement :: FilePath -> (T.Text, Gdns) -> [(String, T.Text)]
 mkRequirement inDir (fn,gdns) = mapMaybe (\(n,i) ->
