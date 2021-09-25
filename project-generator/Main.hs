@@ -592,9 +592,9 @@ language = [i|{-# LANGUAGE FlexibleContexts, FunctionalDependencies, MultiParamT
   GeneralizedNewtypeDeriving, LambdaCase #-}
 |]
 
-mkModule qualifiedName = T.pack [i|module Project.Scenes.#{qualifiedName} where
+mkModule qualifiedName = T.pack [i|module Glue.Scenes.#{qualifiedName} where
 import Prelude
-import Project.Support
+import Glue.Support
 import Godot
 import GHC.TypeLits
 |]
@@ -703,6 +703,8 @@ readGdns fn = do
           pure $ Gdns M.empty M.empty
     else
     pure $ Gdns M.empty M.empty
+
+outputSupport dir = createAndWriteFile (dir </> "Glue" </> "Support.hs") (T.pack $ language ++ support)
 
 main :: IO ()
 main = do
@@ -820,8 +822,8 @@ outputCombined inDir outDir tscns =
 
 mkRequirementsModule inDir gdnss = T.pack [i|{-# LANGUAGE DataKinds #-}
 
-module Project.Requirements where
-import Project.Support
+module Glue.Requirements where
+import Glue.Support
 
 type Nodes = '[#{reqs}]
 |]
