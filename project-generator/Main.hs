@@ -585,18 +585,16 @@ setupNode ty = do
 |]
   where end = "|]"
 
-language = [i|
-{-# LANGUAGE AllowAmbiguousTypes #-}
-{-# LANGUAGE DerivingStrategies #-}
-{-# LANGUAGE FunctionalDependencies #-}
-{-# LANGUAGE ImplicitPrelude #-}
-{-# LANGUAGE UndecidableInstances #-}
-
-{-# OPTIONS_GHC -Wno-unused-imports #-}
+language = [i|{-# LANGUAGE FlexibleContexts, FunctionalDependencies, MultiParamTypeClasses,
+  UndecidableInstances, OverloadedStrings, TemplateHaskell, TypeApplications,
+  TypeFamilies, TupleSections, DataKinds, TypeOperators, FlexibleInstances, RankNTypes,
+  AllowAmbiguousTypes, ScopedTypeVariables, DerivingStrategies,
+  GeneralizedNewtypeDeriving, LambdaCase #-}
 |]
 
-mkModule qualifiedName = T.pack [i|module Glue.Scenes.#{qualifiedName} where
-import Glue.Support
+mkModule qualifiedName = T.pack [i|module Project.Scenes.#{qualifiedName} where
+import Prelude
+import Project.Support
 import Godot
 import GHC.TypeLits
 |]
@@ -820,12 +818,10 @@ outputCombined inDir outDir tscns =
                                                in [i|import qualified Glue.Scenes.#{f} as M|]) $ M.toList tscns
             exports = if null imports then "" else "(module M)"
 
-outputSupport dir = createAndWriteFile (dir </> "Glue" </> "Support.hs") (T.pack $ language ++ support)
+mkRequirementsModule inDir gdnss = T.pack [i|{-# LANGUAGE DataKinds #-}
 
--- TODO Allow for custom module paths.
-mkRequirementsModule :: Foldable t => FilePath -> t (T.Text, Gdns) -> T.Text
-mkRequirementsModule inDir gdnss = T.pack [i|module Glue.Requirements where
-import Glue.Support
+module Project.Requirements where
+import Project.Support
 
 type Nodes = '[#{reqs}]
 |]
