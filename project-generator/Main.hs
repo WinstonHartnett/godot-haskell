@@ -105,6 +105,7 @@ support = [i|
 
 module Glue.Support where
 
+import           Prelude
 import           Control.Lens
 import           Control.Monad
 
@@ -744,7 +745,7 @@ main = do
 
 segmentsName :: FilePath -> T.Text -> [[Char]]
 segmentsName inDir tscnFilepath =
-  map mangle $ filter (/= ".") $ splitPath $ takeDirectory $ T.unpack tscnFilepath
+  map (filter (/= '/') . mangle) $ filter (/= ".") $ splitPath $ takeDirectory $ T.unpack tscnFilepath
 
 moduleName :: FilePath -> T.Text -> [Char]
 moduleName inDir tscnFilepath =
@@ -753,7 +754,7 @@ moduleName inDir tscnFilepath =
 outputTscn :: [FilePath] -> FilePath -> FilePath -> Tscn -> M.Map T.Text Tscn -> M.Map T.Text Gdns -> IO ()
 outputTscn segmentsTscnName sceneName outDir tscn tscns gdnss = do
   createAndWriteFile (normalise $ outDir </> "Glue" </> "Scenes" </> joinPath segmentsTscnName </> sceneName <> ".hs") $
-    T.unlines ([T.pack language, mkModule (intercalate "." (segmentsTscnName <> [sceneName]))]
+    T.unlines ([T.pack language, mkModule (intercalate "." ((map (filter (/= '/')) segmentsTscnName) <> [sceneName]))]
                ++ nub (map fst sceneNodes)
                ++ [mkScenePath (_tscnSceneName tscn) (tscn ^. filepath)
                  ,mkSceneRoot (_tscnSceneName tscn) (tscn ^. rootNode) ]
