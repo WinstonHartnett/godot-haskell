@@ -820,6 +820,8 @@ executable godot-haskell-project-generator
   ghc-options: -O0
   build-depends:
       aeson
+    , attoparsec
+    , pretty-show
     , base
     , bytestring
     , casing
