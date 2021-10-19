@@ -8,15 +8,15 @@
 
 module Main where
 
-import           Control.Applicative        ((<|>))
+import           Control.Applicative        ((<|>),Applicative(liftA2))
 import           Control.Concurrent         (threadDelay)
 import           Control.Lens               hiding (from,to)
 import           Control.Lens.TH
 import           Control.Monad
 
 import qualified Data.Attoparsec.Text       as P
-import           Data.Char                  (isDigit)
 import           Data.Char
+import           Data.Functor               (($>))
 import           Data.List
 import qualified Data.Map                   as M
 import           Data.Maybe
@@ -132,49 +132,28 @@ data Gdns =
 makeFields ''Gdns
 
 -- Tscn Parser
-
 tscnFloatP :: P.Parser TscnValue
-tscnFloatP =
-  (do
-     -- Might have negative sign
-     isNeg <- (Just '-' ==) <$> P.peekChar
-     when isNeg (void $ P.char '-')
-
-     firstPart <- P.takeWhile1 isDigit
-     P.char '.'
-     secondPart <- P.takeWhile1 isDigit
-
-     pure . TscnFloat . read . T.unpack
-       $ (let mainText = firstPart <> "." <> secondPart
-          in if isNeg
-               then "-" <> mainText
-               else mainText)) P.<?> "tscnFloat"
+tscnFloatP = (do
+                isNeg <- P.option "" (P.string "-")
+                beforeDot <- P.takeWhile1 isDigit
+                P.char '.'
+                afterDot <- P.takeWhile1 isDigit
+                pure . TscnFloat . read . T.unpack
+                  $ (isNeg <> beforeDot <> "." <> afterDot)) P.<?> "tscnFloat"
 
 tscnIntP :: P.Parser TscnValue
-tscnIntP = (do
-              isNeg <- (Just '-' ==) <$> P.peekChar
-              when isNeg (void $ P.char '-')
-              decVal <- P.decimal
-              pure . TscnInt
-                $ (if isNeg
-                     then negate decVal
-                     else decVal)) P.<?> "tscnInt"
+tscnIntP = (TscnInt <$> P.signed P.decimal) P.<?> "tscnInt"
 
 tscnBoolP :: P.Parser TscnValue
 tscnBoolP =
-  ((P.string "true" >> return (TscnBool True))
-   <|> (P.string "false" >> return (TscnBool False)))
+  ((P.string "true" $> TscnBool True) <|> (P.string "false" $> TscnBool False))
   P.<?> "tscnBool"
 
 stringP :: P.Parser T.Text
-stringP = (do
-             P.char '"'
-             strContents <- P.takeTill (== '"')
-             P.char '"'
-             pure strContents) P.<?> "tscnString"
+stringP = P.char '"' *> P.takeTill (== '"') <* P.char '"'
 
 tscnStringP :: P.Parser TscnValue
-tscnStringP = TscnString <$> stringP
+tscnStringP = (TscnString <$> stringP) P.<?> "tscnString"
 
 tscnArrP :: P.Parser TscnValue
 tscnArrP = (do
@@ -191,14 +170,7 @@ tscnDictP =
      P.endOfLine
      P.skipSpace
 
-     let kvParser = do
-           key <- stringP
-           P.skipSpace
-           P.char ':'
-           P.skipSpace
-           val <- tscnValueP
-           pure (key, val)
-
+     let kvParser = liftA2 (,) stringP (P.char ':' *> P.skipSpace *> tscnValueP)
      kvs <- kvParser `P.sepBy` (P.char ',' *> P.endOfLine *> P.skipSpace)
 
      P.endOfLine
@@ -314,11 +286,7 @@ data TscnParsed =
 makeFields ''TscnParsed
 
 tscnHeaderKVP :: P.Parser (T.Text, TscnValue)
-tscnHeaderKVP = do
-  key <- P.takeWhile (/= '=')
-  P.char '='
-  val <- tscnValueP
-  pure (key, val)
+tscnHeaderKVP = liftA2 (,) (P.takeTill (== '=')) (P.char '=' *> tscnValueP)
 
 headerWrapper :: T.Text
               -> (M.Map T.Text TscnValue -> M.Map T.Text TscnValue -> TscnSection)
@@ -327,19 +295,16 @@ headerWrapper targetSect p = do
   -- parse header
   P.string ("[" <> targetSect <> " ") P.<?> "header prefix"
   kvs <- (M.fromList <$> tscnHeaderKVP `P.sepBy` P.char ' ') P.<?> "tscnHeaders"
-  -- trace (show kvs) (P.char ']')
   P.char ']'
   P.endOfLine
   -- parse body
-  let tscnBodyP  = (do
-                      let parseKV = do
-                            key <- P.takeWhile (/= ' ')
-                            P.string " = "
-                            val <- tscnValueP
-                            P.endOfLine
-                            pure (key, val)
-                      entries <- P.manyTill parseKV (P.endOfLine <|> P.endOfInput) P.<?> "body kvs"
-                      pure . M.fromList $ entries) P.<?> "config body"
+  let tscnBodyP  =
+        (do
+           let parseKV =
+                 liftA2 (,) (P.takeTill (== ' '))
+                 (P.string " = " *> tscnValueP <* P.endOfLine)
+           entries <- P.manyTill parseKV (P.endOfLine <|> P.endOfInput) P.<?> "body kvs"
+           pure . M.fromList $ entries) P.<?> "config body"
       emptyBodyP = pure M.empty
 
   p kvs <$> (tscnBodyP <|> emptyBodyP)
@@ -414,16 +379,17 @@ tscnParser = do
   P.char ' '
   secondEntry <- tscnHeaderKVP
   P.char ']'
+
+  P.endOfLine
+  P.endOfLine
+
   let headerEntries = M.fromList [firstEntry, secondEntry]
       (Just (TscnInt loadSteps)) = M.lookup "load_steps" headerEntries
       (Just (TscnInt format)) = M.lookup "format" headerEntries
       descriptor = TscnDescriptor loadSteps format
+      sectionP = tscnConnectionP <|> tscnExtResourceP <|> tscnSubResourceP <|> tscnNodeP
 
-  P.endOfLine
-  P.endOfLine
-
-  sections <- P.manyTill
-    (tscnConnectionP <|> tscnExtResourceP <|> tscnSubResourceP <|> tscnNodeP) P.endOfInput
+  sections <- P.manyTill sectionP P.endOfInput
   pure $ TscnParsed descriptor sections
 
 allByExtension :: String -> FilePath -> IO [String]
