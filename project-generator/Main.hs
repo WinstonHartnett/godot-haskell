@@ -1,420 +1,143 @@
 {-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
+
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE MultiWayIf #-}
+
+{-# LANGUAGE OverloadedLabels #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE QuasiQuotes #-}
+
+{-# LANGUAGE RankNTypes #-}
+{-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE TupleSections #-}
 
 module Main where
 
-import           Control.Applicative        ((<|>),Applicative(liftA2))
-import           Control.Concurrent         (threadDelay)
-import           Control.Lens               hiding (from,to)
+import           Control.Applicative         ((<|>),Applicative(liftA2))
+import           Control.Concurrent          (threadDelay)
+import           Control.Lens                hiding (from)
 import           Control.Lens.TH
 import           Control.Monad
 
-import qualified Data.Attoparsec.Text       as P
+import qualified Data.Attoparsec.Text        as P
 import           Data.Char
-import           Data.Functor               (($>))
+import           Data.Either                 (fromRight)
+import           Data.Functor                (($>))
+import qualified Data.HashMap.Lazy           as M
 import           Data.List
-import qualified Data.Map                   as M
 import           Data.Maybe
-import qualified Data.Set                   as S
+import qualified Data.Set                    as S
 import           Data.String.Interpolate
-import qualified Data.Text                  as T
-import qualified Data.Text.IO               as T
+import qualified Data.Text                   as T
+import qualified Data.Text.Encoding          as T
+import qualified Data.Text.IO                as T
+import qualified Data.Vector                 as V
+import qualified Data.Vector.Algorithms.Heap as V
 
-import           Debug.Trace
+import           Godot.Parser.Resource       as P
+import           Godot.Parser.Resource.Lens  as P
 
-import qualified Language.Haskell.TH.Syntax as TH
+import qualified Language.Haskell.TH.Syntax  as TH
 
-import           Prelude                    hiding (id)
+import           Path.Text
+
+import           Prelude                     hiding (id)
+
+import qualified RawFilePath                 as FP
 
 import           System.Directory
 import           System.Environment
 import           System.FSNotify
-import           System.FilePath
+import           System.FilePath.Text        hiding ((<.>),(</>))
 
-newtype Id =
-  Id
-  { unId :: T.Text
-  }
-  deriving (Eq,Ord)
-  deriving newtype (Show)
-
-newtype Name =
-  Name
-  { unName :: T.Text
-  }
-  deriving (Eq,Ord)
-  deriving newtype (Show)
-
-newtype Method =
-  Method
-  { unMethod :: T.Text
-  }
-  deriving (Eq,Ord)
-  deriving newtype (Show)
-
-newtype Signal =
-  Signal
-  { unSignal :: T.Text
-  }
-  deriving (Eq,Ord)
-  deriving newtype (Show)
-
-newtype Ty =
-  Ty
-  { unTy :: T.Text
-  }
-  deriving (Eq,Ord)
-  deriving newtype (Show)
-
-newtype NodePath =
-  NodePath
-  { unNodePath :: T.Text
-  }
-  deriving (Eq,Ord)
-  deriving newtype (Show)
-
-data Resource =
-  Resource
-  { _resourceTy   :: Ty
-  , _resourcePath :: T.Text
-  }
-  deriving (Show)
-
-makeFields ''Resource
-
-data TscnNode =
-  TscnNode
-  { _tscnNodeTy         :: Ty
-  , _tscnNodeParent     :: Maybe NodePath
-  , _tscnNodeInstanceof :: Maybe Id
-  , _tscnNodeScript     :: Maybe Id
-  }
-  deriving (Show)
-
-makeFields ''TscnNode
-
-data TscnConnection =
-  TscnConnection
-  { _tscnConnectionSignal :: Signal
-  , _tscnConnectionFrom   :: NodePath
-  , _tscnConnectionTo     :: NodePath
-  , _tscnConnectionMethod :: Method
-  }
-  deriving (Show)
-
-makeFields ''TscnConnection
-
-data Tscn =
-  Tscn
-  { _tscnSceneName   :: Name
-  , _tscnResources   :: M.Map Id Resource
-  , _tscnNodes       :: M.Map Name TscnNode
-  , _tscnConnections :: [TscnConnection]
-  , _tscnRootNode    :: Maybe Name
-  , _tscnFilepath    :: FilePath
-  }
-  deriving (Show)
-
-makeFields ''Tscn
-
-data Gdns =
-  Gdns
-  { _gdnsExtResources :: M.Map Id Resource
-  , _gdnsResources    :: M.Map Name Id
-  }
-  deriving (Show)
-
-makeFields ''Gdns
-
--- Tscn Parser
-tscnFloatP :: P.Parser TscnValue
-tscnFloatP = (do
-                isNeg <- P.option "" (P.string "-")
-                beforeDot <- P.takeWhile1 isDigit
-                P.char '.'
-                afterDot <- P.takeWhile1 isDigit
-                pure . TscnFloat . read . T.unpack
-                  $ (isNeg <> beforeDot <> "." <> afterDot)) P.<?> "tscnFloat"
-
-tscnIntP :: P.Parser TscnValue
-tscnIntP = (TscnInt <$> P.signed P.decimal) P.<?> "tscnInt"
-
-tscnBoolP :: P.Parser TscnValue
-tscnBoolP =
-  ((P.string "true" $> TscnBool True) <|> (P.string "false" $> TscnBool False))
-  P.<?> "tscnBool"
-
-stringP :: P.Parser T.Text
-stringP = P.char '"' *> P.takeTill (== '"') <* P.char '"'
-
-tscnStringP :: P.Parser TscnValue
-tscnStringP = (TscnString <$> stringP) P.<?> "tscnString"
-
-tscnArrP :: P.Parser TscnValue
-tscnArrP = (do
-              P.char '['
-              P.endOfLine
-              arrVals <- tscnValueP `P.sepBy` (P.char ',' *> P.endOfLine)
-              P.string ",\n]"
-              pure . TscnArr $ arrVals) P.<?> "tscnArr"
-
-tscnDictP :: P.Parser TscnValue
-tscnDictP =
-  (do
-     P.char '{'
-     P.endOfLine
-     P.skipSpace
-
-     let kvParser = liftA2 (,) stringP (P.char ':' *> P.skipSpace *> tscnValueP)
-     kvs <- kvParser `P.sepBy` (P.char ',' *> P.endOfLine *> P.skipSpace)
-
-     P.endOfLine
-     P.skipSpace
-     P.char '}'
-
-     pure . TscnDict . M.fromList $ kvs) P.<?> "tscnDict"
-
-tscnConstructorP :: P.Parser TscnValue
-tscnConstructorP =
-  (do
-     let isGodotIdent c = isAlphaNum c || c == '@'
-     constructorName
-       <- P.takeWhile1 isGodotIdent -- TODO Causes problems w/ other delimiters
-     P.char '('
-     P.skipSpace
-     constructorArgs <- tscnValueP `P.sepBy` (P.char ',' *> P.skipSpace)
-     P.skipSpace
-     P.char ')'
-     pure $ TscnConstructor constructorName constructorArgs) P.<?> "tscnConstructor"
-
-tscnValueP :: P.Parser TscnValue
-tscnValueP =
-  (tscnStringP
-   <|> tscnFloatP
-   <|> tscnIntP
-   <|> tscnBoolP
-   <|> tscnArrP
-   <|> tscnDictP
-   <|> tscnConstructorP)
-  P.<?> "tscnValue"
-
--- | Values parsed from a Tscn file.
-data TscnValue
-  = TscnConstructor
-    { _tscnConstructorName      :: T.Text
-    , _tscnConstructorArguments :: [TscnValue]
-    }
-  | TscnInt Int
-  | TscnFloat Double
-  | TscnBool Bool
-  | TscnString T.Text
-  | TscnDict (M.Map T.Text TscnValue)
-  | TscnArr [TscnValue]
-  | TscnNull
-  deriving Show
-
--- | As of Godot 3.3
-data TscnSection
-  = ExtResourceSection
-    { _extResourceSectionPath    :: T.Text
-    , _extResourceSectionTy      :: T.Text
-    , _extResourceSectionId      :: Int
-      -- | Other header information
-    , _extResourceSectionHeaders :: M.Map T.Text TscnValue
-      -- | Body of the configuration entry
-    , _extResourceSectionEntries :: M.Map T.Text TscnValue
-    }
-  | SubResourceSection
-    { _subResourceSectionTy      :: T.Text
-    , _subResourceSectionId      :: Int
-      -- | Other header information
-    , _subResourceSectionHeaders :: M.Map T.Text TscnValue
-      -- | Body of the configuration entry
-    , _subResourceSectionEntries :: M.Map T.Text TscnValue
-    }
-  | NodeSection
-    { _nodeSectionTy :: Maybe T.Text
-    , _nodeSectionName :: T.Text
-      -- | If Nothing, then this node is the root
-    , _nodeSectionParent :: Maybe T.Text
-      -- | Instance is TscnConstructor
-    , _nodeSectionInst :: Maybe TscnValue
-    , _nodeSectionInstPlaceholder :: Maybe T.Text
-    , _nodeSectionOwner :: Maybe T.Text
-    , _nodeSectionIndex :: Maybe Int
-    , _nodeSectionGroups :: Maybe [T.Text]
-      -- | Other header information
-    , _nodeSectionHeaders :: M.Map T.Text TscnValue
-      -- | Body of the configuration entry
-    , _nodeSectionEntries :: M.Map T.Text TscnValue
-    }
-  | ConnectionSection
-    { _connectionSectionSignal  :: T.Text
-    , _connectionSectionFrom    :: T.Text
-    , _connectionSectionTo      :: T.Text
-    , _connectionSectionMethod  :: T.Text
-      -- | Other header information
-    , _connectionSectionHeaders :: M.Map T.Text TscnValue
-      -- | Body of the configuration entry
-    , _connectionSectionEntries :: M.Map T.Text TscnValue
-    }
-  deriving Show
-
-makeFields ''TscnSection
-
-data TscnDescriptor =
-  TscnDescriptor
-  { _tscnDescriptorLoadSteps :: Int
-  , _tscnDescriptorFormat    :: Int
+-- newtype Id =
+--   Id
+--   { unId :: T.Text
+--   }
+--   deriving (Eq,Ord)
+--   deriving newtype (Show)
+-- newtype Name =
+--   Name
+--   { unName :: T.Text
+--   }
+--   deriving (Eq,Ord)
+--   deriving newtype (Show)
+-- newtype Method =
+--   Method
+--   { unMethod :: T.Text
+--   }
+--   deriving (Eq,Ord)
+--   deriving newtype (Show)
+-- newtype Signal =
+--   Signal
+--   { unSignal :: T.Text
+--   }
+--   deriving (Eq,Ord)
+--   deriving newtype (Show)
+-- newtype Ty =
+--   Ty
+--   { unTy :: T.Text
+--   }
+--   deriving (Eq,Ord)
+--   deriving newtype (Show)
+-- newtype NodePath =
+--   NodePath
+--   { unNodePath :: T.Text
+--   }
+--   deriving (Eq,Ord)
+--   deriving newtype (Show)
+data Generator =
+  Generator
+  { -- | Scenes with Haskell root nodes
+    _generatorTscnFiles         :: M.HashMap (Path Rel File) P.TscnParsed
+    -- | Gdnative files pointing to Haskell libs
+  , _generatorGdnsFiles         :: M.HashMap (Path Rel File) P.GdnsParsed
+    -- | Haskell libraries
+  , _generatorRegisteredGdnlibs :: S.Set T.Text
+  , _generatorProjectFolder     :: Path Abs Dir
+  , _generatorGameFolder        :: Path Abs Dir
   }
   deriving Show
 
-makeFields ''TscnDescriptor
+makeLenses ''Generator
 
-data TscnParsed =
-  TscnParsed
-  { _tscnParsedDescriptor :: TscnDescriptor
-  , _tscnParsedSections   :: [TscnSection]
-  }
-  deriving Show
-
-makeFields ''TscnParsed
-
-tscnHeaderKVP :: P.Parser (T.Text, TscnValue)
-tscnHeaderKVP = liftA2 (,) (P.takeTill (== '=')) (P.char '=' *> tscnValueP)
-
-headerWrapper :: T.Text
-              -> (M.Map T.Text TscnValue -> M.Map T.Text TscnValue -> TscnSection)
-              -> P.Parser TscnSection
-headerWrapper targetSect p = do
-  -- parse header
-  P.string ("[" <> targetSect <> " ") P.<?> "header prefix"
-  kvs <- (M.fromList <$> tscnHeaderKVP `P.sepBy` P.char ' ') P.<?> "tscnHeaders"
-  P.char ']'
-  P.endOfLine
-  -- parse body
-  let tscnBodyP  =
-        (do
-           let parseKV =
-                 liftA2 (,) (P.takeTill (== ' '))
-                 (P.string " = " *> tscnValueP <* P.endOfLine)
-           entries <- P.manyTill parseKV (P.endOfLine <|> P.endOfInput) P.<?> "body kvs"
-           pure . M.fromList $ entries) P.<?> "config body"
-      emptyBodyP = pure M.empty
-
-  p kvs <$> (tscnBodyP <|> emptyBodyP)
-
-tscnSubResourceP :: P.Parser TscnSection
-tscnSubResourceP =
-  headerWrapper "sub_resource"
-  (\kvs bodyKvs -> let (Just (TscnString ty)) = M.lookup "type" kvs
-                       (Just (TscnInt id')) = M.lookup "id" kvs
-                       rest = M.withoutKeys kvs (S.fromList ["type", "id"])
-                   in SubResourceSection ty id' rest bodyKvs)
-  P.<?> "subResource"
-
-tscnExtResourceP :: P.Parser TscnSection
-tscnExtResourceP =
-  headerWrapper "ext_resource"
-  (\kvs bodyKvs -> let (Just (TscnString path)) = M.lookup "path" kvs
-                       (Just (TscnString ty)) = M.lookup "type" kvs
-                       (Just (TscnInt id')) = M.lookup "id" kvs
-                       restHeader = M.withoutKeys kvs (S.fromList ["path", "type", "id"])
-                   in ExtResourceSection path ty id' restHeader bodyKvs)
-  P.<?> "extResource"
-
-tscnNodeP :: P.Parser TscnSection
-tscnNodeP =
-  headerWrapper "node"
-  (\kvs bodyKvs
-   -> let (Just (TscnString path)) = M.lookup "path" kvs
-          ty = fmap (\(TscnString ty) -> ty) (M.lookup "type" kvs)
-          (Just (TscnString name)) = M.lookup "name" kvs
-          parent = fmap (\(TscnString p) -> p) (M.lookup "parent" kvs)
-          instance' = M.lookup "instance" kvs
-          instancePlaceholder =
-            fmap (\(TscnString p) -> p) (M.lookup "instance_placeholder" kvs)
-          owner = fmap (\(TscnString o) -> o) (M.lookup "owner" kvs)
-          index = fmap (\(TscnInt i) -> i) (M.lookup "index" kvs)
-          groups =
-            fmap (\(TscnArr a) -> map (\(TscnString s) -> s) a) (M.lookup "groups" kvs)
-          rest =
-            M.withoutKeys kvs
-            (S.fromList [ "path"
-                        , "type"
-                        , "parent"
-                        , "name"
-                        , "instance"
-                        , "instance_placeholder"
-                        , "owner"
-                        , "index"
-                        , "groups"])
-      in NodeSection ty name parent instance' instancePlaceholder owner index groups rest
-         bodyKvs)
-  P.<?> "node"
-
-tscnConnectionP :: P.Parser TscnSection
-tscnConnectionP =
-  headerWrapper "connection"
-  (\kvs bodyKvs
-   -> let (Just (TscnString signal)) = M.lookup "signal" kvs
-          (Just (TscnString from)) = M.lookup "from" kvs
-          (Just (TscnString to)) = M.lookup "to" kvs
-          (Just (TscnString method)) = M.lookup "method" kvs
-          rest = M.withoutKeys kvs (S.fromList ["signal", "from", "to", "method"])
-      in ConnectionSection signal from to method rest bodyKvs)
-  P.<?> "connection"
-
--- | This parser can only process automatically generated Godot `.tscn` files.
-tscnParser :: P.Parser TscnParsed
-tscnParser = do
-  P.string "[gd_scene "
-
-  firstEntry <- tscnHeaderKVP
-  P.char ' '
-  secondEntry <- tscnHeaderKVP
-  P.char ']'
-
-  P.endOfLine
-  P.endOfLine
-
-  let headerEntries = M.fromList [firstEntry, secondEntry]
-      (Just (TscnInt loadSteps)) = M.lookup "load_steps" headerEntries
-      (Just (TscnInt format)) = M.lookup "format" headerEntries
-      descriptor = TscnDescriptor loadSteps format
-      sectionP = tscnConnectionP <|> tscnExtResourceP <|> tscnSubResourceP <|> tscnNodeP
-
-  sections <- P.manyTill sectionP P.endOfInput
-  pure $ TscnParsed descriptor sections
-
-allByExtension :: String -> FilePath -> IO [String]
+allByExtension :: T.Text -> Path Abs Dir -> IO [Path Abs File]
 allByExtension ext dir = do
-  b <- doesDirectoryExist dir
+  let bytePath = T.encodeUtf8 $ toFilePath dir
+  b <- FP.doesDirectoryExist bytePath
   if b
     then do
-      l <- map (dir </>) <$> listDirectory dir
-      tscns <- filterM (\f -> (&& isSuffixOf ext f) <$> doesFileExist f) l
-      dirs <- filterM doesDirectoryExist l
+      entries <- FP.listDirectory bytePath
+      files <- convertToPath parseRelFile <$> filterM FP.doesFileExist entries
+      dirs <- convertToPath parseRelDir <$> filterM FP.doesDirectoryExist entries
+      let tscns = filter (\f -> fromRight "" (fileExtension f) == ".tscn") files
       (tscns ++) . concat <$> mapM (allByExtension ext) dirs
     else pure []
+  where
+    convertToPath
+      :: (T.Text -> Either PathError (Path Rel t)) -> [FP.RawFilePath] -> [Path Abs t]
+    convertToPath convFunc =
+      map (dir </>) . mapMaybe (either (const Nothing) Just . convFunc . T.decodeUtf8)
 
-mangle (h:t) = toUpper h : t
-
-createAndWriteFile :: FilePath -> T.Text -> IO ()
-createAndWriteFile path content = do
-  createDirectoryIfMissing True $ takeDirectory path
-  T.writeFile path
-    ("-- | This file is AUTOGENERATED by godot-haskell-project-generator. DO NOT EDIT\n\n"
-     <> content)
+main :: IO ()
+main = do
+  args <- getArgs
+  unless (length args == 2)
+    (error "Usage: godot-haskell-project-generator <project directory> <output directory>")
+  let [inDir, outDir] = args
+      regenerate      = do
+        tscns <- allByExtension ".tscn" (T.pack inDir)
+        gdnss <- allByExtension ".gdns" (T.pack inDir)
+        pure ()
+        -- TODO ByteString path
+  pure ()
 
 support =
   [i|
 {-# OPTIONS_GHC -Wno-name-shadowing #-}
+{-# LANGUAGE LambdaCase #-}
 
 module Glue.Support where
 
@@ -901,7 +624,7 @@ setupNode ty = do
     end = "|]"
 
 language =
-  [i|{-# LANGUAGE FlexibleContexts, FunctionalDependencies, MultiParamTypeClasses,
+  T.pack [i|{-# LANGUAGE FlexibleContexts, FunctionalDependencies, MultiParamTypeClasses,
   UndecidableInstances, OverloadedStrings, TemplateHaskell, TypeApplications,
   TypeFamilies, TupleSections, DataKinds, TypeOperators, FlexibleInstances, RankNTypes,
   AllowAmbiguousTypes, ScopedTypeVariables, DerivingStrategies,
@@ -916,323 +639,461 @@ import Godot
 import GHC.TypeLits
 |]
 
-mkSceneRoot scene (Just name) =
-  T.pack [i|
-instance SceneRoot "#{mangle $ T.unpack $ unName scene}" where
-  type SceneRootNode "#{mangle $ T.unpack $ unName scene}" = "#{unName name}"
-|]
+mkSceneRoot scene name =
+  T.pack
+  [i|
+instance SceneRoot "#{scene}" where
+  type SceneRootNode "#{scene}" = "#{name}"
+  |]
 
 mkScenePath scene filepath =
   T.pack [i|
-instance SceneResourcePath "#{mangle $ T.unpack $ unName scene}" where
+instance SceneResourcePath "#{scene}" where
   sceneResourcePath = "res://#{filepath}"
-|]
+  |]
 
 mkSceneNode scene name path ty ty' isHaskell =
   ( T.pack [i|import Godot.Core.#{ty}()|]
   , T.pack [i|
 instance SceneNode        "#{scene}" "#{path}" where
   type SceneNodeType      "#{scene}" "#{path}" = #{ty'}
-  type SceneNodeName      "#{scene}" "#{path}" = "#{name'}"
-  type SceneNodeIsHaskell "#{scene}" "#{path}" = #{hsNode}
+  type SceneNodeName      "#{scene}" "#{path}" = "#{name}"
+  type SceneNodeIsHaskell "#{scene}" "#{path}" = #{isHaskell}
 |])
-  where
-    name'  = T.pack name
 
-    hsNode = case isHaskell of
-      Nothing -> "'Nothing"
-      Just (Name s, Name n) -> "'Just '(\"" <> s <> "\", \"" <> n <> "\")"
-
+  -- where
+  --   hsNode = case isHaskell of
+  --     Nothing -> "'Nothing"
+  --     Just (Name s, Name n) -> "'Just '(\"" <> s <> "\", \"" <> n <> "\")"
 mkSceneConnection scene from signal to method =
   T.pack
   [i|
 instance SceneConnection "#{scene}" "#{from}" "#{signal}" "#{to}" "#{method}"
 |]
 
-after x = T.drop (T.length x) . snd . T.breakOn x
+-- after x = T.drop (T.length x) . snd . T.breakOn x
+-- rowType = Ty . T.takeWhile (/= '\"') . after "type=\""
+-- rowPath = T.takeWhile (/= '\"') . after "path=\"res://"
+-- rowName = Name . T.takeWhile (/= '\"') . after "name=\""
+-- rowParent t =
+--   NodePath
+--   <$> if T.isInfixOf " parent=\"" t
+--     then Just $ T.takeWhile (/= '\"') $ after "parent=\"" t
+--     else Nothing
+-- rowId = Id . T.takeWhile isNumber . after "id="
+-- rowInstance t =
+--   Id
+--   <$> if T.isInfixOf " instance=ExtResource( " t
+--     then Just $ T.takeWhile isNumber $ after " instance=ExtResource( " t
+--     else Nothing
+-- resClassName = Name . T.takeWhile (/= '\"') . after "class_name = \""
+-- resScript = Id . T.takeWhile isNumber . after "script = ExtResource( "
+-- resLibrary = Id . T.takeWhile isNumber . after "library = ExtResource( "
+-- rowSignal = Signal . T.takeWhile (/= '\"') . after "signal=\""
+-- rowMethod = Method . T.takeWhile (/= '\"') . after "method=\""
+-- rowFrom current = resolve current . NodePath . T.takeWhile (/= '\"') . after "from=\""
+-- rowTo current = resolve current . NodePath . T.takeWhile (/= '\"') . after "to=\""
+-- resolve :: Maybe Name -> NodePath -> NodePath
+-- resolve (Just (Name n)) (NodePath ".") = NodePath n
+-- resolve _ (NodePath ".") = error "Relative node path without a current node"
+-- resolve _ p = p
+-- readTscn fn relFile = do
+--   b <- doesFileExist fn
+--   let tscnName = Name $ T.pack $ takeBaseName fn
+--   if b
+--     then do
+--       f <- T.lines <$> T.readFile fn
+--       case f of
+--         (h:l) -> do
+--           if T.isPrefixOf "[gd_scene " h
+--             then pure
+--               $ fillRoot
+--               $ foldl'
+--               (\(s, current, root) t -> if
+--                  | T.isPrefixOf "[ext_resource " (Name <$>) . t
+--                    -> ( s & resources . at (rowId t) ?~ Resource (rowType t) (rowPath t)
+--                       , current
+--                       , root)
+--                  -- TODO Add subresource parsing here?
+--                  | T.isPrefixOf "[node " t
+--                    -> ( s
+--                         & nodes . at (rowName t)
+--                         ?~ TscnNode (rowType t) (rowParent t) (rowInstance t) Nothing
+--                       , Just $ rowName t
+--                       , case rowParent t of
+--                           Nothing -> Just $ rowName t
+--                           _       -> root)
+--                  | T.isPrefixOf "[connection " t
+--                    -> ( s
+--                         & connections
+--                         %~ (TscnConnection (rowSignal t) (rowFrom root t) (rowTo root t)
+--                             (rowMethod t) :)
+--                       , current
+--                       , root)
+--                  | T.isPrefixOf "script = ExtResource( " t -> case current of
+--                    Just name
+--                      -> (s & nodes . ix name . script ?~ resScript t, current, root)
+--                  | otherwise -> (s, current, root))
+--               (Tscn tscnName M.empty M.empty [] Nothing relFile, Nothing, Nothing) l
+--             else pure $ Tscn tscnName M.empty M.empty [] Nothing relFile
+--     else pure $ Tscn tscnName M.empty M.empty [] Nothing relFile
+--   where
+--     fillRoot (tscn, _, root) = tscn & rootNode .~ root
+-- readTscn fn relFile = do
+--   b <- doesFileExist fn
+--   let tscnName    = Name $ T.pack $ takeBaseName fn
+--       defaultTscn = Tscn tscnName M.empty M.empty [] Nothing relFile
+--   if b
+--     then do
+--       conts <- T.readFile fn
+--       let parsed = case P.parseOnly tscnParser conts of
+--             Right p  -> p ^. sections
+--             Left err -> error $ "Couldn't parse " <> fn <> ": " <> err
+--           updateTscn tscnData section = case section of
+--             ExtResourceSection path ty id' _ _ -> tscnData
+--               & resources . at (Id . T.pack . show $ id')
+--               ?~ Resource (Ty ty) (fromJust $ T.stripPrefix "res://" path)
+--             NodeSection ty name parent inst _ _ _ _ _ entries
+--               -> let script = do
+--                        scriptEntry <- M.lookup "script" entries
+--                        case unTscnConstructor scriptEntry of
+--                          ("SubResource", [TscnInt i]) -> Just
+--                            . head
+--                            . mapMaybe
+--                            (\case
+--                               SubResourceSection _ id' _ entries -> if id' == i
+--                                 then Id
+--                                   . T.pack
+--                                   . show
+--                                   . unTscnInt
+--                                   . head
+--                                   . snd
+--                                   . unTscnConstructor
+--                                   <$> M.lookup "library" entries
+--                                 else Nothing
+--                               _ -> Nothing)
+--                            $ parsed
+--                          _ -> error "Invalid `script` entry in node body!"
+--                  in tscnData
+--                     & nodes . at (Name name)
+--                     ?~ TscnNode (maybe (Ty "") (Ty) ty) (NodePath <$> parent)
+--                     (Id . T.pack . show <$> inst) script
+--             ConnectionSection signal from to mthd _ _ -> tscnData
+--               & connections
+--               %~ (TscnConnection (Signal signal) (NodePath from) (NodePath to)
+--                   (Method mthd) :)
+--             _ -> tscnData
+--           rootNode' =
+--             (Name <$>) . foldl' (<|>) Nothing . map (\case
+--                                                        NodeSection _ name parent _ _ _ _ _
+--                                                          _ _ -> maybe (Just name)
+--                                                          (const Nothing) parent
+--                                                        _ -> Nothing) $ parsed
+--       let res = foldl' updateTscn defaultTscn parsed & rootNode .~ rootNode'
+--       pPrint res
+--       pure res
+--     else pure defaultTscn
+-- readGdns fn = do
+--   b <- doesFileExist fn
+--   if b
+--     then do
+--       f <- T.lines <$> T.readFile fn
+--       case f of
+--         (h:l) -> do
+--           if T.isPrefixOf "[gd_resource type=\"NativeScript\" " h
+--             then pure
+--               $ fst
+--               $ foldl'
+--               (\(s, current) t -> if
+--                  | T.isPrefixOf "[ext_resource " t
+--                    -> ( s
+--                         & extResources . at (rowId t) ?~ Resource (rowType t) (rowPath t)
+--                       , current)
+--                  | T.isPrefixOf "[" t -> (s, Nothing) -- Reset on any new heading
+--                  | T.isPrefixOf "class_name =" t -> (s, Just $ resClassName t)
+--                  | T.isPrefixOf "library = " t
+--                    -> (s & resources . at (fromJust current) ?~ resLibrary t, current)
+--                  | otherwise -> (s, current)) (Gdns M.empty M.empty, Nothing) l
+--             else pure $ Gdns M.empty M.empty
+--     else pure $ Gdns M.empty M.empty
+-- outputSupport dir =
+--   createAndWriteFile (dir </> "Glue" </> "Support.hs") (T.pack $ language ++ support)
+-- main :: IO ()
+-- main = do
+--   args <- getArgs
+--   case args of
+--     [inDir, outDir] -> do
+--       let regenerate = do
+--             putStrLn "Regenerating ..."
+--             print =<< allByExtension ".gdns" inDir
+--             print =<< allByExtension ".tscn" inDir
+--             b <- doesDirectoryExist (outDir </> "Glue")
+--             when b $ removeDirectoryRecursive (outDir </> "Glue")
+--             createDirectoryIfMissing True (outDir </> "Glue" </> "Scenes")
+--             outputSupport outDir
+--             --
+--             tscns <- M.fromList
+--               <$> (mapM (\f -> let relFile = makeRelative inDir f
+--                                in (T.pack relFile, ) <$> readTscn f relFile)
+--                    =<< allByExtension ".tscn" inDir)
+--             gdnss <- M.fromList
+--               <$> (mapM (\f -> (T.pack $ makeRelative inDir f, ) <$> readGdns f)
+--                    =<< allByExtension ".gdns" inDir)
+--             --
+--             mapM_ (\(fn, t) -> outputTscn (segmentsName inDir fn) (moduleName inDir fn)
+--                    outDir t tscns gdnss) $ M.toList tscns
+--             outputCombined inDir outDir tscns
+--             outputGdnss inDir outDir gdnss
+--             putStrLn "Generatd!"
+--             putStrLn "Watching ... ctrl+c to stop"
+--       regenerate
+--       withManager $ \mgr -> do
+--         watchDir mgr inDir (\e -> let ext = takeExtension (eventPath e)
+--                                   in ext == ".gdns" || ext == ".tscn")
+--           (\a -> do
+--              regenerate
+--              print a)
+--         forever $ threadDelay 1000000
+--     _ -> error
+--       "Usage: godot-haskell-parse-game <godot-project-directory> <output-directory>"
+-- segmentsName :: FilePath -> T.Text -> [[Char]]
+-- segmentsName inDir tscnFilepath =
+--   map (filter (/= '/') . mangle)
+--   $ filter (/= ".")
+--   $ splitPath
+--   $ takeDirectory
+--   $ T.unpack tscnFilepath
+-- moduleName :: FilePath -> T.Text -> [Char]
+-- moduleName inDir tscnFilepath = mangle $ takeBaseName $ T.unpack tscnFilepath
+-- outputTscn :: [FilePath]
+--            -> FilePath
+--            -> FilePath
+--            -> Tscn
+--            -> M.Map T.Text Tscn
+--            -> M.Map T.Text Gdns
+--            -> IO ()
+-- outputTscn segmentsTscnName sceneName outDir tscn tscns gdnss = do
+--   createAndWriteFile
+--     (normalise
+--      $ outDir </> "Glue" </> "Scenes" </> joinPath segmentsTscnName </> sceneName
+--      <> ".hs")
+--     $ T.unlines
+--     ([ T.pack language
+--      , mkModule
+--        (intercalate "." ((map (filter (/= '/')) segmentsTscnName) <> [sceneName]))]
+--      ++ nub (map fst sceneNodes)
+--      ++ [ mkScenePath (_tscnSceneName tscn) (tscn ^. filepath)
+--         , mkSceneRoot (_tscnSceneName tscn) (tscn ^. rootNode)]
+--      ++ map snd sceneNodes
+--      ++ map (\conn -> mkSceneConnection sceneName (conn ^. from) (conn ^. signal)
+--              (conn ^. to) (conn ^. method)) (tscn ^. connections))
+--   where
+--     sceneNodes =
+--       map (\(name, node) -> mkSceneNode sceneName (T.unpack $ unName name)
+--            (case node ^. parent of
+--               Nothing -> unName name
+--               Just (NodePath ".") -> unName name
+--               Just (NodePath p') -> p' <> "/" <> unName name)
+--            (case (node ^. ty, node ^. instanceof) of
+--               (Ty "", Just i) -> case M.lookup i (tscn ^. resources) of
+--                 Just r  -> r ^. ty
+--                 Nothing -> error $ "Can't look up type of " ++ show (name, node)
+--               (t, _)          -> t)
+--            (annotatePackedScene node $ case (node ^. ty, node ^. instanceof) of
+--               (Ty "", Just i) -> case M.lookup i (tscn ^. resources) of
+--                 Just r  -> r ^. ty
+--                 Nothing -> error $ "Can't look up type of " ++ show (name, node)
+--               (t, _)          -> t) (isHaskellNode name node tscn tscns gdnss))
+--       (M.toList $ tscn ^. nodes)
+--     annotatePackedScene node (Ty "PackedScene") =
+--       Ty $ "PackedScene' \"" <> unName (fromJust $ do
+--                                           i <- node ^. instanceof
+--                                           r <- M.lookup i (tscn ^. resources)
+--                                           t <- M.lookup (r ^. path) tscns
+--                                           t ^. rootNode) <> "\""
+--     annotatePackedScene node ty = ty
+stripResPrefix :: T.Text -> T.Text
+stripResPrefix = fromJust . T.stripPrefix "res://"
 
-rowType = Ty . T.takeWhile (/= '\"') . after "type=\""
-
-rowPath = T.takeWhile (/= '\"') . after "path=\"res://"
-
-rowName = Name . T.takeWhile (/= '\"') . after "name=\""
-
-rowParent t =
-  NodePath
-  <$> if T.isInfixOf " parent=\"" t
-    then Just $ T.takeWhile (/= '\"') $ after "parent=\"" t
-    else Nothing
-
-rowId = Id . T.takeWhile isNumber . after "id="
-
-rowInstance t =
-  Id
-  <$> if T.isInfixOf " instance=ExtResource( " t
-    then Just $ T.takeWhile isNumber $ after " instance=ExtResource( " t
-    else Nothing
-
-resClassName = Name . T.takeWhile (/= '\"') . after "class_name = \""
-
-resScript = Id . T.takeWhile isNumber . after "script = ExtResource( "
-
-resLibrary = Id . T.takeWhile isNumber . after "library = ExtResource( "
-
-rowSignal = Signal . T.takeWhile (/= '\"') . after "signal=\""
-
-rowMethod = Method . T.takeWhile (/= '\"') . after "method=\""
-
-rowFrom current = resolve current . NodePath . T.takeWhile (/= '\"') . after "from=\""
-
-rowTo current = resolve current . NodePath . T.takeWhile (/= '\"') . after "to=\""
-
-resolve :: Maybe Name -> NodePath -> NodePath
-resolve (Just (Name n)) (NodePath ".") = NodePath n
-resolve _ (NodePath ".") = error "Relative node path without a current node"
-resolve _ p = p
-
-readTscn fn relFile = do
-  b <- doesFileExist fn
-  let tscnName = Name $ T.pack $ takeBaseName fn
-  if b
-    then do
-      f <- T.lines <$> T.readFile fn
-      case f of
-        (h:l) -> do
-          if T.isPrefixOf "[gd_scene " h
-            then pure
-              $ fillRoot
-              $ foldl'
-              (\(s, current, root) t -> if
-                 | T.isPrefixOf "[ext_resource " t
-                   -> ( s & resources . at (rowId t) ?~ Resource (rowType t) (rowPath t)
-                      , current
-                      , root)
-                 -- TODO Add subresource parsing here?
-                 | T.isPrefixOf "[node " t
-                   -> ( s
-                        & nodes . at (rowName t)
-                        ?~ TscnNode (rowType t) (rowParent t) (rowInstance t) Nothing
-                      , Just $ rowName t
-                      , case rowParent t of
-                          Nothing -> Just $ rowName t
-                          _       -> root)
-                 | T.isPrefixOf "[connection " t
-                   -> ( s
-                        & connections
-                        %~ (TscnConnection (rowSignal t) (rowFrom root t) (rowTo root t)
-                            (rowMethod t) :)
-                      , current
-                      , root)
-                 | T.isPrefixOf "script = ExtResource( " t -> case current of
-                   Just name
-                     -> (s & nodes . ix name . script ?~ resScript t, current, root)
-                 | otherwise -> (s, current, root))
-              (Tscn tscnName M.empty M.empty [] Nothing relFile, Nothing, Nothing) l
-            else pure $ Tscn tscnName M.empty M.empty [] Nothing relFile
-    else pure $ Tscn tscnName M.empty M.empty [] Nothing relFile
+findSceneRoot :: TscnParsed -> Node
+findSceneRoot tscn = go (tscn ^. P.tscnParsedSections)
   where
-    fillRoot (tscn, _, root) = tscn & rootNode .~ root
+    go (x:xs) = case x of
+      NodeSection n' -> if isNothing (n' ^. P.nodeParent)
+        then n'
+        else go xs
+      _ -> go xs
+    go []     = error "Invalid scene: scene has no root node!"
 
-readGdns fn = do
-  b <- doesFileExist fn
-  if b
-    then do
-      f <- T.lines <$> T.readFile fn
-      case f of
-        (h:l) -> do
-          if T.isPrefixOf "[gd_resource type=\"NativeScript\" " h
-            then pure
-              $ fst
-              $ foldl'
-              (\(s, current) t -> if
-                 | T.isPrefixOf "[ext_resource " t
-                   -> ( s
-                        & extResources . at (rowId t) ?~ Resource (rowType t) (rowPath t)
-                      , current)
-                 | T.isPrefixOf "[" t -> (s, Nothing) -- Reset on any new heading
-                 | T.isPrefixOf "class_name =" t -> (s, Just $ resClassName t)
-                 | T.isPrefixOf "library = " t
-                   -> (s & resources . at (fromJust current) ?~ resLibrary t, current)
-                 | otherwise -> (s, current)) (Gdns M.empty M.empty, Nothing) l
-            else pure $ Gdns M.empty M.empty
-    else pure $ Gdns M.empty M.empty
+indexedSections
+  :: Ord b => (GodotSection -> Maybe a) -> Lens' a b -> TscnParsed -> V.Vector a
+indexedSections select ordLens tscn =
+  V.modify (V.sortBy (\a1 a2 -> (a1 ^. ordLens) `compare` (a2 ^. ordLens)))
+  . V.mapMaybe select
+  . V.fromList
+  $ (tscn ^. P.tscnParsedSections)
 
-outputSupport dir =
-  createAndWriteFile (dir </> "Glue" </> "Support.hs") (T.pack $ language ++ support)
-
-main :: IO ()
-main = do
-  args <- getArgs
-  case args of
-    [inDir, outDir] -> do
-      let regenerate = do
-            putStrLn "Regenerating ..."
-            print =<< allByExtension ".gdns" inDir
-            print =<< allByExtension ".tscn" inDir
-            b <- doesDirectoryExist (outDir </> "Glue")
-            when b $ removeDirectoryRecursive (outDir </> "Glue")
-            createDirectoryIfMissing True (outDir </> "Glue" </> "Scenes")
-            outputSupport outDir
-            --
-            tscns <- M.fromList
-              <$> (mapM (\f -> let relFile = makeRelative inDir f
-                               in (T.pack relFile, ) <$> readTscn f relFile)
-                   =<< allByExtension ".tscn" inDir)
-            gdnss <- M.fromList
-              <$> (mapM (\f -> (T.pack $ makeRelative inDir f, ) <$> readGdns f)
-                   =<< allByExtension ".gdns" inDir)
-            --
-            mapM_ (\(fn, t) -> outputTscn (segmentsName inDir fn) (moduleName inDir fn)
-                   outDir t tscns gdnss) $ M.toList tscns
-            outputCombined inDir outDir tscns
-            outputGdnss inDir outDir gdnss
-            putStrLn "Generatd!"
-            putStrLn "Watching ... ctrl+c to stop"
-      regenerate
-      withManager $ \mgr -> do
-        watchDir mgr inDir (\e -> let ext = takeExtension (eventPath e)
-                                  in ext == ".gdns" || ext == ".tscn")
-          (\a -> do
-             regenerate
-             print a)
-        forever $ threadDelay 1000000
-    _ -> error
-      "Usage: godot-haskell-parse-game <godot-project-directory> <output-directory>"
-
-segmentsName :: FilePath -> T.Text -> [[Char]]
-segmentsName inDir tscnFilepath =
-  map (filter (/= '/') . mangle)
-  $ filter (/= ".")
-  $ splitPath
-  $ takeDirectory
-  $ T.unpack tscnFilepath
-
-moduleName :: FilePath -> T.Text -> [Char]
-moduleName inDir tscnFilepath = mangle $ takeBaseName $ T.unpack tscnFilepath
-
-outputTscn :: [FilePath]
-           -> FilePath
-           -> FilePath
-           -> Tscn
-           -> M.Map T.Text Tscn
-           -> M.Map T.Text Gdns
-           -> IO ()
-outputTscn segmentsTscnName sceneName outDir tscn tscns gdnss = do
-  createAndWriteFile
-    (normalise
-     $ outDir </> "Glue" </> "Scenes" </> joinPath segmentsTscnName </> sceneName
-     <> ".hs")
-    $ T.unlines
-    ([ T.pack language
-     , mkModule
-       (intercalate "." ((map (filter (/= '/')) segmentsTscnName) <> [sceneName]))]
-     ++ nub (map fst sceneNodes)
-     ++ [ mkScenePath (_tscnSceneName tscn) (tscn ^. filepath)
-        , mkSceneRoot (_tscnSceneName tscn) (tscn ^. rootNode)]
-     ++ map snd sceneNodes
-     ++ map (\conn -> mkSceneConnection sceneName (conn ^. from) (conn ^. signal)
-             (conn ^. to) (conn ^. method)) (tscn ^. connections))
-  where
+outputTscn :: Generator -> Path Rel File -> IO ()
+outputTscn gen fname = do
+  let 
+    -- Metadata collection
+    tscn = fromJust $ M.lookup fname (gen ^. generatorTscnFiles)
+    currSceneName = fromJust $ ".tscn" `T.stripPrefix` toFilePath fname
+    segments = splitPath . toFilePath $ fname
+    sceneModule = T.intercalate "." . V.toList . V.filter (/= "/") $ segments
+    isExtResource (ExtResourceSection _) = True
+    isExtResource _ = False
+    tscnResources = indexedSections (\case
+                                       ExtResourceSection e' -> Just e'
+                                       _ -> Nothing) extResourceId tscn
+    tscnSubResources = indexedSections (\case
+                                          SubResourceSection s' -> Just s'
+                                          _ -> Nothing) subResourceId tscn
+    rootNode = findSceneRoot tscn
+    -- Output generation
+    scenePath = mkScenePath currSceneName ("res://" <> toFilePath fname)
+    sceneRoot = mkSceneRoot currSceneName (rootNode ^. P.nodeName)
     sceneNodes =
-      map (\(name, node) -> mkSceneNode sceneName (T.unpack $ unName name)
-           (case node ^. parent of
-              Nothing -> unName name
-              Just (NodePath ".") -> unName name
-              Just (NodePath p') -> p' <> "/" <> unName name)
-           (case (node ^. ty, node ^. instanceof) of
-              (Ty "", Just i) -> case M.lookup i (tscn ^. resources) of
-                Just r  -> r ^. ty
-                Nothing -> error $ "Can't look up type of " ++ show (name, node)
-              (t, _)          -> t)
-           (annotatePackedScene node $ case (node ^. ty, node ^. instanceof) of
-              (Ty "", Just i) -> case M.lookup i (tscn ^. resources) of
-                Just r  -> r ^. ty
-                Nothing -> error $ "Can't look up type of " ++ show (name, node)
-              (t, _)          -> t) (isHaskellNode name node tscn tscns gdnss))
-      (M.toList $ tscn ^. nodes)
-
-    annotatePackedScene node (Ty "PackedScene") =
-      Ty $ "PackedScene' \"" <> unName (fromJust $ do
-                                          i <- node ^. instanceof
-                                          r <- M.lookup i (tscn ^. resources)
-                                          t <- M.lookup (r ^. path) tscns
-                                          t ^. rootNode) <> "\""
-    annotatePackedScene node ty = ty
-
-isHaskellNode :: Name
-              -> TscnNode
-              -> Tscn
-              -> M.Map T.Text Tscn
-              -> M.Map T.Text Gdns
-              -> Maybe (Name, Name)
-isHaskellNode name node tscn tscns gdnss =
-  case ( (\f -> tscn ^? resources . at f . _Just . path) =<< (node ^. script)
-       , node ^. instanceof) of
-    (Just p, _) -> case gdnss ^. at p of
-      Just g -> if isHaskellGdns name g
-        then Just (Name $ T.pack $ dropExtension $ T.unpack p, name)
-        else Nothing
-    (_, Just i) -> let t = tscns ^. at (tscn ^. resources . at i . _Just . path)
-                   in case (t, rootNodeTscn (fromJust t)) of
-                        (Just t', Just (n, r)) -> isHaskellNode n r t' tscns gdnss
-                        _ -> Nothing
-    _           -> Nothing
-
-isHaskellGdns :: Name -> Gdns -> Bool
-isHaskellGdns n gdns =
-  maybe False (\f -> maybe False isHaskellResource (gdns ^. extResources . at f))
-  (gdns ^. resources . at n)
-
-isHaskellResource :: Resource -> Bool
-isHaskellResource r = T.isSuffixOf ".gdnlib" $ r ^. path
-
-rootNodeTscn :: Tscn -> Maybe (Name, TscnNode)
-rootNodeTscn tscn =
-  find (\(name, node) -> isNothing (node ^. parent)) $ M.toList $ tscn ^. nodes
-
-outputCombined inDir outDir tscns =
-  createAndWriteFile (outDir </> "Glue" </> "Scenes.hs")
-  $ T.pack [i|module Glue.Scenes #{exports} where
-#{imports}
-|]
-  where
-    imports =
-      unlines
-      $ map (\(fn, t)
-             -> let f = intercalate "." $ segmentsName inDir fn <> [moduleName inDir fn]
-                in [i|import qualified Glue.Scenes.#{f} as M|])
-      $ M.toList tscns
-
-    exports =
-      if null imports
-        then ""
-        else "(module M)"
-
-mkRequirementsModule inDir gdnss =
-  T.pack [i|{-# LANGUAGE DataKinds #-}
-
-module Glue.Requirements where
-import Glue.Support
-
-type Nodes = '[#{reqs}]
-|]
-  where
-    reqs = intercalate ", " $ map one $ sort $ concatMap (mkRequirement inDir) gdnss
-
-    one (resource, name) = [i|OneResourceNode "#{resource}" "#{name}"|]
-
-outputGdnss :: FilePath -> FilePath -> M.Map T.Text Gdns -> IO ()
-outputGdnss inDir dir gdnss =
-  createAndWriteFile (dir </> "Glue" </> "Requirements.hs")
-  $ mkRequirementsModule inDir
-  $ M.toList gdnss
-
-mkRequirement :: FilePath -> (T.Text, Gdns) -> [(String, T.Text)]
-mkRequirement inDir (fn, gdns) =
-  trace ("\n\noutput: " <> show inDir <> show (fn, gdns))
-  (mapMaybe (\(n, i) -> case M.lookup i (gdns ^. extResources) of
-               Just r -> if T.isInfixOf ".gdnlib" (r ^. path)
-                 && unTy (r ^. ty) == "GDNativeLibrary"
-                 then Just (moduleName inDir fn, unName n)
-                 else Nothing
-               _      -> Nothing) $ M.toList $ gdns ^. resources)
+      map
+      (\s
+       -> let scene'    = toFilePath $ filename fname
+              name'     = s ^. P.nodeName
+              path'     =
+                maybe (rootNode ^. P.nodeName) (T.replace "." (rootNode ^. P.nodeName))
+                (s ^. P.nodeParent)
+              ty        =
+                fromMaybe ((tscnResources V.! fromJust (s ^. P.nodeInst))
+                           ^. P.extResourceTy) (s ^. P.nodeTy)
+              ty'       = case s ^. P.nodeTy of
+                Just ty -> ty
+                Nothing -> "PackedScene' "
+                  <> T.takeWhileEnd (/= '/')
+                  ((tscnResources V.! fromJust (s ^. P.nodeInst)) ^. P.extResourceTy)
+              isHaskell = case s ^. P.nodeInst of
+                -- Node has attached instance, may refer to Haskell packed scene
+                Just i
+                  -> let path           =
+                           fromRight undefined . parseRelFile . stripResPrefix
+                           $ (tscnResources V.! (i - 1)) ^. P.extResourcePath
+                         targetTscn     =
+                           fromJust $ M.lookup path (gen ^. generatorTscnFiles)
+                         targetRootNode = findSceneRoot targetTscn ^. P.nodeName
+                     in "'Just '("
+                        <> fromJust (".tscn" `T.stripSuffix` toFilePath (filename path))
+                        <> ", "
+                        <> targetRootNode
+                        <> ")"
+                -- Node has no instance, may have Haskell script attached
+                Nothing -> case M.lookup "script" (s ^. P.nodeEntries) of
+                  -- Points to library as a sub-resource
+                  Just (GodotConstructor ("SubResource", [GodotInt scriptSubResId]))
+                    -> let targetSubRes = tscnSubResources V.! (scriptSubResId - 1)
+                           (GodotConstructor ("ExtResource", [GodotInt extResId])) =
+                             fromJust . M.lookup "library"
+                             $ targetSubRes ^. P.subResourceEntries
+                           targetExtRes = tscnResources V.! (extResId - 1)
+                           (GodotString className) =
+                             fromJust . M.lookup "class_name"
+                             $ targetSubRes ^. P.subResourceEntries
+                       in if S.member (targetExtRes ^. P.extResourcePath)
+                            (gen ^. generatorRegisteredGdnlibs)
+                            then 
+                              -- Target gdnlib is a Haskell library
+                              "'Just '("
+                              <> fromJust
+                              -- TODO This may not point to the scene root's name
+                              (".tscn" `T.stripSuffix` toFilePath (filename fname))
+                              <> ", "
+                              <> (s ^. P.nodeName)
+                              <> ")"
+                            else "'Nothing"
+                  -- Points to `gdns` file
+                  Just (GodotConstructor ("ExtResource", [GodotInt scriptExtResId]))
+                    -> undefined
+                  Nothing -> "'Nothing"
+          in mkSceneNode scene' name' path' ty ty' isHaskell)
+      (mapMaybe (\case
+                   NodeSection n' -> Just n'
+                   _ -> Nothing) $ tscn ^. P.tscnParsedSections)
+    sceneConnections =
+      map (\c -> mkSceneConnection currSceneName (c ^. connectionFrom)
+           (c ^. P.connectionSignal) (c ^. P.connectionTo) (c ^. P.connectionMethod))
+      $ mapMaybe (\case
+                    ConnectionSection c' -> Just c'
+                    _ -> Nothing)
+      $ tscn ^. P.tscnParsedSections
+  -- Write files
+  createDirectoryIfMissing True $ T.unpack $ toFilePath fname
+  T.writeFile (T.unpack $ toFilePath fname)
+    (T.unlines
+     $ [language, sceneModule]
+     ++ map fst sceneNodes
+     ++ [scenePath, sceneRoot]
+     ++ map snd sceneNodes
+     ++ sceneConnections)
+-- isHaskellNode :: Name
+--               -> TscnNode
+--               -> Tscn
+--               -> M.Map T.Text Tscn
+--               -> M.Map T.Text Gdns
+--               -> Maybe (Name, Name)
+-- isHaskellNode name node tscn tscns gdnss =
+--   case ( (\f -> tscn ^? resources . at f . _Just . path) =<< (node ^. script)
+--        , node ^. instanceof) of
+--     (Just p, _) -> case gdnss ^. at p of
+--       Just g -> if isHaskellGdns name g
+--         then Just (Name $ T.pack $ dropExtension $ T.unpack p, name)
+--         else Nothing
+--     (_, Just i) -> let t = tscns ^. at (tscn ^. resources . at i . _Just . path)
+--                    in case (t, rootNodeTscn (fromJust t)) of
+--                         (Just t', Just (n, r)) -> isHaskellNode n r t' tscns gdnss
+--                         _ -> Nothing
+--     _           -> Nothing
+-- isHaskellGdns :: Name -> Gdns -> Bool
+-- isHaskellGdns n gdns =
+--   maybe False (\f -> maybe False isHaskellResource (gdns ^. extResources . at f))
+--   (gdns ^. resources . at n)
+-- isHaskellResource :: Resource -> Bool
+-- isHaskellResource r = T.isSuffixOf ".gdnlib" $ r ^. path
+-- rootNodeTscn :: Tscn -> Maybe (Name, TscnNode)
+-- rootNodeTscn tscn =
+--   find (\(name, node) -> isNothing (node ^. parent)) $ M.toList $ tscn ^. nodes
+-- outputCombined inDir outDir tscns =
+--   createAndWriteFile (outDir </> "Glue" </> "Scenes.hs")
+--   $ T.pack [i|module Glue.Scenes #{exports} where
+-- #{imports}
+-- |]
+--   where
+--     imports =
+--       unlines
+--       $ map (\(fn, t)
+--              -> let f = intercalate "." $ segmentsName inDir fn <> [moduleName inDir fn]
+--                 in [i|import qualified Glue.Scenes.#{f} as M|])
+--       $ M.toList tscns
+--     exports =
+--       if null imports
+--         then ""
+--         else "(module M)"
+-- mkRequirementsModule inDir gdnss =
+--   T.pack [i|{-# LANGUAGE DataKinds #-}
+-- module Glue.Requirements where
+-- import Glue.Support
+-- type Nodes = '[#{reqs}]
+-- |]
+--   where
+--     reqs = intercalate ", " $ map one $ sort $ concatMap (mkRequirement inDir) gdnss
+--     one (resource, name) = [i|OneResourceNode "#{resource}" "#{name}"|]
+-- outputGdnss :: FilePath -> FilePath -> M.Map T.Text Gdns -> IO ()
+-- outputGdnss inDir dir gdnss =
+--   createAndWriteFile (dir </> "Glue" </> "Requirements.hs")
+--   $ mkRequirementsModule inDir
+--   $ M.toList gdnss
+-- mkRequirement :: FilePath -> (T.Text, Gdns) -> [(String, T.Text)]
+-- mkRequirement inDir (fn, gdns) =
+--   trace ("\n\noutput: " <> show inDir <> show (fn, gdns))
+--   (mapMaybe (\(n, i) -> case M.lookup i (gdns ^. extResources) of
+--                Just r -> if T.isInfixOf ".gdnlib" (r ^. path)
+--                  && unTy (r ^. ty) == "GDNativeLibrary"
+--                  then Just (moduleName inDir fn, unName n)
+--                  else Nothing
+--                _      -> Nothing) $ M.toList $ gdns ^. resources)
